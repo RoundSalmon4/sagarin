@@ -4,18 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sagarin College Football Ratings Explorer</title>
-  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings.">
+  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a schedule predictor and CFP bracket builder.">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="site-header">
-    <div class="wrap">
-      <h1>College Football Ratings Explorer</h1>
-      <p class="sub">Jeff Sagarin's cfsend.htm, made sortable and interactive. Unofficial.</p>
-      <div class="status">
-        <span id="dataStatus">Loading data...</span>
-        <button id="refreshBtn" type="button" class="btn">Check for updates</button>
+    <div class="wrap header-inner">
+      <div>
+        <h1>College Football Ratings Explorer</h1>
+        <p class="sub">Jeff Sagarin's cfsend.htm, made sortable and interactive. Unofficial.</p>
+        <div class="status">
+          <span id="dataStatus">Loading data...</span>
+          <button id="refreshBtn" type="button" class="btn">Check for updates</button>
+        </div>
       </div>
+      <button id="themeBtn" type="button" class="btn theme-btn" aria-pressed="false">Dark mode</button>
     </div>
   </header>
 
@@ -23,6 +26,9 @@
     <div class="wrap tab-row">
       <button type="button" class="tab active" data-tab="teams">Teams</button>
       <button type="button" class="tab" data-tab="conferences">Conferences</button>
+      <button type="button" class="tab" data-tab="predictions">Predictions</button>
+      <button type="button" class="tab" data-tab="schedule">Schedule Predictor</button>
+      <button type="button" class="tab" data-tab="playoff">Playoff Predictor</button>
       <button type="button" class="tab" data-tab="matchup">Matchup</button>
     </div>
   </nav>
@@ -61,6 +67,82 @@
       </div>
     </section>
 
+    <section id="tab-predictions" class="panel hidden">
+      <div class="toolbar">
+        <div class="segmented" id="predSet">
+          <button type="button" class="seg active" data-set="regular">Regular</button>
+          <button type="button" class="seg" data-set="experimental">Experimental (home/away)</button>
+          <button type="button" class="seg" data-set="eigenvector">Eigenvector</button>
+        </div>
+        <input id="predSearch" type="search" placeholder="Search team" autocomplete="off">
+        <span id="predCount" class="count"></span>
+      </div>
+      <p class="note" id="predNote"></p>
+      <div class="table-scroll">
+        <table id="predTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-schedule" class="panel hidden">
+      <div class="toolbar">
+        <label class="inline-label">Team
+          <select id="schedTeam"></select>
+        </label>
+        <label class="inline-label">Rating method
+          <select id="schedMethod">
+            <option value="rating">Overall RATING</option>
+            <option value="predictor">PREDICTOR (Pure Points)</option>
+            <option value="goldenMean">GOLDEN_MEAN</option>
+            <option value="recent">RECENT</option>
+            <option value="strongRecent">STRONG_RECENT</option>
+          </select>
+        </label>
+        <button id="schedReload" type="button" class="btn">Reload</button>
+      </div>
+      <p class="note" id="schedNote"></p>
+      <div id="schedSummary" class="summary"></div>
+      <div class="table-scroll">
+        <table id="schedTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-playoff" class="panel hidden">
+      <div class="toolbar">
+        <span class="toolbar-label">Format</span>
+        <div class="segmented" id="playoffFormat">
+          <button type="button" class="seg active" data-format="12">12 team (current)</button>
+          <button type="button" class="seg" data-format="24">24 team (proposed 2027)</button>
+        </div>
+        <label class="inline-label">Rating method
+          <select id="playoffMethod">
+            <option value="rating">Overall RATING</option>
+            <option value="predictor">PREDICTOR</option>
+            <option value="goldenMean">GOLDEN_MEAN</option>
+            <option value="recent">RECENT</option>
+            <option value="strongRecent">STRONG_RECENT</option>
+          </select>
+        </label>
+        <button id="simBtn" type="button" class="btn">Simulate 2000 seasons</button>
+      </div>
+      <p class="note" id="playoffNote"></p>
+      <div id="simResults" class="sim-results"></div>
+      <h2 class="section-title">Projected field</h2>
+      <div class="table-scroll">
+        <table id="fieldTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <h2 class="section-title">Bracket</h2>
+      <div id="bracket" class="bracket"></div>
+    </section>
+
     <section id="tab-matchup" class="panel hidden">
       <div class="matchup-controls">
         <label>Team A
@@ -88,12 +170,16 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>Ratings by Jeff Sagarin. This is an unaffiliated viewer. Predictions use the home edge printed on the source page.</p>
+      <p>Ratings by Jeff Sagarin. Schedules from the ESPN API. This is an unaffiliated viewer.</p>
+      <p>Playoff projections are a ratings-based model, not official selections. Home edges come from the source page; win percentages use a normal model (sd 15.5).</p>
       <p id="sourceLine"></p>
     </div>
   </footer>
 
   <script src="assets/parser.js"></script>
-  <script src="assets/app.js"></script>
+  <script src="assets/core.js"></script>
+  <script src="assets/predictions.js"></script>
+  <script src="assets/schedule.js"></script>
+  <script src="assets/playoff.js"></script>
 </body>
 </html>

@@ -71,7 +71,8 @@ async function main() {
     fetched_at: unchanged ? existing.fetched_at : new Date().toISOString(),
     meta: parsed.meta,
     conferences: parsed.conferences,
-    teams: parsed.teams
+    teams: parsed.teams,
+    predictions: parsed.predictions
   };
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -84,7 +85,9 @@ async function main() {
       parsed.teams.length +
       " teams, " +
       parsed.conferences.length +
-      " conferences, signature " +
+      " conferences, " +
+      parsed.predictions.regular.length +
+      " predictions, signature " +
       parsed.signature +
       (unchanged ? " (unchanged)" : " (updated)")
   );

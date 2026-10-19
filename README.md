@@ -12,8 +12,18 @@ https://roundsalmon4.github.io/sagarin/
   by team or conference, and filter to a single conference.
 - **Conferences tab** - the conference ranking table with a toggle to rank by the overall
   **RATING** or by **WIN50%**. Either way the whole table stays sortable.
+- **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
+  regular block, the experimental home/away block and the eigenvector block. Sortable and
+  searchable.
+- **Schedule Predictor tab** - pick a team, pull its schedule from the ESPN API, and
+  project every remaining game (winner, margin, win chance) with the rating method you
+  choose, plus a projected final record.
+- **Playoff Predictor tab** - a projected CFP field built from the ratings, drawn as
+  either the current 12-team bracket or the proposed 24-team bracket, with a Monte Carlo
+  run for championship odds.
 - **Matchup tab** - pick two teams and a rating method. Shows who is favored and by how
   many points on a neutral field, with either team at home.
+- Light and dark themes, remembered per browser.
 
 ## How the data updates
 
@@ -36,13 +46,16 @@ on its own. There is also a "Check for updates" button.
 ## Layout
 
 ```
-index.html              the page
-assets/parser.js        shared parser, works in node and the browser
-assets/app.js           sorting, tabs, matchup math
-assets/styles.css       styling
-data/ratings.json       parsed snapshot, rebuilt by the Action
+index.html                the page
+assets/parser.js          shared parser, works in node and the browser
+assets/core.js            state, theme, table engine, teams/conferences/matchup
+assets/predictions.js     Predictions_with_Totals_and_Moneylines views
+assets/schedule.js        ESPN schedule predictor
+assets/playoff.js         CFP field, 12/24 brackets, simulation
+assets/styles.css         styling, light and dark themes
+data/ratings.json         parsed snapshot, rebuilt by the Action
 scripts/fetch-sagarin.js  fetch + parse + write
-.github/workflows/      Sunday refresh
+.github/workflows/        Sunday refresh
 ```
 
 ## Running locally
@@ -70,4 +83,12 @@ Optional flags: `--source URL` and `--out PATH`.
   prints a separate edge for each rating column and the site uses the matching one.
 - Win percentages are an estimate from a normal model with a standard deviation of 15.5
   points. The point spread is the part that comes from the source.
+- The Schedule Predictor reads schedules from `site.web.api.espn.com`, which allows cross
+  origin requests, so the browser calls it directly. Sagarin names are matched to ESPN
+  teams with a small alias table; a handful of FCS teams are not in ESPN's team list and
+  show no schedule.
+- Playoff projections assume each conference champion is its highest-rated team, since the
+  site does not track conference standings. Seeding rules follow the CFP fact sheet for 12
+  teams and the ESPN-reported plan for 24 teams. This is a ratings model, not the
+  selection committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
