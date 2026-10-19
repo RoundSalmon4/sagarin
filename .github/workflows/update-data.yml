@@ -2,8 +2,12 @@ name: Update ratings data
 
 on:
   schedule:
-    # runs daily; the script only changes data/ratings.json when Sagarin posts new numbers
-    - cron: "0 10 * * *"
+    # Sagarin posts the new week after Saturday's games, on Sunday. The live file
+    # carried Last-Modified "Sun, 18 Oct 2026 14:21:24 GMT", so we run Sunday
+    # 17:00 UTC, a couple hours later. Monday is a safety net for a slow week.
+    # The script is idempotent, it only writes when the parsed numbers change.
+    - cron: "0 17 * * 0"
+    - cron: "0 13 * * 1"
   workflow_dispatch:
 
 permissions:

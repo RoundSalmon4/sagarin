@@ -19,10 +19,15 @@ https://roundsalmon4.github.io/sagarin/
 
 cfsend.htm is served over plain http and does not allow cross origin requests, so a
 browser cannot fetch it directly from an https site. Instead a scheduled GitHub Action
-(`.github/workflows/update-data.yml`) runs `scripts/fetch-sagarin.js` on a daily cron. The
-script pulls the page, parses it with the same parser the site uses, and commits
+(`.github/workflows/update-data.yml`) runs `scripts/fetch-sagarin.js` on a Sunday cron, a
+few hours after Sagarin posts the new week, with a Monday run as a safety net. The script
+pulls the page, parses it with the same parser the site uses, and commits
 `data/ratings.json`. It only changes the file when the parsed ratings actually differ, so
-quiet days produce no commit.
+a run with nothing new produces no commit.
+
+Timing note: the live file returned `Last-Modified: Sun, 18 Oct 2026 14:21:24 GMT` (and a
+matching Apache ETag), and Sagarin has posted on Sundays for years. The Action runs at
+17:00 UTC on Sunday to sit after that.
 
 The page loads `data/ratings.json` and polls it every ten minutes. When the signature on
 the file changes it rebuilds the tables in place, so a tab left open picks up new numbers
@@ -37,7 +42,7 @@ assets/app.js           sorting, tabs, matchup math
 assets/styles.css       styling
 data/ratings.json       parsed snapshot, rebuilt by the Action
 scripts/fetch-sagarin.js  fetch + parse + write
-.github/workflows/      daily refresh
+.github/workflows/      Sunday refresh
 ```
 
 ## Running locally
