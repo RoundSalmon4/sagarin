@@ -1,0 +1,12 @@
+# editor / os
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+
+# excel lock files
+~$*.xlsx
+
+# node
+node_modules/
+npm-debug.log*

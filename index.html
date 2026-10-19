@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sagarin College Football Ratings Explorer</title>
+  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>College Football Ratings Explorer</h1>
+      <p class="sub">Jeff Sagarin's cfsend.htm, made sortable and interactive. Unofficial.</p>
+      <div class="status">
+        <span id="dataStatus">Loading data...</span>
+        <button id="refreshBtn" type="button" class="btn">Check for updates</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <div class="wrap tab-row">
+      <button type="button" class="tab active" data-tab="teams">Teams</button>
+      <button type="button" class="tab" data-tab="conferences">Conferences</button>
+      <button type="button" class="tab" data-tab="matchup">Matchup</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+
+    <section id="tab-teams" class="panel">
+      <div class="toolbar">
+        <input id="teamSearch" type="search" placeholder="Search team or conference" autocomplete="off">
+        <select id="confFilter" aria-label="Filter by conference">
+          <option value="">All conferences</option>
+        </select>
+        <span id="teamCount" class="count"></span>
+      </div>
+      <div class="table-scroll">
+        <table id="teamsTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-conferences" class="panel hidden">
+      <div class="toolbar">
+        <span class="toolbar-label">Rank conferences by</span>
+        <div class="segmented" id="confMetric">
+          <button type="button" class="seg active" data-metric="rating">Overall RATING</button>
+          <button type="button" class="seg" data-metric="win50">WIN50%</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table id="confTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-matchup" class="panel hidden">
+      <div class="matchup-controls">
+        <label>Team A
+          <select id="teamA"></select>
+        </label>
+        <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
+        <label>Team B
+          <select id="teamB"></select>
+        </label>
+        <label>Rating method
+          <select id="methodSelect">
+            <option value="rating">Overall RATING</option>
+            <option value="predictor">PREDICTOR (Pure Points)</option>
+            <option value="goldenMean">GOLDEN_MEAN</option>
+            <option value="recent">RECENT</option>
+            <option value="strongRecent">STRONG_RECENT</option>
+          </select>
+        </label>
+      </div>
+      <div id="matchupResult" class="matchup-result"></div>
+      <p class="note" id="matchupNote"></p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Ratings by Jeff Sagarin. This is an unaffiliated viewer. Predictions use the home edge printed on the source page.</p>
+      <p id="sourceLine"></p>
+    </div>
+  </footer>
+
+  <script src="assets/parser.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
