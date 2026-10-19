@@ -1,5 +1,7 @@
-/* Playoff predictor: builds a projected CFP field from the ratings and draws
-   either the current 12-team bracket or the proposed 24-team bracket. */
+/* Playoff predictor: projected CFP field. Conference champions come from real
+   conference standings built from the prefetched ESPN games. Draws either the
+   current 12-team bracket or the proposed 24-team bracket, seeds only by
+   default with an option to show predicted results. */
 (function () {
   "use strict";
   var SG = window.SG;
@@ -8,7 +10,7 @@
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
   var SIMS = 2000;
 
-  var view = { format: "12", method: "rating", seeds: null, field: null, sim: null };
+  var view = { format: "12", method: "rating", bracketMode: "seeds", field: null, sim: null };
 
   function mergeConf(c) {
     if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
@@ -19,7 +21,41 @@
     return SG.state.data.teams.filter(function (t) { return t.level === "A"; });
   }
 
+  // conference and overall records from the prefetched ESPN games
+  function standings() {
+    var confOf = {};
+    SG.state.data.teams.forEach(function (t) { if (t.level === "A") confOf[t.team] = mergeConf(t.conference); });
+    var rec = {};
+    function ensure(n) { return rec[n] || (rec[n] = { cw: 0, cl: 0, ow: 0, ol: 0 }); }
+    var games = (SG.state.espn && SG.state.espn.games) || [];
+    games.forEach(function (g) {
+      if (!g.completed || g.homeScore === null || g.awayScore === null) return;
+      var h = SG.state.espnIdToSag && SG.state.espnIdToSag[g.homeId];
+      var a = SG.state.espnIdToSag && SG.state.espnIdToSag[g.awayId];
+      if (!h || !a) return;
+      var hw = g.homeScore > g.awayScore;
+      var rh = ensure(h.team);
+      var ra = ensure(a.team);
+      rh.ow += hw ? 1 : 0; rh.ol += hw ? 0 : 1;
+      ra.ow += hw ? 0 : 1; ra.ol += hw ? 1 : 0;
+      var ch = confOf[h.team], ca = confOf[a.team];
+      if (ch && ca && ch === ca && ch !== "I-A IND.") {
+        rh.cw += hw ? 1 : 0; rh.cl += hw ? 0 : 1;
+        ra.cw += hw ? 0 : 1; ra.cl += hw ? 1 : 0;
+      }
+    });
+    return rec;
+  }
+
+  function champScore(team, std, method) {
+    var r = std[team.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
+    var cwp = (r.cw + r.cl) ? r.cw / (r.cw + r.cl) : 0;
+    var owp = (r.ow + r.ol) ? r.ow / (r.ow + r.ol) : 0;
+    return cwp * 1e6 + owp * 1e3 + (team[method] || 0);
+  }
+
   function champions(method) {
+    var std = standings();
     var byConf = {};
     fbs().forEach(function (t) {
       var c = mergeConf(t.conference);
@@ -27,7 +63,9 @@
     });
     var champs = {};
     Object.keys(byConf).forEach(function (c) {
-      champs[c] = byConf[c].slice().sort(function (a, b) { return b[method] - a[method]; })[0];
+      if (c === "I-A IND.") return;
+      var list = byConf[c].slice().sort(function (a, b) { return champScore(b, std, method) - champScore(a, std, method); });
+      if (list[0]) champs[c] = list[0];
     });
     return champs;
   }
@@ -40,7 +78,6 @@
 
     if (Number(format) === 12) {
       var champList = Object.keys(champs)
-        .filter(function (c) { return c !== "I-A IND."; })
         .map(function (c) { return { conf: c, team: champs[c] }; })
         .sort(function (a, b) { return b.team[method] - a.team[method]; });
       var qual = champList.slice(0, 5);
@@ -49,7 +86,6 @@
       var atLarge = teams.filter(function (t) { return !used[t.team]; })
         .sort(function (a, b) { return b[method] - a[method]; }).slice(0, 7);
       atLarge.forEach(function (t) { bid[t.team] = "At-large"; });
-
       var top4 = qual.slice(0, 4).map(function (x) { return x.team; });
       var rest = [qual[4].team].concat(atLarge).sort(function (a, b) { return b[method] - a[method]; });
       top4.forEach(function (t) { seeds.push(t); });
@@ -88,8 +124,7 @@
   function S(seeds, n) { return { seed: n, team: seeds[n] }; }
 
   function runOnce(seeds, format, method, stochastic) {
-    var rounds;
-    var semis, finals, champion;
+    var semis, finals, champion, rounds;
     if (Number(format) === 12) {
       var r1 = [
         play(S(seeds, 5), S(seeds, 12), 5, method, stochastic),
@@ -103,10 +138,7 @@
         play(S(seeds, 2), r1[2].winner, 2, method, stochastic),
         play(S(seeds, 3), r1[1].winner, 3, method, stochastic)
       ];
-      semis = [
-        play(qf[0].winner, qf[1].winner, null, method, stochastic),
-        play(qf[2].winner, qf[3].winner, null, method, stochastic)
-      ];
+      semis = [play(qf[0].winner, qf[1].winner, null, method, stochastic), play(qf[2].winner, qf[3].winner, null, method, stochastic)];
       finals = [play(semis[0].winner, semis[1].winner, null, method, stochastic)];
       rounds = [
         { title: "First round (campus)", games: r1 },
@@ -142,10 +174,7 @@
         play(r2[4].winner, r2[5].winner, null, method, stochastic),
         play(r2[6].winner, r2[7].winner, null, method, stochastic)
       ];
-      semis = [
-        play(qf24[0].winner, qf24[1].winner, null, method, stochastic),
-        play(qf24[2].winner, qf24[3].winner, null, method, stochastic)
-      ];
+      semis = [play(qf24[0].winner, qf24[1].winner, null, method, stochastic), play(qf24[2].winner, qf24[3].winner, null, method, stochastic)];
       finals = [play(semis[0].winner, semis[1].winner, null, method, stochastic)];
       rounds = [
         { title: "First round (campus)", games: rr },
@@ -157,70 +186,106 @@
       champion = finals[0].winner;
     }
     return {
-      rounds: rounds,
-      champion: champion,
+      rounds: rounds, champion: champion,
       semifinalists: [semis[0].a.team, semis[0].b.team, semis[1].a.team, semis[1].b.team],
       finalists: [finals[0].a.team, finals[0].b.team]
     };
   }
 
-  // ---- rendering ----
+  // ---- static (seeds-only) bracket ----
 
-  function seedLabel(seedObj) {
-    return {
-      seed: seedObj.seed,
-      team: seedObj.team ? seedObj.team.team : "",
-      ok: !!seedObj.team
-    };
+  function T(seeds, n) { return { seed: n, team: seeds[n] }; }
+  function L(label) { return { label: label }; }
+  function sg(a, b, homeSeed) { return { a: a, b: b, home: homeSeed, neutral: homeSeed === null }; }
+
+  function staticBracket(seeds, format) {
+    if (Number(format) === 12) {
+      var r1 = [sg(T(seeds, 5), T(seeds, 12), 5), sg(T(seeds, 6), T(seeds, 11), 6), sg(T(seeds, 7), T(seeds, 10), 7), sg(T(seeds, 8), T(seeds, 9), 8)];
+      var qf = [sg(T(seeds, 1), L("8/9"), 1), sg(T(seeds, 4), L("5/12"), 4), sg(T(seeds, 2), L("7/10"), 2), sg(T(seeds, 3), L("6/11"), 3)];
+      var sf = [sg(L("Quarterfinal 1 winner"), L("Quarterfinal 2 winner"), null), sg(L("Quarterfinal 3 winner"), L("Quarterfinal 4 winner"), null)];
+      var fin = [sg(L("Semifinal 1 winner"), L("Semifinal 2 winner"), null)];
+      return [
+        { title: "First round (campus)", games: r1 },
+        { title: "Quarterfinals (bowls)", games: qf },
+        { title: "Semifinals", games: sf },
+        { title: "Championship", games: fin }
+      ];
+    }
+    var rr = [
+      sg(T(seeds, 9), T(seeds, 24), 9), sg(T(seeds, 10), T(seeds, 23), 10), sg(T(seeds, 11), T(seeds, 22), 11), sg(T(seeds, 12), T(seeds, 21), 12),
+      sg(T(seeds, 13), T(seeds, 20), 13), sg(T(seeds, 14), T(seeds, 19), 14), sg(T(seeds, 15), T(seeds, 18), 15), sg(T(seeds, 16), T(seeds, 17), 16)
+    ];
+    var r2 = [
+      sg(T(seeds, 1), L("16/17"), 1), sg(T(seeds, 8), L("9/24"), 8), sg(T(seeds, 4), L("13/20"), 4), sg(T(seeds, 5), L("12/21"), 5),
+      sg(T(seeds, 2), L("15/18"), 2), sg(T(seeds, 7), L("10/23"), 7), sg(T(seeds, 3), L("14/19"), 3), sg(T(seeds, 6), L("11/22"), 6)
+    ];
+    var qf = [
+      sg(L("1/16/17"), L("8/9/24"), null), sg(L("4/13/20"), L("5/12/21"), null), sg(L("2/15/18"), L("7/10/23"), null), sg(L("3/14/19"), L("6/11/22"), null)
+    ];
+    var sf = [sg(L("Quarterfinal 1 winner"), L("Quarterfinal 2 winner"), null), sg(L("Quarterfinal 3 winner"), L("Quarterfinal 4 winner"), null)];
+    var fin = [sg(L("Semifinal 1 winner"), L("Semifinal 2 winner"), null)];
+    return [
+      { title: "First round (campus)", games: rr },
+      { title: "Second round (campus)", games: r2 },
+      { title: "Quarterfinals (bowls)", games: qf },
+      { title: "Semifinals", games: sf },
+      { title: "Championship", games: fin }
+    ];
   }
 
-  function gameBox(game) {
-    function row(seedObj, p, isWinner) {
-      var s = seedLabel(seedObj);
-      return '<div class="game-team' + (isWinner ? " winner" : "") + '">' +
-        '<span class="seed">#' + s.seed + "</span>" +
-        '<span class="name">' + SG.esc(s.team) + "</span>" +
-        '<span class="score">' + (p === null ? "" : (p * 100).toFixed(0) + "%") + "</span></div>";
-    }
+  // ---- rendering ----
+
+  function entrantRow(desc, pct, showResults, isWinner) {
+    var seed = desc.seed !== undefined && desc.seed !== null ? "#" + desc.seed : "";
+    var name = desc.team ? desc.team.team : (desc.label || "");
+    var cls = "game-team" + (showResults && isWinner ? " winner" : "");
+    return '<div class="' + cls + '"><span class="seed">' + seed + '</span><span class="name">' + SG.esc(name) + '</span><span class="score">' +
+      (showResults && pct !== null && pct !== undefined ? (pct * 100).toFixed(0) + "%" : "") + "</span></div>";
+  }
+
+  function gameBox(game, showResults) {
     var winnerIsA = game.winner && game.a && game.winner.seed === game.a.seed;
-    var pa = game.p;
-    var pb = 1 - game.p;
     var site = game.neutral ? "neutral site" : ("at #" + game.home);
     return '<div class="game-box">' +
-      row(game.a, pa, winnerIsA) +
-      row(game.b, pb, !winnerIsA) +
+      entrantRow(game.a, game.p, showResults, winnerIsA) +
+      entrantRow(game.b, game.p === undefined ? undefined : 1 - game.p, showResults, !winnerIsA) +
       '<div class="site-tag">' + SG.esc(site) + "</div></div>";
   }
 
-  function renderBracket(result) {
-    var html = result.rounds.map(function (round) {
-      var games = round.games.map(gameBox).join("");
-      return '<div class="bracket-col"><div class="bracket-col-title">' + SG.esc(round.title) + "</div>" + games + "</div>";
+  function renderBracket(rounds, showResults, champion) {
+    var html = rounds.map(function (round) {
+      return '<div class="bracket-col"><div class="bracket-col-title">' + SG.esc(round.title) + "</div>" +
+        round.games.map(function (g) { return gameBox(g, showResults); }).join("") + "</div>";
     }).join("");
-    var champ = result.champion.team ? result.champion.team.team : "";
-    html += '<div class="bracket-col"><div class="bracket-col-title">Projected champion</div>' +
-      '<div class="game-box champ-box"><div class="game-team winner"><span class="seed">#' + result.champion.seed + "</span><span class=\"name\">" + SG.esc(champ) + "</span><span class=\"score\"></span></div></div></div>";
+    if (showResults && champion && champion.team) {
+      html += '<div class="bracket-col"><div class="bracket-col-title">Projected champion</div>' +
+        '<div class="game-box champ-box">' + entrantRow({ seed: champion.seed, team: champion.team }, null, true, true) + "</div></div>";
+    }
     document.getElementById("bracket").innerHTML = html;
   }
 
-  function renderField(field, method) {
+  function renderField(field) {
     var table = document.getElementById("fieldTable");
     var columns = [
       { key: "seed", label: "#", cls: "left" },
       { key: "team", label: "Team", cls: "left", type: "str" },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
+      { key: "cw", label: "Conf", cls: "left", type: "str" },
       { key: "rating", label: "RATING", strong: true },
       { key: "w", label: "W" },
       { key: "l", label: "L" },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
+    var std = standings();
     var rows = [];
     for (var i = 1; i < field.seeds.length; i++) {
       var t = field.seeds[i];
+      var r = std[t.team];
       rows.push({
         seed: i,
         team: t.team,
         conf: mergeConf(t.conference),
+        cw: r && (r.cw + r.cl) ? r.cw + "-" + r.cl : "-",
         rating: t.rating,
         w: t.w,
         l: t.l,
@@ -235,56 +300,52 @@
     var box = document.getElementById("simResults");
     if (!sim) { box.innerHTML = ""; return; }
     var rows = Object.keys(sim.champ).map(function (name) {
-      return { name: name, champ: sim.champ[name], fin: sim.fin[name] || 0, semi: sim.semi[name] || 0 };
-    }).sort(function (a, b) { return b.champ - a.champ || b.fin - a.fin; }).slice(0, 14);
-
-    function block(title, key) {
-      var max = Math.max.apply(null, rows.map(function (r) { return r[key]; })) || 1;
-      return '<div class="sim-block"><h3>' + title + "</h3><div class=\"sim-list\">" +
-        rows.map(function (r) {
-          var pct = ((r[key] / sim.n) * 100).toFixed(1);
-          return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
-            ((r[key] / max) * 100).toFixed(1) + '%"></span></span><span>' + pct + "%</span></div>";
-        }).join("") + "</div></div>";
-    }
-    box.innerHTML = "<p class=\"note\">" + sim.n + " simulated seasons. " +
-      "Bars show each team's share of titles; percentages are title odds, with final and semifinal odds beside them.</p>" +
-      block("Championship odds", "champ");
+      return { name: name, champ: sim.champ[name] };
+    }).sort(function (a, b) { return b.champ - a.champ; }).slice(0, 14);
+    var max = Math.max.apply(null, rows.map(function (r) { return r.champ; })) || 1;
+    box.innerHTML = '<div class="sim-block"><h3>Championship odds</h3><div class="sim-list">' +
+      rows.map(function (r) {
+        var pct = (r.champ / sim.n) * 100;
+        return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
+          ((r.champ / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
+      }).join("") + "</div></div><p class=\"note\">" + sim.n + " simulated seasons from the projected field.</p>";
   }
 
-  function compute() {
+  function render() {
     if (!SG.state.data) return;
     var field = buildField(view.format, view.method);
-    view.seeds = field.seeds;
     view.field = field;
-    var result = runOnce(field.seeds, view.format, view.method, false);
-    renderField(field, view.method);
-    renderBracket(result);
+    renderField(field);
+
+    if (view.bracketMode === "results") {
+      var result = runOnce(field.seeds, view.format, view.method, false);
+      renderBracket(result.rounds, true, result.champion);
+    } else {
+      renderBracket(staticBracket(field.seeds, view.format), false, null);
+    }
+
+    var standingsNote = SG.state.espn
+      ? "Conference champions are the best conference record in each conference (tiebreak: overall record, then rating)."
+      : "ESPN standings are not loaded, so conference champions fall back to the highest-rated team in each conference.";
     document.getElementById("playoffNote").textContent =
-      "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. Conference champions are the highest-rated team in each conference, an assumption this tool makes because it does not track conference standings. " +
-      (view.format === "12"
+      "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
+      (Number(view.format) === 12
         ? "12-team: five highest-rated conference champions plus seven at-large; top four champions seed 1-4 with byes; seeds 5-8 host seeds 9-12."
         : "24-team (proposed 2027): 19 at-large, the four Power 4 champions, and the highest-rated Group of 6 team; seeds 1-8 get a bye and a home game, seeds 9-16 host the first round.");
     renderSim(view.sim);
   }
 
   function simulate() {
-    if (!SG.state.data) return;
-    var method = view.method, format = view.format, seeds = view.seeds;
-    var champ = {}, fin = {}, semi = {};
+    if (!SG.state.data || !view.field) return;
+    var method = view.method, format = view.format, seeds = view.field.seeds;
+    var champ = {};
     for (var i = 0; i < SIMS; i++) {
       var r = runOnce(seeds, format, method, true);
       var c = r.champion.team.team;
       champ[c] = (champ[c] || 0) + 1;
-      r.finalists.forEach(function (t) { if (t) fin[t.team] = (fin[t.team] || 0) + 1; });
-      r.semifinalists.forEach(function (t) { if (t) semi[t.team] = (semi[t.team] || 0) + 1; });
     }
-    view.sim = { champ: champ, fin: fin, semi: semi, n: SIMS };
+    view.sim = { champ: champ, n: SIMS };
     renderSim(view.sim);
-  }
-
-  function register() {
-    SG.state.modules.playoff = { init: init, render: function () { compute(); } };
   }
 
   function init() {
@@ -293,18 +354,24 @@
         view.format = seg.dataset.format;
         SG.$$("#playoffFormat .seg").forEach(function (s) { s.classList.toggle("active", s === seg); });
         view.sim = null;
-        compute();
+        render();
+      });
+    });
+    SG.$$("#bracketMode .seg").forEach(function (seg) {
+      seg.addEventListener("click", function () {
+        view.bracketMode = seg.dataset.mode;
+        SG.$$("#bracketMode .seg").forEach(function (s) { s.classList.toggle("active", s === seg); });
+        render();
       });
     });
     document.getElementById("playoffMethod").addEventListener("change", function (e) {
       view.method = e.target.value;
       view.sim = null;
-      compute();
+      render();
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
-    compute();
+    render();
   }
 
-  register();
+  SG.state.modules.playoff = { init: init, render: render };
 })();
-

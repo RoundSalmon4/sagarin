@@ -15,14 +15,16 @@ https://roundsalmon4.github.io/sagarin/
 - **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
   regular block, the experimental home/away block and the eigenvector block. Sortable and
   searchable.
-- **Schedule Predictor tab** - pick a team, pull its schedule from the ESPN API, and
-  project every remaining game (winner, margin, win chance) with the rating method you
-  choose, plus a projected final record.
-- **Playoff Predictor tab** - a projected CFP field built from the ratings, drawn as
-  either the current 12-team bracket or the proposed 24-team bracket, with a Monte Carlo
-  run for championship odds.
-- **Matchup tab** - pick two teams and a rating method. Shows who is favored and by how
-  many points on a neutral field, with either team at home.
+- **Schedule Predictor tab** - pick a team and project every remaining game (winner,
+  margin, win chance) with the rating method you choose, plus a projected final record.
+  Schedules come from a prefetched ESPN file, so the browser never calls ESPN directly.
+- **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
+  champions come from real conference standings built from the ESPN results file. Draws
+  either the current 12-team bracket or the proposed 24-team bracket, seeds only by
+  default with an option to show predicted results, plus a Monte Carlo run for
+  championship odds.
+- **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
+  favored and by how many points on a neutral field, with either team at home.
 - Light and dark themes, remembered per browser.
 
 ## How the data updates
@@ -35,32 +37,41 @@ pulls the page, parses it with the same parser the site uses, and commits
 `data/ratings.json`. It only changes the file when the parsed ratings actually differ, so
 a run with nothing new produces no commit.
 
+The same Action runs `scripts/fetch-espn.js`, which pulls the ESPN team list and every FBS
+team's schedule and writes `data/espn-games.json`. The site reads that file for the
+schedule predictor and for conference standings, so no user browser ever has to call ESPN
+(which is what caused the earlier "Failed to fetch"). Like the ratings file, it keeps its
+`fetched_at` unless the games actually changed.
+
 Timing note: the live file returned `Last-Modified: Sun, 18 Oct 2026 14:21:24 GMT` (and a
 matching Apache ETag), and Sagarin has posted on Sundays for years. The Action runs at
 17:00 UTC on Sunday to sit after that.
 
-The page loads `data/ratings.json` and polls it every ten minutes. When the signature on
-the file changes it rebuilds the tables in place, so a tab left open picks up new numbers
-on its own. There is also a "Check for updates" button.
+The page loads both data files and polls them every ten minutes. When a signature changes
+it rebuilds in place, so a tab left open picks up new numbers on its own. There is also a
+"Check for updates" button.
 
 ## Layout
 
 ```
 index.html                the page
-assets/parser.js          shared parser, works in node and the browser
+assets/parser.js          shared Sagarin parser, works in node and the browser
+assets/team-alias.js      Sagarin to ESPN team name aliases, shared with the scripts
 assets/core.js            state, theme, table engine, teams/conferences/matchup
 assets/predictions.js     Predictions_with_Totals_and_Moneylines views
-assets/schedule.js        ESPN schedule predictor
+assets/schedule.js        schedule predictor, reads the ESPN data file
 assets/playoff.js         CFP field, 12/24 brackets, simulation
 assets/styles.css         styling, light and dark themes
-data/ratings.json         parsed snapshot, rebuilt by the Action
-scripts/fetch-sagarin.js  fetch + parse + write
+data/ratings.json         parsed Sagarin snapshot
+data/espn-games.json      prefetched ESPN teams and games
+scripts/fetch-sagarin.js  fetch + parse cfsend.htm
+scripts/fetch-espn.js     fetch ESPN teams + schedules
 .github/workflows/        Sunday refresh
 ```
 
 ## Running locally
 
-The page fetches `data/ratings.json`, so open it through a local server rather than the
+The page fetches the two data files, so open it through a local server rather than the
 file system:
 
 ```
@@ -69,13 +80,15 @@ python -m http.server 8000
 
 Then visit http://localhost:8000/
 
-To refresh the snapshot by hand:
+To refresh the data by hand:
 
 ```
 node scripts/fetch-sagarin.js
+node scripts/fetch-espn.js
 ```
 
-Optional flags: `--source URL` and `--out PATH`.
+`fetch-sagarin.js` takes `--source URL` and `--out PATH`; `fetch-espn.js` takes `--out`
+and `--concurrency`.
 
 ## Notes
 
@@ -83,12 +96,10 @@ Optional flags: `--source URL` and `--out PATH`.
   prints a separate edge for each rating column and the site uses the matching one.
 - Win percentages are an estimate from a normal model with a standard deviation of 15.5
   points. The point spread is the part that comes from the source.
-- The Schedule Predictor reads schedules from `site.web.api.espn.com`, which allows cross
-  origin requests, so the browser calls it directly. Sagarin names are matched to ESPN
-  teams with a small alias table; a handful of FCS teams are not in ESPN's team list and
-  show no schedule.
-- Playoff projections assume each conference champion is its highest-rated team, since the
-  site does not track conference standings. Seeding rules follow the CFP fact sheet for 12
-  teams and the ESPN-reported plan for 24 teams. This is a ratings model, not the
-  selection committee.
+- ESPN schedules are prefetched by the Action into `data/espn-games.json`; the browser
+  never calls ESPN. Sagarin names are matched to ESPN teams with `assets/team-alias.js`; a
+  few FCS teams are not in ESPN's list and show no schedule.
+- Playoff conference champions come from real conference records in the ESPN results
+  (tiebreak: overall record, then rating). Seeding follows the CFP fact sheet for 12 teams
+  and the ESPN-reported plan for 24 teams. This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.

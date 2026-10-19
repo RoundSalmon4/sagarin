@@ -7,12 +7,17 @@
   window.SG = SG;
 
   SG.DATA_URL = "data/ratings.json";
+  SG.ESPN_DATA_URL = "data/espn-games.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ESPN_BASE = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football";
+  SG.ALIAS = window.TeamAlias || {};
 
   SG.state = {
     data: null,
+    espn: null,
+    sagToEspn: null,
+    espnIdToSag: null,
     teamSort: { key: "rank", dir: 1 },
     confMetric: "rating",
     confSort: null,
@@ -336,6 +341,45 @@
     SG.ensureModule(name);
   };
 
+  // -------------------------------------------------------------- ESPN mapping
+
+  SG.buildMapping = function () {
+    if (!SG.state.espn || !SG.state.data) return;
+    var idx = {};
+    SG.state.espn.teams.forEach(function (t) {
+      [t.location, t.name, t.displayName].forEach(function (v) {
+        var k = SG.normalizeName(v || "");
+        if (k && !idx[k]) idx[k] = t;
+      });
+    });
+    var sagToEspn = {};
+    var espnIdToSag = {};
+    SG.state.data.teams.forEach(function (st) {
+      var k = SG.normalizeName(st.team);
+      var et = idx[k] || idx[SG.ALIAS[k]];
+      if (et) { sagToEspn[st.team] = et; espnIdToSag[et.id] = st; }
+    });
+    SG.state.sagToEspn = sagToEspn;
+    SG.state.espnIdToSag = espnIdToSag;
+  };
+
+  SG.espnTeamById = function (id) {
+    if (!SG.state.espn) return null;
+    var a = SG.state.espn.teams;
+    for (var i = 0; i < a.length; i++) if (String(a[i].id) === String(id)) return a[i];
+    return null;
+  };
+
+  SG.gamesForTeam = function (name) {
+    if (!SG.state.espn || !SG.state.sagToEspn) return [];
+    var et = SG.state.sagToEspn[name];
+    if (!et) return [];
+    var id = String(et.id);
+    return SG.state.espn.games
+      .filter(function (g) { return String(g.homeId) === id || String(g.awayId) === id; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+  };
+
   // -------------------------------------------------------------- status + data
 
   SG.renderStatus = function (updated) {
@@ -350,22 +394,33 @@
       "Source: " + SG.state.data.source + " (signature " + SG.state.data.signature + ")";
   };
 
-  function loadJson() {
-    return fetch(SG.DATA_URL, { cache: "no-store" }).then(function (r) {
+  function loadJson(url) {
+    return fetch(url, { cache: "no-store" }).then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
       return r.json();
+    });
+  }
+
+  function loadAll() {
+    return Promise.all([
+      loadJson(SG.DATA_URL),
+      loadJson(SG.ESPN_DATA_URL).catch(function () { return null; })
+    ]).then(function (res) {
+      return { data: res[0], espn: res[1] };
     });
   }
 
   SG.poll = function (manual) {
     var btn = document.getElementById("refreshBtn");
     if (manual) { btn.disabled = true; btn.textContent = "Checking..."; }
-    return loadJson().then(function (json) {
+    return loadAll().then(function (res) {
+      var json = res.data;
+      SG.state.espn = res.espn;
       if (!SG.state.data || json.signature !== SG.state.data.signature) {
         var changed = !!SG.state.data;
         SG.state.data = json;
         SG.state.confSort = null;
-        SG.state.teams = json.teams;
+        SG.buildMapping();
         SG.populateConfFilter();
         SG.fillTeamSelects();
         SG.renderTeams();
@@ -373,8 +428,9 @@
         SG.renderMatchup();
         SG.refreshModules();
         SG.renderStatus(changed);
-      } else if (manual) {
-        document.getElementById("dataStatus").textContent += " - no changes";
+      } else {
+        SG.buildMapping();
+        if (manual) document.getElementById("dataStatus").textContent += " - no changes";
       }
     }).catch(function (err) {
       document.getElementById("dataStatus").textContent =
@@ -406,14 +462,17 @@
   function init() {
     SG.initTheme();
 
-    loadJson().then(function (json) {
-      SG.state.data = json;
+    loadAll().then(function (res) {
+      SG.state.data = res.data;
+      SG.state.espn = res.espn;
+      SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();
       SG.renderTeams();
       SG.renderConferences();
       SG.renderMatchup();
       SG.renderStatus(false);
+      SG.refreshModules();
       setInterval(function () { SG.poll(false); }, SG.POLL_MS);
       document.addEventListener("visibilitychange", function () { if (!document.hidden) SG.poll(false); });
     }).catch(function (err) {

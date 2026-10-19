@@ -128,6 +128,11 @@
             <option value="strongRecent">STRONG_RECENT</option>
           </select>
         </label>
+        <span class="toolbar-label">Bracket</span>
+        <div class="segmented" id="bracketMode">
+          <button type="button" class="seg active" data-mode="seeds">Seeds only</button>
+          <button type="button" class="seg" data-mode="results">Predicted results</button>
+        </div>
         <button id="simBtn" type="button" class="btn">Simulate 2000 seasons</button>
       </div>
       <p class="note" id="playoffNote"></p>
@@ -145,11 +150,11 @@
 
     <section id="tab-matchup" class="panel hidden">
       <div class="matchup-controls">
-        <label>Team A
+        <label>Home team
           <select id="teamA"></select>
         </label>
         <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
-        <label>Team B
+        <label>Away team
           <select id="teamB"></select>
         </label>
         <label>Rating method
@@ -177,6 +182,7 @@
   </footer>
 
   <script src="assets/parser.js"></script>
+  <script src="assets/team-alias.js"></script>
   <script src="assets/core.js"></script>
   <script src="assets/predictions.js"></script>
   <script src="assets/schedule.js"></script>

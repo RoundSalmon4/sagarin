@@ -26,14 +26,17 @@ jobs:
       - name: Fetch and parse cfsend page
         run: node scripts/fetch-sagarin.js
 
+      - name: Fetch ESPN teams and schedules
+        run: node scripts/fetch-espn.js
+
       - name: Commit when the data moved
         run: |
-          if git diff --quiet -- data/ratings.json; then
+          if git diff --quiet -- data/ratings.json data/espn-games.json; then
             echo "no change, nothing to commit"
             exit 0
           fi
           git config user.name "roundsalmon4"
           git config user.email "209016228+RoundSalmon4@users.noreply.github.com"
-          git add data/ratings.json
-          git commit -m "Refresh ratings data from sagarin.com"
+          git add data/ratings.json data/espn-games.json
+          git commit -m "Refresh ratings and ESPN data from sagarin.com and ESPN"
           git push

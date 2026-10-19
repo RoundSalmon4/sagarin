@@ -1,84 +1,16 @@
-/* Schedule predictor: pull a team's schedule from the ESPN API and project each
-   remaining game with the chosen Sagarin rating method. */
+/* Schedule predictor: read a team's season schedule from the prefetched ESPN
+   data file and project each remaining game with the chosen Sagarin method. */
 (function () {
   "use strict";
   var SG = window.SG;
 
-  var LANG_CACHE = "sagarin-espn-teams";
-  var TTL = 24 * 60 * 60 * 1000;
-
-  var ALIAS = {
-    "miami florida": "miami", "miami ohio": "miami oh", "fla international": "florida international",
-    "central florida ucf": "ucf", "louisianamonroe ulm": "ul monroe", "louisiana lafayette": "louisiana",
-    "miss valley state": "mississippi valley state", "se missouri state": "southeast missouri state",
-    "army west point": "army", "connecticut": "uconn", "mississippi": "ole miss",
-    "southern california": "usc", "appalachian state": "app state", "sam houston state": "sam houston",
-    "monmouth nj": "monmouth", "albany ny": "ualbany", "tennessee martin": "ut martin",
-    "sc state": "south carolina state", "cal poly slo": "cal poly", "mcneese state": "mcneese",
-    "st thomas mn": "st thomas", "ark pine bluff": "arkansas pine bluff", "liu post": "long island university",
-    "stonehill college": "stonehill", "grambling state": "grambling", "nc central": "north carolina central",
-    "nc at": "north carolina at", "southern u": "southern", "nicholls state": "nicholls",
-    "presbyterian college": "presbyterian"
-  };
-
-  function trimTeam(t) {
-    return { id: t.id, displayName: t.displayName, location: t.location, name: t.name, abbreviation: t.abbreviation };
-  }
-
-  function getEspnTeams() {
-    if (SG.state.espnTeams) return Promise.resolve(SG.state.espnTeams);
-    try {
-      var cached = JSON.parse(localStorage.getItem(LANG_CACHE) || "null");
-      if (cached && cached.t && Date.now() - cached.t < TTL && cached.teams && cached.teams.length) {
-        SG.state.espnTeams = cached.teams;
-        return Promise.resolve(cached.teams);
-      }
-    } catch (e) {}
-    return fetch(SG.ESPN_BASE + "/teams?limit=1000").then(function (r) {
-      if (!r.ok) throw new Error("ESPN HTTP " + r.status);
-      return r.json();
-    }).then(function (j) {
-      var teams = j.sports[0].leagues[0].teams.map(function (x) { return trimTeam(x.team); });
-      SG.state.espnTeams = teams;
-      try { localStorage.setItem(LANG_CACHE, JSON.stringify({ t: Date.now(), teams: teams })); } catch (e) {}
-      return teams;
-    });
-  }
-
-  function buildMapping() {
-    return getEspnTeams().then(function (list) {
-      var idx = {};
-      list.forEach(function (t) {
-        [t.location, t.name, t.displayName].forEach(function (v) {
-          var k = SG.normalizeName(v || "");
-          if (k && !idx[k]) idx[k] = t;
-        });
-      });
-      var sagToEspn = {};
-      var espnIdToSag = {};
-      SG.state.data.teams.forEach(function (st) {
-        var k = SG.normalizeName(st.team);
-        var et = idx[k] || idx[ALIAS[k]];
-        if (et) { sagToEspn[st.team] = et; espnIdToSag[et.id] = st; }
-      });
-      SG.state.sagToEspn = sagToEspn;
-      SG.state.espnIdToSag = espnIdToSag;
-    });
-  }
-
-  function ensureMapping() {
-    if (SG.state.sagToEspn && SG.state.espnIdToSag) return Promise.resolve();
-    return buildMapping();
-  }
-
   function fillSelect() {
     var sel = document.getElementById("schedTeam");
-    if (!sel || sel.dataset.filled === "1") return;
+    if (!sel || !SG.state.data) return;
     var teams = SG.state.data.teams.slice().sort(function (a, b) { return a.rank - b.rank; });
     sel.innerHTML = teams.map(function (t) {
       return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
     }).join("");
-    sel.dataset.filled = "1";
   }
 
   function fmtDate(iso) {
@@ -92,34 +24,30 @@
     var note = document.getElementById("schedNote");
     var name = document.getElementById("schedTeam").value;
     var method = document.getElementById("schedMethod").value;
-    var teamSag = SG.teamByName(name);
     var tbody = document.getElementById("schedTable").tBodies[0];
+    var teamSag = SG.teamByName(name);
 
-    note.textContent = "Loading schedule from ESPN...";
-    document.getElementById("schedSummary").innerHTML = "";
-    tbody.innerHTML = "";
+    if (!SG.state.espn) {
+      note.textContent = "ESPN schedule data is not available yet. It is refreshed by the Action each week.";
+      tbody.innerHTML = "";
+      document.getElementById("schedSummary").innerHTML = "";
+      return;
+    }
 
-    ensureMapping().then(function () {
-      var et = SG.state.sagToEspn[name];
-      if (!et) throw new Error("no ESPN team matched for " + name);
-      return fetch(SG.ESPN_BASE + "/teams/" + et.id + "/schedule").then(function (r) {
-        if (!r.ok) throw new Error("ESPN HTTP " + r.status);
-        return r.json();
-      });
-    }).then(function (j) {
-      render(name, method, teamSag, j.events || []);
-    }).catch(function (err) {
-      note.textContent = "Could not load the ESPN schedule (" + err.message + "). ESPN must be reachable from the browser.";
-    });
-  }
+    var et = SG.state.sagToEspn && SG.state.sagToEspn[name];
+    var games = SG.gamesForTeam(name);
+    if (!et || !games.length) {
+      note.textContent = "No ESPN schedule found for " + name + ".";
+      tbody.innerHTML = "";
+      document.getElementById("schedSummary").innerHTML = "";
+      return;
+    }
 
-  function render(name, method, teamSag, events) {
     var edge = SG.homeEdge(method);
-    var table = document.getElementById("schedTable");
     var columns = [
       { key: "date", label: "Date", cls: "left", type: "str" },
-      { key: "opp", label: "Opponent", cls: "left", type: "str" },
       { key: "site", label: "Site", cls: "left", type: "str" },
+      { key: "opp", label: "Opponent", cls: "left", type: "str" },
       { key: "result", label: "Result", cls: "left", type: "str", cell: function (r) { return r.result; } },
       { key: "oppRating", label: "Opp RATING" },
       { key: "margin", label: "Proj margin" },
@@ -128,41 +56,39 @@
     ];
 
     var rows = [];
-    var remaining = 0, projWins = 0;
+    var remaining = 0;
+    var projWins = 0;
+    var id = String(et.id);
 
-    events.forEach(function (ev) {
-      var comp = (ev.competitions || [])[0];
-      if (!comp) return;
-      var competitors = comp.competitors || [];
-      var self = competitors.filter(function (c) { return c.team && String(c.team.id) === String(SG.state.sagToEspn[name].id); })[0];
-      var opp = competitors.filter(function (c) { return c !== self; })[0];
-      if (!opp) return;
-      var isHome = self.homeAway === "home";
-      var neutral = !!comp.neutralSite;
-      var completed = comp.status && comp.status.type && comp.status.type.completed;
-      var oppSag = SG.state.espnIdToSag[opp.team.id];
+    games.forEach(function (g) {
+      var isHome = String(g.homeId) === id;
+      var oppId = isHome ? g.awayId : g.homeId;
+      var oppTeam = SG.espnTeamById(oppId);
+      var oppSag = SG.state.espnIdToSag[oppId];
+      var neutral = !!g.neutral;
 
       var row = {
-        date: fmtDate(ev.date),
-        opp: opp.team.displayName || opp.team.name,
+        date: fmtDate(g.date),
         site: neutral ? "Neutral" : (isHome ? "vs" : "@"),
+        opp: oppTeam ? oppTeam.displayName : oppId,
         result: "",
         oppRating: oppSag ? SG.fmt(oppSag[method]) : "nr",
-        margin: "-",
+        margin: ".",
         winPct: null,
         pick: ""
       };
 
-      if (completed && opp.score && self.score) {
-        var sw = Number(self.score.value), ow = Number(opp.score.value);
-        var won = sw > ow;
-        row.result = '<span class="' + (won ? "win" : "loss") + '">' + (won ? "W" : "L") + " " + sw + "-" + ow + "</span>";
+      if (g.completed && g.homeScore !== null && g.awayScore !== null) {
+        var mine = isHome ? g.homeScore : g.awayScore;
+        var theirs = isHome ? g.awayScore : g.homeScore;
+        var won = mine > theirs;
+        row.result = '<span class="' + (won ? "win" : "loss") + '">' + (won ? "W" : "L") + " " + mine + "-" + theirs + "</span>";
       } else if (oppSag && teamSag) {
         var spread = teamSag[method] - oppSag[method] + (neutral ? 0 : (isHome ? edge : -edge));
         var wp = SG.normCdf(spread / SG.SIGMA);
         row.margin = (spread >= 0 ? "+" : "-") + SG.fmt(Math.abs(spread), 1);
         row.winPct = wp;
-        row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(wp >= 0.5 ? name : row.opp) + "</span>";
+        row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(wp >= 0.5 ? name : (oppSag ? oppSag.team : row.opp)) + "</span>";
         remaining++;
         if (wp >= 0.5) projWins++;
       } else {
@@ -172,11 +98,12 @@
       rows.push(row);
     });
 
-    SG.buildHead(table, columns, { key: "", dir: 1 }, function () {});
-    SG.fillBody(table, columns, rows);
+    SG.buildHead(document.getElementById("schedTable"), columns, { key: "", dir: 1 }, function () {});
+    SG.fillBody(document.getElementById("schedTable"), columns, rows);
 
-    SG.$("#schedNote").textContent =
-      "Home edge for " + SG.methodLabel(method) + " is " + SG.fmt(edge) + " points. Projections use Sagarin ratings; opponents not rated by Sagarin show nr.";
+    note.textContent =
+      "Home edge for " + SG.methodLabel(method) + " is " + SG.fmt(edge) +
+      " points. Schedule from ESPN, refreshed weekly. Opponents not rated by Sagarin show nr.";
 
     var rec = SG.rec(teamSag.w, teamSag.l);
     var projFinal = (teamSag.w + projWins) + "-" + (teamSag.l + (remaining - projWins));

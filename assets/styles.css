@@ -17,6 +17,7 @@
   --row-hover: #eaf1fd;
   --radius: 8px;
   --shadow: 0 1px 2px rgba(16, 24, 38, 0.06);
+  --tabs-h: 52px;
 }
 
 [data-theme="dark"] {
@@ -148,7 +149,7 @@ input[type="search"] { min-width: 240px; }
 .seg.active { background: var(--accent); color: var(--accent-ink); }
 
 .table-scroll {
-  overflow-x: auto;
+  overflow: visible;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -159,7 +160,7 @@ input[type="search"] { min-width: 240px; }
 
 .data-table thead th {
   position: sticky;
-  top: 52px;
+  top: var(--tabs-h);
   background: var(--surface-2);
   border-bottom: 1px solid var(--line);
   text-align: right;
@@ -224,7 +225,7 @@ input[type="search"] { min-width: 240px; }
 .site-tag { font-size: 0.68rem; color: var(--muted); padding: 0.15rem 0.55rem; background: var(--surface-2); border-top: 1px solid var(--line-soft); }
 .champ-box { border: 2px solid var(--accent); }
 
-.matchup-controls { display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.matchup-controls { display: flex; align-items: flex-end; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
 .matchup-controls label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
 .matchup-controls select { min-width: 220px; }
 
