@@ -39,12 +39,47 @@
     }).sort(function (a, b) { return a.rank - b.rank; });
   }
 
-  function fillDatalist() {
-    var dl = document.getElementById("schedTeamList");
-    if (!dl || !SG.state.data) return;
-    dl.innerHTML = filteredTeams().map(function (t) {
-      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.conference) + " (" + SG.fmt(t.rating) + ")";
-    }).join("");
+  var activeIndex = -1;
+
+  function listEl() { return document.getElementById("schedTeamList"); }
+
+  function openList() {
+    var list = listEl();
+    var input = document.getElementById("schedSearch");
+    if (!list) return;
+    list.classList.remove("hidden");
+    if (input) input.setAttribute("aria-expanded", "true");
+  }
+
+  function closeList() {
+    var list = listEl();
+    var input = document.getElementById("schedSearch");
+    if (!list) return;
+    list.classList.add("hidden");
+    if (input) input.setAttribute("aria-expanded", "false");
+  }
+
+  function renderList(show) {
+    var list = listEl();
+    if (!list || !SG.state.data) return;
+    var teams = filteredTeams();
+    if (!teams.length) {
+      list.innerHTML = '<div class="combo-empty">No teams match</div>';
+    } else {
+      list.innerHTML = teams.map(function (t) {
+        return '<div class="combo-item" role="option" data-name="' + SG.esc(t.team) + '">' +
+          '<span class="ci-name">' + SG.esc(t.team) + '</span>' +
+          '<span class="ci-meta">' + SG.esc(t.conference) + " " + SG.fmt(t.rating) + "</span></div>";
+      }).join("");
+    }
+    activeIndex = -1;
+    if (show) openList(); else closeList();
+  }
+
+  function pick(name) {
+    document.getElementById("schedSearch").value = name;
+    closeList();
+    load();
   }
 
   function currentName() {
@@ -172,29 +207,79 @@
 
   var searchTimer = null;
 
-  function onSearch() {
+  function items() {
+    var list = listEl();
+    return list ? list.querySelectorAll(".combo-item") : [];
+  }
+
+  function setActive(i) {
+    var arr = items();
+    if (!arr.length) return;
+    if (i < 0) i = arr.length - 1;
+    if (i >= arr.length) i = 0;
+    activeIndex = i;
+    for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === activeIndex);
+    if (arr[activeIndex].scrollIntoView) arr[activeIndex].scrollIntoView({ block: "nearest" });
+  }
+
+  function onInput() {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(function () {
-      fillDatalist();
+      renderList(true);
       if (currentName()) load();
     }, 120);
   }
 
-  function onChange() {
-    fillDatalist();
-    if (currentName()) load();
+  function onKeyDown(e) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (listEl().classList.contains("hidden")) renderList(true);
+      setActive(activeIndex + 1);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActive(activeIndex - 1);
+    } else if (e.key === "Enter") {
+      var arr = items();
+      if (activeIndex >= 0 && arr[activeIndex]) { e.preventDefault(); pick(arr[activeIndex].dataset.name); }
+      else if (currentName()) { closeList(); load(); }
+    } else if (e.key === "Escape") {
+      closeList();
+    }
+  }
+
+  function onDocClick(e) {
+    var combo = document.querySelector("#tab-schedule .combo");
+    if (combo && !combo.contains(e.target)) closeList();
   }
 
   function init() {
     fillConfFilter();
-    fillDatalist();
-    document.getElementById("schedSearch").addEventListener("input", onSearch);
-    document.getElementById("schedSearch").addEventListener("change", onChange);
-    document.getElementById("schedConf").addEventListener("change", onChange);
+    renderList(false);
+    var input = document.getElementById("schedSearch");
+    var list = listEl();
+    input.addEventListener("input", onInput);
+    input.addEventListener("focus", function () { renderList(true); });
+    input.addEventListener("keydown", onKeyDown);
+    list.addEventListener("click", function (e) {
+      var item = e.target.closest ? e.target.closest(".combo-item") : null;
+      if (item) pick(item.dataset.name);
+    });
+    document.getElementById("schedConf").addEventListener("change", function () {
+      renderList(!listEl().classList.contains("hidden"));
+      if (currentName()) load();
+    });
     document.getElementById("schedMethod").addEventListener("change", function () { load(); });
     document.getElementById("schedReload").addEventListener("click", function () { if (currentName()) load(); });
+    document.addEventListener("click", onDocClick);
     if (currentName()) load();
   }
 
-  SG.state.modules.schedule = { init: init, render: function () { fillConfFilter(); fillDatalist(); if (currentName()) load(); } };
+  SG.state.modules.schedule = {
+    init: init,
+    render: function () {
+      fillConfFilter();
+      renderList(false);
+      if (currentName()) load();
+    }
+  };
 })();

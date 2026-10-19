@@ -88,8 +88,10 @@
 
     <section id="tab-schedule" class="panel hidden">
       <div class="toolbar">
-        <input id="schedSearch" type="search" list="schedTeamList" placeholder="Type a team name" autocomplete="off">
-        <datalist id="schedTeamList"></datalist>
+        <div class="combo">
+          <input id="schedSearch" type="text" placeholder="Type a team name" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="schedTeamList">
+          <div id="schedTeamList" class="combo-list hidden" role="listbox"></div>
+        </div>
         <select id="schedConf" aria-label="Filter by conference">
           <option value="">All conferences</option>
         </select>
