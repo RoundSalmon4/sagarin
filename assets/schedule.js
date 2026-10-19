@@ -4,19 +4,47 @@
   "use strict";
   var SG = window.SG;
 
+  function availableTeams() {
+    var haveMapping = SG.state.espn && SG.state.sagToEspn;
+    return SG.state.data.teams.filter(function (t) {
+      if (haveMapping && !(SG.state.sagToEspn[t.team] && SG.gamesForTeam(t.team).length > 0)) return false;
+      return true;
+    });
+  }
+
+  function fillConfFilter() {
+    var sel = document.getElementById("schedConf");
+    if (!sel || !SG.state.data) return;
+    var cur = sel.value;
+    sel.innerHTML = '<option value="">All conferences</option>';
+    var seen = {};
+    SG.state.data.conferences.forEach(function (c) {
+      if (seen[c.name]) return;
+      seen[c.name] = true;
+      var o = document.createElement("option");
+      o.value = c.name;
+      o.textContent = c.name;
+      sel.appendChild(o);
+    });
+    sel.value = cur || "";
+  }
+
   function fillSelect() {
     var sel = document.getElementById("schedTeam");
     if (!sel || !SG.state.data) return;
     var prev = sel.value;
-    var haveMapping = SG.state.espn && SG.state.sagToEspn;
-    var teams = SG.state.data.teams.filter(function (t) {
-      if (!haveMapping) return true;
-      return SG.state.sagToEspn[t.team] && SG.gamesForTeam(t.team).length > 0;
-    });
-    teams.sort(function (a, b) { return a.rank - b.rank; });
-    sel.innerHTML = teams.map(function (t) {
-      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
-    }).join("");
+    var q = (document.getElementById("schedSearch").value || "").trim().toLowerCase();
+    var conf = document.getElementById("schedConf").value || "";
+    var teams = availableTeams().filter(function (t) {
+      if (conf && t.conference !== conf) return false;
+      if (q && t.team.toLowerCase().indexOf(q) === -1 && t.conference.toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    }).sort(function (a, b) { return a.rank - b.rank; });
+    sel.innerHTML = teams.length
+      ? teams.map(function (t) {
+          return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
+        }).join("")
+      : '<option value="">No teams match</option>';
     if (prev && teams.filter(function (t) { return t.team === prev; }).length) sel.value = prev;
   }
 
@@ -33,6 +61,13 @@
     var method = document.getElementById("schedMethod").value;
     var tbody = document.getElementById("schedTable").tBodies[0];
     var teamSag = SG.teamByName(name);
+
+    if (!name || !teamSag) {
+      note.textContent = "Pick a team to project its remaining games.";
+      tbody.innerHTML = "";
+      document.getElementById("schedSummary").innerHTML = "";
+      return;
+    }
 
     if (!SG.state.espn) {
       note.textContent = "ESPN schedule data is not available yet. It is refreshed by the Action each week.";
@@ -126,13 +161,28 @@
     return '<div class="chip"><span class="k">' + SG.esc(k) + '</span><span class="v">' + SG.esc(v) + "</span></div>";
   }
 
-  function init() {
+  var searchTimer = null;
+
+  function refreshAndLoad() {
     fillSelect();
+    load();
+  }
+
+  function onSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(refreshAndLoad, 120);
+  }
+
+  function init() {
+    fillConfFilter();
+    fillSelect();
+    document.getElementById("schedSearch").addEventListener("input", onSearch);
+    document.getElementById("schedConf").addEventListener("change", refreshAndLoad);
     document.getElementById("schedTeam").addEventListener("change", function () { load(); });
     document.getElementById("schedMethod").addEventListener("change", function () { load(); });
     document.getElementById("schedReload").addEventListener("click", function () { load(); });
     load();
   }
 
-  SG.state.modules.schedule = { init: init, render: function () { fillSelect(); load(); } };
+  SG.state.modules.schedule = { init: init, render: function () { fillConfFilter(); fillSelect(); load(); } };
 })();
