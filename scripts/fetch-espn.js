@@ -72,7 +72,7 @@ async function main() {
 
   const ratings = JSON.parse(fs.readFileSync(RATINGS, "utf8"));
   const season = ratings.meta.season;
-  const fbs = ratings.teams.filter((t) => t.level === "A");
+  const allTeams = ratings.teams;
 
   console.log("fetching ESPN team list");
   const teamJson = await fetchJson(ESPN_BASE + "/teams?limit=1000", 4);
@@ -88,7 +88,7 @@ async function main() {
 
   const targets = [];
   const teams = {};
-  fbs.forEach((st) => {
+  allTeams.forEach((st) => {
     const k = normalize(st.team);
     const et = idx[k] || idx[Alias[k]];
     if (et) {
@@ -96,7 +96,7 @@ async function main() {
       teams[et.id] = et;
     }
   });
-  console.log("matched " + targets.length + " of " + fbs.length + " FBS teams to ESPN");
+  console.log("matched " + targets.length + " of " + allTeams.length + " rated teams to ESPN");
 
   const games = {};
   let done = 0;

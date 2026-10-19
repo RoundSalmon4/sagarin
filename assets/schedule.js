@@ -7,10 +7,17 @@
   function fillSelect() {
     var sel = document.getElementById("schedTeam");
     if (!sel || !SG.state.data) return;
-    var teams = SG.state.data.teams.slice().sort(function (a, b) { return a.rank - b.rank; });
+    var prev = sel.value;
+    var haveMapping = SG.state.espn && SG.state.sagToEspn;
+    var teams = SG.state.data.teams.filter(function (t) {
+      if (!haveMapping) return true;
+      return SG.state.sagToEspn[t.team] && SG.gamesForTeam(t.team).length > 0;
+    });
+    teams.sort(function (a, b) { return a.rank - b.rank; });
     sel.innerHTML = teams.map(function (t) {
       return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
     }).join("");
+    if (prev && teams.filter(function (t) { return t.team === prev; }).length) sel.value = prev;
   }
 
   function fmtDate(iso) {
@@ -127,5 +134,5 @@
     load();
   }
 
-  SG.state.modules.schedule = { init: init, render: function () { fillSelect(); } };
+  SG.state.modules.schedule = { init: init, render: function () { fillSelect(); load(); } };
 })();

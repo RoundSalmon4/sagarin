@@ -97,8 +97,8 @@ and `--concurrency`.
 - Win percentages are an estimate from a normal model with a standard deviation of 15.5
   points. The point spread is the part that comes from the source.
 - ESPN schedules are prefetched by the Action into `data/espn-games.json`; the browser
-  never calls ESPN. Sagarin names are matched to ESPN teams with `assets/team-alias.js`; a
-  few FCS teams are not in ESPN's list and show no schedule.
+  never calls ESPN. Sagarin names are matched to ESPN teams with `assets/team-alias.js`;
+  265 of the 266 rated teams have a schedule (UTRGV is not in ESPN's list).
 - Playoff conference champions come from real conference records in the ESPN results
   (tiebreak: overall record, then rating). Seeding follows the CFP fact sheet for 12 teams
   and the ESPN-reported plan for 24 teams. This is a ratings model, not the committee.

@@ -27,7 +27,7 @@
   ];
 
   var REGULAR_COLUMNS = [
-    { key: "num", label: "#", cls: "left" },
+    { key: "num", label: "#", cls: "left", index: true },
     { key: "favorite", label: "Favorite", cls: "left", type: "str", cell: favCell },
     { key: "site", label: "Site", cls: "left", type: "str", value: function (p) { return p.neutral ? "Neutral" : (p.home || ""); }, cell: siteCell },
     { key: "underdog", label: "Underdog", cls: "left", type: "str", cell: dogCell }
@@ -43,7 +43,7 @@
   ]);
 
   var EIGEN_COLUMNS = [
-    { key: "num", label: "#", cls: "left" },
+    { key: "num", label: "#", cls: "left", index: true },
     { key: "favorite", label: "Favorite", cls: "left", type: "str", cell: favCell },
     { key: "site", label: "Site", cls: "left", type: "str", value: function (p) { return p.home || ""; }, cell: siteCell },
     { key: "spread", label: "Spread" },
@@ -104,3 +104,4 @@
 
   register();
 })();
+

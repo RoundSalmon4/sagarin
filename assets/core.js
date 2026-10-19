@@ -144,11 +144,18 @@
   SG.fillBody = function (table, columns, rows) {
     var tbody = table.tBodies[0];
     var html = "";
-    rows.forEach(function (row) {
+    rows.forEach(function (row, i) {
       html += "<tr>";
       columns.forEach(function (col) {
         var cls = col.cls ? ' class="' + col.cls + '"' : "";
-        var val = col.cell ? col.cell(row) : SG.esc(SG.colValue(row, col));
+        var val;
+        if (col.index) {
+          val = String(i + 1);
+        } else if (col.cell) {
+          val = col.cell(row);
+        } else {
+          val = SG.esc(SG.colValue(row, col));
+        }
         html += "<td" + cls + ">" + val + "</td>";
       });
       html += "</tr>";
@@ -191,7 +198,7 @@
   // -------------------------------------------------------------- teams
 
   var TEAM_COLUMNS = [
-    { key: "rank", label: "#", cls: "left" },
+    { key: "rank", label: "#", cls: "left", index: true },
     { key: "team", label: "Team", cls: "left", type: "str", cell: teamCell },
     { key: "conference", label: "Conference", cls: "left", type: "str" },
     { key: "w", label: "W" },
@@ -235,7 +242,7 @@
   // -------------------------------------------------------------- conferences
 
   var CONF_COLUMNS = [
-    { key: "rank", label: "#", cls: "left", value: confRank },
+    { key: "rank", label: "#", cls: "left", index: true, value: confRank },
     { key: "name", label: "Conference", cls: "left", type: "str" },
     { key: "level", label: "Div", cls: "left", type: "str" },
     { key: "teams", label: "Teams" },
