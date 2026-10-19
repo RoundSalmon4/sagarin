@@ -21,27 +21,40 @@
     return SG.state.data.teams.filter(function (t) { return t.level === "A"; });
   }
 
-  // conference and overall records from the prefetched ESPN games
-  function standings() {
+  // Projected conference and overall records: completed games use the real
+  // result, remaining games are predicted from the chosen rating method.
+  function projectedRecords(method) {
     var confOf = {};
     SG.state.data.teams.forEach(function (t) { if (t.level === "A") confOf[t.team] = mergeConf(t.conference); });
     var rec = {};
     function ensure(n) { return rec[n] || (rec[n] = { cw: 0, cl: 0, ow: 0, ol: 0 }); }
+    var edge = SG.homeEdge(method);
     var games = (SG.state.espn && SG.state.espn.games) || [];
     games.forEach(function (g) {
-      if (!g.completed || g.homeScore === null || g.awayScore === null) return;
       var h = SG.state.espnIdToSag && SG.state.espnIdToSag[g.homeId];
       var a = SG.state.espnIdToSag && SG.state.espnIdToSag[g.awayId];
-      if (!h || !a) return;
-      var hw = g.homeScore > g.awayScore;
-      var rh = ensure(h.team);
-      var ra = ensure(a.team);
-      rh.ow += hw ? 1 : 0; rh.ol += hw ? 0 : 1;
-      ra.ow += hw ? 0 : 1; ra.ol += hw ? 1 : 0;
-      var ch = confOf[h.team], ca = confOf[a.team];
-      if (ch && ca && ch === ca && ch !== "I-A IND.") {
-        rh.cw += hw ? 1 : 0; rh.cl += hw ? 0 : 1;
-        ra.cw += hw ? 0 : 1; ra.cl += hw ? 1 : 0;
+      var hWin;
+      if (g.completed && g.homeScore !== null && g.awayScore !== null) {
+        hWin = g.homeScore > g.awayScore;
+      } else if (h && a) {
+        hWin = (h[method] - a[method] + (g.neutral ? 0 : edge)) >= 0;
+      } else if (h) {
+        hWin = true;
+      } else if (a) {
+        hWin = false;
+      } else {
+        return;
+      }
+      var rh = h ? ensure(h.team) : null;
+      var ra = a ? ensure(a.team) : null;
+      if (rh) { rh.ow += hWin ? 1 : 0; rh.ol += hWin ? 0 : 1; }
+      if (ra) { ra.ow += hWin ? 0 : 1; ra.ol += hWin ? 1 : 0; }
+      if (h && a) {
+        var ch = confOf[h.team], ca = confOf[a.team];
+        if (ch && ca && ch === ca && ch !== "I-A IND.") {
+          rh.cw += hWin ? 1 : 0; rh.cl += hWin ? 0 : 1;
+          ra.cw += hWin ? 0 : 1; ra.cl += hWin ? 1 : 0;
+        }
       }
     });
     return rec;
@@ -55,7 +68,7 @@
   }
 
   function champions(method) {
-    var std = standings();
+    var std = projectedRecords(method);
     var byConf = {};
     fbs().forEach(function (t) {
       var c = mergeConf(t.conference);
@@ -127,16 +140,16 @@
     var semis, finals, champion, rounds;
     if (Number(format) === 12) {
       var r1 = [
+        play(S(seeds, 8), S(seeds, 9), 8, method, stochastic),
         play(S(seeds, 5), S(seeds, 12), 5, method, stochastic),
-        play(S(seeds, 6), S(seeds, 11), 6, method, stochastic),
         play(S(seeds, 7), S(seeds, 10), 7, method, stochastic),
-        play(S(seeds, 8), S(seeds, 9), 8, method, stochastic)
+        play(S(seeds, 6), S(seeds, 11), 6, method, stochastic)
       ];
       var qf = [
-        play(S(seeds, 1), r1[3].winner, 1, method, stochastic),
-        play(S(seeds, 4), r1[0].winner, 4, method, stochastic),
+        play(S(seeds, 1), r1[0].winner, 1, method, stochastic),
+        play(S(seeds, 4), r1[1].winner, 4, method, stochastic),
         play(S(seeds, 2), r1[2].winner, 2, method, stochastic),
-        play(S(seeds, 3), r1[1].winner, 3, method, stochastic)
+        play(S(seeds, 3), r1[3].winner, 3, method, stochastic)
       ];
       semis = [play(qf[0].winner, qf[1].winner, null, method, stochastic), play(qf[2].winner, qf[3].winner, null, method, stochastic)];
       finals = [play(semis[0].winner, semis[1].winner, null, method, stochastic)];
@@ -149,24 +162,24 @@
       champion = finals[0].winner;
     } else {
       var rr = [
+        play(S(seeds, 16), S(seeds, 17), 16, method, stochastic),
         play(S(seeds, 9), S(seeds, 24), 9, method, stochastic),
-        play(S(seeds, 10), S(seeds, 23), 10, method, stochastic),
-        play(S(seeds, 11), S(seeds, 22), 11, method, stochastic),
-        play(S(seeds, 12), S(seeds, 21), 12, method, stochastic),
         play(S(seeds, 13), S(seeds, 20), 13, method, stochastic),
-        play(S(seeds, 14), S(seeds, 19), 14, method, stochastic),
+        play(S(seeds, 12), S(seeds, 21), 12, method, stochastic),
         play(S(seeds, 15), S(seeds, 18), 15, method, stochastic),
-        play(S(seeds, 16), S(seeds, 17), 16, method, stochastic)
+        play(S(seeds, 10), S(seeds, 23), 10, method, stochastic),
+        play(S(seeds, 14), S(seeds, 19), 14, method, stochastic),
+        play(S(seeds, 11), S(seeds, 22), 11, method, stochastic)
       ];
       var r2 = [
-        play(S(seeds, 1), rr[7].winner, 1, method, stochastic),
-        play(S(seeds, 8), rr[0].winner, 8, method, stochastic),
-        play(S(seeds, 4), rr[4].winner, 4, method, stochastic),
+        play(S(seeds, 1), rr[0].winner, 1, method, stochastic),
+        play(S(seeds, 8), rr[1].winner, 8, method, stochastic),
+        play(S(seeds, 4), rr[2].winner, 4, method, stochastic),
         play(S(seeds, 5), rr[3].winner, 5, method, stochastic),
-        play(S(seeds, 2), rr[6].winner, 2, method, stochastic),
-        play(S(seeds, 7), rr[1].winner, 7, method, stochastic),
-        play(S(seeds, 3), rr[5].winner, 3, method, stochastic),
-        play(S(seeds, 6), rr[2].winner, 6, method, stochastic)
+        play(S(seeds, 2), rr[4].winner, 2, method, stochastic),
+        play(S(seeds, 7), rr[5].winner, 7, method, stochastic),
+        play(S(seeds, 3), rr[6].winner, 3, method, stochastic),
+        play(S(seeds, 6), rr[7].winner, 6, method, stochastic)
       ];
       var qf24 = [
         play(r2[0].winner, r2[1].winner, null, method, stochastic),
@@ -200,7 +213,7 @@
 
   function staticBracket(seeds, format) {
     if (Number(format) === 12) {
-      var r1 = [sg(T(seeds, 5), T(seeds, 12), 5), sg(T(seeds, 6), T(seeds, 11), 6), sg(T(seeds, 7), T(seeds, 10), 7), sg(T(seeds, 8), T(seeds, 9), 8)];
+      var r1 = [sg(T(seeds, 8), T(seeds, 9), 8), sg(T(seeds, 5), T(seeds, 12), 5), sg(T(seeds, 7), T(seeds, 10), 7), sg(T(seeds, 6), T(seeds, 11), 6)];
       var qf = [sg(T(seeds, 1), L("8/9"), 1), sg(T(seeds, 4), L("5/12"), 4), sg(T(seeds, 2), L("7/10"), 2), sg(T(seeds, 3), L("6/11"), 3)];
       var sf = [sg(L("Quarterfinal 1 winner"), L("Quarterfinal 2 winner"), null), sg(L("Quarterfinal 3 winner"), L("Quarterfinal 4 winner"), null)];
       var fin = [sg(L("Semifinal 1 winner"), L("Semifinal 2 winner"), null)];
@@ -212,8 +225,8 @@
       ];
     }
     var rr = [
-      sg(T(seeds, 9), T(seeds, 24), 9), sg(T(seeds, 10), T(seeds, 23), 10), sg(T(seeds, 11), T(seeds, 22), 11), sg(T(seeds, 12), T(seeds, 21), 12),
-      sg(T(seeds, 13), T(seeds, 20), 13), sg(T(seeds, 14), T(seeds, 19), 14), sg(T(seeds, 15), T(seeds, 18), 15), sg(T(seeds, 16), T(seeds, 17), 16)
+      sg(T(seeds, 16), T(seeds, 17), 16), sg(T(seeds, 9), T(seeds, 24), 9), sg(T(seeds, 13), T(seeds, 20), 13), sg(T(seeds, 12), T(seeds, 21), 12),
+      sg(T(seeds, 15), T(seeds, 18), 15), sg(T(seeds, 10), T(seeds, 23), 10), sg(T(seeds, 14), T(seeds, 19), 14), sg(T(seeds, 11), T(seeds, 22), 11)
     ];
     var r2 = [
       sg(T(seeds, 1), L("16/17"), 1), sg(T(seeds, 8), L("9/24"), 8), sg(T(seeds, 4), L("13/20"), 4), sg(T(seeds, 5), L("12/21"), 5),
@@ -270,13 +283,13 @@
       { key: "seed", label: "#", cls: "left" },
       { key: "team", label: "Team", cls: "left", type: "str" },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
-      { key: "cw", label: "Conf", cls: "left", type: "str" },
+      { key: "cw", label: "Conf (proj)", cls: "left", type: "str" },
+      { key: "proj", label: "Proj", cls: "left", type: "str" },
       { key: "rating", label: "RATING", strong: true },
-      { key: "w", label: "W" },
-      { key: "l", label: "L" },
+      { key: "now", label: "Now", cls: "left", type: "str" },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
-    var std = standings();
+    var std = projectedRecords(view.method);
     var rows = [];
     for (var i = 1; i < field.seeds.length; i++) {
       var t = field.seeds[i];
@@ -286,9 +299,9 @@
         team: t.team,
         conf: mergeConf(t.conference),
         cw: r && (r.cw + r.cl) ? r.cw + "-" + r.cl : "-",
+        proj: r ? r.ow + "-" + r.ol : "-",
         rating: t.rating,
-        w: t.w,
-        l: t.l,
+        now: t.w + "-" + t.l,
         bid: field.bid[t.team] || "At-large"
       });
     }
@@ -325,8 +338,8 @@
     }
 
     var standingsNote = SG.state.espn
-      ? "Conference champions are the best conference record in each conference (tiebreak: overall record, then rating)."
-      : "ESPN standings are not loaded, so conference champions fall back to the highest-rated team in each conference.";
+      ? "Conference champions come from projected final conference records: completed games use the real result and the remaining games are predicted from the chosen ratings (tiebreak: overall record, then rating)."
+      : "ESPN games are not loaded, so conference champions fall back to the highest-rated team in each conference.";
     document.getElementById("playoffNote").textContent =
       "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
       (Number(view.format) === 12

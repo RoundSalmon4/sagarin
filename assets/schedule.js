@@ -29,23 +29,32 @@
     sel.value = cur || "";
   }
 
-  function fillSelect() {
-    var sel = document.getElementById("schedTeam");
-    if (!sel || !SG.state.data) return;
-    var prev = sel.value;
+  function filteredTeams() {
     var q = (document.getElementById("schedSearch").value || "").trim().toLowerCase();
     var conf = document.getElementById("schedConf").value || "";
-    var teams = availableTeams().filter(function (t) {
+    return availableTeams().filter(function (t) {
       if (conf && t.conference !== conf) return false;
       if (q && t.team.toLowerCase().indexOf(q) === -1 && t.conference.toLowerCase().indexOf(q) === -1) return false;
       return true;
     }).sort(function (a, b) { return a.rank - b.rank; });
-    sel.innerHTML = teams.length
-      ? teams.map(function (t) {
-          return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
-        }).join("")
-      : '<option value="">No teams match</option>';
-    if (prev && teams.filter(function (t) { return t.team === prev; }).length) sel.value = prev;
+  }
+
+  function fillDatalist() {
+    var dl = document.getElementById("schedTeamList");
+    if (!dl || !SG.state.data) return;
+    dl.innerHTML = filteredTeams().map(function (t) {
+      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.conference) + " (" + SG.fmt(t.rating) + ")";
+    }).join("");
+  }
+
+  function currentName() {
+    if (!SG.state.data) return "";
+    var v = (document.getElementById("schedSearch").value || "").trim().toLowerCase();
+    if (!v) return "";
+    var hit = SG.state.data.teams.filter(function (t) { return t.team.toLowerCase() === v; })[0];
+    if (!hit) return "";
+    var inList = filteredTeams().filter(function (t) { return t.team === hit.team; }).length;
+    return inList ? hit.team : "";
   }
 
   function fmtDate(iso) {
@@ -57,13 +66,13 @@
   function load() {
     if (!SG.state.data) return;
     var note = document.getElementById("schedNote");
-    var name = document.getElementById("schedTeam").value;
+    var name = currentName();
     var method = document.getElementById("schedMethod").value;
     var tbody = document.getElementById("schedTable").tBodies[0];
     var teamSag = SG.teamByName(name);
 
     if (!name || !teamSag) {
-      note.textContent = "Pick a team to project its remaining games.";
+      note.textContent = "Type a team name to project its remaining games.";
       tbody.innerHTML = "";
       document.getElementById("schedSummary").innerHTML = "";
       return;
@@ -163,26 +172,29 @@
 
   var searchTimer = null;
 
-  function refreshAndLoad() {
-    fillSelect();
-    load();
-  }
-
   function onSearch() {
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(refreshAndLoad, 120);
+    searchTimer = setTimeout(function () {
+      fillDatalist();
+      if (currentName()) load();
+    }, 120);
+  }
+
+  function onChange() {
+    fillDatalist();
+    if (currentName()) load();
   }
 
   function init() {
     fillConfFilter();
-    fillSelect();
+    fillDatalist();
     document.getElementById("schedSearch").addEventListener("input", onSearch);
-    document.getElementById("schedConf").addEventListener("change", refreshAndLoad);
-    document.getElementById("schedTeam").addEventListener("change", function () { load(); });
+    document.getElementById("schedSearch").addEventListener("change", onChange);
+    document.getElementById("schedConf").addEventListener("change", onChange);
     document.getElementById("schedMethod").addEventListener("change", function () { load(); });
-    document.getElementById("schedReload").addEventListener("click", function () { load(); });
-    load();
+    document.getElementById("schedReload").addEventListener("click", function () { if (currentName()) load(); });
+    if (currentName()) load();
   }
 
-  SG.state.modules.schedule = { init: init, render: function () { fillConfFilter(); fillSelect(); load(); } };
+  SG.state.modules.schedule = { init: init, render: function () { fillConfFilter(); fillDatalist(); if (currentName()) load(); } };
 })();
