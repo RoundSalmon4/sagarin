@@ -220,12 +220,12 @@
     { key: "date", label: "Kickoff", cls: "left", type: "str", cell: function (g) { return SG.esc(fmtWhen(g.date)); } },
     { key: "tv", label: "TV", cls: "left", type: "str", cell: function (g) { return g.tv ? SG.esc(g.tv) : '<span class="dim">TBD</span>'; } },
     { key: "away", label: "Away", cls: "left", type: "str", value: function (g) { return teamName(g.awayId, g.awayName); }, cell: function (g) { return teamCell(g.awayId, g.awayName); } },
+    { key: "home", label: "Home", cls: "left", type: "str", value: function (g) { return teamName(g.homeId, g.homeName); }, cell: function (g) { return teamCell(g.homeId, g.homeName); } },
     { key: "site", label: "Site", cls: "left", type: "str", value: function (g) { return g.city || g.venue || ""; }, cell: function (g) {
       var s = g.city || g.venue || "";
       if (!s) return '<span class="dim">-</span>';
       return (g.neutral ? '<span class="dim">N </span>' : "") + SG.esc(s);
     } },
-    { key: "home", label: "Home", cls: "left", type: "str", value: function (g) { return teamName(g.homeId, g.homeName); }, cell: function (g) { return teamCell(g.homeId, g.homeName); } },
     { key: "line", label: "Line", cls: "left", type: "str", cell: function (g) { return g.details || (g.spread !== null && g.spread !== undefined ? SG.esc(String(g.spread)) : '<span class="dim">-</span>'); } },
     { key: "watch", label: "Watch", value: function (g) { return score(g, curCtx).value; }, cell: watchCell }
   ];
