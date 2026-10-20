@@ -73,26 +73,53 @@
   // Conference USA, Sun Belt, Mountain West and Pac-12 host on campus.)
   var NEUTRAL_CCG = { "ACC": true, "SEC": true, "BIG TEN": true, "BIG 12": true, "MAC": true };
 
-  function champions(method, withCcg) {
+  function conferenceOrder(method) {
     var std = projectedRecords(method);
     var byConf = {};
     fbs().forEach(function (t) {
       var c = mergeConf(t.conference);
       (byConf[c] = byConf[c] || []).push(t);
     });
-    var champs = {};
+    var order = {};
     Object.keys(byConf).forEach(function (c) {
+      order[c] = byConf[c].slice().sort(function (a, b) { return champScore(b, std, method) - champScore(a, std, method); });
+    });
+    return order;
+  }
+
+  // Projected title game for one conference. Neutral-site games ignore the home
+  // edge; campus games give it to the higher seed (top).
+  function ccgResult(conf, top, second, method) {
+    var neutral = !!NEUTRAL_CCG[conf];
+    var edge = neutral ? 0 : SG.homeEdge(method);
+    var diff = top[method] - second[method] + edge;
+    return { conf: conf, a: top, b: second, neutral: neutral, winner: diff >= 0 ? top : second };
+  }
+
+  function ccgMatchups(method) {
+    var order = conferenceOrder(method);
+    var out = [];
+    Object.keys(order).forEach(function (c) {
       if (c === "I-A IND.") return;
-      var list = byConf[c].slice().sort(function (a, b) { return champScore(b, std, method) - champScore(a, std, method); });
+      var list = order[c];
+      if (list[0] && list[1]) out.push(ccgResult(c, list[0], list[1], method));
+    });
+    out.sort(function (x, y) {
+      var px = P4.indexOf(x.conf) !== -1 ? 0 : 1, py = P4.indexOf(y.conf) !== -1 ? 0 : 1;
+      if (px !== py) return px - py;
+      return y.a[method] - x.a[method];
+    });
+    return out;
+  }
+
+  function champions(method, withCcg) {
+    var order = conferenceOrder(method);
+    var champs = {};
+    Object.keys(order).forEach(function (c) {
+      if (c === "I-A IND.") return;
+      var list = order[c];
       if (!list[0]) return;
-      if (withCcg && list[1]) {
-        // Top two meet for the title. Neutral site games ignore the home edge;
-        // campus games give it to the higher seed (list[0]).
-        var edge = NEUTRAL_CCG[c] ? 0 : SG.homeEdge(method);
-        champs[c] = (list[0][method] - list[1][method] + edge) >= 0 ? list[0] : list[1];
-      } else {
-        champs[c] = list[0];
-      }
+      champs[c] = (withCcg && list[1]) ? ccgResult(c, list[0], list[1], method).winner : list[0];
     });
     return champs;
   }
@@ -327,6 +354,28 @@
     SG.fillBody(table, columns, rows);
   }
 
+  function ccgTeam(t, isWinner, method) {
+    return '<div class="ccg-team' + (isWinner ? " winner" : "") + '">' + SG.teamLogo(t.team) +
+      SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">' + SG.fmt(t[method]) + "</span></div>";
+  }
+
+  function renderCcg(matchups) {
+    var box = document.getElementById("ccgBoard");
+    if (!box) return;
+    if (!matchups) {
+      box.innerHTML = '<p class="note">The 24-team format drops conference championship games, so there are no title-game projections.</p>';
+      return;
+    }
+    box.innerHTML = matchups.map(function (m) {
+      var site = m.neutral ? "Neutral site" : ("at " + m.a.team);
+      return '<div class="ccg-card">' +
+        '<div class="ccg-conf">' + SG.esc(m.conf) + "</div>" +
+        ccgTeam(m.a, m.winner === m.a, view.method) +
+        ccgTeam(m.b, m.winner === m.b, view.method) +
+        '<div class="ccg-site">' + SG.esc(site) + "</div></div>";
+    }).join("");
+  }
+
   function renderSim(sim) {
     var box = document.getElementById("simResults");
     if (!sim) { box.innerHTML = ""; return; }
@@ -347,6 +396,7 @@
     var field = buildField(view.format, view.method);
     view.field = field;
     renderField(field);
+    renderCcg(Number(view.format) === 12 ? ccgMatchups(view.method) : null);
 
     if (view.bracketMode === "results") {
       var result = runOnce(field.seeds, view.format, view.method, false);

@@ -37,7 +37,8 @@ https://roundsalmon4.github.io/sagarin/
   for the rest. The proposed 24-team field drops conference title games, so it uses the
   regular-season champion. Draws either the current 12-team bracket or the proposed 24-team
   bracket, seeds only by default with an option to show predicted results, plus a Monte
-  Carlo run for championship odds.
+  Carlo run for championship odds, and lists the projected conference championship matchups
+  under the field.
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.
