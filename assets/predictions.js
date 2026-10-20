@@ -10,11 +10,11 @@
 
   function favCell(p) {
     var isHome = p.home && p.home === p.favorite;
-    return (isHome ? '<span class="home-mark" title="home">@</span>' : "") + SG.esc(p.favorite);
+    return (isHome ? '<span class="home-mark" title="home">@</span>' : "") + SG.teamLogo(p.favorite) + SG.esc(p.favorite) + SG.apBadge(p.favorite);
   }
   function dogCell(p) {
     var isHome = p.home && p.home === p.underdog;
-    return (isHome ? '<span class="home-mark" title="home">@</span>' : "") + SG.esc(p.underdog);
+    return (isHome ? '<span class="home-mark" title="home">@</span>' : "") + SG.teamLogo(p.underdog) + SG.esc(p.underdog) + SG.apBadge(p.underdog);
   }
   function siteCell(p) { return SG.esc(p.neutral ? "Neutral" : (p.home || "")); }
 

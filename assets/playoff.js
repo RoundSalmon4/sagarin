@@ -281,7 +281,8 @@
     var table = document.getElementById("fieldTable");
     var columns = [
       { key: "seed", label: "#", cls: "left" },
-      { key: "team", label: "Team", cls: "left", type: "str" },
+      { key: "team", label: "Team", cls: "left", type: "str",
+        cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
       { key: "cw", label: "Conf (proj)", cls: "left", type: "str" },
       { key: "proj", label: "Proj", cls: "left", type: "str" },

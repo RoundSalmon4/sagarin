@@ -8,6 +8,8 @@
 
   SG.DATA_URL = "data/ratings.json";
   SG.ESPN_DATA_URL = "data/espn-games.json";
+  SG.LOGOS_URL = "data/logos.json";
+  SG.AP_URL = "data/ap-poll.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ESPN_BASE = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football";
@@ -16,6 +18,8 @@
   SG.state = {
     data: null,
     espn: null,
+    logos: null,
+    ap: null,
     sagToEspn: null,
     espnIdToSag: null,
     teamSort: { key: "rank", dir: 1 },
@@ -86,6 +90,42 @@
   SG.homeEdge = function (method) {
     var h = SG.state.data && SG.state.data.meta.homeAdvantage;
     return h ? h[method] : 0;
+  };
+
+  // -------------------------------------------------------------- logos + AP
+
+  SG.logoId = function (name) {
+    var et = SG.state.sagToEspn && SG.state.sagToEspn[name];
+    return et ? String(et.id) : "";
+  };
+
+  // Inline logo for a team, with a light and a dark variant swapped by theme.
+  // Returns "" when the team has no ESPN match or no logo on file.
+  SG.teamLogo = function (name) {
+    var id = SG.logoId(name);
+    var logos = SG.state.logos;
+    if (!id || !logos) return "";
+    var hasLight = logos.light[id];
+    var hasDark = logos.dark[id];
+    if (hasLight && hasDark) {
+      return '<span class="team-logo">' +
+        '<img class="logo-light" src="assets/logos/' + id + '.png" alt="" loading="lazy">' +
+        '<img class="logo-dark" src="assets/logos/' + id + '-dark.png" alt="" loading="lazy">' +
+        "</span>";
+    }
+    if (hasLight) return '<span class="team-logo"><img src="assets/logos/' + id + '.png" alt="" loading="lazy"></span>';
+    if (hasDark) return '<span class="team-logo"><img src="assets/logos/' + id + '-dark.png" alt="" loading="lazy"></span>';
+    return "";
+  };
+
+  SG.apRank = function (name) {
+    var ap = SG.state.ap;
+    return ap && ap.byTeam && ap.byTeam[name] ? ap.byTeam[name] : null;
+  };
+
+  SG.apBadge = function (name) {
+    var r = SG.apRank(name);
+    return r ? '<span class="ap-badge" title="AP Top 25 rank">AP ' + r + "</span>" : "";
   };
 
   // -------------------------------------------------------------- table engine
@@ -200,6 +240,8 @@
   var TEAM_COLUMNS = [
     { key: "rank", label: "#", cls: "left", index: true },
     { key: "team", label: "Team", cls: "left", type: "str", cell: teamCell },
+    { key: "ap", label: "AP", cls: "left", type: "str", value: function (t) { return apSortKey(t.team); },
+      cell: function (t) { var r = SG.apRank(t.team); return r ? '<span class="ap-rank">' + r + "</span>" : '<span class="dim">-</span>'; } },
     { key: "conference", label: "Conference", cls: "left", type: "str" },
     { key: "w", label: "W" },
     { key: "l", label: "L" },
@@ -217,7 +259,13 @@
 
   function teamCell(t) {
     var badge = t.level === "AA" ? '<span class="level-badge aa">AA</span>' : '<span class="level-badge">A</span>';
-    return '<span class="team-cell">' + SG.esc(t.team) + "</span>" + badge;
+    return '<span class="team-cell">' + SG.teamLogo(t.team) + '<span class="team-name">' + SG.esc(t.team) + "</span>" + badge + "</span>";
+  }
+
+  function apSortKey(name) {
+    var r = SG.apRank(name);
+    if (!r) return "\uffff";
+    return (r < 10 ? "00" : r < 100 ? "0" : "") + r;
   }
 
   SG.renderTeams = function () {
@@ -410,19 +458,34 @@
   function loadAll() {
     return Promise.all([
       loadJson(SG.DATA_URL),
-      loadJson(SG.ESPN_DATA_URL).catch(function () { return null; })
+      loadJson(SG.ESPN_DATA_URL).catch(function () { return null; }),
+      loadJson(SG.LOGOS_URL).catch(function () { return null; }),
+      loadJson(SG.AP_URL).catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3] };
     });
   }
+
+  SG.prepareLogos = function (raw) {
+    if (!raw) { SG.state.logos = null; return; }
+    var light = {}, dark = {};
+    (raw.light || []).forEach(function (id) { light[id] = true; });
+    (raw.dark || []).forEach(function (id) { dark[id] = true; });
+    SG.state.logos = { light: light, dark: dark };
+  };
 
   SG.poll = function (manual) {
     var btn = document.getElementById("refreshBtn");
     if (manual) { btn.disabled = true; btn.textContent = "Checking..."; }
     return loadAll().then(function (res) {
       var json = res.data;
+      var ratingsChanged = !SG.state.data || json.signature !== SG.state.data.signature;
+      var apChanged = (res.ap && res.ap.signature) !== SG.state.apSig;
       SG.state.espn = res.espn;
-      if (!SG.state.data || json.signature !== SG.state.data.signature) {
+      SG.prepareLogos(res.logos);
+      SG.state.ap = res.ap;
+      SG.state.apSig = res.ap && res.ap.signature;
+      if (ratingsChanged) {
         var changed = !!SG.state.data;
         SG.state.data = json;
         SG.state.confSort = null;
@@ -436,6 +499,7 @@
         SG.renderStatus(changed);
       } else {
         SG.buildMapping();
+        if (apChanged) { SG.renderTeams(); SG.refreshModules(); }
         if (manual) document.getElementById("dataStatus").textContent += " - no changes";
       }
     }).catch(function (err) {
@@ -471,6 +535,9 @@
     loadAll().then(function (res) {
       SG.state.data = res.data;
       SG.state.espn = res.espn;
+      SG.prepareLogos(res.logos);
+      SG.state.ap = res.ap;
+      SG.state.apSig = res.ap && res.ap.signature;
       SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();

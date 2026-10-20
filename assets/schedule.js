@@ -133,7 +133,7 @@
     var columns = [
       { key: "date", label: "Date", cls: "left", type: "str" },
       { key: "site", label: "Site", cls: "left", type: "str" },
-      { key: "opp", label: "Opponent", cls: "left", type: "str" },
+      { key: "opp", label: "Opponent", cls: "left", type: "str", cell: function (r) { return (r.oppName ? SG.teamLogo(r.oppName) : "") + SG.esc(r.opp) + (r.oppName ? SG.apBadge(r.oppName) : ""); } },
       { key: "result", label: "Result", cls: "left", type: "str", cell: function (r) { return r.result; } },
       { key: "oppRating", label: "Opp RATING" },
       { key: "margin", label: "Proj margin" },
@@ -157,6 +157,7 @@
         date: fmtDate(g.date),
         site: neutral ? "Neutral" : (isHome ? "vs" : "@"),
         opp: oppTeam ? oppTeam.displayName : oppId,
+        oppName: oppSag ? oppSag.team : "",
         result: "",
         oppRating: oppSag ? SG.fmt(oppSag[method]) : "nr",
         margin: ".",

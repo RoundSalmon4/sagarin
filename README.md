@@ -9,7 +9,8 @@ https://roundsalmon4.github.io/sagarin/
 ## Features
 
 - **Teams tab** - every rated team in one table. Click any column header to sort, search
-  by team or conference, and filter to a single conference.
+  by team or conference, and filter to a single conference. Each team shows its logo and
+  its AP Top 25 rank, if it is ranked.
 - **Conferences tab** - the conference ranking table with a toggle to rank by the overall
   **RATING** or by **WIN50%**. Either way the whole table stays sortable.
 - **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
@@ -19,12 +20,15 @@ https://roundsalmon4.github.io/sagarin/
   margin, win chance) with the rating method you choose, plus a projected final record.
   Schedules come from a prefetched ESPN file, so the browser never calls ESPN directly.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
-  champions come from real conference standings built from the ESPN results file. Draws
-  either the current 12-team bracket or the proposed 24-team bracket, seeds only by
-  default with an option to show predicted results, plus a Monte Carlo run for
-  championship odds.
+  champions come from projected final conference records (real results for games played,
+  predicted winners for the rest). Draws either the current 12-team bracket or the proposed
+  24-team bracket, seeds only by default with an option to show predicted results, plus a
+  Monte Carlo run for championship odds.
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
-  favored and by how many points on a neutral field, with either team at home.
+  favored and by how many points on a neutral field and with the home team at home. Swap
+  flips the two teams.
+- Team logos throughout the team tables, hosted in the repo so the browser never hits a
+  logo CDN.
 - Light and dark themes, remembered per browser.
 
 ## How the data updates
@@ -43,11 +47,22 @@ schedule predictor and for conference standings, so no user browser ever has to 
 (which is what caused the earlier "Failed to fetch"). Like the ratings file, it keeps its
 `fetched_at` unless the games actually changed.
 
+The same Action also runs `scripts/fetch-logos.js`, which downloads each team's logo from
+the ESPN CDN into `assets/logos/` (a light and a dark version) and writes a small
+`data/logos.json` manifest. Logos rarely change, so the script only downloads the ones it
+does not already have.
+
+The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
+rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
+(`.github/workflows/update-ap.yml`). The AP poll is released Sunday afternoons at 2 p.m.
+Eastern during the season (the preseason and final polls are the exceptions), so that
+Action runs Sunday at 20:00 UTC, which covers both EDT and EST, with a Monday safety run.
+
 Timing note: the live file returned `Last-Modified: Sun, 18 Oct 2026 14:21:24 GMT` (and a
 matching Apache ETag), and Sagarin has posted on Sundays for years. The Action runs at
 17:00 UTC on Sunday to sit after that.
 
-The page loads both data files and polls them every ten minutes. When a signature changes
+The page loads the data files and polls them every ten minutes. When a signature changes
 it rebuilds in place, so a tab left open picks up new numbers on its own. There is also a
 "Check for updates" button.
 
@@ -62,11 +77,16 @@ assets/predictions.js     Predictions_with_Totals_and_Moneylines views
 assets/schedule.js        schedule predictor, reads the ESPN data file
 assets/playoff.js         CFP field, 12/24 brackets, simulation
 assets/styles.css         styling, light and dark themes
+assets/logos/             team logos downloaded from the ESPN CDN
 data/ratings.json         parsed Sagarin snapshot
 data/espn-games.json      prefetched ESPN teams and games
+data/logos.json           manifest of which logos are on file
+data/ap-poll.json         AP Top 25 snapshot
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm
 scripts/fetch-espn.js     fetch ESPN teams + schedules
-.github/workflows/        Sunday refresh
+scripts/fetch-logos.js    download team logos
+scripts/fetch-ap.js       fetch the AP Top 25
+.github/workflows/        Sunday refresh, plus the AP poll refresh
 ```
 
 ## Running locally
@@ -85,10 +105,13 @@ To refresh the data by hand:
 ```
 node scripts/fetch-sagarin.js
 node scripts/fetch-espn.js
+node scripts/fetch-logos.js
+node scripts/fetch-ap.js
 ```
 
 `fetch-sagarin.js` takes `--source URL` and `--out PATH`; `fetch-espn.js` takes `--out`
-and `--concurrency`.
+and `--concurrency`; `fetch-logos.js` takes `--force` and `--concurrency`; `fetch-ap.js`
+takes `--out`.
 
 ## Notes
 
@@ -99,7 +122,10 @@ and `--concurrency`.
 - ESPN schedules are prefetched by the Action into `data/espn-games.json`; the browser
   never calls ESPN. Sagarin names are matched to ESPN teams with `assets/team-alias.js`;
   265 of the 266 rated teams have a schedule (UTRGV is not in ESPN's list).
-- Playoff conference champions come from real conference records in the ESPN results
-  (tiebreak: overall record, then rating). Seeding follows the CFP fact sheet for 12 teams
-  and the ESPN-reported plan for 24 teams. This is a ratings model, not the committee.
+- Logos come from the ESPN CDN and are committed under `assets/logos/`; the AP Top 25
+  comes from ESPN's rankings endpoint. Both are refreshed by the Actions, not the browser.
+- Playoff conference champions come from projected final conference records (real results
+  for games played, predicted winners for the rest; tiebreak: overall record, then rating).
+  Seeding follows the CFP fact sheet for 12 teams and the ESPN-reported plan for 24 teams.
+  This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
