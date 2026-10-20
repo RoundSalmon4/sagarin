@@ -18,10 +18,43 @@ const path = require("path");
 const Sagarin = require("../assets/parser.js");
 
 const ESPN_LOGO = "https://a.espncdn.com/i/teamlogos/ncaa/500";
+const ESPN_CONF_LOGO = "https://a.espncdn.com/i/teamlogos/ncaa_conf/500";
 const RATINGS = path.join(__dirname, "..", "data", "ratings.json");
 const ESPN = path.join(__dirname, "..", "data", "espn-games.json");
 const OUT_DIR = path.join(__dirname, "..", "assets", "logos");
+const CONF_DIR = path.join(__dirname, "..", "assets", "conf-logos");
 const MANIFEST = path.join(__dirname, "..", "data", "logos.json");
+
+// Sagarin conference name to ESPN conference id. Ids come from ESPN's standings
+// groups (FBS group=80, FCS group=81); divisions share their parent's logo.
+const CONF_MAP = {
+  "SEC": 8,
+  "BIG TEN": 5,
+  "BIG 12": 4,
+  "ACC": 1,
+  "PAC-12": 9,
+  "AMERICAN": 151,
+  "MOUNTAIN WEST": 17,
+  "CONF-USA": 12,
+  "MAC": 15,
+  "SUN BELT EAST": 37,
+  "SUN BELT WEST": 37,
+  "I-A IND.": 18,
+  "MISSOURI VALLEY": 21,
+  "BIG SKY": 20,
+  "IVY LEAGUE": 22,
+  "SOUTHERN": 29,
+  "UAC": 177,
+  "SOUTHLAND": 30,
+  "OVC-BIG SOUTH": 179,
+  "COASTAL ATHLETIC": 48,
+  "PATRIOT": 27,
+  "SWAC-EAST": 31,
+  "SWAC-WEST": 31,
+  "MEAC": 24,
+  "NORTHEAST": 25,
+  "PIONEER": 28
+};
 
 function arg(name, fallback) {
   const i = process.argv.indexOf(name);
@@ -95,7 +128,36 @@ async function main() {
   have.light.sort();
   have.dark.sort();
 
-  const signature = Sagarin.hash(have.light.join(",") + "|" + have.dark.join(","));
+  // Conference logos.
+  let confNames = [];
+  try { confNames = JSON.parse(fs.readFileSync(RATINGS, "utf8")).conferences.map((c) => c.name); } catch (e) {}
+  fs.mkdirSync(CONF_DIR, { recursive: true });
+  const conf = [];
+  for (const name of confNames) {
+    const id = CONF_MAP[name];
+    if (!id) { console.error("  no ESPN id for conference " + name); continue; }
+    const rec = { name: name, id: String(id), light: false, dark: false };
+    const targets = [
+      { url: ESPN_CONF_LOGO + "/" + id + ".png", file: path.join(CONF_DIR, id + ".png"), key: "light" },
+      { url: ESPN_CONF_LOGO + "-dark/" + id + ".png", file: path.join(CONF_DIR, id + "-dark.png"), key: "dark" }
+    ];
+    for (const t of targets) {
+      if (!force && fs.existsSync(t.file)) { rec[t.key] = true; skipped++; continue; }
+      try {
+        const buf = await fetchBuf(t.url, 3);
+        fs.writeFileSync(t.file, buf);
+        rec[t.key] = true;
+        downloaded++;
+      } catch (err) {
+        // A few smaller conferences have no logo on the CDN; skip them.
+      }
+    }
+    conf.push(rec);
+  }
+  conf.sort((a, b) => a.name.localeCompare(b.name));
+
+  const confSig = conf.map((c) => c.name + ":" + c.id + ":" + c.light + ":" + c.dark).join(",");
+  const signature = Sagarin.hash(have.light.join(",") + "|" + have.dark.join(",") + "|" + confSig);
   let existing = null;
   try { existing = JSON.parse(fs.readFileSync(MANIFEST, "utf8")); } catch (e) { existing = null; }
 
@@ -105,6 +167,7 @@ async function main() {
     season: season,
     light: have.light,
     dark: have.dark,
+    conf: conf,
     signature: signature
   };
   if (existing && existing.signature === signature && existing.fetched_at) {
@@ -112,7 +175,9 @@ async function main() {
   }
 
   fs.writeFileSync(MANIFEST, JSON.stringify(out, null, 2) + "\n", "utf8");
-  console.log("logos: " + have.light.length + " light, " + have.dark.length + " dark (" +
+  const withLogo = conf.filter((c) => c.light || c.dark).length;
+  console.log("logos: " + have.light.length + " light, " + have.dark.length + " dark; " +
+    withLogo + "/" + conf.length + " conference logos (" +
     downloaded + " downloaded, " + skipped + " already present), signature " + signature +
     (existing && existing.signature === signature ? " (unchanged)" : " (updated)"));
 }

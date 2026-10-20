@@ -34,7 +34,7 @@ jobs:
 
       - name: Commit when the data moved
         run: |
-          git add data/ratings.json data/espn-games.json data/logos.json assets/logos
+          git add data/ratings.json data/espn-games.json data/logos.json assets/logos assets/conf-logos
           if git diff --cached --quiet; then
             echo "no change, nothing to commit"
             exit 0

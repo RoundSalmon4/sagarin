@@ -27,8 +27,8 @@ https://roundsalmon4.github.io/sagarin/
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.
-- Team logos throughout the team tables, hosted in the repo so the browser never hits a
-  logo CDN.
+- Team and conference logos throughout the tables and the playoff bracket, hosted in the
+  repo so the browser never hits a logo CDN.
 - Light and dark themes, remembered per browser.
 
 ## How the data updates
@@ -48,9 +48,9 @@ schedule predictor and for conference standings, so no user browser ever has to 
 `fetched_at` unless the games actually changed.
 
 The same Action also runs `scripts/fetch-logos.js`, which downloads each team's logo from
-the ESPN CDN into `assets/logos/` (a light and a dark version) and writes a small
-`data/logos.json` manifest. Logos rarely change, so the script only downloads the ones it
-does not already have.
+the ESPN CDN into `assets/logos/` and each conference's logo into `assets/conf-logos/` (a
+light and a dark version of each), then writes a small `data/logos.json` manifest. Logos
+rarely change, so the script only downloads the ones it does not already have.
 
 The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
 rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
@@ -78,6 +78,7 @@ assets/schedule.js        schedule predictor, reads the ESPN data file
 assets/playoff.js         CFP field, 12/24 brackets, simulation
 assets/styles.css         styling, light and dark themes
 assets/logos/             team logos downloaded from the ESPN CDN
+assets/conf-logos/        conference logos downloaded from the ESPN CDN
 data/ratings.json         parsed Sagarin snapshot
 data/espn-games.json      prefetched ESPN teams and games
 data/logos.json           manifest of which logos are on file

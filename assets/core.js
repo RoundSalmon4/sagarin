@@ -128,6 +128,23 @@
     return r ? '<span class="ap-badge" title="AP Top 25 rank">AP ' + r + "</span>" : "";
   };
 
+  // Inline conference logo for a Sagarin conference name, light/dark by theme.
+  SG.confLogo = function (name) {
+    var logos = SG.state.logos;
+    var c = logos && logos.conf && logos.conf[name];
+    if (!c) return "";
+    var base = "assets/conf-logos/" + c.id;
+    if (c.light && c.dark) {
+      return '<span class="team-logo">' +
+        '<img class="logo-light" src="' + base + '.png" alt="" loading="lazy">' +
+        '<img class="logo-dark" src="' + base + '-dark.png" alt="" loading="lazy">' +
+        "</span>";
+    }
+    if (c.light) return '<span class="team-logo"><img src="' + base + '.png" alt="" loading="lazy"></span>';
+    if (c.dark) return '<span class="team-logo"><img src="' + base + '-dark.png" alt="" loading="lazy"></span>';
+    return "";
+  };
+
   // -------------------------------------------------------------- table engine
 
   SG.colValue = function (row, col) {
@@ -291,7 +308,7 @@
 
   var CONF_COLUMNS = [
     { key: "rank", label: "#", cls: "left", index: true, value: confRank },
-    { key: "name", label: "Conference", cls: "left", type: "str" },
+    { key: "name", label: "Conference", cls: "left", type: "str", cell: function (c) { return SG.confLogo(c.name) + SG.esc(c.name); } },
     { key: "level", label: "Div", cls: "left", type: "str" },
     { key: "teams", label: "Teams" },
     { key: "centralMean", label: "Central Mean" },
@@ -468,10 +485,11 @@
 
   SG.prepareLogos = function (raw) {
     if (!raw) { SG.state.logos = null; return; }
-    var light = {}, dark = {};
+    var light = {}, dark = {}, conf = {};
     (raw.light || []).forEach(function (id) { light[id] = true; });
     (raw.dark || []).forEach(function (id) { dark[id] = true; });
-    SG.state.logos = { light: light, dark: dark };
+    (raw.conf || []).forEach(function (c) { conf[c.name] = { id: c.id, light: c.light, dark: c.dark }; });
+    SG.state.logos = { light: light, dark: dark, conf: conf };
   };
 
   SG.poll = function (manual) {

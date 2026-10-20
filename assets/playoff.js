@@ -251,8 +251,9 @@
   function entrantRow(desc, pct, showResults, isWinner) {
     var seed = desc.seed !== undefined && desc.seed !== null ? "#" + desc.seed : "";
     var name = desc.team ? desc.team.team : (desc.label || "");
+    var logo = desc.team ? SG.teamLogo(desc.team.team) : "";
     var cls = "game-team" + (showResults && isWinner ? " winner" : "");
-    return '<div class="' + cls + '"><span class="seed">' + seed + '</span><span class="name">' + SG.esc(name) + '</span><span class="score">' +
+    return '<div class="' + cls + '"><span class="seed">' + seed + "</span>" + logo + '<span class="name">' + SG.esc(name) + '</span><span class="score">' +
       (showResults && pct !== null && pct !== undefined ? (pct * 100).toFixed(0) + "%" : "") + "</span></div>";
   }
 

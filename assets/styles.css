@@ -262,6 +262,9 @@ input[type="search"] { min-width: 240px; }
 .game-team { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.35rem 0.55rem; font-size: 0.85rem; }
 .game-team + .game-team { border-top: 1px solid var(--line-soft); }
 .game-team .seed { color: var(--muted); min-width: 1.6rem; }
+.game-team .name { flex: 1 1 auto; }
+.game-team .team-logo { width: 16px; height: 16px; margin-right: 0.35rem; }
+.game-team .team-logo img { width: 16px; height: 16px; }
 .game-team.winner { font-weight: 700; color: var(--accent); }
 .game-team .score { font-variant-numeric: tabular-nums; }
 .site-tag { font-size: 0.68rem; color: var(--muted); padding: 0.15rem 0.55rem; background: var(--surface-2); border-top: 1px solid var(--line-soft); }
@@ -271,8 +274,8 @@ input[type="search"] { min-width: 240px; }
 .matchup-controls label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
 .matchup-controls select { min-width: 220px; }
 
-.matchup-result { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-.match-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); }
+.matchup-result { display: flex; flex-wrap: wrap; gap: 1rem; }
+.match-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); flex: 1 1 260px; max-width: 340px; }
 .match-card h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
 .match-card .fav { font-size: 1.15rem; font-weight: 700; }
 .match-card .margin { font-size: 1.6rem; font-weight: 700; color: var(--accent); }

@@ -1,6 +1,6 @@
 {
   "source": "https://a.espncdn.com/i/teamlogos/ncaa/500",
-  "fetched_at": "2026-10-20T14:25:35.536Z",
+  "fetched_at": "2026-10-20T14:46:59.737Z",
   "season": 2026,
   "light": [
     "103",
@@ -616,5 +616,163 @@
     "98",
     "99"
   ],
-  "signature": "41241c7b"
+  "conf": [
+    {
+      "name": "ACC",
+      "id": "1",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "AMERICAN",
+      "id": "151",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "BIG 12",
+      "id": "4",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "BIG SKY",
+      "id": "20",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "BIG TEN",
+      "id": "5",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "COASTAL ATHLETIC",
+      "id": "48",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "CONF-USA",
+      "id": "12",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "I-A IND.",
+      "id": "18",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "IVY LEAGUE",
+      "id": "22",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "MAC",
+      "id": "15",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "MEAC",
+      "id": "24",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "MISSOURI VALLEY",
+      "id": "21",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "MOUNTAIN WEST",
+      "id": "17",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "NORTHEAST",
+      "id": "25",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "OVC-BIG SOUTH",
+      "id": "179",
+      "light": false,
+      "dark": false
+    },
+    {
+      "name": "PAC-12",
+      "id": "9",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "PATRIOT",
+      "id": "27",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "PIONEER",
+      "id": "28",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "SEC",
+      "id": "8",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "SOUTHERN",
+      "id": "29",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "SOUTHLAND",
+      "id": "30",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "SUN BELT EAST",
+      "id": "37",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "SUN BELT WEST",
+      "id": "37",
+      "light": true,
+      "dark": false
+    },
+    {
+      "name": "SWAC-EAST",
+      "id": "31",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "SWAC-WEST",
+      "id": "31",
+      "light": true,
+      "dark": true
+    },
+    {
+      "name": "UAC",
+      "id": "177",
+      "light": false,
+      "dark": false
+    }
+  ],
+  "signature": "ee9ac863"
 }
