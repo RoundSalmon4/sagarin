@@ -8,7 +8,7 @@
 
   var P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
-  var SIMS = 2000;
+  var SIMS = 10000;
   // At-large spots are a resume call, not a pure power call: conference champions
   // are ranked on rating alone, but the at-large pool is ranked on rating with a
   // five-point penalty per projected loss, so an undefeated or one-loss team is
@@ -66,30 +66,59 @@
     return rec;
   }
 
-  // Projected records with the projected conference title games folded in. The
-  // two title-game participants are still chosen from regular-season records,
-  // but from there the projected winner gets a conference and overall win and
-  // the loser gets a loss, so the field table and the at-large resume reflect a
-  // full season. The 24-team field has no title games, so it is unchanged.
-  function finalRecords(method, format) {
-    var std = projectedRecords(method);
-    if (Number(format) !== 12) return std;
-    var order = conferenceOrder(method, std);
+  // Projected title-game outcome for every FBS conference, from the regular
+  // records. Deterministic for the live projection, stochastic for the sim.
+  // The two participants are chosen from the regular-season records alone.
+  function ccgOutcomes(regRec, method, stochastic) {
+    var order = conferenceOrder(method, regRec);
+    var out = {};
     Object.keys(order).forEach(function (c) {
       if (c === "I-A IND.") return;
       var list = order[c];
       if (!list[0] || !list[1]) return;
       var m = ccgResult(c, list[0], list[1], method);
-      recordGame(std, m.winner.team, true);
-      recordGame(std, m.winner === m.a ? m.b.team : m.a.team, false);
+      var win = (stochastic ? Math.random() : 0.5) < m.p ? m.a : m.b;
+      out[c] = { winner: win, loser: win === m.a ? m.b : m.a, matchup: m };
     });
-    return std;
+    return out;
+  }
+
+  // Projected records with the projected conference title games folded in (the
+  // 24-team field has no title games). The winner gets a conference and overall
+  // win and the loser a loss, so the field table and the resume see a full season.
+  function finalRecords(method, format) {
+    var regRec = projectedRecords(method);
+    if (Number(format) !== 12) return regRec;
+    var ccgs = ccgOutcomes(regRec, method, false);
+    var fin = cloneRecords(regRec);
+    foldCcg(fin, ccgs);
+    return fin;
+  }
+
+  function foldCcg(rec, ccgs) {
+    Object.keys(ccgs).forEach(function (c) {
+      recordGame(rec, ccgs[c].winner.team, true);
+      recordGame(rec, ccgs[c].loser.team, false);
+    });
   }
 
   function recordGame(std, team, win) {
     var r = std[team];
     if (!r) return;
     if (win) { r.cw += 1; r.ow += 1; } else { r.cl += 1; r.ol += 1; }
+  }
+
+  function cloneRecords(rec) {
+    var out = {};
+    Object.keys(rec).forEach(function (k) {
+      var r = rec[k];
+      out[k] = { cw: r.cw, cl: r.cl, ow: r.ow, ol: r.ol };
+    });
+    return out;
+  }
+
+  function getRec(rec, team) {
+    return rec[team] || (rec[team] = { cw: 0, cl: 0, ow: 0, ol: 0 });
   }
 
   function champScore(team, std, method) {
@@ -145,24 +174,28 @@
     return out;
   }
 
-  function champions(method, withCcg) {
-    var order = conferenceOrder(method);
-    var champs = {};
-    Object.keys(order).forEach(function (c) {
-      if (c === "I-A IND.") return;
-      var list = order[c];
-      if (!list[0]) return;
-      champs[c] = (withCcg && list[1]) ? ccgResult(c, list[0], list[1], method).winner : list[0];
-    });
-    return champs;
-  }
-
-  function buildField(format, method) {
+  // Build the field from a records map, so the live projection can pass the
+  // projected records and the sim can pass its simulated records.
+  function fieldFromRecords(format, method, regRec, ccgs) {
     var teams = fbs();
-    // The 12-team CFP keeps conference title games; the proposed 24-team field
-    // drops them, so its champions are the regular-season winners.
-    var champs = champions(method, Number(format) === 12);
-    var std = finalRecords(method, format);
+    var is12 = Number(format) === 12;
+    var champs = {};
+
+    // The 12-team CFP keeps conference title games (ccgs); the proposed 24-team
+    // field drops them, so its champions are the regular-season winners.
+    if (is12 && ccgs) {
+      Object.keys(ccgs).forEach(function (c) { champs[c] = ccgs[c].winner; });
+    } else {
+      var order = conferenceOrder(method, regRec);
+      Object.keys(order).forEach(function (c) {
+        if (c === "I-A IND.") return;
+        if (order[c][0]) champs[c] = order[c][0];
+      });
+    }
+
+    var std = regRec;
+    if (is12 && ccgs) { std = cloneRecords(regRec); foldCcg(std, ccgs); }
+
     var seeds = [null];
     var bid = {};
 
@@ -173,15 +206,16 @@
       return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0);
     }
 
-    if (Number(format) === 12) {
+    if (is12) {
       var champList = Object.keys(champs)
         .map(function (c) { return { conf: c, team: champs[c] }; })
         .sort(function (a, b) { return b.team[method] - a.team[method]; });
       var qual = champList.slice(0, 5);
       var used = {};
       qual.forEach(function (x) { used[x.team.team] = true; bid[x.team.team] = "Conf champ (" + x.conf + ")"; });
-      var atLarge = teams.filter(function (t) { return !used[t.team]; })
-        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }).slice(0, 7);
+      var challengers = teams.filter(function (t) { return !used[t.team]; })
+        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); });
+      var atLarge = challengers.slice(0, 7);
       atLarge.forEach(function (t) { bid[t.team] = "At-large"; });
       var top4 = qual.slice(0, 4).map(function (x) { return x.team; });
       var rest = [qual[4].team].concat(atLarge).sort(function (a, b) { return b[method] - a[method]; });
@@ -197,14 +231,23 @@
       var auto = p4.concat(g6 ? [g6] : []);
       var autoNames = {};
       auto.forEach(function (t) { autoNames[t.team] = true; });
-      var atLarge24 = teams.filter(function (t) { return !autoNames[t.team]; })
-        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }).slice(0, 19);
+      var challengers = teams.filter(function (t) { return !autoNames[t.team]; })
+        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); });
+      var atLarge24 = challengers.slice(0, 19);
       atLarge24.forEach(function (t) { bid[t.team] = "At-large"; });
       auto.concat(atLarge24)
         .sort(function (a, b) { return b[method] - a[method]; })
         .forEach(function (t) { seeds.push(t); });
     }
-    return { seeds: seeds, bid: bid };
+    // atLarge is the full resume ranking of teams that missed the auto bids, so
+    // callers (the TV tab) can read who is just outside the field.
+    return { seeds: seeds, bid: bid, atLarge: challengers };
+  }
+
+  function buildField(format, method) {
+    var regRec = projectedRecords(method);
+    var ccgs = Number(format) === 12 ? ccgOutcomes(regRec, method, false) : null;
+    return fieldFromRecords(format, method, regRec, ccgs);
   }
 
   // ---- bracket engine ----
@@ -434,16 +477,22 @@
   function renderSim(sim) {
     var box = document.getElementById("simResults");
     if (!sim) { box.innerHTML = ""; return; }
-    var rows = Object.keys(sim.champ).map(function (name) {
-      return { name: name, champ: sim.champ[name] };
-    }).sort(function (a, b) { return b.champ - a.champ; }).slice(0, 14);
-    var max = Math.max.apply(null, rows.map(function (r) { return r.champ; })) || 1;
-    box.innerHTML = '<div class="sim-block"><h3>Championship odds</h3><div class="sim-list">' +
+    box.innerHTML =
+      simBlock("Chance to make the field", sim.field, sim.n) +
+      simBlock("Championship odds", sim.champ, sim.n) +
+      '<p class="note">' + sim.n.toLocaleString() + " simulated seasons. Each run plays out the remaining regular-season games, decides the projected conference champions, rebuilds the field from those results, then plays the bracket. The bar is each team's share, scaled to the leading team.</p>";
+  }
+
+  function simBlock(title, counts, n) {
+    var rows = Object.keys(counts).map(function (name) { return { name: name, c: counts[name] }; })
+      .sort(function (a, b) { return b.c - a.c; }).slice(0, 14);
+    var max = Math.max.apply(null, rows.map(function (r) { return r.c; })) || 1;
+    return '<div class="sim-block"><h3>' + SG.esc(title) + '</h3><div class="sim-list">' +
       rows.map(function (r) {
-        var pct = (r.champ / sim.n) * 100;
+        var pct = (r.c / n) * 100;
         return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
-          ((r.champ / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
-      }).join("") + "</div></div><p class=\"note\">" + sim.n + " simulated seasons from the projected field. The bar is each team's share of those titles, scaled to the leading team.</p>";
+          ((r.c / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
+      }).join("") + "</div></div>";
   }
 
   function render() {
@@ -477,16 +526,64 @@
     renderSim(view.sim);
   }
 
+  // ---- full-season simulation ----
+
+  // Records from games that are already decided or not simulatable (completed
+  // games use the real result; a rated team facing an unrated one is assumed to
+  // win), plus the list of remaining games to play out each run.
+  function simContext(method) {
+    var confOf = {};
+    SG.state.data.teams.forEach(function (t) { if (t.level === "A") confOf[t.team] = mergeConf(t.conference); });
+    var base = {};
+    var games = [];
+    var edge = SG.homeEdge(method);
+    ((SG.state.espn && SG.state.espn.games) || []).forEach(function (g) {
+      var h = SG.state.espnIdToSag && SG.state.espnIdToSag[g.homeId];
+      var a = SG.state.espnIdToSag && SG.state.espnIdToSag[g.awayId];
+      if (g.completed && g.homeScore !== null && g.awayScore !== null) {
+        applyResult(base, confOf, h, a, g.homeScore > g.awayScore);
+      } else if (h && a) {
+        var p = SG.normCdf((h[method] - a[method] + (g.neutral ? 0 : edge)) / SG.SIGMA);
+        games.push({ h: h.team, a: a.team, p: p, conf: confOf[h.team] === confOf[a.team] && confOf[h.team] !== "I-A IND." });
+      } else if (h) {
+        applyResult(base, confOf, h, null, true);
+      } else if (a) {
+        applyResult(base, confOf, null, a, false);
+      }
+    });
+    return { base: base, games: games };
+  }
+
+  function applyResult(rec, confOf, h, a, hWin) {
+    var same = h && a && confOf[h.team] && confOf[h.team] === confOf[a.team] && confOf[h.team] !== "I-A IND.";
+    if (h) { var rh = getRec(rec, h.team); rh.ow += hWin ? 1 : 0; rh.ol += hWin ? 0 : 1; if (same) { rh.cw += hWin ? 1 : 0; rh.cl += hWin ? 0 : 1; } }
+    if (a) { var ra = getRec(rec, a.team); ra.ow += hWin ? 0 : 1; ra.ol += hWin ? 1 : 0; if (same) { ra.cw += hWin ? 0 : 1; ra.cl += hWin ? 1 : 0; } }
+  }
+
   function simulate() {
     if (!SG.state.data || !view.field) return;
-    var method = view.method, format = view.format, seeds = view.field.seeds;
-    var champ = {};
+    var method = view.method, format = view.format;
+    var is12 = Number(format) === 12;
+    var ctx = simContext(method);
+    var fieldCount = {}, champCount = {};
     for (var i = 0; i < SIMS; i++) {
-      var r = runOnce(seeds, format, method, true);
+      var regRec = cloneRecords(ctx.base);
+      for (var j = 0; j < ctx.games.length; j++) {
+        var g = ctx.games[j];
+        var hw = Math.random() < g.p;
+        var rh = getRec(regRec, g.h), ra = getRec(regRec, g.a);
+        rh.ow += hw ? 1 : 0; rh.ol += hw ? 0 : 1;
+        ra.ow += hw ? 0 : 1; ra.ol += hw ? 1 : 0;
+        if (g.conf) { rh.cw += hw ? 1 : 0; rh.cl += hw ? 0 : 1; ra.cw += hw ? 0 : 1; ra.cl += hw ? 1 : 0; }
+      }
+      var ccgs = is12 ? ccgOutcomes(regRec, method, true) : null;
+      var f = fieldFromRecords(format, method, regRec, ccgs);
+      for (var k = 1; k < f.seeds.length; k++) { var t = f.seeds[k]; if (t) fieldCount[t.team] = (fieldCount[t.team] || 0) + 1; }
+      var r = runOnce(f.seeds, format, method, true);
       var c = r.champion.team.team;
-      champ[c] = (champ[c] || 0) + 1;
+      champCount[c] = (champCount[c] || 0) + 1;
     }
-    view.sim = { champ: champ, n: SIMS };
+    view.sim = { n: SIMS, field: fieldCount, champ: champCount };
     renderSim(view.sim);
   }
 

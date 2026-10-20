@@ -55,20 +55,25 @@
     return !!RIVALRY[[SG.normalizeName(a), SG.normalizeName(b)].sort().join("|")];
   }
 
-  // Teams in the projected 12-team field, plus the next ten by rating (bubble).
-  // Recomputed once per render so scoring stays cheap.
+  // Teams in the projected 12-team field, plus the next ten in line for an
+  // at-large bid (bubble), using the same resume ranking the field uses so the
+  // two stay consistent. Recomputed once per render so scoring stays cheap.
   function context() {
     var ctx = { field: {}, bubble: {} };
     if (!SG.state.data) return ctx;
+    var ranked = null;
     if (SG.playoffField) {
       var f = SG.playoffField(12, METHOD);
       ((f && f.seeds) || []).forEach(function (t) { if (t) ctx.field[t.team] = true; });
+      if (f && f.atLarge) ranked = f.atLarge;
     }
-    var fbs = SG.state.data.teams.filter(function (t) { return t.level === "A"; })
-      .sort(function (x, y) { return y[METHOD] - x[METHOD]; });
+    if (!ranked) {
+      ranked = SG.state.data.teams.filter(function (t) { return t.level === "A"; })
+        .sort(function (x, y) { return y[METHOD] - x[METHOD]; });
+    }
     var n = 0;
-    for (var i = 0; i < fbs.length && n < 10; i++) {
-      if (!ctx.field[fbs[i].team]) { ctx.bubble[fbs[i].team] = true; n++; }
+    for (var i = 0; i < ranked.length && n < 10; i++) {
+      if (!ctx.field[ranked[i].team]) { ctx.bubble[ranked[i].team] = true; n++; }
     }
     return ctx;
   }
