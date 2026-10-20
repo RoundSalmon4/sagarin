@@ -24,7 +24,7 @@
     { key: "late", label: "Late night", start: 22, end: 28 }
   ];
 
-  var METHOD = "rating";
+  var METHOD = "predictor";
   var curCtx = null;
 
   function games() {

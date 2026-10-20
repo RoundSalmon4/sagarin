@@ -10,7 +10,7 @@
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
   var SIMS = 2000;
 
-  var view = { format: "12", method: "rating", bracketMode: "seeds", field: null, sim: null };
+  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null };
 
   function mergeConf(c) {
     if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
