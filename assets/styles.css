@@ -252,7 +252,7 @@ input[type="search"] { min-width: 240px; }
 .sim-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.3rem 1rem; }
 .sim-list .row { display: flex; justify-content: space-between; gap: 0.6rem; font-size: 0.88rem; }
 .bar-track { flex: 1; background: var(--line-soft); border-radius: 4px; height: 8px; align-self: center; overflow: hidden; min-width: 60px; }
-.bar-fill { background: var(--accent); height: 100%; }
+.bar-fill { display: block; background: var(--accent); height: 100%; }
 
 /* bracket */
 .bracket { display: flex; gap: 0.9rem; overflow-x: auto; padding: 0.4rem 0 1rem; align-items: stretch; }

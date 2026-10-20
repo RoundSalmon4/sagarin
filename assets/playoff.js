@@ -431,7 +431,7 @@
         var pct = (r.champ / sim.n) * 100;
         return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
           ((r.champ / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
-      }).join("") + "</div></div><p class=\"note\">" + sim.n + " simulated seasons from the projected field.</p>";
+      }).join("") + "</div></div><p class=\"note\">" + sim.n + " simulated seasons from the projected field. The bar is each team's share of those titles, scaled to the leading team.</p>";
   }
 
   function render() {
