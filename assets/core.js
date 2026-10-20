@@ -365,19 +365,20 @@
     var edge = SG.homeEdge(method);
     var diff = ra - rb;
     var scenarios = [
-      { title: "Neutral site", spread: diff },
-      { title: a.team + " at home", spread: diff + edge }
+      { title: a.team + " at home", spread: diff + edge },
+      { title: "Neutral site", spread: diff }
     ];
-    document.getElementById("matchupResult").innerHTML = scenarios.map(function (s) {
+    document.getElementById("matchupResult").innerHTML = scenarios.map(function (s, i) {
       var favIsA = s.spread >= 0;
       var fav = favIsA ? a : b;
       var probA = SG.normCdf(s.spread / SG.SIGMA);
-      return '<div class="match-card">' +
+      var card = '<div class="match-card">' +
         "<h3>" + SG.esc(s.title) + "</h3>" +
         '<div class="fav">' + SG.esc(fav.team) + " favored</div>" +
         '<div class="margin">' + (favIsA ? "+" : "-") + SG.fmt(Math.abs(s.spread), 1) + "</div>" +
         '<div class="prob">Win chance: ' + SG.esc(a.team) + " " + pctText(probA) + " / " + SG.esc(b.team) + " " + pctText(1 - probA) + "</div>" +
         "</div>";
+      return i === 1 ? '<div class="matchup-gap"></div>' + card : card;
     }).join("");
     document.getElementById("matchupNote").textContent =
       "Using " + SG.methodLabel(method) + ". Home edge for this rating is " + SG.fmt(edge) +

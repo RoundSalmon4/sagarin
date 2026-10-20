@@ -153,15 +153,8 @@
     </section>
 
     <section id="tab-matchup" class="panel hidden">
-      <div class="matchup-controls">
-        <label>Home team
-          <select id="teamA"></select>
-        </label>
-        <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
-        <label>Away team
-          <select id="teamB"></select>
-        </label>
-        <label>Rating method
+      <div class="matchup-toolbar">
+        <label class="inline-label">Rating method
           <select id="methodSelect">
             <option value="rating">Overall RATING</option>
             <option value="predictor">PREDICTOR (Pure Points)</option>
@@ -169,6 +162,15 @@
             <option value="recent">RECENT</option>
             <option value="strongRecent">STRONG_RECENT</option>
           </select>
+        </label>
+      </div>
+      <div class="matchup-controls">
+        <label>Home team
+          <select id="teamA"></select>
+        </label>
+        <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
+        <label>Away team
+          <select id="teamB"></select>
         </label>
       </div>
       <div id="matchupResult" class="matchup-result"></div>

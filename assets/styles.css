@@ -270,12 +270,16 @@ input[type="search"] { min-width: 240px; }
 .site-tag { font-size: 0.68rem; color: var(--muted); padding: 0.15rem 0.55rem; background: var(--surface-2); border-top: 1px solid var(--line-soft); }
 .champ-box { border: 2px solid var(--accent); }
 
-.matchup-controls { display: flex; align-items: flex-end; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.matchup-toolbar { display: flex; margin-bottom: 1rem; }
+.matchup-controls,
+.matchup-result { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 1rem; max-width: 820px; margin-left: auto; margin-right: auto; }
+.matchup-controls { align-items: end; margin-bottom: 0.9rem; }
 .matchup-controls label { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.85rem; color: var(--muted); }
-.matchup-controls select { min-width: 220px; }
+.matchup-controls select { min-width: 0; width: 100%; }
+.matchup-controls .swap { align-self: end; justify-self: center; }
 
-.matchup-result { display: flex; flex-wrap: wrap; gap: 1rem; }
-.match-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); flex: 1 1 260px; max-width: 340px; }
+.matchup-result { align-items: start; }
+.match-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow); }
 .match-card h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
 .match-card .fav { font-size: 1.15rem; font-weight: 700; }
 .match-card .margin { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
@@ -294,4 +298,7 @@ input[type="search"] { min-width: 240px; }
   .combo input { min-width: 0; width: 100%; }
   .count { margin-left: 0; }
   .header-inner { flex-direction: column; }
+  .matchup-controls,
+  .matchup-result { grid-template-columns: 1fr; }
+  .matchup-gap { display: none; }
 }
