@@ -1,6 +1,6 @@
 {
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard",
-  "fetched_at": "2026-10-20T16:08:49.580Z",
+  "fetched_at": "2026-10-20T16:34:27.464Z",
   "season": 2026,
   "startWeek": 8,
   "games": [
@@ -17,9 +17,11 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Pitbull Stadium",
+      "city": "Miami, FL",
       "spread": -10,
       "details": "FIU -10",
-      "overUnder": 46.5
+      "overUnder": 45.5
     },
     {
       "id": "401871069",
@@ -34,6 +36,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Delaware Stadium",
+      "city": "Newark, DE",
       "spread": -2.5,
       "details": "DEL -2.5",
       "overUnder": 52.5
@@ -51,6 +55,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Joan C. Edwards Stadium",
+      "city": "Huntington, WV",
       "spread": 2.5,
       "details": "USA -2.5",
       "overUnder": 66.5
@@ -68,6 +74,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Elliott T. Bowers Stadium",
+      "city": "Huntsville, TX",
       "spread": 3,
       "details": "NMSU -3",
       "overUnder": 44.5
@@ -85,6 +93,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Kidd Brewer Stadium",
+      "city": "Boone, NC",
       "spread": 10.5,
       "details": "JMU -10.5",
       "overUnder": 56.5
@@ -102,6 +112,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Walens Family Field at Fifth Third Stadium",
+      "city": "Kennesaw, GA",
       "spread": 10,
       "details": "LIB -10",
       "overUnder": 50.5
@@ -119,6 +131,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Simmons Bank Liberty Stadium",
+      "city": "Memphis, TN",
       "spread": -10,
       "details": "MEM -10",
       "overUnder": 54.5
@@ -136,6 +150,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Alumni Stadium (DE)",
+      "city": "Dover, DE",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -153,6 +169,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Scott Stadium",
+      "city": "Charlottesville, VA",
       "spread": -1.5,
       "details": "UVA -1.5",
       "overUnder": 47.5
@@ -170,6 +188,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Pratt & Whitney Stadium",
+      "city": "East Hartford, CT",
       "spread": -14.5,
       "details": "CONN -14.5",
       "overUnder": 49.5
@@ -187,6 +207,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Franklin Field",
+      "city": "Philadelphia, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -204,6 +226,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "H. A. Chapman Stadium",
+      "city": "Tulsa, OK",
       "spread": -1.5,
       "details": "TLSA -1.5",
       "overUnder": 54.5
@@ -221,6 +245,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "War Memorial Stadium",
+      "city": "Laramie, WY",
       "spread": 4.5,
       "details": "AF -4.5",
       "overUnder": 45.5
@@ -238,6 +264,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Stanford Stadium",
+      "city": "Stanford, CA",
       "spread": 6.5,
       "details": "NCSU -6.5",
       "overUnder": 55.5
@@ -255,6 +283,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ABC",
+      "venue": "Jordan-Hare Stadium",
+      "city": "Auburn, AL",
       "spread": 7.5,
       "details": "LSU -7.5",
       "overUnder": 51.5
@@ -272,6 +302,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
+      "venue": "Nippert Stadium",
+      "city": "Cincinnati, OH",
       "spread": 10.5,
       "details": "TTU -10.5",
       "overUnder": 56.5
@@ -289,8 +321,10 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
-      "spread": -8.5,
-      "details": "TCU -8.5",
+      "venue": "Amon G. Carter Stadium",
+      "city": "Fort Worth, TX",
+      "spread": -9.5,
+      "details": "TCU -9.5",
       "overUnder": 56.5
     },
     {
@@ -306,6 +340,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "Gerald J. Ford Stadium",
+      "city": "Dallas, TX",
       "spread": -19.5,
       "details": "SMU -19.5",
       "overUnder": 54.5
@@ -323,6 +359,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Hard Rock Stadium",
+      "city": "Miami Gardens, FL",
       "spread": -20.5,
       "details": "MIA -20.5",
       "overUnder": 50.5
@@ -340,6 +378,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Fox",
+      "venue": "Michigan Stadium",
+      "city": "Ann Arbor, MI",
       "spread": 7,
       "details": "IU -7",
       "overUnder": 41.5
@@ -357,6 +397,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Peacock",
+      "venue": "Ryan Field",
+      "city": "Evanston, IL",
       "spread": -16.5,
       "details": "NU -16.5",
       "overUnder": 58.5
@@ -374,6 +416,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Flagler Credit Union Stadium",
+      "city": "Boca Raton, FL",
       "spread": -7.5,
       "details": "FAU -7.5",
       "overUnder": 53.5
@@ -391,6 +435,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Glass Bowl",
+      "city": "Toledo, OH",
       "spread": -3,
       "details": "TOL -3",
       "overUnder": 45.5
@@ -408,6 +454,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Centreville Bank Stadium",
+      "city": "Pawtucket, RI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -425,6 +473,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Duane Stadium",
+      "city": "North Andover, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -442,6 +492,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Brown Stadium (RI)",
+      "city": "Providence, RI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -459,6 +511,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Arute Field",
+      "city": "New Britain, CT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -476,6 +530,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "NEC Front Row",
+      "venue": "Shark Stadium",
+      "city": "Brookville, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -493,6 +549,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SportsNet PIT, NEC Front Row",
+      "venue": "Arthur J. Rooney Athletic Field",
+      "city": "Pittsburgh, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -510,6 +568,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Welcome Stadium",
+      "city": "Dayton, OH",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -527,6 +587,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Tenney Stadium at Leonidoff Field",
+      "city": "Poughkeepsie, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -544,6 +606,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "TNT",
+      "venue": "David Booth Kansas Memorial Stadium",
+      "city": "Lawrence, KS",
       "spread": 3,
       "details": "BAY -3",
       "overUnder": 53.5
@@ -561,6 +625,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Zoeller Field at Dix Stadium",
+      "city": "Kent, OH",
       "spread": -3,
       "details": "KENT -3",
       "overUnder": 46.5
@@ -578,6 +644,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Kelly/Shorts Stadium",
+      "city": "Mount Pleasant, MI",
       "spread": 2.5,
       "details": "M-OH -2.5",
       "overUnder": 40.5
@@ -595,6 +663,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Harold Alfond Sports Stadium",
+      "city": "Orono, ME",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -612,6 +682,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Fitton Field",
+      "city": "Worcester, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -629,6 +701,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Moglia Stadium at Jack Coffey Field",
+      "city": "Bronx, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -646,6 +720,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Drake Stadium (IA)",
+      "city": "Des Moines, IA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -663,6 +739,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Brown Field",
+      "city": "Valparaiso, IN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -680,6 +758,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Daytona Stadium",
+      "city": "Daytona Beach, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -697,6 +777,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Lawrence A. Wien Stadium",
+      "city": "New York, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -714,6 +796,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Oliver C. Dawson Stadium",
+      "city": "Orangeburg, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -731,6 +815,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Foster Stadium",
+      "city": "Lexington, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -748,6 +834,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Beirne Stadium",
+      "city": "Smithfield, RI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -765,6 +853,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Armstrong Stadium",
+      "city": "Hampton, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -782,6 +872,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Midco Sports Plus",
+      "venue": "The DakotaDome",
+      "city": "Vermillion, SD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -799,6 +891,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Saluki Stadium",
+      "city": "Carbondale, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -816,6 +910,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Joe Walton Stadium",
+      "city": "Moon Township, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -833,6 +929,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Patriot League TV",
+      "venue": "Robins Stadium",
+      "city": "Richmond, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -850,6 +948,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "University Stadium (GA)",
+      "city": "Carrollton, GA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -867,6 +967,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Phil Simms Stadium",
+      "city": "Morehead, KY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -884,6 +986,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Paladin Stadium",
+      "city": "Greenville, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -901,6 +1005,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Johnson Hagood Stadium",
+      "city": "Charleston, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -918,6 +1024,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "E.J. Whitmire Stadium",
+      "city": "Cullowhee, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -935,6 +1043,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "BTN",
+      "venue": "Gies Memorial Stadium",
+      "city": "Champaign, IL",
       "spread": 8.5,
       "details": "ORE -8.5",
       "overUnder": 50.5
@@ -952,6 +1062,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hunter Stadium",
+      "city": "Saint Charles, MO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -969,6 +1081,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Harvard Stadium",
+      "city": "Cambridge, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -986,6 +1100,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hancock Stadium",
+      "city": "Normal, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1003,6 +1119,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Midco Sports Plus 2",
+      "venue": "Dana J. Dykhouse Stadium",
+      "city": "Brookings, SD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1020,6 +1138,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hughes Stadium (MD)",
+      "city": "Baltimore, MD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1037,6 +1157,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Scripps Sports",
+      "venue": "Bobcat Stadium (MT)",
+      "city": "Bozeman, MT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1054,6 +1176,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Roy Kidd Stadium",
+      "city": "Richmond, KY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1071,6 +1195,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "O'Brien Field",
+      "city": "Charleston, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1088,6 +1214,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Bragg Memorial Stadium",
+      "city": "Tallahassee, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1105,6 +1233,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Shell Energy Stadium",
+      "city": "Houston, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1122,6 +1252,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Turpin Stadium",
+      "city": "Natchitoches, LA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1139,6 +1271,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ABC",
+      "venue": "Bryant-Denny Stadium",
+      "city": "Tuscaloosa, AL",
       "spread": -14,
       "details": "ALA -14",
       "overUnder": 50.5
@@ -1156,6 +1290,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SEC Network",
+      "venue": "Davis Wade Stadium",
+      "city": "Starkville, MS",
       "spread": 4,
       "details": "OU -4",
       "overUnder": 44.5
@@ -1173,6 +1309,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Williams-Brice Stadium",
+      "city": "Columbia, SC",
       "spread": -2.5,
       "details": "SC -2.5",
       "overUnder": 50.5
@@ -1190,6 +1328,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Fox",
+      "venue": "Acrisure Bounce House",
+      "city": "Orlando, FL",
       "spread": 6.5,
       "details": "BYU -6.5",
       "overUnder": 43.5
@@ -1207,6 +1347,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ACC Network",
+      "venue": "Bobby Dodd Stadium",
+      "city": "Atlanta, GA",
       "spread": -4,
       "details": "GT -4",
       "overUnder": 49.5
@@ -1224,6 +1366,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
+      "venue": "Huntington Bank Stadium",
+      "city": "Minneapolis, MN",
       "spread": 7,
       "details": "IOWA -7",
       "overUnder": 40.5
@@ -1241,6 +1385,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBS",
+      "venue": "Rose Bowl",
+      "city": "Pasadena, CA",
       "spread": -14,
       "details": "UCLA -14",
       "overUnder": 44.5
@@ -1258,6 +1404,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Navy-Marine Corps Memorial Stadium",
+      "city": "Annapolis, MD",
       "spread": 2.5,
       "details": "UNT -2.5",
       "overUnder": 61.5
@@ -1275,6 +1423,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MW+",
+      "venue": "Huskie Stadium",
+      "city": "Dekalb, IL",
       "spread": 4.5,
       "details": "HAW -4.5",
       "overUnder": 47.5
@@ -1292,6 +1442,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Scheumann Stadium",
+      "city": "Muncie, IN",
       "spread": -14.5,
       "details": "BALL -14.5",
       "overUnder": 51.5
@@ -1309,6 +1461,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Broadview Stadium",
+      "city": "Buffalo, NY",
       "spread": -3.5,
       "details": "BUF -3.5",
       "overUnder": 44.5
@@ -1326,6 +1480,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Walter J. Zable Stadium",
+      "city": "Williamsburg, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1343,6 +1499,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Villanova Stadium",
+      "city": "Philadelphia, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1360,6 +1518,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Nissan Stadium",
+      "city": "Nashville, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1377,6 +1537,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Mountain America Stadium",
+      "city": "Tempe, AZ",
       "spread": 3.5,
       "details": "KSU -3.5",
       "overUnder": 56.5
@@ -1394,6 +1556,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Peden Stadium",
+      "city": "Athens, OH",
       "spread": -12.5,
       "details": "OHIO -12.5",
       "overUnder": 48.5
@@ -1411,6 +1575,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hanson Field",
+      "city": "Macomb, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1428,6 +1594,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Provost Umphrey Stadium",
+      "city": "Beaumont, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1445,6 +1613,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Veterans Memorial Stadium (AL)",
+      "city": "Troy, AL",
       "spread": -14.5,
       "details": "TROY -14.5",
       "overUnder": 51.5
@@ -1462,6 +1632,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MW+",
+      "venue": "Mackay Stadium",
+      "city": "Reno, NV",
       "spread": -5.5,
       "details": "NEV -5.5",
       "overUnder": 46.5
@@ -1479,6 +1651,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Mustang Memorial Field at Spanos Stadium",
+      "city": "San Luis Obispo, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1496,6 +1670,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Kibbie Dome",
+      "city": "Moscow, ID",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1513,6 +1689,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Estes Stadium",
+      "city": "Conway, AR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1530,6 +1708,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Gayle and Tom Benson Stadium",
+      "city": "San Antonio, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1547,6 +1727,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "M. M. Roberts Stadium",
+      "city": "Hattiesburg, MS",
       "spread": 10,
       "details": "UL -10",
       "overUnder": 52.5
@@ -1564,6 +1746,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Joe Aillet Stadium",
+      "city": "Ruston, LA",
       "spread": -12.5,
       "details": "LT -12.5",
       "overUnder": 46.5
@@ -1581,6 +1765,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "USA Net",
+      "venue": "Martin Stadium",
+      "city": "Pullman, WA",
       "spread": 12.5,
       "details": "BOIS -12.5",
       "overUnder": 51.5
@@ -1598,6 +1784,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "ICCU Dome",
+      "city": "Pocatello, ID",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1615,6 +1803,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Homer Bryce Stadium",
+      "city": "Nacogdoches, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1632,6 +1822,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "Canvas Stadium",
+      "city": "Fort Collins, CO",
       "spread": 1.5,
       "details": "SDSU -1.5",
       "overUnder": 63.5
@@ -1649,8 +1841,10 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
-      "spread": -13.5,
-      "details": "OKST -13.5",
+      "venue": "Boone Pickens Stadium",
+      "city": "Stillwater, OK",
+      "spread": -12.5,
+      "details": "OKST -12.5",
       "overUnder": 55.5
     },
     {
@@ -1666,6 +1860,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Memorial Stadium (Clemson, SC)",
+      "city": "Clemson, SC",
       "spread": -2.5,
       "details": "CLEM -2.5",
       "overUnder": 49.5
@@ -1683,6 +1879,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Braly Stadium",
+      "city": "Florence, AL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1700,6 +1898,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "UC Davis Health Stadium",
+      "city": "Davis, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1717,6 +1917,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Memorial Stadium (Commerce, TX)",
+      "city": "Commerce, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1734,6 +1936,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Centennial Bank Stadium",
+      "city": "Jonesboro, AR",
       "spread": 2.5,
       "details": "GAST -2.5",
       "overUnder": 58.5
@@ -1751,6 +1955,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SEC Network",
+      "venue": "Kroger Field",
+      "city": "Lexington, KY",
       "spread": -10.5,
       "details": "UK -10.5",
       "overUnder": 51.5
@@ -1768,6 +1974,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ABC",
+      "venue": "DKR-Texas Memorial Stadium",
+      "city": "Austin, TX",
       "spread": -3,
       "details": "TEX -3",
       "overUnder": 53.5
@@ -1785,6 +1993,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Casino Del Sol Stadium",
+      "city": "Tucson, AZ",
       "spread": -10,
       "details": "ARIZ -10",
       "overUnder": 50.5
@@ -1802,6 +2012,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ACC Network",
+      "venue": "Kenan Stadium",
+      "city": "Chapel Hill, NC",
       "spread": -7.5,
       "details": "UNC -7.5",
       "overUnder": 46.5
@@ -1819,6 +2031,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "NBC",
+      "venue": "Camp Randall Stadium",
+      "city": "Madison, WI",
       "spread": 3,
       "details": "USC -3",
       "overUnder": 49.5
@@ -1836,6 +2050,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "UFCU Stadium",
+      "city": "San Marcos, TX",
       "spread": -12.5,
       "details": "TXST -12.5",
       "overUnder": 60.5
@@ -1853,6 +2069,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Yulman Stadium",
+      "city": "New Orleans, LA",
       "spread": 2.5,
       "details": "UTSA -2.5",
       "overUnder": 51.5
@@ -1870,6 +2088,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "University Stadium (NM)",
+      "city": "Albuquerque, NM",
       "spread": -4.5,
       "details": "UNM -4.5",
       "overUnder": 41.5
@@ -1887,6 +2107,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Rice-Eccles Stadium",
+      "city": "Salt Lake City, UT",
       "spread": -6.5,
       "details": "UTAH -6.5",
       "overUnder": 56.5
@@ -1904,6 +2126,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Houchens Industries-L.T. Smith Stadium",
+      "city": "Bowling Green, KY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1921,6 +2145,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Robert W. Plaster Stadium",
+      "city": "Springfield, MO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1938,6 +2164,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Johnny \"Red\" Floyd Stadium",
+      "city": "Murfreesboro, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1955,6 +2183,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Aggie Memorial Stadium",
+      "city": "Las Cruces, NM",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1972,6 +2202,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Hughes Stadium (MD)",
+      "city": "Baltimore, MD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -1989,6 +2221,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "DATCU Stadium",
+      "city": "Denton, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2006,6 +2240,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Bridgeforth Stadium",
+      "city": "Harrisonburg, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2023,6 +2259,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Jerry Richardson Stadium",
+      "city": "Charlotte, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2040,6 +2278,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Memorial Field (Dartmouth)",
+      "city": "Hanover, NH",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2057,6 +2297,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN",
+      "venue": "Acrisure Bounce House",
+      "city": "Orlando, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2074,6 +2316,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Hornet Stadium",
+      "city": "Sacramento, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2091,6 +2335,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Autzen Stadium",
+      "city": "Eugene, OR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2108,6 +2354,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Beaver Stadium",
+      "city": "University Park, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2125,6 +2373,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Rose Bowl",
+      "city": "Pasadena, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2142,6 +2392,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Galaxy Stadium",
+      "city": "Lubbock, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2159,6 +2411,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ACC Network",
+      "venue": "Carter-Finley Stadium",
+      "city": "Raleigh, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2176,6 +2430,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "JMA Wireless Dome",
+      "city": "Syracuse, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2193,6 +2449,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "Wallace Wade Stadium",
+      "city": "Durham, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2210,6 +2468,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Fox",
+      "venue": "Kinnick Stadium",
+      "city": "Iowa City, IA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2227,6 +2487,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
+      "venue": "SECU Stadium",
+      "city": "College Park, MD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2244,6 +2506,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Gillette Stadium",
+      "city": "Foxborough, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2261,6 +2525,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Raymond James Stadium",
+      "city": "Tampa, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2278,6 +2544,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Waldo Stadium",
+      "city": "Kalamazoo, MI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2295,6 +2563,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Bob Ford Field at Tom & Mary Casey Stadium",
+      "city": "Albany, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2312,6 +2582,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Centreville Bank Stadium",
+      "city": "Pawtucket, RI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2329,6 +2601,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Kenneth P. LaValle Stadium",
+      "city": "Stony Brook, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2346,6 +2620,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Brown Stadium (RI)",
+      "city": "Providence, RI",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2363,6 +2639,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Lawrence A. Wien Stadium",
+      "city": "New York, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2380,6 +2658,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Princeton Stadium",
+      "city": "Princeton, NJ",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2397,6 +2677,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Stambaugh Stadium",
+      "city": "Youngstown, OH",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2414,6 +2696,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Arute Field",
+      "city": "New Britain, CT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2431,6 +2715,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "NEC Front Row",
+      "venue": "W.B. Mason Stadium",
+      "city": "North Easton, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2448,6 +2734,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Duane Stadium",
+      "city": "North Andover, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2465,6 +2753,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Goodman Stadium",
+      "city": "Bethlehem, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2482,6 +2772,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, SportsNet PIT, NEC Front Row",
+      "venue": "Ralph F. DellaCamera Stadium",
+      "city": "West Haven, CT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2499,6 +2791,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "BTN",
+      "venue": "SHI Stadium",
+      "city": "Piscataway, NJ",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2516,6 +2810,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Fisher Stadium",
+      "city": "Easton, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2533,6 +2829,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SEC Network",
+      "venue": "Vaught-Hemingway Stadium",
+      "city": "Oxford, MS",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2550,6 +2848,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Kessler Stadium",
+      "city": "West Long Branch, NJ",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2567,6 +2867,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FloSports",
+      "venue": "Truist Stadium",
+      "city": "Greensboro, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2584,6 +2886,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MNMT, FloSports",
+      "venue": "Johnny Unitas Stadium",
+      "city": "Towson, MD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2601,6 +2905,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Andy Kerr Stadium",
+      "city": "Hamilton, NY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2618,6 +2924,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Fitton Field",
+      "city": "Worcester, MA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2635,6 +2943,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Bailey Memorial Stadium",
+      "city": "Clinton, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2652,6 +2962,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "YouTube",
+      "venue": "Spec Martin Memorial Stadium",
+      "city": "DeLand, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2669,6 +2981,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Phil Simms Stadium",
+      "city": "Morehead, KY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2686,6 +3000,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Finley Stadium",
+      "city": "Chattanooga, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2703,6 +3019,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "S.B. Ballard Stadium",
+      "city": "Norfolk, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2720,6 +3038,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "TNT",
+      "venue": "Folsom Field",
+      "city": "Boulder, CO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2737,6 +3057,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "SeatGeek Stadium",
+      "city": "Bridgeview, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2754,6 +3076,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hancock Stadium",
+      "city": "Normal, IL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2771,6 +3095,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "UNI-Dome",
+      "city": "Cedar Falls, IA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2788,6 +3114,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "William \"Dick\" Price Stadium",
+      "city": "Norfolk, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2805,6 +3133,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "O'Kelly-Riddick Stadium",
+      "city": "Durham, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2822,6 +3152,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Buccaneer Field",
+      "city": "Charleston, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2839,6 +3171,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Houck Field",
+      "city": "Cape Girardeau, MO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2856,6 +3190,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hunter Stadium",
+      "city": "Saint Charles, MO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2873,6 +3209,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Midco Sports Plus",
+      "venue": "O'Shaughnessy Stadium",
+      "city": "Saint Paul, MN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2890,6 +3228,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Paladin Stadium",
+      "city": "Greenville, SC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2907,6 +3247,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Gayle and Tom Benson Stadium",
+      "city": "San Antonio, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2924,6 +3266,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Center Parc Stadium",
+      "city": "Atlanta, GA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2941,6 +3285,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MW+",
+      "venue": "Falcon Stadium",
+      "city": "USAF Academy, CO",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2958,6 +3304,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Dowdy-Ficklen Stadium",
+      "city": "Greenville, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2975,6 +3323,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Scripps Sports",
+      "venue": "Bobcat Stadium (MT)",
+      "city": "Bozeman, MT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -2992,6 +3342,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Greater Zion Stadium",
+      "city": "Saint George, UT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3009,6 +3361,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Eccles Coliseum",
+      "city": "Cedar City, UT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3026,6 +3380,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Stewart Stadium",
+      "city": "Ogden, UT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3043,6 +3399,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hardy M. Graham Stadium",
+      "city": "Martin, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3060,6 +3418,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Homer Bryce Stadium",
+      "city": "Nacogdoches, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3077,6 +3437,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Rice-Totten Stadium",
+      "city": "Itta Bena, MS",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3094,6 +3456,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Five Star Stadium",
+      "city": "Macon, GA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3111,6 +3475,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Simmons Bank Field",
+      "city": "Pine Bluff, AR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3128,6 +3494,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Bragg Memorial Stadium",
+      "city": "Tallahassee, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3145,6 +3513,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Navarre Stadium",
+      "city": "Lake Charles, LA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3162,6 +3532,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hancock Whitney Stadium",
+      "city": "Mobile, AL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3179,6 +3551,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ACC Network",
+      "venue": "L&N Federal Credit Union Stadium",
+      "city": "Louisville, KY",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3196,6 +3570,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ABC",
+      "venue": "Mercedes-Benz Stadium",
+      "city": "Atlanta, GA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3213,6 +3589,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "Fox",
+      "venue": "LaVell Edwards Stadium",
+      "city": "Provo, UT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3230,6 +3608,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
+      "venue": "Amon G. Carter Stadium",
+      "city": "Fort Worth, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3247,6 +3627,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBS",
+      "venue": "Memorial Stadium (Bloomington, IN)",
+      "city": "Bloomington, IN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3264,6 +3646,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "USA Net",
+      "venue": "Maverik Stadium",
+      "city": "Logan, UT",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3281,6 +3665,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MW+",
+      "venue": "Fargodome",
+      "city": "Fargo, ND",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3298,6 +3684,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Legion Field (AL)",
+      "city": "Birmingham, AL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3315,6 +3703,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "William B. Greene Jr. Stadium",
+      "city": "Johnson City, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3332,6 +3722,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Williams Stadium (VA)",
+      "city": "Lynchburg, VA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3349,6 +3741,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Malone Stadium",
+      "city": "Monroe, LA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3366,6 +3760,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Nippert Stadium",
+      "city": "Cincinnati, OH",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3383,6 +3779,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Allegacy Federal Credit Union Stadium",
+      "city": "Winston-Salem, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3400,6 +3798,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "MW+",
+      "venue": "CEFCU Stadium",
+      "city": "San Jose, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3417,6 +3817,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Dana J. Dykhouse Stadium",
+      "city": "Brookings, SD",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3434,6 +3836,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Wildcat Stadium (TX)",
+      "city": "Abilene, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3451,6 +3855,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+, Scripps Sports",
+      "venue": "Roos Field",
+      "city": "Cheney, WA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3468,6 +3874,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Hillsboro Stadium",
+      "city": "Portland, OR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3485,6 +3893,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Torero Stadium",
+      "city": "San Diego, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3502,6 +3912,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Memorial Stadium (Commerce, TX)",
+      "city": "Commerce, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3519,6 +3931,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SEC Network",
+      "venue": "Memorial Stadium (Norman, OK)",
+      "city": "Norman, OK",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3536,6 +3950,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Estes Stadium",
+      "city": "Conway, AR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3553,6 +3969,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Allen E. Paulson Stadium",
+      "city": "Statesboro, GA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3570,6 +3988,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "FS1",
+      "venue": "Jack Trice Stadium",
+      "city": "Ames, IA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3587,6 +4007,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ACC Network",
+      "venue": "Doak Campbell Stadium",
+      "city": "Tallahassee, FL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3604,6 +4026,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Snapdragon Stadium",
+      "city": "San Diego, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3621,6 +4045,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Tarleton Memorial Stadium",
+      "city": "Stephenville, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3638,6 +4064,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Seibert Stadium",
+      "city": "Birmingham, AL",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3655,6 +4083,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "DKR-Texas Memorial Stadium",
+      "city": "Austin, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3672,6 +4102,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN2",
+      "venue": "Acrisure Stadium",
+      "city": "Pittsburgh, PA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3689,6 +4121,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Kenan Stadium",
+      "city": "Chapel Hill, NC",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3706,6 +4140,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "NBC",
+      "venue": "Los Angeles Memorial Coliseum",
+      "city": "Los Angeles, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3723,6 +4159,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "SEC Network",
+      "venue": "Donald W. Reynolds Razorback Stadium",
+      "city": "Fayetteville, AR",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3740,6 +4178,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "BTN",
+      "venue": "Memorial Stadium (Lincoln, NE)",
+      "city": "Lincoln, NE",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3757,6 +4197,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPNU",
+      "venue": "Simmons Bank Liberty Stadium",
+      "city": "Memphis, TN",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3774,6 +4216,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "ESPN+",
+      "venue": "Robert and Janet Vackar Stadium",
+      "city": "Edinburg, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3791,6 +4235,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "",
+      "venue": "Shell Energy Stadium",
+      "city": "Houston, TX",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3808,6 +4254,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CW",
+      "venue": "Albertsons Stadium",
+      "city": "Boise, ID",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3825,6 +4273,8 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "CBSSN",
+      "venue": "Allegiant Stadium",
+      "city": "Las Vegas, NV",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -3842,10 +4292,12 @@
       "homeScore": null,
       "awayScore": null,
       "tv": "USA Net",
+      "venue": "Valley Children's Stadium",
+      "city": "Fresno, CA",
       "spread": null,
       "details": "",
       "overUnder": null
     }
   ],
-  "signature": "6c6cd929"
+  "signature": "e6aed84b"
 }

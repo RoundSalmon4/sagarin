@@ -21,7 +21,7 @@ https://roundsalmon4.github.io/sagarin/
 - **Schedule Predictor tab** - pick a team and project every remaining game (winner,
   margin, win chance) with the rating method you choose, plus a projected final record.
   Schedules come from a prefetched ESPN file, so the browser never calls ESPN directly.
-- **TV Schedule tab** - the upcoming week's games with kickoff time and TV listing, defaulting
+- **TV Schedule tab** - the upcoming week's games with kickoff time, TV listing and site, defaulting
   to games involving an AP Top 25 team. Switch the scope to all games, a single conference or
   a team search, narrow by group (Power 4, Group of 6, independents), pick a time zone, and
   sort by kickoff or by watchability. A "Games to watch" board ranks the best matchups on

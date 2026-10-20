@@ -57,6 +57,9 @@ function gameFromEvent(ev) {
   if (!home || !away) return null;
   const odds = (c.odds || [])[0] || null;
   const status = (c.status && c.status.type) || {};
+  const venue = c.venue || null;
+  const addr = (venue && venue.address) || {};
+  const city = addr.city ? addr.city + (addr.state ? ", " + addr.state : "") : "";
   return {
     id: ev.id,
     date: ev.date,
@@ -70,6 +73,8 @@ function gameFromEvent(ev) {
     homeScore: home.score ? Number(home.score.value) : null,
     awayScore: away.score ? Number(away.score.value) : null,
     tv: tvName(c),
+    venue: venue ? venue.fullName || "" : "",
+    city: city,
     spread: odds && typeof odds.spread === "number" ? odds.spread : null,
     details: odds ? odds.details || "" : "",
     overUnder: odds && typeof odds.overUnder === "number" ? odds.overUnder : null

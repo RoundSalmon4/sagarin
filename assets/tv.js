@@ -15,12 +15,13 @@
   var TZ = { ET: "America/New_York", CT: "America/Chicago", MT: "America/Denver", PT: "America/Los_Angeles" };
 
   // Kickoff windows follow the usual TV slots, always judged in Eastern time:
-  // noon, 3:30, 7:30 and the late "After Dark" games.
+  // noon, 3:30, 7:30 and the late "After Dark" games. The start/end hours are
+  // Eastern hours used only to label each window in the chosen time zone.
   var WINDOWS = [
-    { key: "early", label: "Early afternoon" },
-    { key: "afternoon", label: "Afternoon" },
-    { key: "evening", label: "Evening" },
-    { key: "late", label: "Late night" }
+    { key: "early", label: "Early afternoon", start: 11, end: 15 },
+    { key: "afternoon", label: "Afternoon", start: 15, end: 19 },
+    { key: "evening", label: "Evening", start: 19, end: 22 },
+    { key: "late", label: "Late night", start: 22, end: 28 }
   ];
 
   var METHOD = "rating";
@@ -210,7 +211,8 @@
 
   function watchCell(g) {
     var s = score(g, curCtx);
-    return '<span class="watch-score">' + s.value + "</span>" + (s.reason ? ' <span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "");
+    return (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span> " : "") +
+      '<span class="watch-score">' + s.value + "</span>";
   }
 
   var COLUMNS = [
@@ -218,18 +220,46 @@
     { key: "date", label: "Kickoff", cls: "left", type: "str", cell: function (g) { return SG.esc(fmtWhen(g.date)); } },
     { key: "tv", label: "TV", cls: "left", type: "str", cell: function (g) { return g.tv ? SG.esc(g.tv) : '<span class="dim">TBD</span>'; } },
     { key: "away", label: "Away", cls: "left", type: "str", value: function (g) { return teamName(g.awayId, g.awayName); }, cell: function (g) { return teamCell(g.awayId, g.awayName); } },
-    { key: "site", label: "Site", cls: "left", type: "str", value: function (g) { return g.neutral ? "N" : ""; }, cell: function (g) { return g.neutral ? '<span class="dim">Neutral</span>' : ""; } },
+    { key: "site", label: "Site", cls: "left", type: "str", value: function (g) { return g.city || g.venue || ""; }, cell: function (g) {
+      var s = g.city || g.venue || "";
+      if (!s) return '<span class="dim">-</span>';
+      return (g.neutral ? '<span class="dim">N </span>' : "") + SG.esc(s);
+    } },
     { key: "home", label: "Home", cls: "left", type: "str", value: function (g) { return teamName(g.homeId, g.homeName); }, cell: function (g) { return teamCell(g.homeId, g.homeName); } },
     { key: "line", label: "Line", cls: "left", type: "str", cell: function (g) { return g.details || (g.spread !== null && g.spread !== undefined ? SG.esc(String(g.spread)) : '<span class="dim">-</span>'); } },
     { key: "watch", label: "Watch", value: function (g) { return score(g, curCtx).value; }, cell: watchCell }
   ];
 
   function localTime(iso) {
-    var d = new Date(iso);
+    var d = iso instanceof Date ? iso : new Date(iso);
     if (isNaN(d.getTime())) return "";
     var opts = { hour: "numeric", minute: "2-digit" };
     if (tz) opts.timeZone = TZ[tz];
     return d.toLocaleString(undefined, opts);
+  }
+
+  function etParts(d) {
+    var p = {};
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false
+    }).formatToParts(d).forEach(function (x) { p[x.type] = x.value; });
+    return { y: +p.year, mo: +p.month, d: +p.day, h: +p.hour % 24, mi: +p.minute };
+  }
+
+  // Instant whose Eastern wall clock is etHour:00 on the Eastern day of refIso.
+  // etHour may run past 24 for the late window that spills into the next day.
+  function etInstant(refIso, etHour) {
+    var ref = refIso instanceof Date ? refIso : new Date(refIso);
+    var et = etParts(ref);
+    var dayOff = Math.floor(etHour / 24), h = ((etHour % 24) + 24) % 24;
+    var wall = Date.UTC(et.y, et.mo - 1, et.d + dayOff, h, 0, 0);
+    var gp = etParts(new Date(wall));
+    return new Date(wall + (wall - Date.UTC(gp.y, gp.mo - 1, gp.d, gp.h, gp.mi, 0)));
+  }
+
+  function windowRange(w, refIso) {
+    return localTime(etInstant(refIso, w.start)) + " - " + localTime(etInstant(refIso, w.end));
   }
 
   // Show the best few games in each kickoff window so the picks are spread
@@ -247,12 +277,14 @@
     });
     var html = "";
     WINDOWS.forEach(function (w) {
-      var arr = (byWin[w.key] || []).slice().sort(function (a, b) {
+      var all = byWin[w.key] || [];
+      if (!all.length) return;
+      var arr = all.slice().sort(function (a, b) {
         return score(b, curCtx).value - score(a, curCtx).value;
       }).slice(0, PER_WINDOW);
-      if (!arr.length) return;
+      var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
       html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
-        ' <span class="dim">' + SG.esc(localTime(arr[0].date)) + "</span></h4><div class=\"watch-grid\">";
+        ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
       html += arr.map(function (g) {
         var s = score(g, curCtx);
         var away = teamName(g.awayId, g.awayName);
