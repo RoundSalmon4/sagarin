@@ -41,6 +41,8 @@
 
   var activeIndex = -1;
   var schedSort = { key: "date", dir: 1 };
+  var confSort = { key: "pos", dir: 1 };
+  var schedMode = "team";
 
   function listEl() { return document.getElementById("schedTeamList"); }
 
@@ -220,6 +222,137 @@
     return '<div class="chip"><span class="k">' + SG.esc(k) + '</span><span class="v">' + SG.esc(v) + "</span></div>";
   }
 
+  function fbsTeams() {
+    return SG.state.data.teams.filter(function (t) { return t.level === "A"; });
+  }
+
+  function confName(c) {
+    return SG.mergeConf ? SG.mergeConf(c) : c;
+  }
+
+  function fillConfPick() {
+    var sel = document.getElementById("schedConfPick");
+    if (!sel || !SG.state.data) return;
+    var cur = sel.value;
+    var have = {};
+    fbsTeams().forEach(function (t) {
+      var c = confName(t.conference);
+      if (c && c !== "I-A IND.") have[c] = true;
+    });
+    var names = [];
+    SG.state.data.conferences.forEach(function (c) {
+      var m = confName(c.name);
+      if (have[m] && names.indexOf(m) === -1) names.push(m);
+    });
+    Object.keys(have).forEach(function (c) { if (names.indexOf(c) === -1) names.push(c); });
+    sel.innerHTML = names.map(function (n) {
+      return '<option value="' + SG.esc(n) + '">' + SG.esc(n) + "</option>";
+    }).join("");
+    if (cur && names.indexOf(cur) !== -1) sel.value = cur;
+  }
+
+  function recVal(w, l) {
+    var tot = w + l;
+    return tot ? w / tot : -1;
+  }
+
+  function renderConference() {
+    var note = document.getElementById("schedConfNote");
+    var summary = document.getElementById("schedConfSummary");
+    var table = document.getElementById("schedConfTable");
+    var tbody = table.tBodies[0];
+    if (!SG.state.data) return;
+    var conf = document.getElementById("schedConfPick").value;
+    var method = document.getElementById("schedMethod").value;
+    if (!conf) {
+      note.textContent = "Pick a conference.";
+      summary.innerHTML = "";
+      tbody.innerHTML = "";
+      return;
+    }
+    if (!SG.projectedStandings) {
+      note.textContent = "The projection engine is not available yet.";
+      summary.innerHTML = "";
+      tbody.innerHTML = "";
+      return;
+    }
+
+    var st = SG.projectedStandings(method);
+    var list = (st.order && st.order[conf]) || [];
+    if (!list.length) {
+      note.textContent = "No teams found for " + conf + ".";
+      summary.innerHTML = "";
+      tbody.innerHTML = "";
+      return;
+    }
+    var ccg = st.ccgs && st.ccgs[conf];
+
+    var columns = [
+      { key: "pos", label: "#", cell: function (r) { return String(r.pos); }, value: function (r) { return r.pos; } },
+      { key: "team", label: "Team", cls: "left", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } },
+      { key: "rating", label: "Rating", cell: function (r) { return SG.esc(r.rating); }, value: function (r) { return r.ratingVal; } },
+      { key: "current", label: "Current", cell: function (r) { return r.current; }, value: function (r) { return r.currentVal; } },
+      { key: "conf", label: "Proj conf", cell: function (r) { return r.conf; }, value: function (r) { return r.confVal; } },
+      { key: "overall", label: "Proj overall", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
+      { key: "title", label: "Title game", cls: "left", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
+    ];
+
+    var rows = list.map(function (t, i) {
+      var fin = st.final[t.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
+      var titleText = "", titleHtml = "";
+      if (ccg && ccg.winner.team === t.team) { titleText = "Champion"; titleHtml = '<span class="win">Champion</span>'; }
+      else if (ccg && ccg.loser.team === t.team) { titleText = "Runner-up"; titleHtml = '<span class="dim">Runner-up</span>'; }
+      return {
+        pos: i + 1,
+        team: t.team,
+        rating: SG.fmt(t[method]),
+        ratingVal: t[method],
+        current: SG.esc(SG.rec(t.w, t.l)),
+        currentVal: recVal(t.w, t.l),
+        conf: SG.esc(SG.rec(fin.cw, fin.cl)),
+        confVal: recVal(fin.cw, fin.cl),
+        overall: SG.esc(SG.rec(fin.ow, fin.ol)),
+        overallVal: recVal(fin.ow, fin.ol),
+        title: titleHtml,
+        titleText: titleText
+      };
+    });
+
+    SG.buildHead(table, columns, confSort, function (key) {
+      SG.toggleSort(confSort, key, columns);
+      renderConference();
+    });
+    SG.fillBody(table, columns, SG.sortRows(rows, columns, confSort));
+
+    note.textContent =
+      "Projected with " + SG.methodLabel(method) + ". Played games use the real result and the rest are predicted. " +
+      "The projected conference title game is folded into the projected conference and overall records.";
+
+    summary.innerHTML =
+      chip("Conference", conf) +
+      chip("Method", SG.methodLabel(method)) +
+      (ccg ? chip("Projected champion", ccg.winner.team) + chip("Title game", ccg.matchup.a.team + " vs " + ccg.matchup.b.team) : "");
+  }
+
+  function setMode(m) {
+    schedMode = m;
+    var segs = document.querySelectorAll("#schedMode .seg");
+    for (var i = 0; i < segs.length; i++) {
+      segs[i].classList.toggle("active", segs[i].dataset.mode === m);
+    }
+    var teamView = document.getElementById("schedTeamView");
+    var confView = document.getElementById("schedConfView");
+    if (m === "conference") {
+      teamView.classList.add("hidden");
+      confView.classList.remove("hidden");
+      renderConference();
+    } else {
+      confView.classList.add("hidden");
+      teamView.classList.remove("hidden");
+      if (currentName()) load();
+    }
+  }
+
   var searchTimer = null;
 
   function items() {
@@ -269,6 +402,7 @@
 
   function init() {
     fillConfFilter();
+    fillConfPick();
     renderList(false);
     var input = document.getElementById("schedSearch");
     var list = listEl();
@@ -283,7 +417,14 @@
       renderList(!listEl().classList.contains("hidden"));
       if (currentName()) load();
     });
-    document.getElementById("schedMethod").addEventListener("change", function () { load(); });
+    document.getElementById("schedMode").addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest(".seg") : null;
+      if (b && b.dataset.mode) setMode(b.dataset.mode);
+    });
+    document.getElementById("schedConfPick").addEventListener("change", renderConference);
+    document.getElementById("schedMethod").addEventListener("change", function () {
+      if (schedMode === "conference") renderConference(); else load();
+    });
     document.getElementById("schedReload").addEventListener("click", function () { if (currentName()) load(); });
     document.addEventListener("click", onDocClick);
     if (currentName()) load();
@@ -293,8 +434,10 @@
     init: init,
     render: function () {
       fillConfFilter();
+      fillConfPick();
       renderList(false);
-      if (currentName()) load();
+      if (schedMode === "conference") renderConference();
+      else if (currentName()) load();
     }
   };
 })();

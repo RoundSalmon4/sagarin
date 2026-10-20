@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sagarin College Football Ratings Explorer</title>
-  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a schedule predictor and CFP bracket builder.">
+  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a record predictor for teams and conferences, a TV schedule, and a CFP bracket builder.">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
       <button type="button" class="tab active" data-tab="teams">Teams</button>
       <button type="button" class="tab" data-tab="conferences">Conferences</button>
       <button type="button" class="tab" data-tab="predictions">Predictions</button>
-      <button type="button" class="tab" data-tab="schedule">Schedule Predictor</button>
+      <button type="button" class="tab" data-tab="schedule">Record Predictor</button>
       <button type="button" class="tab" data-tab="tv">TV Schedule</button>
       <button type="button" class="tab" data-tab="playoff">Playoff Predictor</button>
       <button type="button" class="tab" data-tab="matchup">Matchup</button>
@@ -105,13 +105,10 @@
 
     <section id="tab-schedule" class="panel hidden">
       <div class="toolbar">
-        <div class="combo">
-          <input id="schedSearch" type="text" placeholder="Type a team name" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="schedTeamList">
-          <div id="schedTeamList" class="combo-list hidden" role="listbox"></div>
+        <div class="segmented" id="schedMode">
+          <button type="button" class="seg active" data-mode="team">Team</button>
+          <button type="button" class="seg" data-mode="conference">Conference</button>
         </div>
-        <select id="schedConf" aria-label="Filter by conference">
-          <option value="">All conferences</option>
-        </select>
         <label class="inline-label">Rating method
           <select id="schedMethod">
             <option value="rating">Overall RATING</option>
@@ -121,15 +118,39 @@
             <option value="strongRecent">STRONG_RECENT</option>
           </select>
         </label>
-        <button id="schedReload" type="button" class="btn">Reload</button>
       </div>
-      <p class="note" id="schedNote"></p>
-      <div id="schedSummary" class="summary"></div>
-      <div class="table-scroll">
-        <table id="schedTable" class="data-table">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
+      <div id="schedTeamView">
+        <div class="toolbar">
+          <div class="combo">
+            <input id="schedSearch" type="text" placeholder="Type a team name" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="schedTeamList">
+            <div id="schedTeamList" class="combo-list hidden" role="listbox"></div>
+          </div>
+          <select id="schedConf" aria-label="Filter by conference">
+            <option value="">All conferences</option>
+          </select>
+          <button id="schedReload" type="button" class="btn">Reload</button>
+        </div>
+        <p class="note" id="schedNote"></p>
+        <div id="schedSummary" class="summary"></div>
+        <div class="table-scroll">
+          <table id="schedTable" class="data-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="schedConfView" class="hidden">
+        <div class="toolbar">
+          <select id="schedConfPick" aria-label="Conference"></select>
+        </div>
+        <p class="note" id="schedConfNote"></p>
+        <div id="schedConfSummary" class="summary"></div>
+        <div class="table-scroll">
+          <table id="schedConfTable" class="data-table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -250,11 +271,11 @@
         </label>
       </div>
       <div class="matchup-controls">
-        <label>Home team
+        <label>Away team
           <select id="teamA"></select>
         </label>
         <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
-        <label>Away team
+        <label>Home team
           <select id="teamB"></select>
         </label>
       </div>

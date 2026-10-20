@@ -1,8 +1,8 @@
 # Sagarin ratings explorer
 
 Turns Jeff Sagarin's college football ratings page (cfsend.htm) into something you can
-actually click around: sortable tables, conference rankings, a schedule predictor, a TV
-watch list, a CFP field builder, and a head to head tool.
+actually click around: sortable tables, conference rankings, a record predictor (team or
+conference), a TV watch list, a CFP field builder, and a head to head tool.
 
 Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there).
 
@@ -18,9 +18,13 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
 - **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
   regular block, the experimental home/away block and the eigenvector block. Sortable and
   searchable.
-- **Schedule Predictor tab** - pick a team and project every remaining game (winner,
+- **Record Predictor tab** - pick a team to project every remaining game (winner,
   margin, win chance) with the rating method you choose, plus a projected final record.
-  Schedules come from a prefetched ESPN file, so the browser never calls ESPN directly.
+  Switch to the Conference view to see every team in a conference with current, projected
+  conference and projected overall records, including the projected conference title game
+  (played at a neutral site where the league does it there, otherwise at the higher seed
+  and folded into records), with the projected champion and runner-up marked. Schedules
+  come from a prefetched ESPN file, so the browser never calls ESPN directly.
 - **TV Schedule tab** - the upcoming week's games with kickoff time, TV listing and site, defaulting
   to games involving an AP Top 25 team. Switch the scope to all games, a single conference or
   a team search, narrow by group (Power 4, Group of 6, independents), pick a time zone, and
@@ -45,7 +49,7 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected title games 10,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
-- **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
+- **Matchup tab** - choose an away team and a home team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.
 - Every table sorts on any column (click a header to toggle direction).

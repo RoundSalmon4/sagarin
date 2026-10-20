@@ -640,4 +640,15 @@
     if (!SG.state.data) return null;
     return buildField(format || view.format, method || view.method);
   };
+
+  SG.mergeConf = mergeConf;
+
+  // Exposed so the record predictor can project a whole conference at once.
+  SG.projectedStandings = function (method) {
+    var reg = projectedRecords(method);
+    var ccgs = ccgOutcomes(reg, method, false);
+    var fin = cloneRecords(reg);
+    foldCcg(fin, ccgs);
+    return { reg: reg, final: fin, ccgs: ccgs, order: conferenceOrder(method, reg) };
+  };
 })();

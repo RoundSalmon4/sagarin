@@ -380,33 +380,33 @@
     a.innerHTML = html;
     b.innerHTML = html;
     var ranked = SG.state.data.teams.slice().sort(function (x, y) { return x.rank - y.rank; });
-    if (ranked[0]) a.value = ranked[0].team;
-    if (ranked[1]) b.value = ranked[1].team;
+    if (ranked[1]) a.value = ranked[1].team;
+    if (ranked[0]) b.value = ranked[0].team;
   };
 
   SG.renderMatchup = function () {
     if (!SG.state.data) return;
-    var a = SG.teamByName(document.getElementById("teamA").value);
-    var b = SG.teamByName(document.getElementById("teamB").value);
+    var away = SG.teamByName(document.getElementById("teamA").value);
+    var home = SG.teamByName(document.getElementById("teamB").value);
     var method = document.getElementById("methodSelect").value;
-    if (!a || !b) return;
-    var ra = a[method];
-    var rb = b[method];
+    if (!away || !home) return;
+    var rAway = away[method];
+    var rHome = home[method];
     var edge = SG.homeEdge(method);
-    var diff = ra - rb;
+    var diff = rHome - rAway;
     var scenarios = [
-      { title: a.team + " at home", spread: diff + edge },
+      { title: away.team + " at " + home.team, spread: diff + edge },
       { title: "Neutral site", spread: diff }
     ];
     document.getElementById("matchupResult").innerHTML = scenarios.map(function (s, i) {
-      var favIsA = s.spread >= 0;
-      var fav = favIsA ? a : b;
-      var probA = SG.normCdf(s.spread / SG.SIGMA);
+      var homeFav = s.spread >= 0;
+      var fav = homeFav ? home : away;
+      var probHome = SG.normCdf(s.spread / SG.SIGMA);
       var card = '<div class="match-card">' +
         "<h3>" + SG.esc(s.title) + "</h3>" +
         '<div class="fav">' + SG.esc(fav.team) + " favored</div>" +
-        '<div class="margin">' + (favIsA ? "+" : "-") + SG.fmt(Math.abs(s.spread), 1) + "</div>" +
-        '<div class="prob">Win chance: ' + SG.esc(a.team) + " " + pctText(probA) + " / " + SG.esc(b.team) + " " + pctText(1 - probA) + "</div>" +
+        '<div class="margin">' + (homeFav ? "+" : "-") + SG.fmt(Math.abs(s.spread), 1) + "</div>" +
+        '<div class="prob">Win chance: ' + SG.esc(away.team) + " " + pctText(1 - probHome) + " / " + SG.esc(home.team) + " " + pctText(probHome) + "</div>" +
         "</div>";
       return i === 1 ? '<div class="matchup-gap"></div>' + card : card;
     }).join("");
