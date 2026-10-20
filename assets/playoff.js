@@ -16,7 +16,7 @@
   // published resume ratings, which dock points for every loss.
   var AT_LARGE_LOSS_PENALTY = 5;
 
-  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null };
+  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, fieldSort: { key: "seed", dir: 1 } };
 
   function mergeConf(c) {
     if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
@@ -362,6 +362,12 @@
     document.getElementById("bracket").innerHTML = html;
   }
 
+  // Sort key for a win-loss record: win percentage first, then more wins.
+  function recSortVal(w, l) {
+    var total = w + l;
+    return total ? (w / total) * 1000 + w : -1;
+  }
+
   function renderField(field) {
     var table = document.getElementById("fieldTable");
     var columns = [
@@ -369,10 +375,10 @@
       { key: "team", label: "Team", cls: "left", type: "str",
         cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
-      { key: "cw", label: "Conf (proj)", cls: "left", type: "str" },
-      { key: "proj", label: "Proj", cls: "left", type: "str" },
+      { key: "cw", label: "Conf (proj)", cls: "left", cell: function (r) { return SG.esc(r.cw); }, value: function (r) { return r.cwV; } },
+      { key: "proj", label: "Proj", cls: "left", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
       { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true },
-      { key: "now", label: "Now", cls: "left", type: "str" },
+      { key: "now", label: "Now", cls: "left", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
     var std = finalRecords(view.method, view.format);
@@ -385,14 +391,20 @@
         team: t.team,
         conf: mergeConf(t.conference),
         cw: r && (r.cw + r.cl) ? r.cw + "-" + r.cl : "-",
+        cwV: r && (r.cw + r.cl) ? recSortVal(r.cw, r.cl) : -1,
         proj: r ? r.ow + "-" + r.ol : "-",
+        projV: r ? recSortVal(r.ow, r.ol) : -1,
         rating: t[view.method],
         now: t.w + "-" + t.l,
+        nowV: recSortVal(t.w, t.l),
         bid: field.bid[t.team] || "At-large"
       });
     }
-    SG.buildHead(table, columns, { key: "seed", dir: 1 }, function () {});
-    SG.fillBody(table, columns, rows);
+    SG.buildHead(table, columns, view.fieldSort, function (key) {
+      SG.toggleSort(view.fieldSort, key, columns);
+      renderField(field);
+    });
+    SG.fillBody(table, columns, SG.sortRows(rows, columns, view.fieldSort));
   }
 
   function ccgTeam(t, isWinner, method, showResults, pct) {

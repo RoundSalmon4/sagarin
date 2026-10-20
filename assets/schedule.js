@@ -40,6 +40,7 @@
   }
 
   var activeIndex = -1;
+  var schedSort = { key: "date", dir: 1 };
 
   function listEl() { return document.getElementById("schedTeamList"); }
 
@@ -131,14 +132,14 @@
 
     var edge = SG.homeEdge(method);
     var columns = [
-      { key: "date", label: "Date", cls: "left", type: "str" },
-      { key: "site", label: "Site", cls: "left", type: "str" },
-      { key: "opp", label: "Opponent", cls: "left", type: "str", cell: function (r) { return (r.oppName ? SG.teamLogo(r.oppName) : "") + SG.esc(r.opp) + (r.oppName ? SG.apBadge(r.oppName) : ""); } },
-      { key: "result", label: "Result", cls: "left", type: "str", cell: function (r) { return r.result; } },
-      { key: "oppRating", label: "Opp RATING" },
-      { key: "margin", label: "Proj margin" },
-      { key: "winPct", label: "Win%", cell: function (r) { return r.winPct === null || r.winPct === undefined ? "" : (r.winPct * 100).toFixed(0) + "%"; } },
-      { key: "pick", label: "Projected", cls: "left", type: "str", cell: function (r) { return r.pick; } }
+      { key: "date", label: "Date", cls: "left", type: "str", cell: function (r) { return SG.esc(r.date); }, value: function (r) { return r.dateRaw; } },
+      { key: "site", label: "Site", cls: "left", type: "str", cell: function (r) { return SG.esc(r.site); } },
+      { key: "opp", label: "Opponent", cls: "left", type: "str", cell: function (r) { return (r.oppName ? SG.teamLogo(r.oppName) : "") + SG.esc(r.opp) + (r.oppName ? SG.apBadge(r.oppName) : ""); }, value: function (r) { return r.oppName || r.opp; } },
+      { key: "result", label: "Result", cls: "left", type: "str", cell: function (r) { return r.result; }, value: function (r) { return r.resultText; } },
+      { key: "oppRating", label: "Opp RATING", cell: function (r) { return SG.esc(r.oppRating); }, value: function (r) { return r.oppRatingVal; } },
+      { key: "margin", label: "Proj margin", cell: function (r) { return SG.esc(r.margin); }, value: function (r) { return r.marginVal; } },
+      { key: "winPct", label: "Win%", cell: function (r) { return r.winPct === null || r.winPct === undefined ? "" : (r.winPct * 100).toFixed(0) + "%"; }, value: function (r) { return r.winPct === null || r.winPct === undefined ? -1 : r.winPct; } },
+      { key: "pick", label: "Projected", cls: "left", type: "str", cell: function (r) { return r.pick; }, value: function (r) { return r.pickText; } }
     ];
 
     var rows = [];
@@ -155,14 +156,19 @@
 
       var row = {
         date: fmtDate(g.date),
+        dateRaw: g.date,
         site: neutral ? "Neutral" : (isHome ? "vs" : "@"),
         opp: oppTeam ? oppTeam.displayName : oppId,
         oppName: oppSag ? oppSag.team : "",
         result: "",
+        resultText: "",
         oppRating: oppSag ? SG.fmt(oppSag[method]) : "nr",
+        oppRatingVal: oppSag ? oppSag[method] : -Infinity,
         margin: ".",
+        marginVal: -Infinity,
         winPct: null,
-        pick: ""
+        pick: "",
+        pickText: ""
       };
 
       if (g.completed && g.homeScore !== null && g.awayScore !== null) {
@@ -170,12 +176,15 @@
         var theirs = isHome ? g.awayScore : g.homeScore;
         var won = mine > theirs;
         row.result = '<span class="' + (won ? "win" : "loss") + '">' + (won ? "W" : "L") + " " + mine + "-" + theirs + "</span>";
+        row.resultText = (won ? "W " : "L ") + mine + "-" + theirs;
       } else if (oppSag && teamSag) {
         var spread = teamSag[method] - oppSag[method] + (neutral ? 0 : (isHome ? edge : -edge));
         var wp = SG.normCdf(spread / SG.SIGMA);
         row.margin = (spread >= 0 ? "+" : "-") + SG.fmt(Math.abs(spread), 1);
+        row.marginVal = spread;
         row.winPct = wp;
-        row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(wp >= 0.5 ? name : (oppSag ? oppSag.team : row.opp)) + "</span>";
+        row.pickText = wp >= 0.5 ? name : (oppSag ? oppSag.team : row.opp);
+        row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(row.pickText) + "</span>";
         remaining++;
         if (wp >= 0.5) projWins++;
       } else {
@@ -185,8 +194,12 @@
       rows.push(row);
     });
 
-    SG.buildHead(document.getElementById("schedTable"), columns, { key: "", dir: 1 }, function () {});
-    SG.fillBody(document.getElementById("schedTable"), columns, rows);
+    var schedTable = document.getElementById("schedTable");
+    SG.buildHead(schedTable, columns, schedSort, function (key) {
+      SG.toggleSort(schedSort, key, columns);
+      load();
+    });
+    SG.fillBody(schedTable, columns, SG.sortRows(rows, columns, schedSort));
 
     note.textContent =
       "Home edge for " + SG.methodLabel(method) + " is " + SG.fmt(edge) +
