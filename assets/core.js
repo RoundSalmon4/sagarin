@@ -301,8 +301,7 @@
     var diff = ra - rb;
     var scenarios = [
       { title: "Neutral site", spread: diff },
-      { title: a.team + " at home", spread: diff + edge },
-      { title: b.team + " at home", spread: diff - edge }
+      { title: a.team + " at home", spread: diff + edge }
     ];
     document.getElementById("matchupResult").innerHTML = scenarios.map(function (s) {
       var favIsA = s.spread >= 0;
