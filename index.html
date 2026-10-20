@@ -28,6 +28,7 @@
       <button type="button" class="tab" data-tab="conferences">Conferences</button>
       <button type="button" class="tab" data-tab="predictions">Predictions</button>
       <button type="button" class="tab" data-tab="schedule">Schedule Predictor</button>
+      <button type="button" class="tab" data-tab="tv">TV Schedule</button>
       <button type="button" class="tab" data-tab="playoff">Playoff Predictor</button>
       <button type="button" class="tab" data-tab="matchup">Matchup</button>
     </div>
@@ -132,6 +133,53 @@
       </div>
     </section>
 
+    <section id="tab-tv" class="panel hidden">
+      <div class="toolbar">
+        <div class="segmented" id="tvScope">
+          <button type="button" class="seg" data-scope="all">All games</button>
+          <button type="button" class="seg active" data-scope="ap">AP Top 25</button>
+          <button type="button" class="seg" data-scope="conf">Conference</button>
+          <button type="button" class="seg" data-scope="team">Team</button>
+        </div>
+        <select id="tvConf" class="hidden" aria-label="Filter by conference">
+          <option value="">All conferences</option>
+        </select>
+        <select id="tvGroup" aria-label="Filter by group">
+          <option value="">All groups</option>
+          <option value="P4">Power 4</option>
+          <option value="G6">Group of 6</option>
+          <option value="IND">FBS independents</option>
+        </select>
+        <input id="tvSearch" type="search" class="hidden" placeholder="Search team" autocomplete="off">
+        <label class="inline-label">Sort
+          <select id="tvSort">
+            <option value="watch">Watchability</option>
+            <option value="kickoff">Kickoff</option>
+          </select>
+        </label>
+        <label class="inline-label">Time zone
+          <select id="tvTz">
+            <option value="">Local</option>
+            <option value="ET">Eastern</option>
+            <option value="CT">Central</option>
+            <option value="MT">Mountain</option>
+            <option value="PT">Pacific</option>
+          </select>
+        </label>
+        <span id="tvCount" class="count"></span>
+      </div>
+      <p class="note" id="tvNote"></p>
+      <h3 class="section-title">Games to watch</h3>
+      <div id="tvWatch" class="watch-board"></div>
+      <h3 class="section-title">Schedule</h3>
+      <div class="table-scroll">
+        <table id="tvTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
     <section id="tab-playoff" class="panel hidden">
       <div class="toolbar">
         <span class="toolbar-label">Format</span>
@@ -205,9 +253,11 @@
 
   <script src="assets/parser.js"></script>
   <script src="assets/team-alias.js"></script>
+  <script src="assets/rivalries.js"></script>
   <script src="assets/core.js"></script>
   <script src="assets/predictions.js"></script>
   <script src="assets/schedule.js"></script>
+  <script src="assets/tv.js"></script>
   <script src="assets/playoff.js"></script>
 </body>
 </html>

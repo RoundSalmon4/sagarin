@@ -389,4 +389,10 @@
   }
 
   SG.state.modules.playoff = { init: init, render: render };
+
+  // Exposed so the TV tab can measure what a game does to the projected field.
+  SG.playoffField = function (format, method) {
+    if (!SG.state.data) return null;
+    return buildField(format || view.format, method || view.method);
+  };
 })();

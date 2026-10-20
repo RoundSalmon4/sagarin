@@ -10,6 +10,7 @@
   SG.ESPN_DATA_URL = "data/espn-games.json";
   SG.LOGOS_URL = "data/logos.json";
   SG.AP_URL = "data/ap-poll.json";
+  SG.TV_URL = "data/tv-games.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ESPN_BASE = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football";
@@ -20,6 +21,7 @@
     espn: null,
     logos: null,
     ap: null,
+    tv: null,
     sagToEspn: null,
     espnIdToSag: null,
     teamSort: { key: "rank", dir: 1 },
@@ -506,9 +508,10 @@
       loadJson(SG.DATA_URL),
       loadJson(SG.ESPN_DATA_URL).catch(function () { return null; }),
       loadJson(SG.LOGOS_URL).catch(function () { return null; }),
-      loadJson(SG.AP_URL).catch(function () { return null; })
+      loadJson(SG.AP_URL).catch(function () { return null; }),
+      loadJson(SG.TV_URL).catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], tv: res[4] };
     });
   }
 
@@ -528,10 +531,13 @@
       var json = res.data;
       var ratingsChanged = !SG.state.data || json.signature !== SG.state.data.signature;
       var apChanged = (res.ap && res.ap.signature) !== SG.state.apSig;
+      var tvChanged = (res.tv && res.tv.signature) !== SG.state.tvSig;
       SG.state.espn = res.espn;
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.state.tv = res.tv;
+      SG.state.tvSig = res.tv && res.tv.signature;
       if (ratingsChanged) {
         var changed = !!SG.state.data;
         SG.state.data = json;
@@ -546,7 +552,8 @@
         SG.renderStatus(changed);
       } else {
         SG.buildMapping();
-        if (apChanged) { SG.renderTeams(); SG.refreshModules(); }
+        if (apChanged) SG.renderTeams();
+        if (apChanged || tvChanged) SG.refreshModules();
         if (manual) document.getElementById("dataStatus").textContent += " - no changes";
       }
     }).catch(function (err) {
@@ -585,6 +592,8 @@
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.state.tv = res.tv;
+      SG.state.tvSig = res.tv && res.tv.signature;
       SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();

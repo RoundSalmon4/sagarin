@@ -21,6 +21,15 @@ https://roundsalmon4.github.io/sagarin/
 - **Schedule Predictor tab** - pick a team and project every remaining game (winner,
   margin, win chance) with the rating method you choose, plus a projected final record.
   Schedules come from a prefetched ESPN file, so the browser never calls ESPN directly.
+- **TV Schedule tab** - the upcoming week's games with kickoff time and TV listing, defaulting
+  to games involving an AP Top 25 team. Switch the scope to all games, a single conference or
+  a team search, narrow by group (Power 4, Group of 6, independents), pick a time zone, and
+  sort by kickoff or by watchability. A "Games to watch" board ranks the best matchups on
+  projected closeness (market line when posted, otherwise the Sagarin margin), combined team
+  rating, what the game could do to the projected playoff field, and a curated rivalry list,
+  then labels each game from Background through Must watch. The board is split into the four
+  usual kickoff windows (early afternoon, afternoon, evening, late night, judged in Eastern
+  time), showing the best few per window so the picks are not all in one slot.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest). Draws either the current 12-team bracket or the proposed
@@ -54,6 +63,10 @@ the ESPN CDN into `assets/logos/` and each conference's logo into `assets/conf-l
 light and a dark version of each), then writes a small `data/logos.json` manifest. Logos
 rarely change, so the script only downloads the ones it does not already have.
 
+Finally the Action runs `scripts/fetch-tv.js`, which pulls the upcoming week (plus a buffer
+week) of the ESPN scoreboard (FBS and FCS) into `data/tv-games.json` for the TV Schedule
+tab: kickoff time, TV listing and the betting line for each game.
+
 The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
 rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
 (`.github/workflows/update-ap.yml`). The AP poll is released Sunday afternoons at 2 p.m.
@@ -74,9 +87,11 @@ it rebuilds in place, so a tab left open picks up new numbers on its own. There 
 index.html                the page
 assets/parser.js          shared Sagarin parser, works in node and the browser
 assets/team-alias.js      Sagarin to ESPN team name aliases, shared with the scripts
+assets/rivalries.js       curated rivalry pairs for the games-to-watch score
 assets/core.js            state, theme, table engine, teams/conferences/matchup
 assets/predictions.js     Predictions_with_Totals_and_Moneylines views
 assets/schedule.js        schedule predictor, reads the ESPN data file
+assets/tv.js              TV schedule and games-to-watch ranking
 assets/playoff.js         CFP field, 12/24 brackets, simulation
 assets/styles.css         styling, light and dark themes
 assets/logos/             team logos downloaded from the ESPN CDN
@@ -85,10 +100,12 @@ data/ratings.json         parsed Sagarin snapshot
 data/espn-games.json      prefetched ESPN teams and games
 data/logos.json           manifest of which logos are on file
 data/ap-poll.json         AP Top 25 snapshot
+data/tv-games.json        upcoming games with TV and lines
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm
 scripts/fetch-espn.js     fetch ESPN teams + schedules
 scripts/fetch-logos.js    download team logos
 scripts/fetch-ap.js       fetch the AP Top 25
+scripts/fetch-tv.js       fetch the upcoming TV schedule
 .github/workflows/        Sunday refresh, plus the AP poll refresh
 ```
 
@@ -110,11 +127,12 @@ node scripts/fetch-sagarin.js
 node scripts/fetch-espn.js
 node scripts/fetch-logos.js
 node scripts/fetch-ap.js
+node scripts/fetch-tv.js
 ```
 
 `fetch-sagarin.js` takes `--source URL` and `--out PATH`; `fetch-espn.js` takes `--out`
 and `--concurrency`; `fetch-logos.js` takes `--force` and `--concurrency`; `fetch-ap.js`
-takes `--out`.
+takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`.
 
 ## Notes
 
