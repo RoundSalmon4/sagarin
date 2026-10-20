@@ -196,6 +196,7 @@
     var projFinal = (teamSag.w + projWins) + "-" + (teamSag.l + (remaining - projWins));
     document.getElementById("schedSummary").innerHTML =
       chip("Team", name) +
+      chip("Rating", SG.fmt(teamSag[method])) +
       chip("Current record", rec) +
       chip("Games left", String(remaining)) +
       chip("Projected wins left", String(projWins)) +
