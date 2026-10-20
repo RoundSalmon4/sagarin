@@ -38,7 +38,7 @@ https://roundsalmon4.github.io/sagarin/
   regular-season champion. Draws either the current 12-team bracket or the proposed 24-team
   bracket, seeds only by default with an option to show predicted results, plus a Monte
   Carlo run for championship odds, and lists the projected conference championship matchups
-  under the field.
+  under the field (with the winner and win odds in the predicted-results view).
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.

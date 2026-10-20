@@ -92,8 +92,9 @@
   function ccgResult(conf, top, second, method) {
     var neutral = !!NEUTRAL_CCG[conf];
     var edge = neutral ? 0 : SG.homeEdge(method);
-    var diff = top[method] - second[method] + edge;
-    return { conf: conf, a: top, b: second, neutral: neutral, winner: diff >= 0 ? top : second };
+    var spread = top[method] - second[method] + edge;
+    var p = SG.normCdf(spread / SG.SIGMA);
+    return { conf: conf, a: top, b: second, neutral: neutral, spread: spread, p: p, winner: p >= 0.5 ? top : second };
   }
 
   function ccgMatchups(method) {
@@ -354,12 +355,14 @@
     SG.fillBody(table, columns, rows);
   }
 
-  function ccgTeam(t, isWinner, method) {
-    return '<div class="ccg-team' + (isWinner ? " winner" : "") + '">' + SG.teamLogo(t.team) +
-      SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">' + SG.fmt(t[method]) + "</span></div>";
+  function ccgTeam(t, isWinner, method, showResults, pct) {
+    return '<div class="ccg-team' + (showResults && isWinner ? " winner" : "") + '">' + SG.teamLogo(t.team) +
+      SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">' + SG.fmt(t[method]) +
+      (showResults && pct !== null && pct !== undefined ? ' <span class="ccg-pct">' + (pct * 100).toFixed(0) + "%</span>" : "") +
+      "</span></div>";
   }
 
-  function renderCcg(matchups) {
+  function renderCcg(matchups, showResults) {
     var box = document.getElementById("ccgBoard");
     if (!box) return;
     if (!matchups) {
@@ -370,8 +373,8 @@
       var site = m.neutral ? "Neutral site" : ("at " + m.a.team);
       return '<div class="ccg-card">' +
         '<div class="ccg-conf">' + SG.esc(m.conf) + "</div>" +
-        ccgTeam(m.a, m.winner === m.a, view.method) +
-        ccgTeam(m.b, m.winner === m.b, view.method) +
+        ccgTeam(m.a, m.winner === m.a, view.method, showResults, m.p) +
+        ccgTeam(m.b, m.winner === m.b, view.method, showResults, 1 - m.p) +
         '<div class="ccg-site">' + SG.esc(site) + "</div></div>";
     }).join("");
   }
@@ -396,7 +399,7 @@
     var field = buildField(view.format, view.method);
     view.field = field;
     renderField(field);
-    renderCcg(Number(view.format) === 12 ? ccgMatchups(view.method) : null);
+    renderCcg(Number(view.format) === 12 ? ccgMatchups(view.method) : null, view.bracketMode === "results");
 
     if (view.bracketMode === "results") {
       var result = runOnce(field.seeds, view.format, view.method, false);
