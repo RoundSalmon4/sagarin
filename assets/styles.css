@@ -11,9 +11,11 @@
   --good: #157347;
   --bad: #b42318;
   --warn: #9a6700;
-  --bar: #101826;
-  --bar-ink: #eef2f7;
-  --bar-muted: #9fb0c4;
+  --bar: #eaeff7;
+  --bar-ink: #1c2430;
+  --bar-muted: #59677a;
+  --bar-btn-bg: rgba(255, 255, 255, 0.72);
+  --bar-btn-border: rgba(16, 24, 38, 0.16);
   --row-hover: #eaf1fd;
   --radius: 8px;
   --shadow: 0 1px 2px rgba(16, 24, 38, 0.06);
@@ -33,9 +35,11 @@
   --good: #3fb950;
   --bad: #f85149;
   --warn: #d29922;
-  --bar: #0a0f16;
+  --bar: #161f2b;
   --bar-ink: #e7edf5;
-  --bar-muted: #8b9bb0;
+  --bar-muted: #93a1b3;
+  --bar-btn-bg: rgba(255, 255, 255, 0.08);
+  --bar-btn-border: rgba(255, 255, 255, 0.18);
   --row-hover: #1d2836;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
@@ -62,6 +66,7 @@ body { min-height: 100vh; }
   background: var(--bar);
   color: var(--bar-ink);
   padding: 1.1rem 0 1rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .header-inner {
@@ -90,6 +95,13 @@ body { min-height: 100vh; }
 .btn:hover { border-color: var(--accent); }
 
 .theme-btn { white-space: nowrap; }
+
+.site-header .btn {
+  background: var(--bar-btn-bg);
+  border-color: var(--bar-btn-border);
+  color: var(--bar-ink);
+}
+.site-header .btn:hover { border-color: var(--accent); }
 
 .tabs {
   background: var(--surface);
