@@ -230,10 +230,10 @@
         play(S(seeds, 6), S(seeds, 11), 6, method, stochastic)
       ];
       var qf = [
-        play(S(seeds, 1), r1[0].winner, 1, method, stochastic),
-        play(S(seeds, 4), r1[1].winner, 4, method, stochastic),
-        play(S(seeds, 2), r1[2].winner, 2, method, stochastic),
-        play(S(seeds, 3), r1[3].winner, 3, method, stochastic)
+        play(S(seeds, 1), r1[0].winner, null, method, stochastic),
+        play(S(seeds, 4), r1[1].winner, null, method, stochastic),
+        play(S(seeds, 2), r1[2].winner, null, method, stochastic),
+        play(S(seeds, 3), r1[3].winner, null, method, stochastic)
       ];
       semis = [play(qf[0].winner, qf[1].winner, null, method, stochastic), play(qf[2].winner, qf[3].winner, null, method, stochastic)];
       finals = [play(semis[0].winner, semis[1].winner, null, method, stochastic)];
@@ -298,7 +298,7 @@
   function staticBracket(seeds, format) {
     if (Number(format) === 12) {
       var r1 = [sg(T(seeds, 8), T(seeds, 9), 8), sg(T(seeds, 5), T(seeds, 12), 5), sg(T(seeds, 7), T(seeds, 10), 7), sg(T(seeds, 6), T(seeds, 11), 6)];
-      var qf = [sg(T(seeds, 1), L("8/9"), 1), sg(T(seeds, 4), L("5/12"), 4), sg(T(seeds, 2), L("7/10"), 2), sg(T(seeds, 3), L("6/11"), 3)];
+      var qf = [sg(T(seeds, 1), L("8/9"), null), sg(T(seeds, 4), L("5/12"), null), sg(T(seeds, 2), L("7/10"), null), sg(T(seeds, 3), L("6/11"), null)];
       var sf = [sg(L("Quarterfinal 1 winner"), L("Quarterfinal 2 winner"), null), sg(L("Quarterfinal 3 winner"), L("Quarterfinal 4 winner"), null)];
       var fin = [sg(L("Semifinal 1 winner"), L("Semifinal 2 winner"), null)];
       return [
