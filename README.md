@@ -67,6 +67,29 @@ Finally the Action runs `scripts/fetch-tv.js`, which pulls the upcoming week (pl
 week) of the ESPN scoreboard (FBS and FCS) into `data/tv-games.json` for the TV Schedule
 tab: kickoff time, TV listing and the betting line for each game.
 
+## Ratings history
+
+Each week's parsed snapshot is also saved to `data/history/<season>/week-<n>.json` by
+`scripts/archive-ratings.js`, which the Sunday refresh runs right after the fetch. Each file
+holds the meta line, the home edge and a trimmed team table (rating, predictor, golden mean,
+recent, strong recent, W-L, conference), which is enough to chart movement over a season
+without keeping the full file every week. Re-running it is a no-op when the week is already
+saved, so the Monday safety run leaves the tree clean.
+
+Weeks that were never archived live can be recovered from the Wayback Machine with
+`scripts/fetch-sagarin-history.js`. It lists the captures of cfsend.htm for a season, parses
+the ones it understands and writes the same weekly files (skipping any already present). Run
+it from the "Backfill ratings history" Action, or by hand:
+
+```
+node scripts/fetch-sagarin-history.js --season 2026
+node scripts/fetch-sagarin-history.js --season 2026 --dry-run
+```
+
+The current parser only understands the current page layout, so the backfill currently
+recovers the 2024 and 2026 style seasons. Pre-2024 and 2025 pages use different columns and
+need their own parsers before those weeks can be added.
+
 The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
 rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
 (`.github/workflows/update-ap.yml`). The AP poll is released Sunday afternoons at 2 p.m.
@@ -101,12 +124,16 @@ data/espn-games.json      prefetched ESPN teams and games
 data/logos.json           manifest of which logos are on file
 data/ap-poll.json         AP Top 25 snapshot
 data/tv-games.json        upcoming games with TV and lines
+data/history/             weekly archived snapshots, one file per season week
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm
 scripts/fetch-espn.js     fetch ESPN teams + schedules
 scripts/fetch-logos.js    download team logos
 scripts/fetch-ap.js       fetch the AP Top 25
 scripts/fetch-tv.js       fetch the upcoming TV schedule
-.github/workflows/        Sunday refresh, plus the AP poll refresh
+scripts/archive-ratings.js    save the current week into data/history
+scripts/fetch-sagarin-history.js  backfill weeks from the Wayback Machine
+scripts/history-util.js   shared shape for the archived weeks
+.github/workflows/        Sunday refresh, AP poll refresh, manual history backfill
 ```
 
 ## Running locally
@@ -128,11 +155,13 @@ node scripts/fetch-espn.js
 node scripts/fetch-logos.js
 node scripts/fetch-ap.js
 node scripts/fetch-tv.js
+node scripts/archive-ratings.js
 ```
 
 `fetch-sagarin.js` takes `--source URL` and `--out PATH`; `fetch-espn.js` takes `--out`
 and `--concurrency`; `fetch-logos.js` takes `--force` and `--concurrency`; `fetch-ap.js`
-takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`.
+takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`; `archive-ratings.js` takes
+`--ratings`; `fetch-sagarin-history.js` takes `--season` and `--dry-run`.
 
 ## Notes
 
