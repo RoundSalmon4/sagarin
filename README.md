@@ -32,9 +32,12 @@ https://roundsalmon4.github.io/sagarin/
   time), showing the best few per window so the picks are not all in one slot.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
-  predicted winners for the rest). Draws either the current 12-team bracket or the proposed
-  24-team bracket, seeds only by default with an option to show predicted results, plus a
-  Monte Carlo run for championship odds.
+  predicted winners for the rest); for the 12-team field the top two then play a projected
+  conference title game, neutral site where that is how the league plays it and campus site
+  for the rest. The proposed 24-team field drops conference title games, so it uses the
+  regular-season champion. Draws either the current 12-team bracket or the proposed 24-team
+  bracket, seeds only by default with an option to show predicted results, plus a Monte
+  Carlo run for championship odds.
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.

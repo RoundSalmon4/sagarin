@@ -67,7 +67,13 @@
     return cwp * 1e6 + owp * 1e3 + (team[method] || 0);
   }
 
-  function champions(method) {
+  // Conference title games that are played at a neutral site get no home edge.
+  // Every other FBS title game is hosted by the higher seed, so that team gets
+  // the edge. (2026: ACC, SEC, Big Ten, Big 12 and MAC are neutral; the American,
+  // Conference USA, Sun Belt, Mountain West and Pac-12 host on campus.)
+  var NEUTRAL_CCG = { "ACC": true, "SEC": true, "BIG TEN": true, "BIG 12": true, "MAC": true };
+
+  function champions(method, withCcg) {
     var std = projectedRecords(method);
     var byConf = {};
     fbs().forEach(function (t) {
@@ -78,14 +84,24 @@
     Object.keys(byConf).forEach(function (c) {
       if (c === "I-A IND.") return;
       var list = byConf[c].slice().sort(function (a, b) { return champScore(b, std, method) - champScore(a, std, method); });
-      if (list[0]) champs[c] = list[0];
+      if (!list[0]) return;
+      if (withCcg && list[1]) {
+        // Top two meet for the title. Neutral site games ignore the home edge;
+        // campus games give it to the higher seed (list[0]).
+        var edge = NEUTRAL_CCG[c] ? 0 : SG.homeEdge(method);
+        champs[c] = (list[0][method] - list[1][method] + edge) >= 0 ? list[0] : list[1];
+      } else {
+        champs[c] = list[0];
+      }
     });
     return champs;
   }
 
   function buildField(format, method) {
     var teams = fbs();
-    var champs = champions(method);
+    // The 12-team CFP keeps conference title games; the proposed 24-team field
+    // drops them, so its champions are the regular-season winners.
+    var champs = champions(method, Number(format) === 12);
     var seeds = [null];
     var bid = {};
 
@@ -339,8 +355,11 @@
       renderBracket(staticBracket(field.seeds, view.format), false, null);
     }
 
+    var is12 = Number(view.format) === 12;
     var standingsNote = SG.state.espn
-      ? "Conference champions come from projected final conference records: completed games use the real result and the remaining games are predicted from the chosen ratings (tiebreak: overall record, then rating)."
+      ? (is12
+        ? "Conference champions come from projected final conference records (completed games use the real result, the rest are predicted), then the top two play a projected title game: neutral-site games get no home edge and campus games go to the higher seed. Tiebreak for the top two: conference record, then overall record, then rating."
+        : "The 24-team field drops conference title games, so each champion is simply the team with the best projected conference record. Completed games use the real result, the rest are predicted. Tiebreak: conference record, then overall record, then rating.")
       : "ESPN games are not loaded, so conference champions fall back to the highest-rated team in each conference.";
     document.getElementById("playoffNote").textContent =
       "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
