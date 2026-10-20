@@ -9,10 +9,12 @@ https://roundsalmon4.github.io/sagarin/
 ## Features
 
 - **Teams tab** - every rated team in one table. Click any column header to sort, search
-  by team or conference, and filter to a single conference. Each team shows its logo and
-  its AP Top 25 rank, if it is ranked.
+  by team or conference, and filter by conference, division (FBS/FCS) or group
+  (Power 4, Group of 6, FBS independents). Each team shows its logo and its AP Top 25
+  rank, if it is ranked.
 - **Conferences tab** - the conference ranking table with a toggle to rank by the overall
-  **RATING** or by **WIN50%**. Either way the whole table stays sortable.
+  **RATING** or by **WIN50%** and a filter for FBS or FCS conferences. Either way the whole
+  table stays sortable.
 - **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
   regular block, the experimental home/away block and the eigenvector block. Sortable and
   searchable.

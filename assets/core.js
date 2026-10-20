@@ -27,6 +27,9 @@
     confSort: null,
     teamSearch: "",
     confFilter: "",
+    teamDivision: "",
+    teamGroup: "",
+    confLevel: "",
     modules: {}
   };
 
@@ -90,6 +93,26 @@
   SG.homeEdge = function (method) {
     var h = SG.state.data && SG.state.data.meta.homeAdvantage;
     return h ? h[method] : 0;
+  };
+
+  // -------------------------------------------------------------- categories
+
+  SG.P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
+  SG.G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
+
+  SG.mergeConf = function (c) {
+    if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
+    return c;
+  };
+
+  // "P4", "G6", "IND" or "OTHER" for FBS teams, "FCS" for I-AA.
+  SG.confGroup = function (t) {
+    if (t.level !== "A") return "FCS";
+    var c = SG.mergeConf(t.conference);
+    if (SG.P4.indexOf(c) !== -1) return "P4";
+    if (SG.G6.indexOf(c) !== -1) return "G6";
+    if (c === "I-A IND.") return "IND";
+    return "OTHER";
   };
 
   // -------------------------------------------------------------- logos + AP
@@ -292,6 +315,8 @@
     var q = SG.state.teamSearch.trim().toLowerCase();
     var filtered = teams.filter(function (t) {
       if (SG.state.confFilter && t.conference !== SG.state.confFilter) return false;
+      if (SG.state.teamDivision && t.level !== SG.state.teamDivision) return false;
+      if (SG.state.teamGroup && SG.confGroup(t) !== SG.state.teamGroup) return false;
       if (!q) return true;
       return t.team.toLowerCase().indexOf(q) !== -1 || t.conference.toLowerCase().indexOf(q) !== -1;
     });
@@ -328,7 +353,10 @@
     if (!SG.state.data) return;
     var table = document.getElementById("confTable");
     if (!SG.state.confSort) SG.state.confSort = { key: confRankKey(), dir: -1 };
-    var sorted = SG.sortRows(SG.state.data.conferences, CONF_COLUMNS, SG.state.confSort);
+    var rows = SG.state.data.conferences.filter(function (c) {
+      return !SG.state.confLevel || c.level === SG.state.confLevel;
+    });
+    var sorted = SG.sortRows(rows, CONF_COLUMNS, SG.state.confSort);
     SG.buildHead(table, CONF_COLUMNS, SG.state.confSort, function (key) {
       SG.toggleSort(SG.state.confSort, key, CONF_COLUMNS);
       SG.renderConferences();
@@ -585,6 +613,18 @@
     document.getElementById("confFilter").addEventListener("change", function (e) {
       SG.state.confFilter = e.target.value;
       SG.renderTeams();
+    });
+    document.getElementById("teamDivision").addEventListener("change", function (e) {
+      SG.state.teamDivision = e.target.value;
+      SG.renderTeams();
+    });
+    document.getElementById("teamGroup").addEventListener("change", function (e) {
+      SG.state.teamGroup = e.target.value;
+      SG.renderTeams();
+    });
+    document.getElementById("confLevel").addEventListener("change", function (e) {
+      SG.state.confLevel = e.target.value;
+      SG.renderConferences();
     });
 
     SG.$$("#confMetric .seg").forEach(function (seg) {

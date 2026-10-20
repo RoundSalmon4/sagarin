@@ -41,6 +41,17 @@
         <select id="confFilter" aria-label="Filter by conference">
           <option value="">All conferences</option>
         </select>
+        <select id="teamDivision" aria-label="Filter by division">
+          <option value="">All divisions</option>
+          <option value="A">FBS (I-A)</option>
+          <option value="AA">FCS (I-AA)</option>
+        </select>
+        <select id="teamGroup" aria-label="Filter by group">
+          <option value="">All groups</option>
+          <option value="P4">Power 4</option>
+          <option value="G6">Group of 6</option>
+          <option value="IND">FBS independents</option>
+        </select>
         <span id="teamCount" class="count"></span>
       </div>
       <div class="table-scroll">
@@ -58,6 +69,11 @@
           <button type="button" class="seg active" data-metric="rating">Overall RATING</button>
           <button type="button" class="seg" data-metric="win50">WIN50%</button>
         </div>
+        <select id="confLevel" aria-label="Filter by division">
+          <option value="">All divisions</option>
+          <option value="A">FBS (I-A)</option>
+          <option value="AA">FCS (I-AA)</option>
+        </select>
       </div>
       <div class="table-scroll">
         <table id="confTable" class="data-table">
