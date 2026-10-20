@@ -34,7 +34,9 @@ https://roundsalmon4.github.io/sagarin/
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest); for the 12-team field the top two then play a projected
   conference title game, neutral site where that is how the league plays it and campus site
-  for the rest. The proposed 24-team field drops conference title games, so it uses the
+  for the rest; the projected winner is credited with a conference and overall win and the
+  loser with a loss, so those two teams' projected records include the title game. The
+  proposed 24-team field drops conference title games, so it uses the
   regular-season champion. Conference champions and seeding go on the rating alone; the
   at-large spots are a resume call, ranked on the rating minus five points per projected
   loss so a one-loss team is not passed by a stronger team carrying more losses. Draws either the current 12-team bracket or the proposed 24-team

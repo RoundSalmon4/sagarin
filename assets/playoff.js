@@ -66,6 +66,32 @@
     return rec;
   }
 
+  // Projected records with the projected conference title games folded in. The
+  // two title-game participants are still chosen from regular-season records,
+  // but from there the projected winner gets a conference and overall win and
+  // the loser gets a loss, so the field table and the at-large resume reflect a
+  // full season. The 24-team field has no title games, so it is unchanged.
+  function finalRecords(method, format) {
+    var std = projectedRecords(method);
+    if (Number(format) !== 12) return std;
+    var order = conferenceOrder(method, std);
+    Object.keys(order).forEach(function (c) {
+      if (c === "I-A IND.") return;
+      var list = order[c];
+      if (!list[0] || !list[1]) return;
+      var m = ccgResult(c, list[0], list[1], method);
+      recordGame(std, m.winner.team, true);
+      recordGame(std, m.winner === m.a ? m.b.team : m.a.team, false);
+    });
+    return std;
+  }
+
+  function recordGame(std, team, win) {
+    var r = std[team];
+    if (!r) return;
+    if (win) { r.cw += 1; r.ow += 1; } else { r.cl += 1; r.ol += 1; }
+  }
+
   function champScore(team, std, method) {
     var r = std[team.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
     var cwp = (r.cw + r.cl) ? r.cw / (r.cw + r.cl) : 0;
@@ -79,8 +105,8 @@
   // Conference USA, Sun Belt, Mountain West and Pac-12 host on campus.)
   var NEUTRAL_CCG = { "ACC": true, "SEC": true, "BIG TEN": true, "BIG 12": true, "MAC": true };
 
-  function conferenceOrder(method) {
-    var std = projectedRecords(method);
+  function conferenceOrder(method, std) {
+    std = std || projectedRecords(method);
     var byConf = {};
     fbs().forEach(function (t) {
       var c = mergeConf(t.conference);
@@ -136,7 +162,7 @@
     // The 12-team CFP keeps conference title games; the proposed 24-team field
     // drops them, so its champions are the regular-season winners.
     var champs = champions(method, Number(format) === 12);
-    var std = projectedRecords(method);
+    var std = finalRecords(method, format);
     var seeds = [null];
     var bid = {};
 
@@ -349,7 +375,7 @@
       { key: "now", label: "Now", cls: "left", type: "str" },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
-    var std = projectedRecords(view.method);
+    var std = finalRecords(view.method, view.format);
     var rows = [];
     for (var i = 1; i < field.seeds.length; i++) {
       var t = field.seeds[i];
@@ -425,7 +451,7 @@
     var is12 = Number(view.format) === 12;
     var standingsNote = SG.state.espn
       ? (is12
-        ? "Conference champions come from projected final conference records (completed games use the real result, the rest are predicted), then the top two play a projected title game: neutral-site games get no home edge and campus games go to the higher seed. Tiebreak for the top two: conference record, then overall record, then rating."
+        ? "Conference champions come from projected final conference records (completed games use the real result, the rest are predicted), then the top two play a projected title game: neutral-site games get no home edge and campus games go to the higher seed. The projected winner is credited with a conference and overall win and the loser with a loss, so the projected records include the title game. Tiebreak for the top two: conference record, then overall record, then rating."
         : "The 24-team field drops conference title games, so each champion is simply the team with the best projected conference record. Completed games use the real result, the rest are predicted. Tiebreak: conference record, then overall record, then rating.")
       : "ESPN games are not loaded, so conference champions fall back to the highest-rated team in each conference.";
     document.getElementById("playoffNote").textContent =
