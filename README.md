@@ -35,7 +35,9 @@ https://roundsalmon4.github.io/sagarin/
   predicted winners for the rest); for the 12-team field the top two then play a projected
   conference title game, neutral site where that is how the league plays it and campus site
   for the rest. The proposed 24-team field drops conference title games, so it uses the
-  regular-season champion. Draws either the current 12-team bracket or the proposed 24-team
+  regular-season champion. Conference champions and seeding go on the rating alone; the
+  at-large spots are a resume call, ranked on the rating minus five points per projected
+  loss so a one-loss team is not passed by a stronger team carrying more losses. Draws either the current 12-team bracket or the proposed 24-team
   bracket, seeds only by default with an option to show predicted results, plus a Monte
   Carlo run for championship odds, and lists the projected conference championship matchups
   under the field (with the winner and win odds in the predicted-results view).

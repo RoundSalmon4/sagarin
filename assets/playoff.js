@@ -9,6 +9,12 @@
   var P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
   var SIMS = 2000;
+  // At-large spots are a resume call, not a pure power call: conference champions
+  // are ranked on rating alone, but the at-large pool is ranked on rating with a
+  // five-point penalty per projected loss, so an undefeated or one-loss team is
+  // not passed by a stronger team carrying extra losses. Same idea as the
+  // published resume ratings, which dock points for every loss.
+  var AT_LARGE_LOSS_PENALTY = 5;
 
   var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null };
 
@@ -130,8 +136,16 @@
     // The 12-team CFP keeps conference title games; the proposed 24-team field
     // drops them, so its champions are the regular-season winners.
     var champs = champions(method, Number(format) === 12);
+    var std = projectedRecords(method);
     var seeds = [null];
     var bid = {};
+
+    // At-large resume score: selected rating minus a penalty for each projected
+    // loss. Champions and seeding still use the raw rating.
+    function atLargeScore(t) {
+      var r = std[t.team];
+      return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0);
+    }
 
     if (Number(format) === 12) {
       var champList = Object.keys(champs)
@@ -141,7 +155,7 @@
       var used = {};
       qual.forEach(function (x) { used[x.team.team] = true; bid[x.team.team] = "Conf champ (" + x.conf + ")"; });
       var atLarge = teams.filter(function (t) { return !used[t.team]; })
-        .sort(function (a, b) { return b[method] - a[method]; }).slice(0, 7);
+        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }).slice(0, 7);
       atLarge.forEach(function (t) { bid[t.team] = "At-large"; });
       var top4 = qual.slice(0, 4).map(function (x) { return x.team; });
       var rest = [qual[4].team].concat(atLarge).sort(function (a, b) { return b[method] - a[method]; });
@@ -158,7 +172,7 @@
       var autoNames = {};
       auto.forEach(function (t) { autoNames[t.team] = true; });
       var atLarge24 = teams.filter(function (t) { return !autoNames[t.team]; })
-        .sort(function (a, b) { return b[method] - a[method]; }).slice(0, 19);
+        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }).slice(0, 19);
       atLarge24.forEach(function (t) { bid[t.team] = "At-large"; });
       auto.concat(atLarge24)
         .sort(function (a, b) { return b[method] - a[method]; })
@@ -331,7 +345,7 @@
       { key: "conf", label: "Conference", cls: "left", type: "str" },
       { key: "cw", label: "Conf (proj)", cls: "left", type: "str" },
       { key: "proj", label: "Proj", cls: "left", type: "str" },
-      { key: "rating", label: "RATING", strong: true },
+      { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true },
       { key: "now", label: "Now", cls: "left", type: "str" },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
@@ -346,7 +360,7 @@
         conf: mergeConf(t.conference),
         cw: r && (r.cw + r.cl) ? r.cw + "-" + r.cl : "-",
         proj: r ? r.ow + "-" + r.ol : "-",
-        rating: t.rating,
+        rating: t[view.method],
         now: t.w + "-" + t.l,
         bid: field.bid[t.team] || "At-large"
       });
@@ -418,7 +432,10 @@
       "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
       (Number(view.format) === 12
         ? "12-team: five highest-rated conference champions plus seven at-large; top four champions seed 1-4 with byes; seeds 5-8 host seeds 9-12."
-        : "24-team (proposed 2027): 19 at-large, the four Power 4 champions, and the highest-rated Group of 6 team; seeds 1-8 get a bye and a home game, seeds 9-16 host the first round.");
+        : "24-team (proposed 2027): 19 at-large, the four Power 4 champions, and the highest-rated Group of 6 team; seeds 1-8 get a bye and a home game, seeds 9-16 host the first round.") +
+      " Champions are seeded on rating, but the at-large spots are a resume call: they are ranked on rating with a " +
+      AT_LARGE_LOSS_PENALTY + "-point penalty per projected loss, so an undefeated or one-loss team is not passed by " +
+      "a stronger team carrying more losses. The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
   }
 
