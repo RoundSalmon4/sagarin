@@ -1,10 +1,10 @@
 # Sagarin ratings explorer
 
 Turns Jeff Sagarin's college football ratings page (cfsend.htm) into something you can
-actually click around: sortable columns, conference rankings, and a head to head tool.
+actually click around: sortable tables, conference rankings, a schedule predictor, a TV
+watch list, a CFP field builder, and a head to head tool.
 
-Intended live site once Pages is switched on for `main` / root:
-https://roundsalmon4.github.io/sagarin/
+Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there).
 
 ## Features
 
@@ -32,22 +32,23 @@ https://roundsalmon4.github.io/sagarin/
   time), showing the best few per window so the picks are not all in one slot.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
-  predicted winners for the rest); for the 12-team field the top two then play a projected
-  conference title game, neutral site where that is how the league plays it and campus site
-  for the rest; the projected winner is credited with a conference and overall win and the
-  loser with a loss, so those two teams' projected records include the title game. The
-  proposed 24-team field drops conference title games, so it uses the
-  regular-season champion. Conference champions and seeding go on the rating alone; the
-  at-large spots are a resume call, ranked on the rating minus five points per projected
-  loss so a one-loss team is not passed by a stronger team carrying more losses. Draws either the current 12-team bracket or the proposed 24-team
-  bracket, seeds only by default with an option to show predicted results, plus a
-  full-season Monte Carlo (it plays out the remaining games and the projected title games,
-  rebuilds the field from the simulated results, then runs the bracket) that reports each
-  team's chance to make the field and to win it, and lists the projected conference championship matchups
-  under the field (with the winner and win odds in the predicted-results view).
+  predicted winners for the rest); in the 12-team field the top two play a projected title
+  game (neutral where the league plays it there, otherwise at the higher seed) and the
+  result is folded into those two teams' records. The proposed 24-team field drops title
+  games and uses the regular-season champion. Champions and seeding go on the rating alone;
+  the at-large spots (seven in the 12-team field, 19 in the 24-team) are a resume call,
+  ranked on the rating minus five points per projected loss so a one-loss team is not passed
+  by a stronger team carrying more losses. Draws either the 12-team or the 24-team bracket,
+  seeds only by default with an option to show predicted results, and lists the projected
+  conference championship matchups under the field (with the winner and win odds in the
+  predicted-results view). A full-season Monte Carlo plays out the remaining games and the
+  projected title games 10,000 times, rebuilds the field from the simulated results, then
+  runs the bracket, and reports each team's chance to make the field and to win it (top 14
+  shown, with the count stated).
 - **Matchup tab** - choose a home team and an away team and a rating method. Shows who is
   favored and by how many points on a neutral field and with the home team at home. Swap
   flips the two teams.
+- Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the
   repo so the browser never hits a logo CDN.
 - Light and dark themes, remembered per browser.
@@ -96,9 +97,9 @@ node scripts/fetch-sagarin-history.js --season 2026
 node scripts/fetch-sagarin-history.js --season 2026 --dry-run
 ```
 
-The current parser only understands the current page layout, so the backfill currently
-recovers the 2024 and 2026 style seasons. Pre-2024 and 2025 pages use different columns and
-need their own parsers before those weeks can be added.
+The parser targets the current cfsend.htm layout. Wayback captures that use that same
+layout parse cleanly; seasons with an older column layout come back as zero teams and are
+skipped (the backfill logs each one) until they get their own parser.
 
 The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
 rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
@@ -113,6 +114,28 @@ matching Apache ETag), and Sagarin has posted on Sundays for years. The Action r
 The page loads the data files and polls them every ten minutes. When a signature changes
 it rebuilds in place, so a tab left open picks up new numbers on its own. There is also a
 "Check for updates" button.
+
+## Sources and attribution
+
+This is an unaffiliated, unofficial viewer. Everything on the page traces back to one of
+these sources:
+
+- **Jeff Sagarin's college football ratings** - sagarin.com/sports/cfsend.htm. The ratings,
+  the win/loss records and the printed home edge all come from that page. The ratings are
+  Jeff Sagarin's work, shown here for personal, non-commercial reading.
+- **The ESPN API** (site.web.api.espn.com) - team and game schedules, the scoreboard
+  (kickoff time, TV listing, betting line, venue) and the rankings endpoint. ESPN's data
+  belongs to ESPN. It is prefetched by the Action, so a visitor's browser never calls ESPN.
+- **The Associated Press Top 25** - read from ESPN's rankings endpoint. The poll itself is
+  the Associated Press's.
+- **The ESPN logo CDN** (a.espncdn.com) - team and conference logos. Those marks belong to
+  the schools and conferences and are used here only to identify the teams.
+- **The Internet Archive Wayback Machine** - used to backfill older weekly snapshots.
+
+None of this is a redistribution of Sagarin, ESPN or AP content for its own sake; it is a
+reading tool over numbers that are already public. The team-name aliases and the rivalry
+list are hand-built for this project. If you own any of the material above and want a
+change, open an issue.
 
 ## Layout
 
@@ -148,8 +171,8 @@ scripts/history-util.js   shared shape for the archived weeks
 
 ## Running locally
 
-The page fetches the two data files, so open it through a local server rather than the
-file system:
+The page fetches its data files, so open it through a local server rather than the file
+system:
 
 ```
 python -m http.server 8000
