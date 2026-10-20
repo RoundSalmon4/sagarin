@@ -16,7 +16,7 @@
   // published resume ratings, which dock points for every loss.
   var AT_LARGE_LOSS_PENALTY = 5;
 
-  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, fieldSort: { key: "seed", dir: 1 } };
+  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
 
   function mergeConf(c) {
     if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
@@ -484,15 +484,19 @@
   }
 
   function simBlock(title, counts, n) {
-    var rows = Object.keys(counts).map(function (name) { return { name: name, c: counts[name] }; })
-      .sort(function (a, b) { return b.c - a.c; }).slice(0, 14);
+    var LIMIT = 14;
+    var all = Object.keys(counts).map(function (name) { return { name: name, c: counts[name] }; })
+      .sort(function (a, b) { return b.c - a.c; });
+    var rows = all.slice(0, LIMIT);
     var max = Math.max.apply(null, rows.map(function (r) { return r.c; })) || 1;
     return '<div class="sim-block"><h3>' + SG.esc(title) + '</h3><div class="sim-list">' +
       rows.map(function (r) {
         var pct = (r.c / n) * 100;
         return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
           ((r.c / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
-      }).join("") + "</div></div>";
+      }).join("") + "</div>" +
+      (all.length > rows.length ? '<p class="sim-more">Top ' + rows.length + " of " + all.length + " teams.</p>" : "") +
+      "</div>";
   }
 
   function render() {
@@ -560,8 +564,7 @@
     if (a) { var ra = getRec(rec, a.team); ra.ow += hWin ? 0 : 1; ra.ol += hWin ? 1 : 0; if (same) { ra.cw += hWin ? 0 : 1; ra.cl += hWin ? 1 : 0; } }
   }
 
-  function simulate() {
-    if (!SG.state.data || !view.field) return;
+  function computeSim() {
     var method = view.method, format = view.format;
     var is12 = Number(format) === 12;
     var ctx = simContext(method);
@@ -583,8 +586,26 @@
       var c = r.champion.team.team;
       champCount[c] = (champCount[c] || 0) + 1;
     }
-    view.sim = { n: SIMS, field: fieldCount, champ: champCount };
-    renderSim(view.sim);
+    return { n: SIMS, field: fieldCount, champ: champCount };
+  }
+
+  function simulate() {
+    if (!SG.state.data || !view.field || view.simBusy) return;
+    var btn = document.getElementById("simBtn");
+    var label = btn ? btn.textContent : "";
+    // Show a busy state first, then yield so the browser paints it before the
+    // blocking loop runs.
+    view.simBusy = true;
+    if (btn) { btn.disabled = true; btn.textContent = "Simulating..."; }
+    setTimeout(function () {
+      try {
+        view.sim = computeSim();
+        renderSim(view.sim);
+      } finally {
+        view.simBusy = false;
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+      }
+    }, 40);
   }
 
   function init() {
