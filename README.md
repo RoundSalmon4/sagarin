@@ -54,11 +54,12 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
 - **Head to Head tab** - choose an away team and a home team and a rating method. The page
   runs top to bottom as the rating method and team picks, the projection, the comparison
   and the standings. The projection gives the pick and the win chances with the home team
-  at home and on a neutral field. The comparison table puts the two teams in rows and shows
+  at home and on a neutral field, with each team's record and win chance on the side of the
+  card. The comparison table puts the two teams in rows and shows
   the record, the conference, the chosen rating with its national rank, SCHEDL with its
   rank, total offense (yards per game), total defense (yards allowed per game) and points
-  per game, the last three also with national ranks. Then the last five results plus the
-  next game for each team in one table, each with the opponent's logo, and a conference
+  per game, the last three also with national ranks. Then a last five panel for each team,
+  with the opponent's logo and the next game, and a conference
   snapshot. The snapshot shows the overall and conference records and the
   selected team with the teams around it; the ellipsis opens the full conference, and
   independents show as a one-team list with a 0-0 conference record. A short note at the

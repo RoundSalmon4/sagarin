@@ -453,6 +453,7 @@
         var fav = homeFav ? home : away;
         var probHome = SG.normCdf(s.spread / SG.SIGMA);
         html += '<div class="h2h-proj-card">' +
+          '<div class="h2h-proj-main">' +
           '<div class="h2h-proj-site">' + SG.esc(s.site) + "</div>" +
           '<div class="h2h-proj-fav">' + SG.teamLogo(fav.team) + SG.esc(fav.team) + "</div>" +
           '<div class="h2h-proj-margin">by ' + SG.fmt(Math.abs(s.spread), 1) +
@@ -460,9 +461,11 @@
           '<div class="h2h-proj-bar">' +
           '<span class="' + (homeFav ? "" : "fav") + '" style="width:' + ((1 - probHome) * 100).toFixed(1) + '%"></span>' +
           '<span class="' + (homeFav ? "fav" : "") + '" style="width:' + (probHome * 100).toFixed(1) + '%"></span></div>' +
-          '<div class="h2h-proj-probs"><span>' + SG.esc(away.team) + " " + pctText(1 - probHome) + "</span>" +
-          "<span>" + SG.esc(home.team) + " " + pctText(probHome) + "</span></div>" +
-          "</div>";
+          "</div>" +
+          '<div class="h2h-proj-side">' +
+          projSide(away, 1 - probHome, !homeFav) +
+          projSide(home, probHome, homeFav) +
+          "</div></div>";
       });
       html += "</div>";
       proj.innerHTML = html;
@@ -480,7 +483,7 @@
     if (confBox) confBox.innerHTML = confStandings(away, home);
 
     var comp = document.getElementById("matchupCompare");
-    if (comp) comp.innerHTML = formTable(away, home);
+    if (comp) comp.innerHTML = recentPanel(away) + recentPanel(home);
 
     document.getElementById("matchupNote").textContent =
       "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
@@ -616,10 +619,10 @@
       "</div>";
   }
 
-  // Last five results and the next scheduled game for one team, from the ESPN
+  // Last 5 results and the next scheduled game for one team, from the ESPN
   // schedule data. Opponent logos come from the ESPN id when the opponent is
   // not rated by Sagarin, so every line still carries a mark.
-  function recentGames(t) {
+  function recentPanel(t) {
     var games = (SG.gamesForTeam && SG.state.sagToEspn && SG.state.sagToEspn[t.team])
       ? SG.gamesForTeam(t.team) : [];
     var done = [];
@@ -648,31 +651,26 @@
         next = { opp: oppName, logo: logo, site: isHome ? "" : "@ ", date: g.date, neutral: g.neutral };
       }
     });
-    return { last: done.slice(-5).reverse(), next: next };
-  }
-
-  // One game cell: the result, the opponent's logo and the opponent.
-  function gameCell(g, upcoming) {
-    var res = upcoming ? "" :
-      '<span class="' + (g.w ? "win" : "loss") + '">' + (g.w ? "W" : "L") + " " + SG.esc(g.score) + "</span> ";
-    return '<span class="h2h-form-cell">' + res + g.logo + SG.esc(g.site + g.opp) +
-      (g.neutral ? " (neutral)" : "") + "</span>";
-  }
-
-  // Last five and the next game for both teams, one row per team.
-  function formTable(away, home) {
-    var html = '<table class="h2h-form"><thead><tr><th class="left">Team</th>' +
-      "<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>Next</th></tr></thead><tbody>";
-    [[away, "Away"], [home, "Home"]].forEach(function (pair) {
-      var r = recentGames(pair[0]);
-      html += '<tr><td class="left">' + SG.teamLogo(pair[0].team) + SG.esc(pair[0].team) +
-        ' <span class="h2h-tag">' + SG.esc(pair[1]) + "</span></td>";
-      for (var i = 0; i < 5; i++) {
-        html += "<td>" + (r.last[i] ? gameCell(r.last[i]) : '<span class="dim">-</span>') + "</td>";
-      }
-      html += "<td>" + (r.next ? gameCell(r.next, true) : '<span class="dim">-</span>') + "</td></tr>";
-    });
-    html += "</tbody></table>";
+    var last = done.slice(-5).reverse();
+    var html = '<div class="h2h-last"><div class="h2h-last-title">' + SG.teamLogo(t.team) +
+      SG.esc(t.team) + " last 5</div>";
+    if (!last.length) {
+      html += '<p class="note">No completed games on file.</p>';
+    } else {
+      html += '<div class="h2h-last-list">';
+      last.forEach(function (x) {
+        html += '<div class="h2h-last-item"><span class="h2h-last-res ' + (x.w ? "win" : "loss") + '">' +
+          (x.w ? "W" : "L") + " " + SG.esc(x.score) + '</span><span class="h2h-last-opp">' +
+          x.logo + SG.esc(x.site + x.opp) + "</span></div>";
+      });
+      html += "</div>";
+    }
+    if (next) {
+      html += '<div class="h2h-next"><span class="h2h-next-label">Next</span>' +
+        '<span class="h2h-last-opp">' + next.logo + SG.esc(next.site + next.opp) +
+        (next.neutral ? " (neutral)" : "") + "</span></div>";
+    }
+    html += "</div>";
     return html;
   }
 
@@ -706,6 +704,14 @@
     rank("dy", false);
     rank("ppg", true);
     return out;
+  }
+
+  // One team line in the projection card: logo, name, record and win chance.
+  function projSide(t, p, isFav) {
+    return '<div class="h2h-proj-leg' + (isFav ? " fav" : "") + '">' + SG.teamLogo(t.team) +
+      '<span class="h2h-proj-leg-name">' + SG.esc(t.team) + "</span>" +
+      '<span class="h2h-proj-leg-rec">' + SG.esc(SG.rec(t.w, t.l)) + "</span>" +
+      '<span class="h2h-proj-leg-pct">' + pctText(p) + "</span></div>";
   }
 
   function pctText(p) { return (p * 100).toFixed(0) + "%"; }
