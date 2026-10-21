@@ -402,27 +402,43 @@
       { site: "Neutral site", spread: diff }
     ];
 
-    // Comparison table: the two teams side by side, one row per metric.
+    // Comparison table: one row per team, the numbers across.
     var table = document.getElementById("matchupTable");
     if (table) {
-      var rows = [
-        { label: "Rating", value: "rating" },
-        { label: "Predictor", value: "predictor" },
-        { label: "Golden mean", value: "goldenMean" },
-        { label: "Recent", value: "recent" },
-        { label: "Strong recent", value: "strongRecent" }
+      var st = seasonStats();
+      var rankField = {
+        rating: "rank",
+        predictor: "predictorRank",
+        goldenMean: "goldenMeanRank",
+        recent: "recentRank",
+        strongRecent: "strongRecentRank"
+      };
+      function statCell(t, key) {
+        var s = st[t.team];
+        if (!s || s[key] === null || s[key] === undefined) return '<span class="dim">-</span>';
+        return SG.fmt(s[key], 1) + ' <span class="dim">(' + (s[key + "Rank"] || "-") + ")</span>";
+      }
+      var cols = [
+        { label: "Record", cell: function (t) { return SG.esc(SG.rec(t.w, t.l)); } },
+        { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
+        { label: SG.methodLabel(method), cell: function (t) {
+          return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
+        } },
+        { label: "SCHEDL", cell: function (t) {
+          return SG.fmt(t.sched) + ' <span class="dim">(' + (t.schedRank || "-") + ")</span>";
+        } },
+        { label: "Total offense", cell: function (t) { return statCell(t, "oy"); } },
+        { label: "Total defense", cell: function (t) { return statCell(t, "dy"); } },
+        { label: "Points per game", cell: function (t) { return statCell(t, "ppg"); } }
       ];
-      var html = '<table class="h2h-cmp"><thead><tr><th></th>' +
-        '<th class="h2h-cmp-away">' + teamHead(away, "Away") + "</th>" +
-        '<th class="h2h-cmp-home">' + teamHead(home, "Home") + "</th></tr></thead><tbody>";
-      html += "<tr><th>Record</th><td>" + SG.esc(SG.rec(away.w, away.l)) + "</td><td>" +
-        SG.esc(SG.rec(home.w, home.l)) + "</td></tr>";
-      html += "<tr><th>Conference</th><td>" + SG.esc(confOf(away)) + "</td><td>" +
-        SG.esc(confOf(home)) + "</td></tr>";
-      rows.forEach(function (r) {
-        var lead = r.value === method;
-        html += "<tr" + (lead ? ' class="h2h-lead"' : "") + "><th>" + SG.esc(r.label) + "</th><td>" +
-          SG.fmt(away[r.value]) + "</td><td>" + SG.fmt(home[r.value]) + "</td></tr>";
+      var html = '<table class="h2h-cmp"><thead><tr><th class="left">Team</th>';
+      cols.forEach(function (c) { html += "<th>" + SG.esc(c.label) + "</th>"; });
+      html += "</tr></thead><tbody>";
+      [[away, "Away"], [home, "Home"]].forEach(function (pair) {
+        html += "<tr><td class=\"left\">" + SG.teamLogo(pair[0].team) + SG.esc(pair[0].team) +
+          SG.apBadge(pair[0].team) + ' <span class="h2h-tag">' + SG.esc(pair[1]) + "</span></td>";
+        cols.forEach(function (c) { html += "<td>" + c.cell(pair[0]) + "</td>"; });
+        html += "</tr>";
       });
       html += "</tbody></table>";
       table.innerHTML = html;
@@ -464,24 +480,20 @@
     if (confBox) confBox.innerHTML = confStandings(away, home);
 
     var comp = document.getElementById("matchupCompare");
-    if (comp) comp.innerHTML = recentPanel(away) + recentPanel(home);
+    if (comp) comp.innerHTML = formTable(away, home);
 
     document.getElementById("matchupNote").textContent =
       "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
       "so the conference records and the last five are the actual results so far this season. The overall record " +
       "is the one printed on the Sagarin page. Standings show the selected team with the teams around it; click the " +
-      "ellipsis to open the full conference. The " + SG.methodLabel(method) + " rating is the column used above.";
+      "ellipsis to open the full conference. Total offense and total defense are yards per game from the ESPN " +
+      "statistics, points per game is scoring, and the number in brackets is the national rank of every rated team. " +
+      "The " + SG.methodLabel(method) + " rating is the column used above.";
   };
 
   // Conference name for a team, with the Sun Belt east and west halves merged.
   function confOf(t) {
     return SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
-  }
-
-  // Header cell for the comparison table: role, logo, name and AP rank.
-  function teamHead(t, role) {
-    return '<div class="h2h-head-role">' + SG.esc(role) + "</div>" +
-      '<div class="h2h-head-name">' + SG.teamLogo(t.team) + SG.esc(t.team) + SG.apBadge(t.team) + "</div>";
   }
 
   // Current conference standings from the completed games in the ESPN file.
@@ -604,10 +616,10 @@
       "</div>";
   }
 
-  // Last 5 results and the next scheduled game for one team, from the ESPN
+  // Last five results and the next scheduled game for one team, from the ESPN
   // schedule data. Opponent logos come from the ESPN id when the opponent is
   // not rated by Sagarin, so every line still carries a mark.
-  function recentPanel(t) {
+  function recentGames(t) {
     var games = (SG.gamesForTeam && SG.state.sagToEspn && SG.state.sagToEspn[t.team])
       ? SG.gamesForTeam(t.team) : [];
     var done = [];
@@ -636,27 +648,64 @@
         next = { opp: oppName, logo: logo, site: isHome ? "" : "@ ", date: g.date, neutral: g.neutral };
       }
     });
-    var last = done.slice(-5).reverse();
-    var html = '<div class="h2h-last"><div class="h2h-last-title">' + SG.teamLogo(t.team) +
-      SG.esc(t.team) + " last 5</div>";
-    if (!last.length) {
-      html += '<p class="note">No completed games on file.</p>';
-    } else {
-      html += '<div class="h2h-last-list">';
-      last.forEach(function (x) {
-        html += '<div class="h2h-last-item"><span class="h2h-last-res ' + (x.w ? "win" : "loss") + '">' +
-          (x.w ? "W" : "L") + " " + SG.esc(x.score) + '</span><span class="h2h-last-opp">' +
-          x.logo + SG.esc(x.site + x.opp) + "</span></div>";
-      });
-      html += "</div>";
-    }
-    if (next) {
-      html += '<div class="h2h-next"><span class="h2h-next-label">Next</span>' +
-        '<span class="h2h-last-opp">' + next.logo + SG.esc(next.site + next.opp) +
-        (next.neutral ? " (neutral)" : "") + "</span></div>";
-    }
-    html += "</div>";
+    return { last: done.slice(-5).reverse(), next: next };
+  }
+
+  // One game cell: the result, the opponent's logo and the opponent.
+  function gameCell(g, upcoming) {
+    var res = upcoming ? "" :
+      '<span class="' + (g.w ? "win" : "loss") + '">' + (g.w ? "W" : "L") + " " + SG.esc(g.score) + "</span> ";
+    return '<span class="h2h-form-cell">' + res + g.logo + SG.esc(g.site + g.opp) +
+      (g.neutral ? " (neutral)" : "") + "</span>";
+  }
+
+  // Last five and the next game for both teams, one row per team.
+  function formTable(away, home) {
+    var html = '<table class="h2h-form"><thead><tr><th class="left">Team</th>' +
+      "<th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>Next</th></tr></thead><tbody>";
+    [[away, "Away"], [home, "Home"]].forEach(function (pair) {
+      var r = recentGames(pair[0]);
+      html += '<tr><td class="left">' + SG.teamLogo(pair[0].team) + SG.esc(pair[0].team) +
+        ' <span class="h2h-tag">' + SG.esc(pair[1]) + "</span></td>";
+      for (var i = 0; i < 5; i++) {
+        html += "<td>" + (r.last[i] ? gameCell(r.last[i]) : '<span class="dim">-</span>') + "</td>";
+      }
+      html += "<td>" + (r.next ? gameCell(r.next, true) : '<span class="dim">-</span>') + "</td></tr>";
+    });
+    html += "</tbody></table>";
     return html;
+  }
+
+  // Season numbers for the comparison table, from the ESPN statistics file:
+  // total offense and total defense are yards per game, points per game is
+  // scoring. The ranks are across every rated team that has the number.
+  function seasonStats() {
+    var out = {};
+    if (!SG.state.data) return out;
+    var espnStats = (SG.state.espn && SG.state.espn.stats) || {};
+    SG.state.data.teams.forEach(function (t) {
+      var et = SG.state.sagToEspn && SG.state.sagToEspn[t.team];
+      var es = et ? espnStats[String(et.id)] : null;
+      out[t.team] = {
+        oy: es ? es.oy : null,
+        dy: es && es.dy !== undefined ? es.dy : null,
+        ppg: es ? es.pp : null
+      };
+    });
+    function rank(key, high) {
+      var list = [];
+      Object.keys(out).forEach(function (name) {
+        var v = out[name][key];
+        if (v === null || v === undefined) return;
+        list.push({ team: name, v: v });
+      });
+      list.sort(function (x, y) { return high ? y.v - x.v : x.v - y.v; });
+      list.forEach(function (r, i) { out[r.team][key + "Rank"] = i + 1; });
+    }
+    rank("oy", true);
+    rank("dy", false);
+    rank("ppg", true);
+    return out;
   }
 
   function pctText(p) { return (p * 100).toFixed(0) + "%"; }

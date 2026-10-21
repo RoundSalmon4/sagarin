@@ -54,10 +54,12 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
 - **Head to Head tab** - choose an away team and a home team and a rating method. The page
   runs top to bottom as the rating method and team picks, the projection, the comparison
   and the standings. The projection gives the pick and the win chances with the home team
-  at home and on a neutral field. The comparison table shows the record, the conference and
-  all five ratings for both teams, with the rating method in use highlighted. Then the last
-  five results plus the next game for each team, each with the opponent's logo, and a
-  conference snapshot. The snapshot shows the overall and conference records and the
+  at home and on a neutral field. The comparison table puts the two teams in rows and shows
+  the record, the conference, the chosen rating with its national rank, SCHEDL with its
+  rank, total offense (yards per game), total defense (yards allowed per game) and points
+  per game, the last three also with national ranks. Then the last five results plus the
+  next game for each team in one table, each with the opponent's logo, and a conference
+  snapshot. The snapshot shows the overall and conference records and the
   selected team with the teams around it; the ellipsis opens the full conference, and
   independents show as a one-team list with a 0-0 conference record. A short note at the
   foot of the page explains the method, the home edge and where the numbers come from.
@@ -77,11 +79,12 @@ pulls the page, parses it with the same parser the site uses, and commits
 `data/ratings.json`. It only changes the file when the parsed ratings actually differ, so
 a run with nothing new produces no commit.
 
-The same Action runs `scripts/fetch-espn.js`, which pulls the ESPN team list and every FBS
-team's schedule and writes `data/espn-games.json`. The site reads that file for the
-schedule predictor and for conference standings, so no user browser ever has to call ESPN
-(which is what caused the earlier "Failed to fetch"). Like the ratings file, it keeps its
-`fetched_at` unless the games actually changed.
+The same Action runs `scripts/fetch-espn.js`, which pulls the ESPN team list, every FBS
+team's schedule and the season statistics for each rated team (total offense and defense,
+points per game), and writes `data/espn-games.json`. The site reads that file for the
+schedule predictor, the conference standings and the head to head numbers, so no user
+browser ever has to call ESPN (which is what caused the earlier "Failed to fetch"). Like
+the ratings file, it keeps its `fetched_at` unless the games or the stats actually changed.
 
 The same Action also runs `scripts/fetch-logos.js`, which downloads each team's logo from
 the ESPN CDN into `assets/logos/` and each conference's logo into `assets/conf-logos/` (a
@@ -167,7 +170,7 @@ assets/styles.css         styling, light and dark themes
 assets/logos/             team logos downloaded from the ESPN CDN
 assets/conf-logos/        conference logos downloaded from the ESPN CDN
 data/ratings.json         parsed Sagarin snapshot
-data/espn-games.json      prefetched ESPN teams and games
+data/espn-games.json      prefetched ESPN teams, games and season stats
 data/logos.json           manifest of which logos are on file
 data/ap-poll.json         AP Top 25 snapshot
 data/tv-games.json        upcoming games with TV and lines
@@ -219,6 +222,10 @@ takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`; `archive-ratings.js` t
 - ESPN schedules are prefetched by the Action into `data/espn-games.json`; the browser
   never calls ESPN. Sagarin names are matched to ESPN teams with `assets/team-alias.js`;
   265 of the 266 rated teams have a schedule (UTRGV is not in ESPN's list).
+- The head to head offense, defense and points per game come from ESPN's per-team
+  statistics endpoint and are stored in the same file. Total offense and total defense are
+  yards per game, points per game is scoring, and each rank counts every rated team that
+  has the number.
 - Logos come from the ESPN CDN and are committed under `assets/logos/`; the AP Top 25
   comes from ESPN's rankings endpoint. Both are refreshed by the Actions, not the browser.
 - Playoff conference champions come from projected final conference records (real results

@@ -53,6 +53,36 @@ function trimTeam(t) {
   return { id: t.id, displayName: t.displayName, location: t.location, name: t.name, abbreviation: t.abbreviation };
 }
 
+// Pull the few season numbers the site shows for a team: total offense and
+// total defense (yards per game), points per game and games played. "Own" comes
+// from results.stats, "against" from results.opponent, which is the aggregate
+// of what opponents did against this team.
+function trimStats(j) {
+  if (!j || !j.results) return null;
+  var own = (j.results.stats && j.results.stats.categories) || [];
+  var against = [];
+  var opp = j.results.opponent;
+  if (opp) Object.keys(opp).forEach(function (k) { if (opp[k] && opp[k].stats) against.push(opp[k]); });
+  function stat(cats, cat, field) {
+    for (var i = 0; i < cats.length; i++) {
+      if (cats[i].name !== cat) continue;
+      var arr = cats[i].stats || [];
+      for (var k = 0; k < arr.length; k++) if (arr[k].name === field) return arr[k].value;
+    }
+    return undefined;
+  }
+  var oy = stat(own, "passing", "yardsPerGame");
+  var pp = stat(own, "passing", "totalPointsPerGame");
+  var gp = stat(own, "general", "gamesPlayed");
+  if (oy === undefined || pp === undefined || gp === undefined) return null;
+  var out = { oy: oy, pp: pp, gp: gp };
+  var dy = stat(against, "passing", "yardsPerGame");
+  var pa = stat(against, "passing", "totalPointsPerGame");
+  if (dy !== undefined) out.dy = dy;
+  if (pa !== undefined) out.pa = pa;
+  return out;
+}
+
 async function pool(items, size, worker) {
   const results = [];
   let i = 0;
@@ -135,19 +165,34 @@ async function main() {
     if (done % 25 === 0) console.log("  " + done + "/" + targets.length);
   });
 
+  const stats = {};
+  await pool(targets, concurrency, async (t) => {
+    try {
+      const j = await fetchJson(ESPN_BASE + "/teams/" + t.id + "/statistics?season=" + season, 3);
+      const s = trimStats(j);
+      if (s) stats[t.id] = s;
+    } catch (err) {
+      console.error("  statistics failed for " + t.sagarin + ": " + err.message);
+    }
+  });
+  console.log("got season statistics for " + Object.keys(stats).length + " of " + targets.length + " teams");
+
   const out = {
     source: ESPN_BASE,
     fetched_at: new Date().toISOString(),
     season: season,
     teams: Object.keys(teams).map((id) => teams[id]),
-    games: Object.keys(games).map((id) => games[id]).sort((a, b) => (a.date < b.date ? -1 : 1))
+    games: Object.keys(games).map((id) => games[id]).sort((a, b) => (a.date < b.date ? -1 : 1)),
+    stats: stats
   };
 
   // Only move fetched_at when something actually changed, so a quiet run leaves
   // the file alone and the Action skips the commit.
   const signature = Sagarin.hash(
     out.teams.map((t) => t.id).join(",") + "|" +
-    out.games.map((g) => g.id + ":" + g.homeScore + ":" + g.awayScore + ":" + g.completed).join("|")
+    out.games.map((g) => g.id + ":" + g.homeScore + ":" + g.awayScore + ":" + g.completed).join("|") + "|" +
+    Object.keys(out.stats).sort().map((id) => id + ":" + out.stats[id].oy + ":" + out.stats[id].pp + ":" +
+      out.stats[id].gp + ":" + out.stats[id].dy + ":" + out.stats[id].pa).join("|")
   );
   let existing = null;
   try { existing = JSON.parse(fs.readFileSync(outPath, "utf8")); } catch (e) { existing = null; }
