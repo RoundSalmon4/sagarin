@@ -31,6 +31,7 @@
     teamDivision: "",
     teamGroup: "",
     confLevel: "",
+    confExpanded: {},
     modules: {}
   };
 
@@ -441,8 +442,8 @@
           '<div class="h2h-proj-margin">by ' + SG.fmt(Math.abs(s.spread), 1) +
           '<span class="h2h-proj-label">points</span></div>' +
           '<div class="h2h-proj-bar">' +
-          '<span class="' + (homeFav ? "home" : "away") + '" style="width:' + ((1 - probHome) * 100).toFixed(1) + '%"></span>' +
-          '<span class="' + (homeFav ? "away" : "home") + '" style="width:' + (probHome * 100).toFixed(1) + '%"></span></div>' +
+          '<span class="' + (homeFav ? "" : "fav") + '" style="width:' + ((1 - probHome) * 100).toFixed(1) + '%"></span>' +
+          '<span class="' + (homeFav ? "fav" : "") + '" style="width:' + (probHome * 100).toFixed(1) + '%"></span></div>' +
           '<div class="h2h-proj-probs"><span>' + SG.esc(away.team) + " " + pctText(1 - probHome) + "</span>" +
           "<span>" + SG.esc(home.team) + " " + pctText(probHome) + "</span></div>" +
           "</div>";
@@ -468,8 +469,8 @@
     document.getElementById("matchupNote").textContent =
       "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
       "so the conference records and the last five are the actual results so far this season. The overall record " +
-      "is the one printed on the Sagarin page. Standings show the selected team with the teams around it rather " +
-      "than the full conference. The " + SG.methodLabel(method) + " rating is the column used above.";
+      "is the one printed on the Sagarin page. Standings show the selected team with the teams around it; click the " +
+      "ellipsis to open the full conference. The " + SG.methodLabel(method) + " rating is the column used above.";
   };
 
   // Conference name for a team, with the Sun Belt east and west halves merged.
@@ -537,30 +538,42 @@
     var awayConf = confOf(away);
     var homeConf = confOf(home);
 
+    function expandRow(conf, cls, label) {
+      return '<tr class="h2h-gap"><td colspan="4"><button type="button" class="' + cls +
+        '" data-conf="' + SG.esc(conf) + '">' + SG.esc(label) + "</button></td></tr>";
+    }
+
     function table(conf, title, marks) {
       var list = byConf[conf] || [];
       if (!list.length) {
         return '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) +
           '</div><p class="note">No teams in this group.</p></div>';
       }
+      var independent = conf === "I-A IND.";
+      var expanded = !independent && !!SG.state.confExpanded[conf];
       var pos = {};
       list.forEach(function (r, i) { pos[r.team] = i; });
-      var visible = {};
-      var independent = conf === "I-A IND.";
-      marks.forEach(function (m) {
-        var i = pos[m.team];
-        if (i === undefined) return;
-        if (independent) { visible[i] = true; return; }
-        for (var k = i - 2; k <= i + 2; k++) if (k >= 0 && k < list.length) visible[k] = true;
-      });
-      var rows = Object.keys(visible).map(Number).sort(function (a, b) { return a - b; });
-      var shownLine = independent ? "" : " \u00b7 showing " + rows.length + " of " + list.length;
+      var rows;
+      if (independent || expanded) {
+        rows = list.map(function (r, i) { return i; });
+      } else {
+        var visible = {};
+        marks.forEach(function (m) {
+          var i = pos[m.team];
+          if (i === undefined) return;
+          for (var k = i - 2; k <= i + 2; k++) if (k >= 0 && k < list.length) visible[k] = true;
+        });
+        rows = Object.keys(visible).map(Number).sort(function (a, b) { return a - b; });
+      }
+      var shownLine = independent ? "" :
+        (expanded ? " \u00b7 " + list.length + " teams" : " \u00b7 showing " + rows.length + " of " + list.length);
       var html = '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) + SG.esc(shownLine) + '</div>' +
         '<table class="h2h-table"><thead><tr><th>#</th><th class="left">Team</th><th>Overall</th><th>Conf</th></tr></thead><tbody>';
+      var windowed = !independent && !expanded;
       var prev = null;
       rows.forEach(function (i) {
-        if (!independent && prev === null && i > 0) html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
-        if (!independent && prev !== null && i - prev > 1) html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
+        if (windowed && prev === null && i > 0) html += expandRow(conf, "h2h-expand", "\u2026");
+        if (windowed && prev !== null && i - prev > 1) html += expandRow(conf, "h2h-expand", "\u2026");
         prev = i;
         var r = list[i];
         var mark = null;
@@ -571,9 +584,10 @@
           '</td><td class="num">' + SG.esc(SG.rec(r.ow, r.ol)) +
           '</td><td class="num">' + SG.esc(SG.rec(r.w, r.l)) + "</td></tr>";
       });
-      if (!independent && rows.length && rows[rows.length - 1] < list.length - 1) {
-        html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
+      if (windowed && rows.length && rows[rows.length - 1] < list.length - 1) {
+        html += expandRow(conf, "h2h-expand", "\u2026");
       }
+      if (expanded) html += expandRow(conf, "h2h-collapse", "Show fewer");
       html += "</tbody></table></div>";
       return html;
     }
@@ -637,8 +651,9 @@
       html += "</div>";
     }
     if (next) {
-      html += '<div class="h2h-next">Next: ' + next.logo + SG.esc(next.site + next.opp) +
-        (next.neutral ? " (neutral)" : "") + "</div>";
+      html += '<div class="h2h-next"><span class="h2h-next-label">Next</span>' +
+        '<span class="h2h-last-opp">' + next.logo + SG.esc(next.site + next.opp) +
+        (next.neutral ? " (neutral)" : "") + "</span></div>";
     }
     html += "</div>";
     return html;
@@ -880,6 +895,17 @@
       document.getElementById("teamB").value = a;
       SG.renderMatchup();
     });
+
+    var confBox = document.getElementById("matchupConf");
+    if (confBox) {
+      confBox.addEventListener("click", function (e) {
+        var btn = e.target.closest ? e.target.closest(".h2h-expand, .h2h-collapse") : null;
+        if (!btn) return;
+        var conf = btn.getAttribute("data-conf") || "";
+        SG.state.confExpanded[conf] = btn.classList.contains("h2h-expand");
+        SG.renderMatchup();
+      });
+    }
     document.getElementById("teamA").addEventListener("change", SG.renderMatchup);
     document.getElementById("teamB").addEventListener("change", SG.renderMatchup);
     document.getElementById("methodSelect").addEventListener("change", SG.renderMatchup);

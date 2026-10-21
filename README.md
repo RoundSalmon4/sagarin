@@ -58,10 +58,10 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   all five ratings for both teams, with the rating method in use highlighted. Then the last
   five results plus the next game for each team, each with the opponent's logo, and a
   conference snapshot. The snapshot shows the overall and conference records and the
-  selected team with the teams around it (the full table is not printed), and independents
-  show as a one-team list with a 0-0 conference record. A short note at the foot of the
-  page explains the method, the home edge and where the numbers come from. Swap flips the
-  two teams.
+  selected team with the teams around it; the ellipsis opens the full conference, and
+  independents show as a one-team list with a 0-0 conference record. A short note at the
+  foot of the page explains the method, the home edge and where the numbers come from.
+  Swap flips the two teams.
 - Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the
   repo so the browser never hits a logo CDN.
