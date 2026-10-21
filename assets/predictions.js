@@ -29,8 +29,8 @@
   var REGULAR_COLUMNS = [
     { key: "num", label: "#", cls: "left", index: true },
     { key: "favorite", label: "Favorite", cls: "left", type: "str", cell: favCell },
-    { key: "site", label: "Site", cls: "left", type: "str", value: function (p) { return p.neutral ? "Neutral" : (p.home || ""); }, cell: siteCell },
-    { key: "underdog", label: "Underdog", cls: "left", type: "str", cell: dogCell }
+    { key: "underdog", label: "Underdog", cls: "left", type: "str", cell: dogCell },
+    { key: "site", label: "Site", cls: "left", type: "str", value: function (p) { return p.neutral ? "Neutral" : (p.home || ""); }, cell: siteCell }
   ].concat(MARGIN_COLUMNS, [
     { key: "money", label: "MONEY" },
     { key: "winPct", label: "WIN%" },
@@ -45,11 +45,11 @@
   var EIGEN_COLUMNS = [
     { key: "num", label: "#", cls: "left", index: true },
     { key: "favorite", label: "Favorite", cls: "left", type: "str", cell: favCell },
+    { key: "underdog", label: "Underdog", cls: "left", type: "str", cell: dogCell },
     { key: "site", label: "Site", cls: "left", type: "str", value: function (p) { return p.home || ""; }, cell: siteCell },
     { key: "spread", label: "Spread" },
     { key: "odds", label: "Odds" },
-    { key: "pct", label: "Pct%" },
-    { key: "underdog", label: "Underdog", cls: "left", type: "str", cell: dogCell }
+    { key: "pct", label: "Pct%" }
   ];
 
   var NOTES = {

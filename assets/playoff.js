@@ -465,11 +465,13 @@
       return;
     }
     box.innerHTML = matchups.map(function (m) {
-      var site = m.neutral ? "Neutral site" : ("at " + m.a.team);
+      var away = m.neutral ? m.a : m.b;
+      var home = m.neutral ? m.b : m.a;
+      var site = m.neutral ? "Neutral site" : ("at " + home.team);
       return '<div class="ccg-card">' +
         '<div class="ccg-conf">' + SG.esc(m.conf) + "</div>" +
-        ccgTeam(m.a, m.winner === m.a, view.method, showResults, m.p) +
-        ccgTeam(m.b, m.winner === m.b, view.method, showResults, 1 - m.p) +
+        ccgTeam(away, m.winner === away, view.method, showResults, (m.neutral ? m.p : (m.b === home ? 1 - m.p : m.p))) +
+        ccgTeam(home, m.winner === home, view.method, showResults, (m.neutral ? 1 - m.p : (m.b === home ? m.p : 1 - m.p))) +
         '<div class="ccg-site">' + SG.esc(site) + "</div></div>";
     }).join("");
   }

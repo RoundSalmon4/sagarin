@@ -410,6 +410,29 @@
         "</div>";
       return i === 1 ? '<div class="matchup-gap"></div>' + card : card;
     }).join("");
+
+    var confBox = document.getElementById("matchupConf");
+    if (confBox) {
+      confBox.innerHTML = "";
+      if (SG.projectedStandings) {
+        var st = SG.projectedStandings(method);
+        function confRow(t) {
+          var c = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+          if (!c || c === "I-A IND.") return "";
+          var order = (st.order && st.order[c]) || [];
+          var pos = order.map(function (x) { return x.team; }).indexOf(t.team) + 1;
+          if (!pos) return "";
+          var prev = order[pos - 2];
+          var next = order[pos];
+          var parts = [SG.teamLogo(t.team) + '<strong>' + SG.esc(t.team) + '</strong> <span class="muted">' + SG.esc(c) + "</span>", '<span>#' + pos + " in " + SG.esc(c) + "</span>"];
+          if (prev) parts.push('<span class="muted">Ahead: ' + SG.esc(prev.team) + "</span>");
+          if (next) parts.push('<span class="muted">Behind: ' + SG.esc(next.team) + "</span>");
+          return '<div class="matchup-conf-row">' + parts.map(function (p) { return '<div class="mcr">' + p + "</div>"; }).join("") + "</div>";
+        }
+        var html = confRow(away) + confRow(home);
+        if (html) confBox.innerHTML = "<h3>Conference projection</h3>" + html;
+      }
+    }
     document.getElementById("matchupNote").textContent =
       "Using " + SG.methodLabel(method) + ". Home edge for this rating is " + SG.fmt(edge) +
       " points, per the source page. Win chance uses a normal model with a standard deviation of " + SG.SIGMA + " points.";

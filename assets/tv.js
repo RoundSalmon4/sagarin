@@ -14,9 +14,9 @@
 
   var TZ = { ET: "America/New_York", CT: "America/Chicago", MT: "America/Denver", PT: "America/Los_Angeles" };
 
-  // Kickoff windows follow the usual TV slots, always judged in Eastern time:
-  // noon, 3:30, 7:30 and the late "After Dark" games. The start/end hours are
-  // Eastern hours used only to label each window in the chosen time zone.
+  // Kickoff windows are defined as static periods in the selected time zone
+  // (or the browser's local time zone if none is selected). Games move
+  // dynamically into which block they belong to when the time zone changes.
   var WINDOWS = [
     { key: "early", label: "Early afternoon", start: 11, end: 15 },
     { key: "afternoon", label: "Afternoon", start: 15, end: 19 },
@@ -201,8 +201,25 @@
     return parseInt(s, 10) % 24;
   }
 
+  function localHourInTz(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return etHour(iso);
+    var tzid = tz ? TZ[tz] : undefined;
+    var parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: tzid,
+      hour: "2-digit",
+      hour12: false
+    }).formatToParts(d);
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === "hour") {
+        return parseInt(parts[i].value, 10) % 24;
+      }
+    }
+    return etHour(iso);
+  }
+
   function windowOf(iso) {
-    var h = etHour(iso);
+    var h = localHourInTz(iso);
     if (h >= 22 || h < 4) return "late";
     if (h < 15) return "early";
     if (h < 19) return "afternoon";
@@ -264,7 +281,31 @@
   }
 
   function windowRange(w, refIso) {
-    return localTime(etInstant(refIso, w.start)) + " - " + localTime(etInstant(refIso, w.end));
+    return localTime(tzWallInstant(refIso, w.start)) + " - " + localTime(tzWallInstant(refIso, w.end));
+  }
+
+  function tzWallInstant(refIso, hour) {
+    var ref = refIso instanceof Date ? refIso : new Date(refIso);
+    var tzid = tz ? TZ[tz] : undefined;
+    var p = {};
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: tzid, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false
+    }).formatToParts(ref).forEach(function (x) { p[x.type] = x.value; });
+    var y = +p.year, mo = +p.month, d = +p.day, mi = +p.minute;
+    var dayOff = Math.floor(hour / 24), h = ((hour % 24) + 24) % 24;
+    if (tzid) {
+      var wallMs = Date.UTC(y, mo - 1, d + dayOff, h, 0, 0);
+      var gp = {};
+      new Intl.DateTimeFormat("en-US", {
+        timeZone: tzid, year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hour12: false
+      }).formatToParts(new Date(wallMs)).forEach(function (x) { gp[x.type] = x.value; });
+      return new Date(wallMs + (wallMs - Date.UTC(+gp.year, +gp.month - 1, +gp.day, (+gp.hour) % 24, +gp.minute, 0)));
+    }
+    var wall = new Date(y, mo - 1, d + dayOff, h, 0, 0);
+    wall.setSeconds(0, 0);
+    return wall;
   }
 
   // Show the best few games in each kickoff window so the picks are spread

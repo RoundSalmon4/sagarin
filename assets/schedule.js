@@ -326,12 +326,13 @@
 
     note.textContent =
       "Projected with " + SG.methodLabel(method) + ". Played games use the real result and the rest are predicted. " +
-      "The projected conference title game is folded into the projected conference and overall records.";
+      "The projected conference title game is folded into the projected conference and overall records. " +
+      "Only FBS teams are shown because there is not enough data to project FCS conferences.";
 
     summary.innerHTML =
       chip("Conference", conf) +
       chip("Method", SG.methodLabel(method)) +
-      (ccg ? chip("Projected champion", ccg.winner.team) + chip("Title game", ccg.matchup.a.team + " vs " + ccg.matchup.b.team) : "");
+      (ccg ? chip("Projected champion", ccg.winner.team) + chip("Title game", ccg.matchup.b.team + " vs " + ccg.matchup.a.team) : "");
   }
 
   function setMode(m) {
