@@ -358,6 +358,7 @@ input[type="search"] { min-width: 240px; }
 
 .h2h-notes { margin-top: 1rem; }
 
+.watch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; margin-bottom: 0.4rem; }
 .watch-window { margin-bottom: 0.9rem; }
 .watch-window-title { margin: 0 0 0.4rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); }
 .watch-window-title .dim { text-transform: none; letter-spacing: 0; font-weight: 400; }

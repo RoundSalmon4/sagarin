@@ -459,12 +459,12 @@
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
           return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
         } },
-        { label: "SCHEDL", cell: function (t) {
+        { label: "Schedule", cell: function (t) {
           return SG.fmt(t.sched) + ' <span class="dim">(' + (t.schedRank || "-") + ")</span>";
         } },
         { label: "Total offense", cell: function (t) { return statCell(t, "oy"); } },
         { label: "Total defense", cell: function (t) { return statCell(t, "dy"); } },
-        { label: "Points per game", cell: function (t) { return statCell(t, "ppg"); } }
+        { label: "PPG", cell: function (t) { return statCell(t, "ppg"); } }
       ];
       // The BCS row joins the table once the CFP rankings are the poll in use.
       if (SG.rankLabel() === "CFP") {
@@ -492,8 +492,12 @@
         var homeFav = s.spread >= 0;
         var fav = homeFav ? home : away;
         var probHome = SG.normCdf(s.spread / SG.SIGMA);
+        var siteLabel = s.site;
+        if (s.site === "Home site") {
+          siteLabel = "Home Site - " + home.team;
+        }
         html += '<div class="h2h-proj-card">' +
-          '<div class="h2h-proj-site">' + SG.esc(s.site) + "</div>" +
+          '<div class="h2h-proj-site">' + SG.esc(siteLabel) + "</div>" +
           '<div class="h2h-proj-fav">' + SG.teamLogo(fav.team) + SG.esc(fav.team) + "</div>" +
           '<div class="h2h-proj-margin">by ' + SG.fmt(Math.abs(s.spread), 1) +
           '<span class="h2h-proj-label">points</span></div>' +
