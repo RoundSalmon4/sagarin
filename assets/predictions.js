@@ -7,6 +7,8 @@
   var sortState = { regular: { key: "num", dir: 1 }, experimental: { key: "num", dir: 1 }, eigenvector: { key: "num", dir: 1 } };
   var currentSet = "regular";
   var search = "";
+  var conf = "";
+  var group = "";
 
   function favCell(p) {
     var isHome = p.home && p.home === p.favorite;
@@ -67,17 +69,65 @@
     return SG.state.data.predictions[currentSet] || [];
   }
 
+  // The predictions name their teams the same way the ratings table does, so
+  // the ratings list gives us the conference and the group for each side.
+  function teamMap() {
+    var m = {};
+    (SG.state.data ? SG.state.data.teams : []).forEach(function (t) { m[t.team] = t; });
+    return m;
+  }
+
+  // Conferences that actually show up in the current block, so the picker
+  // never offers a conference with no games in it.
+  function fillConf() {
+    var sel = document.getElementById("predConf");
+    if (!sel || !SG.state.data) return;
+    var cur = sel.value;
+    var map = teamMap();
+    var seen = {};
+    currentRows().forEach(function (p) {
+      [map[p.favorite], map[p.underdog]].forEach(function (t) {
+        if (t && t.conference) seen[t.conference] = true;
+      });
+    });
+    sel.innerHTML = '<option value="">All conferences</option>';
+    SG.state.data.conferences.forEach(function (c) {
+      if (!seen[c.name]) return;
+      var o = document.createElement("option");
+      o.value = c.name;
+      o.textContent = c.name;
+      sel.appendChild(o);
+    });
+    sel.value = cur || "";
+  }
+
+  // A game shows up when either side matches the filter, the same way the TV
+  // tab treats its group and conference filters.
+  function inScope(p, map) {
+    var a = map[p.favorite];
+    var b = map[p.underdog];
+    if (conf && (!a || a.conference !== conf) && (!b || b.conference !== conf)) return false;
+    if (group) {
+      var ga = a ? SG.confGroup(a) : "";
+      var gb = b ? SG.confGroup(b) : "";
+      if (ga !== group && gb !== group) return false;
+    }
+    return true;
+  }
+
   function render() {
     if (!SG.state.data || !SG.state.data.predictions) return;
     var table = document.getElementById("predTable");
     var columns = currentSet === "eigenvector" ? EIGEN_COLUMNS : REGULAR_COLUMNS;
-    var rows = currentRows();
-    var q = search.trim().toLowerCase();
-    if (q) {
-      rows = rows.filter(function (p) {
-        return p.favorite.toLowerCase().indexOf(q) !== -1 || p.underdog.toLowerCase().indexOf(q) !== -1;
-      });
-    }
+    var all = currentRows();
+    fillConf();
+    var map = teamMap();
+    var rows = all.filter(function (p) {
+      if (!inScope(p, map)) return false;
+      var q = search.trim().toLowerCase();
+      if (!q) return true;
+      return p.favorite.toLowerCase().indexOf(q) !== -1 || p.underdog.toLowerCase().indexOf(q) !== -1;
+    });
     var sort = sortState[currentSet];
     var sorted = SG.sortRows(rows, columns, sort);
     SG.buildHead(table, columns, sort, function (key) {
@@ -85,7 +135,8 @@
       render();
     });
     SG.fillBody(table, columns, sorted);
-    document.getElementById("predCount").textContent = rows.length + " games";
+    document.getElementById("predCount").textContent =
+      rows.length === all.length ? rows.length + " games" : rows.length + " of " + all.length + " games";
     document.getElementById("predNote").textContent = NOTES[currentSet];
   }
 
@@ -94,11 +145,15 @@
       seg.addEventListener("click", function () {
         currentSet = seg.dataset.set;
         SG.$$("#predSet .seg").forEach(function (s) { s.classList.toggle("active", s === seg); });
+        fillConf();
         render();
       });
     });
     var box = document.getElementById("predSearch");
     box.addEventListener("input", function (e) { search = e.target.value; render(); });
+    document.getElementById("predConf").addEventListener("change", function (e) { conf = e.target.value; render(); });
+    document.getElementById("predGroup").addEventListener("change", function (e) { group = e.target.value; render(); });
+    fillConf();
     render();
   }
 

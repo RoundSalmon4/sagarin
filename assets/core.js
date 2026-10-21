@@ -385,31 +385,65 @@
     var home = SG.teamByName(document.getElementById("teamB").value);
     var method = document.getElementById("methodSelect").value;
     if (!away || !home) return;
-    var rAway = away[method];
-    var rHome = home[method];
     var edge = SG.homeEdge(method);
-    var diff = rHome - rAway;
-    var scenarios = [
-      { title: away.team + " at " + home.team, spread: diff + edge },
-      { title: "Neutral site", spread: diff }
-    ];
-    document.getElementById("matchupResult").innerHTML = scenarios.map(function (s, i) {
-      var homeFav = s.spread >= 0;
-      var fav = homeFav ? home : away;
-      var probHome = SG.normCdf(s.spread / SG.SIGMA);
-      var card = '<div class="match-card">' +
-        "<h3>" + SG.esc(s.title) + "</h3>" +
-        '<div class="fav">' + SG.esc(fav.team) + " favored</div>" +
-        '<div class="margin">' + (homeFav ? "+" : "-") + SG.fmt(Math.abs(s.spread), 1) + "</div>" +
-        '<div class="prob">Win chance: ' + SG.esc(away.team) + " " + pctText(1 - probHome) + " / " + SG.esc(home.team) + " " + pctText(probHome) + "</div>" +
-        "</div>";
-      return i === 1 ? '<div class="matchup-gap"></div>' + card : card;
-    }).join("");
+    var diff = home[method] - away[method];
 
-    var awayEl = document.getElementById("matchupAwayCard");
-    var homeEl = document.getElementById("matchupHomeCard");
-    if (awayEl) awayEl.innerHTML = teamCard(away, "AWAY");
-    if (homeEl) homeEl.innerHTML = teamCard(home, "HOME");
+    // The two ways the same numbers can be read: with the home team at home,
+    // and on a neutral field.
+    var scenarios = [
+      { site: "Home site", spread: diff + edge },
+      { site: "Neutral site", spread: diff }
+    ];
+
+    // Comparison table: the two teams side by side, one row per metric.
+    var table = document.getElementById("matchupTable");
+    if (table) {
+      var rows = [
+        { label: "Rating", value: "rating" },
+        { label: "Predictor", value: "predictor" },
+        { label: "Golden mean", value: "goldenMean" },
+        { label: "Recent", value: "recent" },
+        { label: "Strong recent", value: "strongRecent" }
+      ];
+      var html = '<table class="h2h-cmp"><thead><tr><th></th>' +
+        '<th class="h2h-cmp-away">' + teamHead(away, "Away") + "</th>" +
+        '<th class="h2h-cmp-home">' + teamHead(home, "Home") + "</th></tr></thead><tbody>";
+      html += "<tr><th>Record</th><td>" + SG.esc(SG.rec(away.w, away.l)) + "</td><td>" +
+        SG.esc(SG.rec(home.w, home.l)) + "</td></tr>";
+      html += "<tr><th>Conference</th><td>" + SG.esc(confOf(away)) + "</td><td>" +
+        SG.esc(confOf(home)) + "</td></tr>";
+      rows.forEach(function (r) {
+        var lead = r.value === method;
+        html += "<tr" + (lead ? ' class="h2h-lead"' : "") + "><th>" + SG.esc(r.label) + "</th><td>" +
+          SG.fmt(away[r.value]) + "</td><td>" + SG.fmt(home[r.value]) + "</td></tr>";
+      });
+      html += "</tbody></table>";
+      table.innerHTML = html;
+    }
+
+    // Projection: the pick and the win chances for both sites.
+    var proj = document.getElementById("matchupResult");
+    if (proj) {
+      var html = '<div class="h2h-proj-cards">';
+      scenarios.forEach(function (s) {
+        var homeFav = s.spread >= 0;
+        var fav = homeFav ? home : away;
+        var probHome = SG.normCdf(s.spread / SG.SIGMA);
+        html += '<div class="h2h-proj-card">' +
+          '<div class="h2h-proj-site">' + SG.esc(s.site) + "</div>" +
+          '<div class="h2h-proj-fav">' + SG.teamLogo(fav.team) + SG.esc(fav.team) + "</div>" +
+          '<div class="h2h-proj-margin">by ' + SG.fmt(Math.abs(s.spread), 1) +
+          '<span class="h2h-proj-label">points</span></div>' +
+          '<div class="h2h-proj-bar">' +
+          '<span class="' + (homeFav ? "home" : "away") + '" style="width:' + ((1 - probHome) * 100).toFixed(1) + '%"></span>' +
+          '<span class="' + (homeFav ? "away" : "home") + '" style="width:' + (probHome * 100).toFixed(1) + '%"></span></div>' +
+          '<div class="h2h-proj-probs"><span>' + SG.esc(away.team) + " " + pctText(1 - probHome) + "</span>" +
+          "<span>" + SG.esc(home.team) + " " + pctText(probHome) + "</span></div>" +
+          "</div>";
+      });
+      html += "</div>";
+      proj.innerHTML = html;
+    }
 
     var methodNote = document.getElementById("matchupMethod");
     if (methodNote) {
@@ -431,31 +465,23 @@
       "Ratings are from the Sagarin page and the " + SG.methodLabel(method) + " column is the one used above.";
   };
 
-  // Team card for the head to head view: logo, name, record, conference and the
-  // five rating numbers side by side.
-  function teamCard(t, role) {
-    var c = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
-    return '<div class="h2h-card">' +
-      '<div class="h2h-role">' + SG.esc(role) + '</div>' +
-      '<div class="h2h-head">' + SG.teamLogo(t.team) +
-      '<div class="h2h-name">' + SG.esc(t.team) + SG.apBadge(t.team) +
-      '<div class="h2h-meta">' + SG.esc(SG.rec(t.w, t.l)) + (c ? " | " + SG.esc(c) : "") + '</div>' +
-      '</div></div>' +
-      '<div class="h2h-ratings">' +
-      '<div><span>RATING</span><strong>' + SG.fmt(t.rating) + '</strong></div>' +
-      '<div><span>PREDICTOR</span><strong>' + SG.fmt(t.predictor) + '</strong></div>' +
-      '<div><span>GOLDEN</span><strong>' + SG.fmt(t.goldenMean) + '</strong></div>' +
-      '<div><span>RECENT</span><strong>' + SG.fmt(t.recent) + '</strong></div>' +
-      '<div><span>STRONG</span><strong>' + SG.fmt(t.strongRecent) + '</strong></div>' +
-      '</div></div>';
+  // Conference name for a team, with the Sun Belt east and west halves merged.
+  function confOf(t) {
+    return SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+  }
+
+  // Header cell for the comparison table: role, logo, name and AP rank.
+  function teamHead(t, role) {
+    return '<div class="h2h-head-role">' + SG.esc(role) + "</div>" +
+      '<div class="h2h-head-name">' + SG.teamLogo(t.team) + SG.esc(t.team) + SG.apBadge(t.team) + "</div>";
   }
 
   // Current conference standings from the completed games in the ESPN file.
   // Teams are ordered by conference win percentage, then by rating.
   function standingsByConf() {
-    var confOf = {};
+    var confKey = {};
     SG.state.data.teams.forEach(function (t) {
-      confOf[t.team] = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+      confKey[t.team] = confOf(t);
     });
     var rec = {};
     function ensure(n) { return rec[n] || (rec[n] = { w: 0, l: 0 }); }
@@ -465,13 +491,13 @@
       var h = SG.state.espnIdToSag && SG.state.espnIdToSag[g.homeId];
       var a = SG.state.espnIdToSag && SG.state.espnIdToSag[g.awayId];
       if (!h || !a) return;
-      if (confOf[h.team] !== confOf[a.team]) return;
+      if (confKey[h.team] !== confKey[a.team]) return;
       if (g.homeScore > g.awayScore) { ensure(h.team).w += 1; ensure(a.team).l += 1; }
       else { ensure(a.team).w += 1; ensure(h.team).l += 1; }
     });
     var byConf = {};
     SG.state.data.teams.forEach(function (t) {
-      var c = confOf[t.team];
+      var c = confKey[t.team];
       if (!c) return;
       var r = rec[t.team] || { w: 0, l: 0 };
       var g = r.w + r.l;
@@ -497,12 +523,8 @@
   function confStandings(away, home) {
     if (!SG.state.espn) return '<p class="note">Conference standings need the ESPN schedule data, which is not loaded.</p>';
     var byConf = standingsByConf();
-    var confOf = {};
-    SG.state.data.teams.forEach(function (t) {
-      confOf[t.team] = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
-    });
-    var awayConf = confOf[away.team];
-    var homeConf = confOf[home.team];
+    var awayConf = confOf(away);
+    var homeConf = confOf(home);
 
     function table(conf, title, marks) {
       var list = byConf[conf] || [];

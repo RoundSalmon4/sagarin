@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sagarin College Football Ratings Explorer</title>
-  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a record predictor for teams and conferences, a TV schedule, and a CFP bracket builder.">
+  <title>Sagarin Ratings</title>
+  <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a record predictor for teams and conferences, a TV schedule, a CFP bracket builder and a head to head tool.">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="wrap header-inner">
       <div>
-        <h1>College Football Ratings Explorer</h1>
+        <h1>Sagarin Ratings</h1>
         <p class="sub">Jeff Sagarin's cfsend.htm, made sortable and interactive. Unofficial.</p>
         <div class="status">
           <span id="dataStatus">Loading data...</span>
@@ -92,6 +92,15 @@
           <button type="button" class="seg" data-set="eigenvector">Eigenvector</button>
         </div>
         <input id="predSearch" type="search" placeholder="Search team" autocomplete="off">
+        <select id="predConf" aria-label="Filter by conference">
+          <option value="">All conferences</option>
+        </select>
+        <select id="predGroup" aria-label="Filter by group">
+          <option value="">All groups</option>
+          <option value="P4">Power 4</option>
+          <option value="G6">Group of 6</option>
+          <option value="IND">FBS independents</option>
+        </select>
         <span id="predCount" class="count"></span>
       </div>
       <p class="note" id="predNote"></p>
@@ -259,7 +268,7 @@
     </section>
 
     <section id="tab-matchup" class="panel hidden">
-      <div class="matchup-toolbar">
+      <div class="matchup-panel">
         <label class="inline-label">Rating method
           <select id="methodSelect">
             <option value="rating">Overall RATING</option>
@@ -269,26 +278,30 @@
             <option value="strongRecent">STRONG_RECENT</option>
           </select>
         </label>
+        <div class="matchup-controls">
+          <label>Away team
+            <select id="teamA"></select>
+          </label>
+          <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
+          <label>Home team
+            <select id="teamB"></select>
+          </label>
+        </div>
       </div>
-      <div class="matchup-controls">
-        <label>Away team
-          <select id="teamA"></select>
-        </label>
-        <button type="button" id="swapBtn" class="btn swap" title="Swap teams">Swap</button>
-        <label>Home team
-          <select id="teamB"></select>
-        </label>
-      </div>
-      <div id="matchupResult" class="matchup-result"></div>
-      <p class="note h2h-method" id="matchupMethod"></p>
-      <div class="matchup-grid">
-        <div id="matchupAwayCard"></div>
-        <div id="matchupHomeCard"></div>
-      </div>
-      <h3 class="h2h-title">Conference standings</h3>
+
+      <h2 class="section-title">Team comparison</h2>
+      <div id="matchupTable" class="h2h-compare"></div>
+
+      <h2 class="section-title">Projection</h2>
+      <div id="matchupResult" class="h2h-projection"></div>
+      <p class="note" id="matchupMethod"></p>
+
+      <h2 class="section-title">Conference standings</h2>
       <div id="matchupConf"></div>
-      <h3 class="h2h-title">Recent form</h3>
-      <div id="matchupCompare" class="matchup-compare"></div>
+
+      <h2 class="section-title">Recent form</h2>
+      <div id="matchupCompare"></div>
+
       <p class="note" id="matchupNote"></p>
     </section>
 

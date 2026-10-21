@@ -1,4 +1,4 @@
-# Sagarin ratings explorer
+# Sagarin Ratings
 
 Turns Jeff Sagarin's college football ratings page (cfsend.htm) into something you can
 actually click around: sortable tables, conference rankings, a record predictor (team or
@@ -17,7 +17,7 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   table stays sortable.
 - **Predictions tab** - Sagarin's Predictions_with_Totals_and_Moneylines, including the
   regular block, the experimental home/away block and the eigenvector block. Sortable and
-  searchable.
+  searchable, with conference and group filters that match either side of a game.
 - **Record Predictor tab** - pick a team to project every remaining game (winner,
   margin, win chance) with the rating method you choose, plus a projected final record.
   Switch to the Conference view to see every team in a conference with current, projected
@@ -51,13 +51,14 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected title games 10,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
-- **Head to Head tab** - choose an away team and a home team and a rating method. Shows who is
-  favored and by how many points on a neutral field and with the home team at home, plus a card
-  for each team with the logo, the record, the conference and the five rating numbers. Below
-  that a conference standings snapshot for both teams side by side (current records, the two
-  teams highlighted), then the last five results and the next game for each team. A short note
-  at the top explains the method, the home edge and how the win chances are worked out. Swap
-  flips the two teams.
+- **Head to Head tab** - choose an away team and a home team and a rating method. A side by
+  side comparison table shows the record, the conference and all five ratings for both
+  teams, with the rating method in use highlighted. Below that a projection panel gives
+  the pick and the win chances with the home team at home and on a neutral field. Then a
+  conference standings snapshot for both teams (current records, the two teams
+  highlighted), and the last five results plus the next game for each team. A short note
+  explains the method, the home edge and how the win chances are worked out. Swap flips
+  the two teams.
 - Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the
   repo so the browser never hits a logo CDN.
