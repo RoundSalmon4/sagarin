@@ -416,21 +416,29 @@
       confBox.innerHTML = "";
       if (SG.projectedStandings) {
         var st = SG.projectedStandings(method);
-        function confRow(t) {
+        function confBlock(t, label) {
           var c = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
           if (!c || c === "I-A IND.") return "";
           var order = (st.order && st.order[c]) || [];
-          var pos = order.map(function (x) { return x.team; }).indexOf(t.team) + 1;
+          var names = order.map(function (x) { return x.team; });
+          var pos = names.indexOf(t.team) + 1;
           if (!pos) return "";
           var prev = order[pos - 2];
+          var cur = order[pos - 1];
           var next = order[pos];
-          var parts = [SG.teamLogo(t.team) + '<strong>' + SG.esc(t.team) + '</strong> <span class="muted">' + SG.esc(c) + "</span>", '<span>#' + pos + " in " + SG.esc(c) + "</span>"];
-          if (prev) parts.push('<span class="muted">Ahead: ' + SG.esc(prev.team) + "</span>");
-          if (next) parts.push('<span class="muted">Behind: ' + SG.esc(next.team) + "</span>");
-          return '<div class="matchup-conf-row">' + parts.map(function (p) { return '<div class="mcr">' + p + "</div>"; }).join("") + "</div>";
+          var html = "<div class=\"mc-block\"><div class=\"mc-title\">" + SG.esc(label) + ": " + SG.teamLogo(t.team) + SG.esc(t.team) + " <span class=\"muted\">" + SG.esc(c) + " #" + pos + "</span></div><table class=\"mc-table\"><tbody>";
+          if (prev) {
+            html += '<tr><td class="mc-pos">' + (pos - 1) + '</td><td>' + SG.teamLogo(prev.team) + SG.esc(prev.team) + '</td></tr>';
+          }
+          html += '<tr class="mc-cur"><td class="mc-pos">' + pos + '</td><td>' + SG.teamLogo(cur.team) + SG.esc(cur.team) + ' <span class="mc-hilite">This team</span></td></tr>';
+          if (next) {
+            html += '<tr><td class="mc-pos">' + (pos + 1) + '</td><td>' + SG.teamLogo(next.team) + SG.esc(next.team) + '</td></tr>';
+          }
+          html += "</tbody></table></div>";
+          return html;
         }
-        var html = confRow(away) + confRow(home);
-        if (html) confBox.innerHTML = "<h3>Conference projection</h3>" + html;
+        var html = '<h3>Conference projection</h3><div class="mc-grid">' + confBlock(away, "Away") + confBlock(home, "Home") + "</div>";
+        if (html.indexOf("mc-block") !== -1) confBox.innerHTML = html;
       }
     }
     document.getElementById("matchupNote").textContent =
