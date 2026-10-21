@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sagarin Ratings</title>
+  <title>CFS Explorer - College Football Ratings</title>
   <meta name="description" content="Sortable, interactive view of Jeff Sagarin's college football ratings, with a record predictor for teams and conferences, a TV schedule, a CFP bracket builder and a head to head tool.">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="wrap header-inner">
       <div>
-        <h1>Sagarin Ratings</h1>
+        <h1>CFS Explorer</h1>
         <p class="sub">Jeff Sagarin's cfsend.htm, made sortable and interactive. Unofficial.</p>
         <div class="status">
           <span id="dataStatus">Loading data...</span>
@@ -289,20 +289,22 @@
         </div>
       </div>
 
-      <h2 class="section-title">Team comparison</h2>
-      <div id="matchupTable" class="h2h-compare"></div>
-
       <h2 class="section-title">Projection</h2>
-      <div id="matchupResult" class="h2h-projection"></div>
-      <p class="note" id="matchupMethod"></p>
+      <div id="matchupResult"></div>
+
+      <h2 class="section-title">Team comparison</h2>
+      <div id="matchupTable"></div>
+
+      <h2 class="section-title">Last 5</h2>
+      <div id="matchupCompare" class="h2h-last5"></div>
 
       <h2 class="section-title">Conference standings</h2>
       <div id="matchupConf"></div>
 
-      <h2 class="section-title">Recent form</h2>
-      <div id="matchupCompare"></div>
-
-      <p class="note" id="matchupNote"></p>
+      <div class="h2h-notes">
+        <p class="note" id="matchupMethod"></p>
+        <p class="note" id="matchupNote"></p>
+      </div>
     </section>
 
   </main>

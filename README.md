@@ -1,4 +1,4 @@
-# Sagarin Ratings
+# CFS Explorer
 
 Turns Jeff Sagarin's college football ratings page (cfsend.htm) into something you can
 actually click around: sortable tables, conference rankings, a record predictor (team or
@@ -51,14 +51,17 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected title games 10,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
-- **Head to Head tab** - choose an away team and a home team and a rating method. A side by
-  side comparison table shows the record, the conference and all five ratings for both
-  teams, with the rating method in use highlighted. Below that a projection panel gives
-  the pick and the win chances with the home team at home and on a neutral field. Then a
-  conference standings snapshot for both teams (current records, the two teams
-  highlighted), and the last five results plus the next game for each team. A short note
-  explains the method, the home edge and how the win chances are worked out. Swap flips
-  the two teams.
+- **Head to Head tab** - choose an away team and a home team and a rating method. The page
+  runs top to bottom as the rating method and team picks, the projection, the comparison
+  and the standings. The projection gives the pick and the win chances with the home team
+  at home and on a neutral field. The comparison table shows the record, the conference and
+  all five ratings for both teams, with the rating method in use highlighted. Then the last
+  five results plus the next game for each team, each with the opponent's logo, and a
+  conference snapshot. The snapshot shows the overall and conference records and the
+  selected team with the teams around it (the full table is not printed), and independents
+  show as a one-team list with a 0-0 conference record. A short note at the foot of the
+  page explains the method, the home edge and where the numbers come from. Swap flips the
+  two teams.
 - Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the
   repo so the browser never hits a logo CDN.

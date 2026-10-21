@@ -123,10 +123,11 @@
     return et ? String(et.id) : "";
   };
 
-  // Inline logo for a team, with a light and a dark variant swapped by theme.
-  // Returns "" when the team has no ESPN match or no logo on file.
-  SG.teamLogo = function (name) {
-    var id = SG.logoId(name);
+  // Inline logo for an ESPN team id, with a light and a dark variant swapped by
+  // theme. Returns "" when there is no logo on file. Used for opponents that are
+  // not in the ratings list, where there is no Sagarin name to look up.
+  SG.logoById = function (id) {
+    id = id === null || id === undefined ? "" : String(id);
     var logos = SG.state.logos;
     if (!id || !logos) return "";
     var hasLight = logos.light[id];
@@ -140,6 +141,11 @@
     if (hasLight) return '<span class="team-logo"><img src="assets/logos/' + id + '.png" alt="" loading="lazy"></span>';
     if (hasDark) return '<span class="team-logo"><img src="assets/logos/' + id + '-dark.png" alt="" loading="lazy"></span>';
     return "";
+  };
+
+  // Inline logo for a Sagarin team name.
+  SG.teamLogo = function (name) {
+    return SG.logoById(SG.logoId(name));
   };
 
   SG.apRank = function (name) {
@@ -460,9 +466,10 @@
     if (comp) comp.innerHTML = recentPanel(away) + recentPanel(home);
 
     document.getElementById("matchupNote").textContent =
-      "Conference standings and recent form come from the ESPN schedule data. Played games use the real result, " +
-      "so the conference records and the last five are the actual results so far this season. " +
-      "Ratings are from the Sagarin page and the " + SG.methodLabel(method) + " column is the one used above.";
+      "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
+      "so the conference records and the last five are the actual results so far this season. The overall record " +
+      "is the one printed on the Sagarin page. Standings show the selected team with the teams around it rather " +
+      "than the full conference. The " + SG.methodLabel(method) + " rating is the column used above.";
   };
 
   // Conference name for a team, with the Sun Belt east and west halves merged.
@@ -505,6 +512,8 @@
         team: t.team,
         w: r.w,
         l: r.l,
+        ow: t.w,
+        ol: t.l,
         pct: g ? r.w / g : 0,
         rating: t.rating
       });
@@ -519,7 +528,9 @@
   }
 
   // Conference standings snapshot for both teams, side by side. Each team's
-  // row is highlighted. Teams in the same conference share one table.
+  // row is highlighted. Teams in the same conference share one table. The
+  // selected team is shown with a few teams either side of it rather than the
+  // whole conference, so the table reads as "where are they" at a glance.
   function confStandings(away, home) {
     if (!SG.state.espn) return '<p class="note">Conference standings need the ESPN schedule data, which is not loaded.</p>';
     var byConf = standingsByConf();
@@ -528,58 +539,74 @@
 
     function table(conf, title, marks) {
       var list = byConf[conf] || [];
-      var played = list.some(function (r) { return r.w + r.l > 0; });
       if (!list.length) {
         return '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) +
           '</div><p class="note">No teams in this group.</p></div>';
       }
-      if (!played) {
-        var why = conf === "I-A IND." ? "This team is independent, so it plays no conference games."
-          : "No completed conference games on file.";
-        return '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) +
-          '</div><p class="note">' + SG.esc(why) + "</p></div>";
-      }
-      var html = '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) + '</div>' +
-        '<table class="h2h-table"><thead><tr><th>#</th><th>Team</th><th>Conf</th></tr></thead><tbody>';
-      list.forEach(function (r, i) {
+      var pos = {};
+      list.forEach(function (r, i) { pos[r.team] = i; });
+      var visible = {};
+      var independent = conf === "I-A IND.";
+      marks.forEach(function (m) {
+        var i = pos[m.team];
+        if (i === undefined) return;
+        if (independent) { visible[i] = true; return; }
+        for (var k = i - 2; k <= i + 2; k++) if (k >= 0 && k < list.length) visible[k] = true;
+      });
+      var rows = Object.keys(visible).map(Number).sort(function (a, b) { return a - b; });
+      var shownLine = independent ? "" : " \u00b7 showing " + rows.length + " of " + list.length;
+      var html = '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) + SG.esc(shownLine) + '</div>' +
+        '<table class="h2h-table"><thead><tr><th>#</th><th class="left">Team</th><th>Overall</th><th>Conf</th></tr></thead><tbody>';
+      var prev = null;
+      rows.forEach(function (i) {
+        if (!independent && prev === null && i > 0) html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
+        if (!independent && prev !== null && i - prev > 1) html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
+        prev = i;
+        var r = list[i];
         var mark = null;
         marks.forEach(function (m) { if (m.team === r.team) mark = m.role; });
         html += '<tr' + (mark ? ' class="h2h-me"' : "") + '><td class="num">' + (i + 1) + '</td><td class="left">' +
           SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team) +
           (mark ? ' <span class="h2h-tag">' + SG.esc(mark) + "</span>" : "") +
+          '</td><td class="num">' + SG.esc(SG.rec(r.ow, r.ol)) +
           '</td><td class="num">' + SG.esc(SG.rec(r.w, r.l)) + "</td></tr>";
       });
+      if (!independent && rows.length && rows[rows.length - 1] < list.length - 1) {
+        html += '<tr class="h2h-gap"><td colspan="4">\u2026</td></tr>';
+      }
       html += "</tbody></table></div>";
       return html;
     }
 
-    var html = '<div class="h2h-conf-grid">';
     if (awayConf === homeConf) {
-      html += table(awayConf, awayConf + " (both teams)", [
+      return '<div class="h2h-conf-grid single">' + table(awayConf, awayConf + " (both teams)", [
         { team: away.team, role: "Away" },
         { team: home.team, role: "Home" }
-      ]);
-    } else {
-      html += table(awayConf, awayConf + " (away)", [{ team: away.team, role: "Away" }]);
-      html += table(homeConf, homeConf + " (home)", [{ team: home.team, role: "Home" }]);
+      ]) + "</div>";
     }
-    html += "</div>";
-    return html;
+    return '<div class="h2h-conf-grid">' +
+      table(awayConf, awayConf + " (away)", [{ team: away.team, role: "Away" }]) +
+      table(homeConf, homeConf + " (home)", [{ team: home.team, role: "Home" }]) +
+      "</div>";
   }
 
   // Last 5 results and the next scheduled game for one team, from the ESPN
-  // schedule data.
+  // schedule data. Opponent logos come from the ESPN id when the opponent is
+  // not rated by Sagarin, so every line still carries a mark.
   function recentPanel(t) {
     var games = (SG.gamesForTeam && SG.state.sagToEspn && SG.state.sagToEspn[t.team])
       ? SG.gamesForTeam(t.team) : [];
     var done = [];
     var next = null;
-    var myId = SG.state.sagToEspn ? String(SG.state.sagToEspn[t.team].id) : "";
+    var myEt = SG.state.sagToEspn && SG.state.sagToEspn[t.team];
+    var myId = myEt ? String(myEt.id) : "";
     games.forEach(function (g) {
       var isHome = String(g.homeId) === myId;
       var oppId = isHome ? g.awayId : g.homeId;
       var opp = SG.espnTeamById ? SG.espnTeamById(oppId) : null;
       var oppName = opp ? opp.location || opp.displayName : "";
+      var oppSag = SG.state.espnIdToSag ? SG.state.espnIdToSag[oppId] : null;
+      var logo = oppSag ? SG.teamLogo(oppSag.team) : SG.logoById(oppId);
       if (g.completed && g.homeScore !== null && g.awayScore !== null) {
         var mine = isHome ? g.homeScore : g.awayScore;
         var theirs = isHome ? g.awayScore : g.homeScore;
@@ -587,28 +614,30 @@
           w: mine > theirs,
           score: mine + "-" + theirs,
           opp: oppName,
+          logo: logo,
           site: isHome ? "" : "@ ",
           date: g.date
         });
       } else if (!next) {
-        next = { opp: oppName, site: isHome ? "" : "@ ", date: g.date, neutral: g.neutral };
+        next = { opp: oppName, logo: logo, site: isHome ? "" : "@ ", date: g.date, neutral: g.neutral };
       }
     });
     var last = done.slice(-5).reverse();
-    var html = '<div class="h2h-last"><div class="h2h-last-title">' + SG.esc(t.team) + " last 5</div>";
+    var html = '<div class="h2h-last"><div class="h2h-last-title">' + SG.teamLogo(t.team) +
+      SG.esc(t.team) + " last 5</div>";
     if (!last.length) {
       html += '<p class="note">No completed games on file.</p>';
     } else {
       html += '<div class="h2h-last-list">';
       last.forEach(function (x) {
-        html += '<div class="h2h-last-item"><span class="' + (x.w ? "win" : "loss") + '">' +
+        html += '<div class="h2h-last-item"><span class="h2h-last-res ' + (x.w ? "win" : "loss") + '">' +
           (x.w ? "W" : "L") + " " + SG.esc(x.score) + '</span><span class="h2h-last-opp">' +
-          SG.esc(x.site + x.opp) + "</span></div>";
+          x.logo + SG.esc(x.site + x.opp) + "</span></div>";
       });
       html += "</div>";
     }
     if (next) {
-      html += '<div class="h2h-next">Next: ' + SG.esc(next.site + next.opp) +
+      html += '<div class="h2h-next">Next: ' + next.logo + SG.esc(next.site + next.opp) +
         (next.neutral ? " (neutral)" : "") + "</div>";
     }
     html += "</div>";
