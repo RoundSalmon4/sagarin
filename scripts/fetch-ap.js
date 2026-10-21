@@ -111,7 +111,9 @@ function main() {
       const primaryLabel = primaryKey === "cfp" ? "CFP" : "AP";
 
       const signature = Sagarin.hash(
-        Object.keys(trimmed).sort().map((k) => k + ":" + trimmed[k].ranks.map((r) => r.rank + ":" + r.espn).join("|")).join("~")
+        Object.keys(trimmed).sort().map((k) => k + ":" + trimmed[k].ranks.map((r) =>
+          r.rank + ":" + r.espn + ":" + (r.points == null ? "" : r.points) + ":" +
+          (r.firstPlaceVotes == null ? "" : r.firstPlaceVotes)).join("|")).join("~")
       );
       let existing = null;
       try { existing = JSON.parse(fs.readFileSync(outPath, "utf8")); } catch (e) { existing = null; }
@@ -201,10 +203,21 @@ function trimPoll(poll, espnIdToSag) {
     .map((r) => {
       const id = r.team && r.team.id ? String(r.team.id) : "";
       const espnName = r.team ? (r.team.shortDisplayName || r.team.displayName || r.team.name) : "";
-      return { rank: r.current, id: id, espn: espnName, sagarin: espnIdToSag[id] || null };
+      return {
+        rank: r.current,
+        id: id,
+        espn: espnName,
+        sagarin: espnIdToSag[id] || null,
+        points: typeof r.points === "number" ? r.points : null,
+        firstPlaceVotes: typeof r.firstPlaceVotes === "number" ? r.firstPlaceVotes : null
+      };
     });
   const byTeam = {};
   ranks.forEach((r) => { if (r.sagarin && !(r.sagarin in byTeam)) byTeam[r.sagarin] = r.rank; });
+  // The BCS turned a poll into a 0-1 value by dividing the team's points by the
+  // most it could get (25 for each voter). The voters are the first-place votes,
+  // so the polls carry their own maximum.
+  const voters = ranks.reduce((n, r) => n + (r.firstPlaceVotes || 0), 0);
   return {
     id: poll.id,
     name: poll.name,
@@ -212,6 +225,8 @@ function trimPoll(poll, espnIdToSag) {
     type: poll.type || "",
     date: poll.date || null,
     updated: poll.lastUpdated || null,
+    voters: voters,
+    maxPoints: voters * 25,
     ranks: ranks,
     byTeam: byTeam
   };

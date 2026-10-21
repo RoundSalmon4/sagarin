@@ -1,6 +1,6 @@
 {
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/rankings",
-  "fetched_at": "2026-10-21T18:44:49.016Z",
+  "fetched_at": "2026-10-21T19:22:22.651Z",
   "season": 2026,
   "primary": "ap",
   "primaryLabel": "AP",
@@ -12,151 +12,201 @@
       "rank": 1,
       "id": "2390",
       "espn": "Hurricanes",
-      "sagarin": "Miami-Florida"
+      "sagarin": "Miami-Florida",
+      "points": 1697,
+      "firstPlaceVotes": 40
     },
     {
       "rank": 2,
       "id": "252",
       "espn": "Cougars",
-      "sagarin": "BYU"
+      "sagarin": "BYU",
+      "points": 1675,
+      "firstPlaceVotes": 20
     },
     {
       "rank": 3,
       "id": "194",
       "espn": "Buckeyes",
-      "sagarin": "Ohio State"
+      "sagarin": "Ohio State",
+      "points": 1649,
+      "firstPlaceVotes": 9
     },
     {
       "rank": 4,
       "id": "87",
       "espn": "Fighting Irish",
-      "sagarin": "Notre Dame"
+      "sagarin": "Notre Dame",
+      "points": 1395,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 5,
       "id": "61",
       "espn": "Bulldogs",
-      "sagarin": "Georgia"
+      "sagarin": "Georgia",
+      "points": 1382,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 6,
       "id": "84",
       "espn": "Hoosiers",
-      "sagarin": "Indiana"
+      "sagarin": "Indiana",
+      "points": 1370,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 7,
       "id": "145",
       "espn": "Rebels",
-      "sagarin": "Mississippi"
+      "sagarin": "Mississippi",
+      "points": 1360,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 8,
       "id": "2641",
       "espn": "Red Raiders",
-      "sagarin": "Texas Tech"
+      "sagarin": "Texas Tech",
+      "points": 1336,
+      "firstPlaceVotes": 1
     },
     {
       "rank": 9,
       "id": "26",
       "espn": "Bruins",
-      "sagarin": "UCLA"
+      "sagarin": "UCLA",
+      "points": 1159,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 10,
       "id": "254",
       "espn": "Utes",
-      "sagarin": "Utah"
+      "sagarin": "Utah",
+      "points": 1153,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 11,
       "id": "2633",
       "espn": "Volunteers",
-      "sagarin": "Tennessee"
+      "sagarin": "Tennessee",
+      "points": 1151,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 12,
       "id": "96",
       "espn": "Wildcats",
-      "sagarin": "Kentucky"
+      "sagarin": "Kentucky",
+      "points": 932,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 13,
       "id": "333",
       "espn": "Crimson Tide",
-      "sagarin": "Alabama"
+      "sagarin": "Alabama",
+      "points": 870,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 14,
       "id": "248",
       "espn": "Cougars",
-      "sagarin": "Houston"
+      "sagarin": "Houston",
+      "points": 785,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 15,
       "id": "2294",
       "espn": "Hawkeyes",
-      "sagarin": "Iowa"
+      "sagarin": "Iowa",
+      "points": 747,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 16,
       "id": "30",
       "espn": "Trojans",
-      "sagarin": "Southern California"
+      "sagarin": "Southern California",
+      "points": 592,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 17,
       "id": "154",
       "espn": "Demon Deacons",
-      "sagarin": "Wake Forest"
+      "sagarin": "Wake Forest",
+      "points": 574,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 18,
       "id": "99",
       "espn": "Tigers",
-      "sagarin": "LSU"
+      "sagarin": "LSU",
+      "points": 529,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 19,
       "id": "251",
       "espn": "Longhorns",
-      "sagarin": "Texas"
+      "sagarin": "Texas",
+      "points": 440,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 20,
       "id": "57",
       "espn": "Gators",
-      "sagarin": "Florida"
+      "sagarin": "Florida",
+      "points": 355,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 21,
       "id": "68",
       "espn": "Broncos",
-      "sagarin": "Boise State"
+      "sagarin": "Boise State",
+      "points": 295,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 22,
       "id": "142",
       "espn": "Tigers",
-      "sagarin": "Missouri"
+      "sagarin": "Missouri",
+      "points": 290,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 23,
       "id": "2567",
       "espn": "Mustangs",
-      "sagarin": "SMU"
+      "sagarin": "SMU",
+      "points": 265,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 24,
       "id": "77",
       "espn": "Wildcats",
-      "sagarin": "Northwestern"
+      "sagarin": "Northwestern",
+      "points": 254,
+      "firstPlaceVotes": 0
     },
     {
       "rank": 25,
       "id": "12",
       "espn": "Wildcats",
-      "sagarin": "Arizona"
+      "sagarin": "Arizona",
+      "points": 136,
+      "firstPlaceVotes": 0
     }
   ],
   "byTeam": {
@@ -194,156 +244,208 @@
       "type": "ap",
       "date": "2026-10-18T07:00Z",
       "updated": "2026-10-18T21:15Z",
+      "voters": 70,
+      "maxPoints": 1750,
       "ranks": [
         {
           "rank": 1,
           "id": "2390",
           "espn": "Hurricanes",
-          "sagarin": "Miami-Florida"
+          "sagarin": "Miami-Florida",
+          "points": 1697,
+          "firstPlaceVotes": 40
         },
         {
           "rank": 2,
           "id": "252",
           "espn": "Cougars",
-          "sagarin": "BYU"
+          "sagarin": "BYU",
+          "points": 1675,
+          "firstPlaceVotes": 20
         },
         {
           "rank": 3,
           "id": "194",
           "espn": "Buckeyes",
-          "sagarin": "Ohio State"
+          "sagarin": "Ohio State",
+          "points": 1649,
+          "firstPlaceVotes": 9
         },
         {
           "rank": 4,
           "id": "87",
           "espn": "Fighting Irish",
-          "sagarin": "Notre Dame"
+          "sagarin": "Notre Dame",
+          "points": 1395,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 5,
           "id": "61",
           "espn": "Bulldogs",
-          "sagarin": "Georgia"
+          "sagarin": "Georgia",
+          "points": 1382,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 6,
           "id": "84",
           "espn": "Hoosiers",
-          "sagarin": "Indiana"
+          "sagarin": "Indiana",
+          "points": 1370,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 7,
           "id": "145",
           "espn": "Rebels",
-          "sagarin": "Mississippi"
+          "sagarin": "Mississippi",
+          "points": 1360,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 8,
           "id": "2641",
           "espn": "Red Raiders",
-          "sagarin": "Texas Tech"
+          "sagarin": "Texas Tech",
+          "points": 1336,
+          "firstPlaceVotes": 1
         },
         {
           "rank": 9,
           "id": "26",
           "espn": "Bruins",
-          "sagarin": "UCLA"
+          "sagarin": "UCLA",
+          "points": 1159,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 10,
           "id": "254",
           "espn": "Utes",
-          "sagarin": "Utah"
+          "sagarin": "Utah",
+          "points": 1153,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 11,
           "id": "2633",
           "espn": "Volunteers",
-          "sagarin": "Tennessee"
+          "sagarin": "Tennessee",
+          "points": 1151,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 12,
           "id": "96",
           "espn": "Wildcats",
-          "sagarin": "Kentucky"
+          "sagarin": "Kentucky",
+          "points": 932,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 13,
           "id": "333",
           "espn": "Crimson Tide",
-          "sagarin": "Alabama"
+          "sagarin": "Alabama",
+          "points": 870,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 14,
           "id": "248",
           "espn": "Cougars",
-          "sagarin": "Houston"
+          "sagarin": "Houston",
+          "points": 785,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 15,
           "id": "2294",
           "espn": "Hawkeyes",
-          "sagarin": "Iowa"
+          "sagarin": "Iowa",
+          "points": 747,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 16,
           "id": "30",
           "espn": "Trojans",
-          "sagarin": "Southern California"
+          "sagarin": "Southern California",
+          "points": 592,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 17,
           "id": "154",
           "espn": "Demon Deacons",
-          "sagarin": "Wake Forest"
+          "sagarin": "Wake Forest",
+          "points": 574,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 18,
           "id": "99",
           "espn": "Tigers",
-          "sagarin": "LSU"
+          "sagarin": "LSU",
+          "points": 529,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 19,
           "id": "251",
           "espn": "Longhorns",
-          "sagarin": "Texas"
+          "sagarin": "Texas",
+          "points": 440,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 20,
           "id": "57",
           "espn": "Gators",
-          "sagarin": "Florida"
+          "sagarin": "Florida",
+          "points": 355,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 21,
           "id": "68",
           "espn": "Broncos",
-          "sagarin": "Boise State"
+          "sagarin": "Boise State",
+          "points": 295,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 22,
           "id": "142",
           "espn": "Tigers",
-          "sagarin": "Missouri"
+          "sagarin": "Missouri",
+          "points": 290,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 23,
           "id": "2567",
           "espn": "Mustangs",
-          "sagarin": "SMU"
+          "sagarin": "SMU",
+          "points": 265,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 24,
           "id": "77",
           "espn": "Wildcats",
-          "sagarin": "Northwestern"
+          "sagarin": "Northwestern",
+          "points": 254,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 25,
           "id": "12",
           "espn": "Wildcats",
-          "sagarin": "Arizona"
+          "sagarin": "Arizona",
+          "points": 136,
+          "firstPlaceVotes": 0
         }
       ],
       "byTeam": {
@@ -381,156 +483,208 @@
       "type": "usa",
       "date": "2026-10-18T07:00Z",
       "updated": "2026-10-18T20:00Z",
+      "voters": 73,
+      "maxPoints": 1825,
       "ranks": [
         {
           "rank": 1,
           "id": "2390",
           "espn": "Hurricanes",
-          "sagarin": "Miami-Florida"
+          "sagarin": "Miami-Florida",
+          "points": 1791,
+          "firstPlaceVotes": 50
         },
         {
           "rank": 2,
           "id": "194",
           "espn": "Buckeyes",
-          "sagarin": "Ohio State"
+          "sagarin": "Ohio State",
+          "points": 1725,
+          "firstPlaceVotes": 13
         },
         {
           "rank": 3,
           "id": "252",
           "espn": "Cougars",
-          "sagarin": "BYU"
+          "sagarin": "BYU",
+          "points": 1698,
+          "firstPlaceVotes": 10
         },
         {
           "rank": 4,
           "id": "61",
           "espn": "Bulldogs",
-          "sagarin": "Georgia"
+          "sagarin": "Georgia",
+          "points": 1469,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 5,
           "id": "2641",
           "espn": "Red Raiders",
-          "sagarin": "Texas Tech"
+          "sagarin": "Texas Tech",
+          "points": 1414,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 6,
           "id": "84",
           "espn": "Hoosiers",
-          "sagarin": "Indiana"
+          "sagarin": "Indiana",
+          "points": 1378,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 7,
           "id": "145",
           "espn": "Rebels",
-          "sagarin": "Mississippi"
+          "sagarin": "Mississippi",
+          "points": 1371,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 8,
           "id": "87",
           "espn": "Fighting Irish",
-          "sagarin": "Notre Dame"
+          "sagarin": "Notre Dame",
+          "points": 1332,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 9,
           "id": "254",
           "espn": "Utes",
-          "sagarin": "Utah"
+          "sagarin": "Utah",
+          "points": 1222,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 10,
           "id": "26",
           "espn": "Bruins",
-          "sagarin": "UCLA"
+          "sagarin": "UCLA",
+          "points": 1206,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 11,
           "id": "2633",
           "espn": "Volunteers",
-          "sagarin": "Tennessee"
+          "sagarin": "Tennessee",
+          "points": 1193,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 12,
           "id": "96",
           "espn": "Wildcats",
-          "sagarin": "Kentucky"
+          "sagarin": "Kentucky",
+          "points": 979,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 13,
           "id": "333",
           "espn": "Crimson Tide",
-          "sagarin": "Alabama"
+          "sagarin": "Alabama",
+          "points": 813,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 14,
           "id": "2294",
           "espn": "Hawkeyes",
-          "sagarin": "Iowa"
+          "sagarin": "Iowa",
+          "points": 807,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 15,
           "id": "30",
           "espn": "Trojans",
-          "sagarin": "Southern California"
+          "sagarin": "Southern California",
+          "points": 796,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 16,
           "id": "248",
           "espn": "Cougars",
-          "sagarin": "Houston"
+          "sagarin": "Houston",
+          "points": 730,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 17,
           "id": "99",
           "espn": "Tigers",
-          "sagarin": "LSU"
+          "sagarin": "LSU",
+          "points": 569,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 18,
           "id": "251",
           "espn": "Longhorns",
-          "sagarin": "Texas"
+          "sagarin": "Texas",
+          "points": 520,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 19,
           "id": "154",
           "espn": "Demon Deacons",
-          "sagarin": "Wake Forest"
+          "sagarin": "Wake Forest",
+          "points": 514,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 20,
           "id": "2567",
           "espn": "Mustangs",
-          "sagarin": "SMU"
+          "sagarin": "SMU",
+          "points": 458,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 21,
           "id": "142",
           "espn": "Tigers",
-          "sagarin": "Missouri"
+          "sagarin": "Missouri",
+          "points": 274,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 22,
           "id": "68",
           "espn": "Broncos",
-          "sagarin": "Boise State"
+          "sagarin": "Boise State",
+          "points": 266,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 23,
           "id": "77",
           "espn": "Wildcats",
-          "sagarin": "Northwestern"
+          "sagarin": "Northwestern",
+          "points": 256,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 24,
           "id": "57",
           "espn": "Gators",
-          "sagarin": "Florida"
+          "sagarin": "Florida",
+          "points": 250,
+          "firstPlaceVotes": 0
         },
         {
           "rank": 25,
           "id": "2483",
           "espn": "Ducks",
-          "sagarin": "Oregon"
+          "sagarin": "Oregon",
+          "points": 189,
+          "firstPlaceVotes": 0
         }
       ],
       "byTeam": {
@@ -562,5 +716,5 @@
       }
     }
   },
-  "signature": "7d554632"
+  "signature": "5d430645"
 }

@@ -6,7 +6,9 @@ on:
     # during the season (the preseason and final polls are the exceptions).
     # 20:00 UTC covers both EDT and EST. Monday is a safety net for a slow week.
     # The CFP rankings start on Tuesday nights in November, so Wednesday morning
-    # picks those up. The script is idempotent, it only writes when ranks change.
+    # picks those up. After the polls are written the BCS-style rating is rebuilt
+    # from them and the six live computer rankings. The script is idempotent, it
+    # only writes when ranks change.
     - cron: "0 20 * * 0"
     - cron: "0 13 * * 1"
     - cron: "0 3 * * 3"
@@ -28,14 +30,20 @@ jobs:
       - name: Fetch polls from ESPN
         run: node scripts/fetch-ap.js
 
+      - name: Build the BCS-style rating
+        run: node scripts/fetch-bcs.js
+        continue-on-error: true
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+
       - name: Commit when a poll moved
         run: |
-          if git diff --quiet -- data/ap-poll.json; then
+          git add data/ap-poll.json data/bcs.json
+          if git diff --cached --quiet; then
             echo "no change, nothing to commit"
             exit 0
           fi
           git config user.name "roundsalmon4"
           git config user.email "209016228+RoundSalmon4@users.noreply.github.com"
-          git add data/ap-poll.json
-          git commit -m "Refresh polls from ESPN and the CFP site"
+          git commit -m "Refresh polls from ESPN and the CFP site, and the BCS-style rating"
           git push

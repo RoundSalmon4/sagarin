@@ -10,6 +10,7 @@
   SG.ESPN_DATA_URL = "data/espn-games.json";
   SG.LOGOS_URL = "data/logos.json";
   SG.AP_URL = "data/ap-poll.json";
+  SG.BCS_URL = "data/bcs.json";
   SG.TV_URL = "data/tv-games.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
@@ -20,6 +21,8 @@
     espn: null,
     logos: null,
     ap: null,
+    bcs: null,
+    bcsSig: null,
     tv: null,
     sagToEspn: null,
     espnIdToSag: null,
@@ -157,6 +160,12 @@
   SG.apRank = function (name) {
     var ap = SG.state.ap;
     return ap && ap.byTeam && ap.byTeam[name] ? ap.byTeam[name] : null;
+  };
+
+  // BCS-style record for a team: score, rank and the three components.
+  SG.bcsOf = function (name) {
+    var bcs = SG.state.bcs;
+    return bcs && bcs.teams && bcs.teams[name] ? bcs.teams[name] : null;
   };
 
   SG.apBadge = function (name) {
@@ -303,6 +312,11 @@
     { key: "goldenMean", label: "GOLDEN_MEAN" },
     { key: "recent", label: "RECENT" },
     { key: "strongRecent", label: "STRONG_RECENT" },
+    { key: "bcs", label: "BCS", type: "num", value: function (t) { var b = SG.bcsOf(t.team); return b ? b.score : -1; },
+      cell: function (t) {
+        var b = SG.bcsOf(t.team);
+        return b ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
+      } },
     { key: "sched", label: "Schedule" },
     { key: "schedRank", label: "Sched Rk" },
     { key: "vs10", label: "vs Top 10", type: "num", value: function (t) { return t.vs10w; }, cell: function (t) { return SG.rec(t.vs10w, t.vs10l); } },
@@ -341,12 +355,16 @@
       if (!q) return true;
       return t.team.toLowerCase().indexOf(q) !== -1 || t.conference.toLowerCase().indexOf(q) !== -1;
     });
-    var sorted = SG.sortRows(filtered, TEAM_COLUMNS, SG.state.teamSort);
-    SG.buildHead(table, TEAM_COLUMNS, SG.state.teamSort, function (key) {
-      SG.toggleSort(SG.state.teamSort, key, TEAM_COLUMNS);
+    // The BCS column only belongs once the CFP rankings are the poll in use.
+    var cols = SG.rankLabel() === "CFP"
+      ? TEAM_COLUMNS
+      : TEAM_COLUMNS.filter(function (c) { return c.key !== "bcs"; });
+    var sorted = SG.sortRows(filtered, cols, SG.state.teamSort);
+    SG.buildHead(table, cols, SG.state.teamSort, function (key) {
+      SG.toggleSort(SG.state.teamSort, key, cols);
       SG.renderTeams();
     });
-    SG.fillBody(table, TEAM_COLUMNS, sorted);
+    SG.fillBody(table, cols, sorted);
     document.getElementById("teamCount").textContent = filtered.length + " of " + teams.length + " teams";
   };
 
@@ -448,6 +466,13 @@
         { label: "Total defense", cell: function (t) { return statCell(t, "dy"); } },
         { label: "Points per game", cell: function (t) { return statCell(t, "ppg"); } }
       ];
+      // The BCS row joins the table once the CFP rankings are the poll in use.
+      if (SG.rankLabel() === "CFP") {
+        rows.splice(3, 0, { label: "BCS", cell: function (t) {
+          var b = SG.bcsOf(t.team);
+          return b ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
+        } });
+      }
       var html = '<table class="h2h-cmp"><thead><tr><th></th>' +
         '<th class="h2h-cmp-away">' + teamHead(away, "Away") + "</th>" +
         '<th class="h2h-cmp-home">' + teamHead(home, "Home") + "</th></tr></thead><tbody>";
@@ -500,13 +525,18 @@
     var comp = document.getElementById("matchupCompare");
     if (comp) comp.innerHTML = recentPanel(away) + recentPanel(home);
 
+    var bcsNote = SG.rankLabel() === "CFP"
+      ? "BCS is a BCS-style score for this season: the AP poll stands in for the retired Harris poll, the Coaches " +
+        "poll is unchanged, and the computer part drops each team's highest and lowest of the six computer rankings " +
+        "and keeps the middle four. "
+      : "";
     document.getElementById("matchupNote").textContent =
       "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
       "so the conference records and the last five are the actual results so far this season. The overall record " +
       "is the one printed on the Sagarin page. Standings show the selected team with the teams around it; click the " +
       "ellipsis to open the full conference. Total offense and total defense are yards per game from the ESPN " +
       "statistics, points per game is scoring, and the number in brackets is the national rank of every rated team. " +
-      "The " + SG.methodLabel(method) + " rating is the column used above.";
+      bcsNote + "The " + SG.methodLabel(method) + " rating is the column used above.";
   };
 
   // Conference name for a team, with the Sun Belt east and west halves merged.
@@ -859,9 +889,10 @@
       loadJson(SG.ESPN_DATA_URL).catch(function () { return null; }),
       loadJson(SG.LOGOS_URL).catch(function () { return null; }),
       loadJson(SG.AP_URL).catch(function () { return null; }),
+      loadJson(SG.BCS_URL).catch(function () { return null; }),
       loadJson(SG.TV_URL).catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], tv: res[4] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5] };
     });
   }
 
@@ -881,11 +912,14 @@
       var json = res.data;
       var ratingsChanged = !SG.state.data || json.signature !== SG.state.data.signature;
       var apChanged = (res.ap && res.ap.signature) !== SG.state.apSig;
+      var bcsChanged = (res.bcs && res.bcs.signature) !== SG.state.bcsSig;
       var tvChanged = (res.tv && res.tv.signature) !== SG.state.tvSig;
       SG.state.espn = res.espn;
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.state.bcs = res.bcs;
+      SG.state.bcsSig = res.bcs && res.bcs.signature;
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
@@ -903,8 +937,8 @@
         SG.renderStatus(changed);
       } else {
         SG.buildMapping();
-        if (apChanged) SG.renderTeams();
-        if (apChanged || tvChanged) SG.refreshModules();
+        if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
+        if (apChanged || bcsChanged || tvChanged) SG.refreshModules();
         if (manual) document.getElementById("dataStatus").textContent += " - no changes";
       }
     }).catch(function (err) {
