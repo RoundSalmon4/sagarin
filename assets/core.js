@@ -13,7 +13,6 @@
   SG.TV_URL = "data/tv-games.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
-  SG.ESPN_BASE = "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football";
   SG.ALIAS = window.TeamAlias || {};
 
   SG.state = {
@@ -245,10 +244,6 @@
     tbody.innerHTML = html;
   };
 
-  SG.renderDataTable = function (tableId, columns, rows, sort) {
-    SG.fillBody(document.getElementById(tableId), columns, rows);
-  };
-
   // -------------------------------------------------------------- theme
 
   SG.applyTheme = function (theme) {
@@ -411,14 +406,192 @@
       return i === 1 ? '<div class="matchup-gap"></div>' + card : card;
     }).join("");
 
-    var confBox = document.getElementById("matchupConf");
-    if (confBox) {
-      confBox.innerHTML = "";
+    var awayEl = document.getElementById("matchupAwayCard");
+    var homeEl = document.getElementById("matchupHomeCard");
+    if (awayEl) awayEl.innerHTML = teamCard(away, "AWAY");
+    if (homeEl) homeEl.innerHTML = teamCard(home, "HOME");
+
+    var methodNote = document.getElementById("matchupMethod");
+    if (methodNote) {
+      methodNote.textContent =
+        "Method: " + SG.methodLabel(method) + ". The home edge for this rating is " + SG.fmt(edge) +
+        " points, taken from the source page. Win chances come from a normal model with a standard deviation of " +
+        SG.SIGMA + " points, so a bigger rating gap means a bigger spread of win chances.";
     }
+
+    var confBox = document.getElementById("matchupConf");
+    if (confBox) confBox.innerHTML = confStandings(away, home);
+
+    var comp = document.getElementById("matchupCompare");
+    if (comp) comp.innerHTML = recentPanel(away) + recentPanel(home);
+
     document.getElementById("matchupNote").textContent =
-      "Using " + SG.methodLabel(method) + ". Home edge for this rating is " + SG.fmt(edge) +
-      " points, per the source page. Win chance uses a normal model with a standard deviation of " + SG.SIGMA + " points.";
+      "Conference standings and recent form come from the ESPN schedule data. Played games use the real result, " +
+      "so the conference records and the last five are the actual results so far this season. " +
+      "Ratings are from the Sagarin page and the " + SG.methodLabel(method) + " column is the one used above.";
   };
+
+  // Team card for the head to head view: logo, name, record, conference and the
+  // five rating numbers side by side.
+  function teamCard(t, role) {
+    var c = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+    return '<div class="h2h-card">' +
+      '<div class="h2h-role">' + SG.esc(role) + '</div>' +
+      '<div class="h2h-head">' + SG.teamLogo(t.team) +
+      '<div class="h2h-name">' + SG.esc(t.team) + SG.apBadge(t.team) +
+      '<div class="h2h-meta">' + SG.esc(SG.rec(t.w, t.l)) + (c ? " | " + SG.esc(c) : "") + '</div>' +
+      '</div></div>' +
+      '<div class="h2h-ratings">' +
+      '<div><span>RATING</span><strong>' + SG.fmt(t.rating) + '</strong></div>' +
+      '<div><span>PREDICTOR</span><strong>' + SG.fmt(t.predictor) + '</strong></div>' +
+      '<div><span>GOLDEN</span><strong>' + SG.fmt(t.goldenMean) + '</strong></div>' +
+      '<div><span>RECENT</span><strong>' + SG.fmt(t.recent) + '</strong></div>' +
+      '<div><span>STRONG</span><strong>' + SG.fmt(t.strongRecent) + '</strong></div>' +
+      '</div></div>';
+  }
+
+  // Current conference standings from the completed games in the ESPN file.
+  // Teams are ordered by conference win percentage, then by rating.
+  function standingsByConf() {
+    var confOf = {};
+    SG.state.data.teams.forEach(function (t) {
+      confOf[t.team] = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+    });
+    var rec = {};
+    function ensure(n) { return rec[n] || (rec[n] = { w: 0, l: 0 }); }
+    var games = (SG.state.espn && SG.state.espn.games) || [];
+    games.forEach(function (g) {
+      if (!g.completed || g.homeScore === null || g.awayScore === null) return;
+      var h = SG.state.espnIdToSag && SG.state.espnIdToSag[g.homeId];
+      var a = SG.state.espnIdToSag && SG.state.espnIdToSag[g.awayId];
+      if (!h || !a) return;
+      if (confOf[h.team] !== confOf[a.team]) return;
+      if (g.homeScore > g.awayScore) { ensure(h.team).w += 1; ensure(a.team).l += 1; }
+      else { ensure(a.team).w += 1; ensure(h.team).l += 1; }
+    });
+    var byConf = {};
+    SG.state.data.teams.forEach(function (t) {
+      var c = confOf[t.team];
+      if (!c) return;
+      var r = rec[t.team] || { w: 0, l: 0 };
+      var g = r.w + r.l;
+      (byConf[c] = byConf[c] || []).push({
+        team: t.team,
+        w: r.w,
+        l: r.l,
+        pct: g ? r.w / g : 0,
+        rating: t.rating
+      });
+    });
+    Object.keys(byConf).forEach(function (c) {
+      byConf[c].sort(function (x, y) {
+        if (y.pct !== x.pct) return y.pct - x.pct;
+        return y.rating - x.rating;
+      });
+    });
+    return byConf;
+  }
+
+  // Conference standings snapshot for both teams, side by side. Each team's
+  // row is highlighted. Teams in the same conference share one table.
+  function confStandings(away, home) {
+    if (!SG.state.espn) return '<p class="note">Conference standings need the ESPN schedule data, which is not loaded.</p>';
+    var byConf = standingsByConf();
+    var confOf = {};
+    SG.state.data.teams.forEach(function (t) {
+      confOf[t.team] = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference;
+    });
+    var awayConf = confOf[away.team];
+    var homeConf = confOf[home.team];
+
+    function table(conf, title, marks) {
+      var list = byConf[conf] || [];
+      var played = list.some(function (r) { return r.w + r.l > 0; });
+      if (!list.length) {
+        return '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) +
+          '</div><p class="note">No teams in this group.</p></div>';
+      }
+      if (!played) {
+        var why = conf === "I-A IND." ? "This team is independent, so it plays no conference games."
+          : "No completed conference games on file.";
+        return '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) +
+          '</div><p class="note">' + SG.esc(why) + "</p></div>";
+      }
+      var html = '<div class="h2h-conf"><div class="h2h-conf-title">' + SG.esc(title) + '</div>' +
+        '<table class="h2h-table"><thead><tr><th>#</th><th>Team</th><th>Conf</th></tr></thead><tbody>';
+      list.forEach(function (r, i) {
+        var mark = null;
+        marks.forEach(function (m) { if (m.team === r.team) mark = m.role; });
+        html += '<tr' + (mark ? ' class="h2h-me"' : "") + '><td class="num">' + (i + 1) + '</td><td class="left">' +
+          SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team) +
+          (mark ? ' <span class="h2h-tag">' + SG.esc(mark) + "</span>" : "") +
+          '</td><td class="num">' + SG.esc(SG.rec(r.w, r.l)) + "</td></tr>";
+      });
+      html += "</tbody></table></div>";
+      return html;
+    }
+
+    var html = '<div class="h2h-conf-grid">';
+    if (awayConf === homeConf) {
+      html += table(awayConf, awayConf + " (both teams)", [
+        { team: away.team, role: "Away" },
+        { team: home.team, role: "Home" }
+      ]);
+    } else {
+      html += table(awayConf, awayConf + " (away)", [{ team: away.team, role: "Away" }]);
+      html += table(homeConf, homeConf + " (home)", [{ team: home.team, role: "Home" }]);
+    }
+    html += "</div>";
+    return html;
+  }
+
+  // Last 5 results and the next scheduled game for one team, from the ESPN
+  // schedule data.
+  function recentPanel(t) {
+    var games = (SG.gamesForTeam && SG.state.sagToEspn && SG.state.sagToEspn[t.team])
+      ? SG.gamesForTeam(t.team) : [];
+    var done = [];
+    var next = null;
+    var myId = SG.state.sagToEspn ? String(SG.state.sagToEspn[t.team].id) : "";
+    games.forEach(function (g) {
+      var isHome = String(g.homeId) === myId;
+      var oppId = isHome ? g.awayId : g.homeId;
+      var opp = SG.espnTeamById ? SG.espnTeamById(oppId) : null;
+      var oppName = opp ? opp.location || opp.displayName : "";
+      if (g.completed && g.homeScore !== null && g.awayScore !== null) {
+        var mine = isHome ? g.homeScore : g.awayScore;
+        var theirs = isHome ? g.awayScore : g.homeScore;
+        done.push({
+          w: mine > theirs,
+          score: mine + "-" + theirs,
+          opp: oppName,
+          site: isHome ? "" : "@ ",
+          date: g.date
+        });
+      } else if (!next) {
+        next = { opp: oppName, site: isHome ? "" : "@ ", date: g.date, neutral: g.neutral };
+      }
+    });
+    var last = done.slice(-5).reverse();
+    var html = '<div class="h2h-last"><div class="h2h-last-title">' + SG.esc(t.team) + " last 5</div>";
+    if (!last.length) {
+      html += '<p class="note">No completed games on file.</p>';
+    } else {
+      html += '<div class="h2h-last-list">';
+      last.forEach(function (x) {
+        html += '<div class="h2h-last-item"><span class="' + (x.w ? "win" : "loss") + '">' +
+          (x.w ? "W" : "L") + " " + SG.esc(x.score) + '</span><span class="h2h-last-opp">' +
+          SG.esc(x.site + x.opp) + "</span></div>";
+      });
+      html += "</div>";
+    }
+    if (next) {
+      html += '<div class="h2h-next">Next: ' + SG.esc(next.site + next.opp) +
+        (next.neutral ? " (neutral)" : "") + "</div>";
+    }
+    html += "</div>";
+    return html;
+  }
 
   function pctText(p) { return (p * 100).toFixed(0) + "%"; }
 

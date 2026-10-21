@@ -33,7 +33,9 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   rating, what the game could do to the projected playoff field, and a curated rivalry list,
   then labels each game from Background through Must watch. The board is split into the four
   usual kickoff windows (early afternoon, afternoon, evening, late night, judged in Eastern
-  time), showing the best few per window so the picks are not all in one slot.
+  time), showing the best few per window so the picks are not all in one slot. The picks are
+  the same either way, but with the sort set to kickoff they are listed in kickoff order
+  rather than by watch score.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest); in the 12-team field the top two play a projected title
@@ -49,8 +51,12 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected title games 10,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
-- **Matchup tab** - choose an away team and a home team and a rating method. Shows who is
-  favored and by how many points on a neutral field and with the home team at home. Swap
+- **Head to Head tab** - choose an away team and a home team and a rating method. Shows who is
+  favored and by how many points on a neutral field and with the home team at home, plus a card
+  for each team with the logo, the record, the conference and the five rating numbers. Below
+  that a conference standings snapshot for both teams side by side (current records, the two
+  teams highlighted), then the last five results and the next game for each team. A short note
+  at the top explains the method, the home edge and how the win chances are worked out. Swap
   flips the two teams.
 - Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the

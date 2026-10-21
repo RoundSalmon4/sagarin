@@ -289,6 +289,41 @@ input[type="search"] { min-width: 240px; }
 .match-card .margin { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
 .match-card .prob { color: var(--muted); font-size: 0.85rem; margin-top: 0.35rem; }
 
+.h2h-title { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin: 1.4rem 0 0.6rem; }
+.h2h-method { max-width: 820px; margin: 0.7rem auto 0; }
+
+.matchup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 820px; margin: 1rem auto 0; align-items: start; }
+.h2h-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.85rem 1rem; box-shadow: var(--shadow); }
+.h2h-role { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+.h2h-head { display: flex; align-items: center; gap: 0.6rem; }
+.h2h-head .team-logo { width: 40px; height: 40px; margin-right: 0; }
+.h2h-head .team-logo img { width: 40px; height: 40px; }
+.h2h-name { font-weight: 700; font-size: 1.05rem; }
+.h2h-meta { color: var(--muted); font-size: 0.8rem; font-weight: 400; margin-top: 0.1rem; }
+.h2h-ratings { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.4rem; margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid var(--line-soft); text-align: center; }
+.h2h-ratings span { display: block; font-size: 0.62rem; letter-spacing: 0.3px; color: var(--muted); }
+.h2h-ratings strong { font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+
+.h2h-conf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 820px; margin: 0 auto; align-items: start; }
+.h2h-conf { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.h2h-conf-title { padding: 0.55rem 0.8rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line-soft); }
+.h2h-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; font-variant-numeric: tabular-nums; }
+.h2h-table th { text-align: right; font-weight: 600; font-size: 0.68rem; letter-spacing: 0.3px; text-transform: uppercase; color: var(--muted); padding: 0.35rem 0.7rem; border-bottom: 1px solid var(--line-soft); }
+.h2h-table th.left, .h2h-table td.left { text-align: left; }
+.h2h-table td { padding: 0.3rem 0.7rem; border-bottom: 1px solid var(--line-soft); text-align: right; white-space: nowrap; }
+.h2h-table tbody tr:last-child td { border-bottom: 0; }
+.h2h-table tbody tr:nth-child(even) { background: var(--surface-2); }
+.h2h-table tr.h2h-me { background: var(--row-hover); font-weight: 700; }
+.h2h-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; color: var(--accent); }
+
+.matchup-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 820px; margin: 0 auto; align-items: start; }
+.h2h-last { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.75rem 0.85rem; box-shadow: var(--shadow); }
+.h2h-last-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+.h2h-last-list { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.86rem; }
+.h2h-last-item { display: flex; justify-content: space-between; gap: 0.6rem; }
+.h2h-last-opp { color: var(--muted); }
+.h2h-next { margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid var(--line-soft); font-size: 0.8rem; color: var(--muted); }
+
 .watch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.8rem; margin-bottom: 0.4rem; }
 .watch-window { margin-bottom: 0.9rem; }
 .watch-window-title { margin: 0 0 0.4rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); }
@@ -329,5 +364,8 @@ input[type="search"] { min-width: 240px; }
   .header-inner { flex-direction: column; }
   .matchup-controls,
   .matchup-result { grid-template-columns: 1fr; }
+  .matchup-grid,
+  .h2h-conf-grid,
+  .matchup-compare { grid-template-columns: 1fr; }
   .matchup-gap { display: none; }
 }

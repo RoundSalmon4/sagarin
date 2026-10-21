@@ -260,26 +260,6 @@
     return d.toLocaleString(undefined, opts);
   }
 
-  function etParts(d) {
-    var p = {};
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit", hour12: false
-    }).formatToParts(d).forEach(function (x) { p[x.type] = x.value; });
-    return { y: +p.year, mo: +p.month, d: +p.day, h: +p.hour % 24, mi: +p.minute };
-  }
-
-  // Instant whose Eastern wall clock is etHour:00 on the Eastern day of refIso.
-  // etHour may run past 24 for the late window that spills into the next day.
-  function etInstant(refIso, etHour) {
-    var ref = refIso instanceof Date ? refIso : new Date(refIso);
-    var et = etParts(ref);
-    var dayOff = Math.floor(etHour / 24), h = ((etHour % 24) + 24) % 24;
-    var wall = Date.UTC(et.y, et.mo - 1, et.d + dayOff, h, 0, 0);
-    var gp = etParts(new Date(wall));
-    return new Date(wall + (wall - Date.UTC(gp.y, gp.mo - 1, gp.d, gp.h, gp.mi, 0)));
-  }
-
   function windowRange(w, refIso) {
     return localTime(tzWallInstant(refIso, w.start)) + " - " + localTime(tzWallInstant(refIso, w.end));
   }
@@ -316,6 +296,7 @@
     var box = document.getElementById("tvWatch");
     if (!box) return;
     if (!list.length) { box.innerHTML = '<p class="note">No upcoming games match the filters.</p>'; return; }
+    var watchSort = document.getElementById("tvSort") && document.getElementById("tvSort").value === "kickoff";
     var byWin = {};
     list.forEach(function (g) {
       var w = windowOf(g.date);
@@ -325,9 +306,18 @@
     WINDOWS.forEach(function (w) {
       var all = byWin[w.key] || [];
       if (!all.length) return;
+      // The picks are the best games in the window by watch score. When the
+      // table is sorted by kickoff, those picks are listed in kickoff order
+      // instead of by score.
       var arr = all.slice().sort(function (a, b) {
         return score(b, curCtx).value - score(a, curCtx).value;
       }).slice(0, PER_WINDOW);
+      if (watchSort) {
+        arr.sort(function (a, b) {
+          if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+          return score(b, curCtx).value - score(a, curCtx).value;
+        });
+      }
       var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
       html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
         ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
