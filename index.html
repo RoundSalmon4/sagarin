@@ -218,7 +218,7 @@
         <strong>Elimination watch</strong> (a projected field team in a close game),
         <strong>Bubble watch</strong> (two teams just outside the field, the next ten in
         line for an at-large bid), <strong>Toss-up</strong> (a near coin-flip projected
-        margin), <strong>Ranked matchup</strong> (two AP Top 25 teams) and <strong>Quality
+        margin), <strong>Ranked matchup</strong> (two ranked teams) and <strong>Quality
         teams</strong> (a high combined rating).</p>
       </details>
       <h3 class="section-title">Games to watch</h3>
@@ -294,11 +294,20 @@
         </div>
       </div>
 
-      <h2 class="section-title">Projection</h2>
-      <div id="matchupResult"></div>
+      <div class="h2h-top">
+        <div class="h2h-col">
+          <h2 class="section-title">Projection</h2>
+          <div id="matchupResult"></div>
 
-      <h2 class="section-title">Team comparison</h2>
-      <div id="matchupTable"></div>
+          <h2 class="section-title">Team comparison</h2>
+          <div id="matchupTable"></div>
+        </div>
+
+        <aside class="h2h-side">
+          <h2 class="section-title">Polls</h2>
+          <div id="matchupPolls"></div>
+        </aside>
+      </div>
 
       <h2 class="section-title">Last 5</h2>
       <div id="matchupCompare" class="h2h-last5"></div>
@@ -316,7 +325,7 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>Ratings by Jeff Sagarin. Schedules, game data and rankings from the ESPN API; the AP Top 25 is the Associated Press poll. Team and conference logos belong to the schools and conferences. This is an unaffiliated viewer.</p>
+      <p>Ratings by Jeff Sagarin. Schedules, game data, the AP Top 25 and the AFCA Coaches Poll from the ESPN API; the CFP rankings from the College Football Playoff. The AP Top 25 is the Associated Press poll and the coaches poll is the AFCA's. Team and conference logos belong to the schools and conferences. This is an unaffiliated viewer.</p>
       <p>Playoff projections are a ratings-based model, not official selections. Home edges come from the source page; win percentages use a normal model (sd 15.5).</p>
       <p id="sourceLine"></p>
     </div>

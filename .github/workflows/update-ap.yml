@@ -1,13 +1,15 @@
-name: Update AP poll
+name: Update polls
 
 on:
   schedule:
-    # The AP Top 25 is released Sunday afternoons at 2 p.m. Eastern during the
-    # season (the preseason and final polls are the exceptions). 20:00 UTC
-    # covers both EDT and EST. Monday is a safety net for a slow week.
-    # The script is idempotent, it only writes when the ranks change.
+    # The AP and Coaches polls are released Sunday afternoons at 2 p.m. Eastern
+    # during the season (the preseason and final polls are the exceptions).
+    # 20:00 UTC covers both EDT and EST. Monday is a safety net for a slow week.
+    # The CFP rankings start on Tuesday nights in November, so Wednesday morning
+    # picks those up. The script is idempotent, it only writes when ranks change.
     - cron: "0 20 * * 0"
     - cron: "0 13 * * 1"
+    - cron: "0 3 * * 3"
   workflow_dispatch:
 
 permissions:
@@ -23,10 +25,10 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Fetch AP Top 25 from ESPN
+      - name: Fetch polls from ESPN
         run: node scripts/fetch-ap.js
 
-      - name: Commit when the poll moved
+      - name: Commit when a poll moved
         run: |
           if git diff --quiet -- data/ap-poll.json; then
             echo "no change, nothing to commit"
@@ -35,5 +37,5 @@ jobs:
           git config user.name "roundsalmon4"
           git config user.email "209016228+RoundSalmon4@users.noreply.github.com"
           git add data/ap-poll.json
-          git commit -m "Refresh AP Top 25 from ESPN"
+          git commit -m "Refresh polls from ESPN and the CFP site"
           git push

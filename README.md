@@ -10,8 +10,8 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
 
 - **Teams tab** - every rated team in one table. Click any column header to sort, search
   by team or conference, and filter by conference, division (FBS/FCS) or group
-  (Power 4, Group of 6, FBS independents). Each team shows its logo and its AP Top 25
-  rank, if it is ranked.
+  (Power 4, Group of 6, FBS independents). Each team shows its logo and its ranking, if it
+  is ranked: AP until the CFP rankings start, then CFP.
 - **Conferences tab** - the conference ranking table with a toggle to rank by the overall
   **RATING** or by **WIN50%** and a filter for FBS or FCS conferences. Either way the whole
   table stays sortable.
@@ -26,7 +26,7 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   and folded into records), with the projected champion and runner-up marked. Schedules
   come from a prefetched ESPN file, so the browser never calls ESPN directly.
 - **TV Schedule tab** - the upcoming week's games with kickoff time, TV listing and site, defaulting
-  to games involving an AP Top 25 team. Switch the scope to all games, a single conference or
+  to games involving a ranked team. Switch the scope to all games, a single conference or
   a team search, narrow by group (Power 4, Group of 6, independents), pick a time zone, and
   sort by kickoff or by watchability. A "Games to watch" board ranks the best matchups on
   projected closeness (market line when posted, otherwise the Sagarin margin), combined team
@@ -52,15 +52,16 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
 - **Head to Head tab** - choose an away team and a home team and a rating method. The page
-  runs top to bottom as the rating method and team picks, the projection, the comparison
-  and the standings. The projection gives the pick and the win chances with the home team
-  at home and on a neutral field, with each team's record and win chance on the side of the
-  card. The comparison table puts the two teams in rows and shows
-  the record, the conference, the chosen rating with its national rank, SCHEDL with its
-  rank, total offense (yards per game), total defense (yards allowed per game) and points
-  per game, the last three also with national ranks. Then a last five panel for each team,
-  with the opponent's logo and the next game, and a conference
-  snapshot. The snapshot shows the overall and conference records and the
+  puts the projection and the comparison in a left column and the polls in a right column,
+  with the last five and the standings below. The projection gives the pick and the win
+  chances with the home team at home and on a neutral field. The comparison table puts the
+  two teams side by side and shows the record, the conference, the chosen rating with its
+  national rank, SCHEDL with its rank, total offense (yards per game), total defense (yards
+  allowed per game) and points per game, the last three also with national ranks. The right
+  column shows the AP poll and the Coaches Poll in the same table style as the standings,
+  with the AP table switching to the CFP rankings once the committee posts them. Then a
+  last five panel for each team, with the opponent's logo and the next game, and a
+  conference snapshot. The snapshot shows the overall and conference records and the
   selected team with the teams around it; the ellipsis opens the full conference, and
   independents show as a one-team list with a 0-0 conference record. A short note at the
   foot of the page explains the method, the home edge and where the numbers come from.
@@ -119,11 +120,15 @@ The parser targets the current cfsend.htm layout. Wayback captures that use that
 layout parse cleanly; seasons with an older column layout come back as zero teams and are
 skipped (the backfill logs each one) until they get their own parser.
 
-The AP Top 25 is a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's
-rankings endpoint and writes `data/ap-poll.json`, and it runs from its own Action
-(`.github/workflows/update-ap.yml`). The AP poll is released Sunday afternoons at 2 p.m.
-Eastern during the season (the preseason and final polls are the exceptions), so that
-Action runs Sunday at 20:00 UTC, which covers both EDT and EST, with a Monday safety run.
+The polls are a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's rankings
+endpoint for the AP Top 25 and the AFCA Coaches Poll, and the College Football Playoff site
+for the committee rankings once they start. It writes `data/ap-poll.json` with all three.
+The CFP poll drives the site from the moment it appears (the AP badge, column, sort and TV
+scope all switch to CFP); before that the AP poll does. It runs from its own Action
+(`.github/workflows/update-ap.yml`). The AP and Coaches polls come out Sunday afternoons at
+2 p.m. Eastern during the season, so the Action runs Sunday at 20:00 UTC, which covers both
+EDT and EST, with a Monday safety run. The CFP rankings start on Tuesday nights in November,
+so a Wednesday morning run picks those up.
 
 Timing note: the live file returned `Last-Modified: Sun, 18 Oct 2026 14:21:24 GMT` (and a
 matching Apache ETag), and Sagarin has posted on Sundays for years. The Action runs at
@@ -144,8 +149,10 @@ these sources:
 - **The ESPN API** (site.web.api.espn.com) - team and game schedules, the scoreboard
   (kickoff time, TV listing, betting line, venue) and the rankings endpoint. ESPN's data
   belongs to ESPN. It is prefetched by the Action, so a visitor's browser never calls ESPN.
-- **The Associated Press Top 25** - read from ESPN's rankings endpoint. The poll itself is
-  the Associated Press's.
+- **The Associated Press Top 25 and the AFCA Coaches Poll** - read from ESPN's rankings
+  endpoint. The AP poll is the Associated Press's and the coaches poll is the AFCA's.
+- **The College Football Playoff rankings** - read from the CFP site's rankings API. The
+  committee rankings are the College Football Playoff's.
 - **The ESPN logo CDN** (a.espncdn.com) - team and conference logos. Those marks belong to
   the schools and conferences and are used here only to identify the teams.
 - **The Internet Archive Wayback Machine** - used to backfill older weekly snapshots.
@@ -173,13 +180,13 @@ assets/conf-logos/        conference logos downloaded from the ESPN CDN
 data/ratings.json         parsed Sagarin snapshot
 data/espn-games.json      prefetched ESPN teams, games and season stats
 data/logos.json           manifest of which logos are on file
-data/ap-poll.json         AP Top 25 snapshot
+data/ap-poll.json         AP, Coaches and CFP poll snapshots
 data/tv-games.json        upcoming games with TV and lines
 data/history/             weekly archived snapshots, one file per season week
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm
 scripts/fetch-espn.js     fetch ESPN teams + schedules
 scripts/fetch-logos.js    download team logos
-scripts/fetch-ap.js       fetch the AP Top 25
+scripts/fetch-ap.js       fetch the AP, Coaches and CFP polls
 scripts/fetch-tv.js       fetch the upcoming TV schedule
 scripts/archive-ratings.js    save the current week into data/history
 scripts/fetch-sagarin-history.js  backfill weeks from the Wayback Machine
@@ -227,8 +234,9 @@ takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`; `archive-ratings.js` t
   statistics endpoint and are stored in the same file. Total offense and total defense are
   yards per game, points per game is scoring, and each rank counts every rated team that
   has the number.
-- Logos come from the ESPN CDN and are committed under `assets/logos/`; the AP Top 25
-  comes from ESPN's rankings endpoint. Both are refreshed by the Actions, not the browser.
+- Logos come from the ESPN CDN and are committed under `assets/logos/`; the AP and Coaches
+  polls come from ESPN's rankings endpoint and the CFP rankings from the CFP site. All are
+  refreshed by the Actions, not the browser.
 - Playoff conference champions come from projected final conference records (real results
   for games played, predicted winners for the rest; tiebreak: overall record, then rating).
   Seeding follows the CFP fact sheet for 12 teams and the ESPN-reported plan for 24 teams.

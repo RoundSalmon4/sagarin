@@ -149,6 +149,11 @@
     return SG.logoById(SG.logoId(name));
   };
 
+  SG.rankLabel = function () {
+    var ap = SG.state.ap;
+    return (ap && ap.primaryLabel) || "AP";
+  };
+
   SG.apRank = function (name) {
     var ap = SG.state.ap;
     return ap && ap.byTeam && ap.byTeam[name] ? ap.byTeam[name] : null;
@@ -156,7 +161,8 @@
 
   SG.apBadge = function (name) {
     var r = SG.apRank(name);
-    return r ? '<span class="ap-badge" title="AP Top 25 rank">AP ' + r + "</span>" : "";
+    return r ? '<span class="ap-badge" title="' + SG.esc(SG.rankLabel()) + ' rank">' +
+      SG.esc(SG.rankLabel()) + " " + r + "</span>" : "";
   };
 
   // Inline conference logo for a Sagarin conference name, light/dark by theme.
@@ -314,6 +320,15 @@
     return (r < 10 ? "00" : r < 100 ? "0" : "") + r;
   }
 
+  // Keep the poll wording in step with whichever poll drives the site. The AP
+  // label becomes CFP once the committee rankings are posted.
+  SG.syncRankLabels = function () {
+    var label = SG.rankLabel();
+    TEAM_COLUMNS.forEach(function (c) { if (c.key === "ap") c.label = label; });
+    var scope = document.querySelector('.seg[data-scope="ap"]');
+    if (scope) scope.textContent = label === "CFP" ? "CFP teams" : label + " Top 25";
+  };
+
   SG.renderTeams = function () {
     if (!SG.state.data) return;
     var table = document.getElementById("teamsTable");
@@ -404,7 +419,7 @@
       { site: "Neutral site", spread: diff }
     ];
 
-    // Comparison table: one row per team, the numbers across.
+    // Comparison table: the two teams side by side, one row per metric.
     var table = document.getElementById("matchupTable");
     if (table) {
       var st = seasonStats();
@@ -420,10 +435,10 @@
         if (!s || s[key] === null || s[key] === undefined) return '<span class="dim">-</span>';
         return SG.fmt(s[key], 1) + ' <span class="dim">(' + (s[key + "Rank"] || "-") + ")</span>";
       }
-      var cols = [
+      var rows = [
         { label: "Record", cell: function (t) { return SG.esc(SG.rec(t.w, t.l)); } },
         { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
-        { label: SG.methodLabel(method), cell: function (t) {
+        { label: SG.methodLabel(method), lead: true, cell: function (t) {
           return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
         } },
         { label: "SCHEDL", cell: function (t) {
@@ -433,14 +448,12 @@
         { label: "Total defense", cell: function (t) { return statCell(t, "dy"); } },
         { label: "Points per game", cell: function (t) { return statCell(t, "ppg"); } }
       ];
-      var html = '<table class="h2h-cmp"><thead><tr><th class="left">Team</th>';
-      cols.forEach(function (c) { html += "<th>" + SG.esc(c.label) + "</th>"; });
-      html += "</tr></thead><tbody>";
-      [[away, "Away"], [home, "Home"]].forEach(function (pair) {
-        html += "<tr><td class=\"left\">" + SG.teamLogo(pair[0].team) + SG.esc(pair[0].team) +
-          SG.apBadge(pair[0].team) + ' <span class="h2h-tag">' + SG.esc(pair[1]) + "</span></td>";
-        cols.forEach(function (c) { html += "<td>" + c.cell(pair[0]) + "</td>"; });
-        html += "</tr>";
+      var html = '<table class="h2h-cmp"><thead><tr><th></th>' +
+        '<th class="h2h-cmp-away">' + teamHead(away, "Away") + "</th>" +
+        '<th class="h2h-cmp-home">' + teamHead(home, "Home") + "</th></tr></thead><tbody>";
+      rows.forEach(function (r) {
+        html += "<tr" + (r.lead ? ' class="h2h-lead"' : "") + "><th>" + SG.esc(r.label) + "</th><td>" +
+          r.cell(away) + "</td><td>" + r.cell(home) + "</td></tr>";
       });
       html += "</tbody></table>";
       table.innerHTML = html;
@@ -455,7 +468,6 @@
         var fav = homeFav ? home : away;
         var probHome = SG.normCdf(s.spread / SG.SIGMA);
         html += '<div class="h2h-proj-card">' +
-          '<div class="h2h-proj-main">' +
           '<div class="h2h-proj-site">' + SG.esc(s.site) + "</div>" +
           '<div class="h2h-proj-fav">' + SG.teamLogo(fav.team) + SG.esc(fav.team) + "</div>" +
           '<div class="h2h-proj-margin">by ' + SG.fmt(Math.abs(s.spread), 1) +
@@ -463,15 +475,16 @@
           '<div class="h2h-proj-bar">' +
           '<span class="' + (homeFav ? "" : "fav") + '" style="width:' + ((1 - probHome) * 100).toFixed(1) + '%"></span>' +
           '<span class="' + (homeFav ? "fav" : "") + '" style="width:' + (probHome * 100).toFixed(1) + '%"></span></div>' +
-          "</div>" +
-          '<div class="h2h-proj-side">' +
-          projSide(away, 1 - probHome, !homeFav) +
-          projSide(home, probHome, homeFav) +
-          "</div></div>";
+          '<div class="h2h-proj-probs"><span>' + SG.esc(away.team) + " " + pctText(1 - probHome) + "</span>" +
+          "<span>" + SG.esc(home.team) + " " + pctText(probHome) + "</span></div>" +
+          "</div>";
       });
       html += "</div>";
       proj.innerHTML = html;
     }
+
+    var pollsBox = document.getElementById("matchupPolls");
+    if (pollsBox) pollsBox.innerHTML = pollTables();
 
     var methodNote = document.getElementById("matchupMethod");
     if (methodNote) {
@@ -708,12 +721,48 @@
     return out;
   }
 
-  // One team line in the projection card: logo, name, record and win chance.
-  function projSide(t, p, isFav) {
-    return '<div class="h2h-proj-leg' + (isFav ? " fav" : "") + '">' + SG.teamLogo(t.team) +
-      '<span class="h2h-proj-leg-name">' + SG.esc(t.team) + "</span>" +
-      '<span class="h2h-proj-leg-rec">' + SG.esc(SG.rec(t.w, t.l)) + "</span>" +
-      '<span class="h2h-proj-leg-pct">' + pctText(p) + "</span></div>";
+  // Header cell for the comparison table: role, logo, name and rank badge.
+  function teamHead(t, role) {
+    return '<div class="h2h-head-role">' + SG.esc(role) + "</div>" +
+      '<div class="h2h-head-name">' + SG.teamLogo(t.team) + SG.esc(t.team) + SG.apBadge(t.team) + "</div>";
+  }
+
+  // Poll tables beside the projection: the committee rankings once the CFP
+  // site posts them, otherwise the AP poll, plus the coaches poll.
+  function pollDate(poll) {
+    if (!poll || !poll.date) return "";
+    var d = new Date(poll.date);
+    if (isNaN(d.getTime())) return "";
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  }
+
+  function pollTable(poll, title) {
+    if (!poll || !poll.ranks || !poll.ranks.length) return "";
+    var date = pollDate(poll);
+    var html = '<div class="h2h-conf h2h-poll"><div class="h2h-conf-title">' + SG.esc(title) +
+      (date ? ' <span class="dim">' + SG.esc(date) + "</span>" : "") + "</div>" +
+      '<table class="h2h-table"><thead><tr><th>#</th><th class="left">Team</th>' +
+      "<th>Overall</th><th>Conf</th></tr></thead><tbody>";
+    poll.ranks.forEach(function (r) {
+      var t = r.sagarin ? SG.teamByName(r.sagarin) : null;
+      var logo = r.sagarin ? SG.teamLogo(r.sagarin) : SG.logoById(r.id);
+      html += '<tr><td class="num">' + r.rank + '</td><td class="left">' + logo +
+        SG.esc(r.sagarin || r.espn) + "</td><td>" + (t ? SG.esc(SG.rec(t.w, t.l)) : '<span class="dim">-</span>') +
+        "</td><td>" + (t ? SG.esc(confOf(t)) : '<span class="dim">-</span>') + "</td></tr>";
+    });
+    html += "</tbody></table></div>";
+    return html;
+  }
+
+  function pollTables() {
+    var ap = SG.state.ap;
+    if (!ap) return "";
+    var polls = ap.polls || { ap: ap };
+    var out = "";
+    if (polls.cfp) out += pollTable(polls.cfp, "CFP Rankings");
+    else if (polls.ap) out += pollTable(polls.ap, "AP Top 25");
+    if (polls.usa) out += pollTable(polls.usa, "Coaches Poll");
+    return out;
   }
 
   function pctText(p) { return (p * 100).toFixed(0) + "%"; }
@@ -837,6 +886,7 @@
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
       if (ratingsChanged) {
@@ -893,6 +943,7 @@
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
       SG.buildMapping();
