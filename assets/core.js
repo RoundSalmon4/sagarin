@@ -257,8 +257,10 @@
     document.documentElement.setAttribute("data-theme", theme);
     var btn = SG.$("#themeBtn");
     if (btn) {
-      btn.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+      var label = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
       btn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+      btn.setAttribute("aria-label", label);
+      btn.title = label;
     }
   };
 
