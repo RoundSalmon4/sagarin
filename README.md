@@ -143,7 +143,9 @@ The inputs are committed so the fit reproduces without the network: `data/cfp-fi
 Passing `--refresh` pulls both again first. Over 2014-2025 the fit picks a 5-point loss
 penalty and a 0.45 schedule weight, which lifts the average rank correlation with the
 committee from 0.884 to 0.912. Re-run it after a season ends so the weight tracks the
-committee. Run it from the "Calibrate resume weights" Action (manual trigger), or by hand:
+committee. Run it from the "Calibrate resume weights" Action (manual trigger), or by hand.
+The refresh adds the newest completed season and, when the CFP final ranking for the current
+season is not posted yet, exits without touching the inputs:
 
 ```
 node scripts/calibrate-resume.js

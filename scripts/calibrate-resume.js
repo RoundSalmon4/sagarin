@@ -105,46 +105,67 @@ async function get(url, tries) {
   throw last;
 }
 
-// CFP finals come from the committee's own API; Sagarin finals come from the
-// Wayback snapshot nearest the conference championships (a week later in 2020,
-// whose season ran late).
+// CFP finals come from the committee's own API. The final ranking each season
+// is the December release, so a season only counts once the API shows one.
+async function cfpFinal(y) {
+  const r = await get(CFP_API + y, 4);
+  let j;
+  try { j = JSON.parse(await r.text()); } catch (e) { return null; }
+  const a = Array.isArray(j) ? j : (j.rankings || []);
+  if (!a.length) return null;
+  const f = a.slice().sort((p, q) => String(q.releaseDate || "").localeCompare(String(p.releaseDate || "")))[0];
+  const date = (f.releaseDate || "").slice(0, 10);
+  if (!/-12-/.test(date)) return null;
+  return { date: date, teams: (f.teams || []).map((t) => ({ rank: t.rank, team: t.team })) };
+}
+async function sagFinal(Parser, y) {
+  // Sagarin final: the last capture in early December, a week later in 2020.
+  const cdx = "http://web.archive.org/cdx/search/cdx?url=sagarin.com/sports/cfsend.htm&from=" + y + "0101&to=" + y + "1231&output=json&fl=timestamp,statuscode";
+  const caps = (await (await get(cdx, 4)).json()).slice(1).filter((x) => x[1] === "200").map((x) => x[0]);
+  const to = y + "12" + (y === 2020 ? "22" : "15");
+  const win = caps.filter((t) => t.slice(0, 8) >= y + "1201" && t.slice(0, 8) <= to);
+  if (!win.length) return null;
+  const ts = win[win.length - 1];
+  const parsed = Parser.parse(await (await get("https://web.archive.org/web/" + ts + "/http://sagarin.com/sports/cfsend.htm", 5)).text());
+  return {
+    through: parsed.meta.through || null,
+    week: parsed.meta.week || null,
+    captured: ts,
+    teams: parsed.teams.filter((t) => t.level === "A").map((t) => ({ rank: t.rank, team: t.team, rating: t.rating, w: t.w, l: t.l, sched: t.sched }))
+  };
+}
 async function refresh() {
   const Parser = require(path.join(ROOT, "assets", "parser.js"));
   const cfp = { source: "collegefootballplayoff.com/api/v2/rankings (final release of each season)", seasons: {} };
   const sag = { source: "web.archive.org snapshots of sagarin.com/sports/cfsend.htm (around the conference championships)", seasons: {} };
-  const end = new Date().getUTCFullYear() - 1;
+  const end = new Date().getUTCFullYear();
+  const oldSag = fs.existsSync(SAG_FILE) ? JSON.parse(fs.readFileSync(SAG_FILE, "utf8")).seasons : {};
   for (let y = 2014; y <= end; y++) {
-    const r = await get(CFP_API + y, 4);
-    const j = await r.json();
-    const a = (Array.isArray(j) ? j : j.rankings || []).slice().sort((p, q) => q.week - p.week);
-    if (a.length) cfp.seasons[y] = a[0].teams.map((t) => ({ rank: t.rank, team: t.team }));
-    console.log("cfp", y, a.length ? a[0].teams.length : 0);
-    await sleep(300);
-    const cdx = "http://web.archive.org/cdx/search/cdx?url=sagarin.com/sports/cfsend.htm&from=" + y + "0101&to=" + y + "1231&output=json&fl=timestamp,statuscode";
-    const caps = (await (await get(cdx, 4)).json()).slice(1).filter((x) => x[1] === "200").map((x) => x[0]);
-    const to = y + "12" + (y === 2020 ? "22" : "15");
-    const win = caps.filter((t) => t.slice(0, 8) >= y + "1201" && t.slice(0, 8) <= to);
-    if (!win.length) { console.log("sag", y, "no capture"); continue; }
-    const ts = win[win.length - 1];
-    const hr = await get("https://web.archive.org/web/" + ts + "/http://sagarin.com/sports/cfsend.htm", 5);
-    const parsed = Parser.parse(await hr.text());
-    sag.seasons[y] = {
-      through: parsed.meta.through || null,
-      week: parsed.meta.week || null,
-      captured: ts,
-      teams: parsed.teams.filter((t) => t.level === "A").map((t) => ({ rank: t.rank, team: t.team, rating: t.rating, w: t.w, l: t.l, sched: t.sched }))
-    };
-    console.log("sag", y, ts, "FBS", sag.seasons[y].teams.length);
+    const f = await cfpFinal(y);
+    if (f) cfp.seasons[y] = f.teams;
+    console.log("cfp", y, f ? f.date + " " + f.teams.length : "no final yet");
+    await sleep(200);
+    if (!f) continue;
+    if (oldSag[y] && oldSag[y].teams && oldSag[y].teams.length > 100) { sag.seasons[y] = oldSag[y]; continue; }
+    const s = await sagFinal(Parser, y);
+    if (s) { sag.seasons[y] = s; console.log("sag", y, s.captured, "FBS", s.teams.length); }
+    else console.log("sag", y, "no capture");
     await sleep(400);
+  }
+  const need = Object.keys(cfp.seasons).filter((y) => !(oldSag[y] && oldSag[y].teams && oldSag[y].teams.length > 100));
+  if (!need.length) {
+    console.log("no new final CFP ranking past " + Object.keys(cfp.seasons).sort().slice(-1)[0] + ", nothing to update");
+    return false;
   }
   fs.writeFileSync(CFP_FILE, JSON.stringify(cfp, null, 1) + "\n");
   fs.writeFileSync(SAG_FILE, JSON.stringify(sag, null, 1) + "\n");
+  return true;
 }
 async function main() {
   const penalty = Number(arg("--penalty", 5));
   if (process.argv.indexOf("--refresh") !== -1) {
     console.log("refreshing inputs from the CFP API and Wayback Machine...");
-    await refresh();
+    if ((await refresh()) === false) { console.log("weights left unchanged"); return; }
   }
   const data = loadInputs();
   const base = meanSpearman(data, penalty, 0);
