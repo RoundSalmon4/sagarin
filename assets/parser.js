@@ -115,6 +115,33 @@
     return parseInt(x, 10);
   }
 
+  // The page prints the conference and, in the older seasons, the division
+  // after it: "SEC-WEST", "ACC-ATLANTIC", "MWC-MOUNTAIN", "PAC-12(NORTH)",
+  // "AMERICAN ATHLETIC". The site uses its own names for them, so map the old
+  // ones onto those. Anything not listed is left alone.
+  var CONF_NAMES = [
+    ["SUN BELT EAST", "SUN BELT EAST"], ["SUN BELT WEST", "SUN BELT WEST"],
+    ["SUN BELT-EAST", "SUN BELT EAST"], ["SUN BELT-WEST", "SUN BELT WEST"],
+    ["AMERICAN ATHLETIC", "AMERICAN"], ["AMERICAN ATHLETI", "AMERICAN"],
+    ["CONFERENCE USA", "CONF-USA"], ["CONF USA", "CONF-USA"], ["CONF-USA", "CONF-USA"],
+    ["I-A INDEPENDENTS", "I-A IND."], ["I-A IND", "I-A IND."],
+    ["MID-EASTERN", "MEAC"], ["MOUNTAIN WEST", "MOUNTAIN WEST"], ["MWC", "MOUNTAIN WEST"],
+    ["PAC-12", "PAC-12"], ["BIG TEN", "BIG TEN"], ["BIG 12", "BIG 12"],
+    ["SUN BELT", "SUN BELT"], ["ACC", "ACC"], ["SEC", "SEC"], ["MAC", "MAC"],
+    ["AMERICAN", "AMERICAN"], ["AAC", "AMERICAN"]
+  ];
+  function canonConference(raw) {
+    var c = String(raw == null ? "" : raw).replace(/\s+/g, " ").trim();
+    if (!c) return "";
+    c = c.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    for (var i = 0; i < CONF_NAMES.length; i++) {
+      var name = CONF_NAMES[i][0];
+      if (c === name) return CONF_NAMES[i][1];
+      if (c.indexOf(name + "-") === 0 || c.indexOf(name + " ") === 0) return CONF_NAMES[i][1];
+    }
+    return c;
+  }
+
   function parseTeam(line) {
     var m = TEAM_RE.exec(line);
     if (m) {
@@ -141,7 +168,7 @@
         recentRank: parseInt10(m[18]),
         strongRecent: num(m[19]),
         strongRecentRank: parseInt10(m[20]),
-        conference: m[21].trim(),
+        conference: canonConference(m[21]),
         confLevel: m[22]
       };
     }
@@ -170,7 +197,7 @@
       recentRank: parseInt10(o[18]),
       strongRecent: null,
       strongRecentRank: null,
-      conference: o[19].trim(),
+      conference: canonConference(o[19]),
       confLevel: null
     };
   }
@@ -359,6 +386,33 @@
         teams.push(t);
       }
     }
+
+    // The page ends with the teams grouped by conference. The older seasons
+    // leave the conference out of the team row, so read the membership from
+    // there. The group heading is the conference with its numbers, and the
+    // team rows follow it. This is a second pass so the main loop is not
+    // disturbed: the live page puts the prediction tables after the by
+    // conference section.
+    var byConference = Object.create(null);
+    var groupConf = null;
+    var inByConference = false;
+    for (var j = 0; j < lines.length; j++) {
+      var bl = lines[j];
+      if (bl.indexOf("By Conference") !== -1) { inByConference = true; continue; }
+      if (!inByConference) continue;
+      if (bl.indexOf("TEAMS=") !== -1) {
+        var gm = /^\s*\d{1,3}\s+(.+?)\s*\((?:A|AA|__)\)\s*=/.exec(bl);
+        groupConf = gm ? canonConference(gm[1]) : null;
+        continue;
+      }
+      var bt = parseTeam(bl);
+      if (bt && groupConf && !byConference[bt.team]) byConference[bt.team] = groupConf;
+    }
+
+    // Fill in the conference for the seasons where the team row left it out.
+    teams.forEach(function (t) {
+      if (!t.conference && byConference[t.team]) t.conference = byConference[t.team];
+    });
 
     conferences.sort(function (a, b) {
       return a.rank - b.rank;

@@ -113,6 +113,68 @@
         }
       ]
     },
+    "ourNonPower": {
+      "2014": {
+        "team": "Oregon",
+        "rank": 3,
+        "took": true
+      },
+      "2015": {
+        "team": "Stanford",
+        "rank": 6,
+        "took": false
+      },
+      "2016": {
+        "team": "Washington",
+        "rank": 5,
+        "took": true
+      },
+      "2017": {
+        "team": "Central Florida(UCF)",
+        "rank": 8,
+        "took": false
+      },
+      "2018": {
+        "team": "Central Florida(UCF)",
+        "rank": 8,
+        "took": false
+      },
+      "2019": {
+        "team": "Oregon",
+        "rank": 7,
+        "took": false
+      },
+      "2020": {
+        "team": "Southern California",
+        "rank": 7,
+        "took": false
+      },
+      "2021": {
+        "team": "Cincinnati",
+        "rank": 6,
+        "took": true
+      },
+      "2022": {
+        "team": "Utah",
+        "rank": 8,
+        "took": false
+      },
+      "2023": {
+        "team": "Washington",
+        "rank": 5,
+        "took": true
+      },
+      "2024": {
+        "team": "Boise State",
+        "rank": 14,
+        "took": true
+      },
+      "2025": {
+        "team": "James Madison",
+        "rank": 17,
+        "took": true
+      }
+    },
     "nonPowerInTop12": 0,
     "nonPowerTeams": 3
   },

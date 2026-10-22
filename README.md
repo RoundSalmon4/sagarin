@@ -180,10 +180,19 @@ it after a season adds that season's field.
 The calibration reports the field next to the ranking: 3.4 of the committee's four over the
 ten four-team seasons, and 10 of 12 over the twelve-team seasons. It also prints where the
 teams the committee took from outside the Power four land in the resume order, because that
-is where the misses are. Over 2024 and 2025 the committee took Boise State, Tulane and
-James Madison, and the resume order put all three outside its top 12, at ranks 14, 27 and
-17. That is the honest read on the non-Power bids: the resume score rates a good non-Power
-team below where the committee put it.
+is where the misses are, and which non-Power team the resume order leads with. Over 2024
+and 2025 the committee took Boise State, Tulane and James Madison, and the resume order put
+all three outside its top 12, at ranks 14, 27 and 17. It also leads with the right team in
+both seasons, so the score finds the non-Power team the committee took and then ranks it
+too low. That is the honest read on the non-Power bids.
+
+Telling a non-Power team from a Power one needs each team's conference, and it has to be
+the conference the team was in that season rather than the one it is in now, because there
+has been a lot of realignment. The page gives it for the seasons from 2018 on. The older
+pages leave the conference out of the team row but group the teams by conference at the
+end, so the parser reads the membership from there. The conference names carry the division
+in some seasons ("SEC-WEST", "MWC-MOUNTAIN", "PAC-12(NORTH)"), so the parser maps them onto
+the names the site uses.
 
 The refresh adds the newest completed season and, when the CFP final ranking for the current
 season is not posted yet, exits without touching the inputs:
@@ -287,7 +296,7 @@ data/bcs.json             BCS-style score for the season
 data/tv-games.json        upcoming games with TV and lines
 data/cfp-finals.json      CFP final top 25 per season, for the resume fit
 data/cfp-fields.json      the committee's actual field per season, with the bid types
-data/sagarin-finals.json  paired Sagarin finals per season, for the resume fit
+data/sagarin-finals.json  paired Sagarin finals per season, with the conference, for the resume fit
 data/resume-weights.json  fitted resume weights read by the playoff predictor
 data/history/             weekly archived snapshots, one file per season week
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm

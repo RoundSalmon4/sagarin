@@ -153,6 +153,11 @@ function looTopHits(data, penalty) {
 
 // The conferences that get the automatic bid outside the Power four.
 const NONP4 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
+function isNonPower(conf) {
+  if (!conf) return false;
+  if (conf === "SUN BELT EAST" || conf === "SUN BELT WEST") return true;
+  return NONP4.indexOf(conf) !== -1;
+}
 
 // The committee's selection for each season, from data/cfp-fields.json. The
 // CFP site publishes the committee's final ranking and the selection is not
@@ -178,7 +183,7 @@ function loadFields() {
 // How many of the committee's field the resume order would have picked, and
 // where the non-Power teams the committee took sit in that order.
 function scoreFields(data, fields, penalty, w) {
-  const hits = {}, fourHits = {}, twelveHits = {}, twelveSeasons = [], nonPower = {};
+  const hits = {}, fourHits = {}, twelveHits = {}, twelveSeasons = [], nonPower = {}, ourNonPower = {};
   let fourSum = 0, fourN = 0, npHit = 0, npN = 0;
   data.forEach((d) => {
     const f = fields[d.season];
@@ -198,8 +203,9 @@ function scoreFields(data, fields, penalty, w) {
     if (f.size === 12) { twelveHits[d.season] = hit; twelveSeasons.push(d.season); }
     else { fourHits[d.season] = hit; fourSum += hit; fourN++; }
     // The teams the committee took from outside the Power four, and where the
-    // resume order put them.
-    const np = f.teams.filter((t) => NONP4.indexOf(t.conference) !== -1);
+    // resume order put them, plus the non-Power team the resume order leads
+    // with and whether the committee took that one.
+    const np = f.teams.filter((t) => isNonPower(t.conference));
     if (np.length) {
       nonPower[d.season] = np.map((t) => {
         const m = matchTeam(t.team, order);
@@ -211,6 +217,14 @@ function scoreFields(data, fields, penalty, w) {
         return m && rankOf.get(m.team) <= 12;
       }).length;
     }
+    const ours = order.filter((t) => isNonPower(t.conference))[0];
+    if (ours) {
+      const took = f.teams.some((t) => {
+        const m = matchTeam(t.team, order);
+        return m && m.team === ours.team;
+      });
+      ourNonPower[d.season] = { team: ours.team, rank: rankOf.get(ours.team), took: took };
+    }
   });
   return {
     hits: hits, seasons: Object.keys(hits), fourHits: fourHits,
@@ -218,7 +232,7 @@ function scoreFields(data, fields, penalty, w) {
     twelveHits: twelveHits, twelveSeasons: twelveSeasons,
     twelveMeanHit: twelveSeasons.length
       ? twelveSeasons.reduce((s, y) => s + twelveHits[y], 0) / twelveSeasons.length : 0,
-    nonPower: nonPower, nonPowerHit: npHit, nonPowerTeams: npN
+    nonPower: nonPower, ourNonPower: ourNonPower, nonPowerHit: npHit, nonPowerTeams: npN
   };
 }
 
@@ -261,7 +275,7 @@ async function sagFinal(Parser, y) {
     through: parsed.meta.through || null,
     week: parsed.meta.week || null,
     captured: ts,
-    teams: parsed.teams.filter((t) => t.level === "A").map((t) => ({ rank: t.rank, team: t.team, rating: t.rating, w: t.w, l: t.l, sched: t.sched }))
+    teams: parsed.teams.filter((t) => t.level === "A").map((t) => ({ rank: t.rank, team: t.team, conference: t.conference, rating: t.rating, w: t.w, l: t.l, sched: t.sched }))
   };
 }
 async function refresh() {
@@ -337,6 +351,7 @@ async function main() {
       twelveTeamHits: fields.twelveHits,
       twelveTeamMeanHit: round4(fields.twelveMeanHit),
       nonPower: fields.nonPower,
+      ourNonPower: fields.ourNonPower,
       nonPowerInTop12: fields.nonPowerHit,
       nonPowerTeams: fields.nonPowerTeams
     },
@@ -357,6 +372,11 @@ async function main() {
     Object.keys(fields.nonPower).forEach((y) => {
       console.log("  " + y + " non-Power teams the committee took: " +
         fields.nonPower[y].map((t) => t.team + " (our rank " + t.rank + ")").join(", "));
+    });
+    Object.keys(fields.ourNonPower).forEach((y) => {
+      const o = fields.ourNonPower[y];
+      console.log("  " + y + " non-Power team we lead with: " + o.team +
+        " (our rank " + o.rank + ", " + (o.took ? "the committee took it too" : "the committee did not take it") + ")");
     });
   }
 }
