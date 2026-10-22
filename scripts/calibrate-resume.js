@@ -5,7 +5,9 @@
  *
  * The loss penalty is fixed. The SOS weight is the value that maximizes the
  * rank correlation (Spearman) between the resume order and the CFP committee's
- * final top 25, averaged over every archived season. Inputs live in
+ * final top 25, averaged over every archived season. It also reports a
+ * leave-one-out score (fit on all but one season, scored on the held-out one)
+ * so a weight that only helps in-sample is easy to spot. Inputs live in
  * data/cfp-finals.json and data/sagarin-finals.json; this writes
  * data/resume-weights.json. Add --refresh to pull the inputs again first.
  *
@@ -90,6 +92,20 @@ function fit(data, penalty) {
     if (score > best.score + 1e-9) best = { w: Math.round(w * 100) / 100, score: score };
   }
   return best;
+}
+
+// Leave-one-out: fit the SOS weight on every season but one, then score the
+// held-out season, and average. This is the honest read on a season the fit has
+// not seen, so a weight that only helps in-sample shows up flat here.
+function looSpearman(data, penalty) {
+  if (data.length < 2) return 0;
+  let sum = 0;
+  for (let i = 0; i < data.length; i++) {
+    const train = data.filter((d, j) => j !== i);
+    const b = fit(train, penalty);
+    sum += meanSpearman([data[i]], penalty, b.w);
+  }
+  return sum / data.length;
 }
 
 const round4 = (x) => Math.round(x * 10000) / 10000;
@@ -177,6 +193,7 @@ async function main() {
   const data = loadInputs();
   const base = meanSpearman(data, penalty, 0);
   const best = fit(data, penalty);
+  const loo = looSpearman(data, penalty);
   const out = {
     lossPenalty: penalty,
     sosWeight: best.w,
@@ -184,13 +201,13 @@ async function main() {
     target: "CFP final top 25",
     seasons: data.map((d) => d.season),
     teamCounts: data.map((d) => d.count),
-    fit: { sosWeight: best.w, meanSpearman: round4(best.score), meanSpearmanNoSos: round4(base) },
+    fit: { sosWeight: best.w, meanSpearman: round4(best.score), meanSpearmanNoSos: round4(base), leaveOneOut: round4(loo) },
     source: "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
     updated: new Date().toISOString().slice(0, 10)
   };
   fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2) + "\n");
   console.log("seasons " + out.seasons.join(","));
   console.log("loss penalty " + penalty + ", sos weight " + best.w);
-  console.log("mean Spearman: no SOS " + round4(base) + ", with SOS " + round4(best.score));
+  console.log("mean Spearman: no SOS " + round4(base) + ", with SOS " + round4(best.score) + ", leave-one-out " + round4(loo));
 }
 main().catch((e) => { console.error(e); process.exit(1); });

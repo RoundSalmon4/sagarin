@@ -134,6 +134,8 @@ are skipped (the backfill logs each one).
 The playoff predictor does not rank on the raw rating. It ranks on a resume score: the
 rating, minus a penalty for each projected loss, plus a bonus for every point the schedule
 sits above the FBS average. The loss penalty is held at five points and the schedule weight is fitted, not chosen by hand.
+A held-out check on the penalty picks five on every season it is tested on, so it stays
+fixed rather than fitted.
 `scripts/calibrate-resume.js` scores the resume order against the selection committee's
 final top 25 for every archived season and keeps the schedule weight that fits best averaged
 over all of them, then writes `data/resume-weights.json`, which the site reads at load.
@@ -143,8 +145,11 @@ The inputs are committed so the fit reproduces without the network: `data/cfp-fi
 (the Sagarin snapshot around the conference championships, from the Wayback Machine).
 Passing `--refresh` pulls both again first. With the loss penalty held at 5, over 2014-2025
 the fit picks a 0.45 schedule weight, which lifts the average rank correlation with the
-committee from 0.884 to 0.912. Re-run it after a season ends so the weight tracks the
-committee. Run it from the "Calibrate resume weights" Action (manual trigger), or by hand.
+committee from 0.884 to 0.912. It also reports a leave-one-out score, refitting the weight
+on every season but one and scoring the held-out season, which is the honest read on a
+season the fit has not seen (currently 0.910 against 0.912 in-sample). Re-run it after a
+season ends so the weight tracks the committee. Run it from the "Calibrate resume weights"
+Action (manual trigger), or by hand.
 The refresh adds the newest completed season and, when the CFP final ranking for the current
 season is not posted yet, exits without touching the inputs:
 
