@@ -25,6 +25,7 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const CFP_FILE = path.join(ROOT, "data", "cfp-finals.json");
 const SAG_FILE = path.join(ROOT, "data", "sagarin-finals.json");
+const FIELDS_FILE = path.join(ROOT, "data", "cfp-fields.json");
 const OUT_FILE = path.join(ROOT, "data", "resume-weights.json");
 const CFP_API = "https://collegefootballplayoff.com/api/v2/rankings?year=";
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -150,6 +151,77 @@ function looTopHits(data, penalty) {
   return { top25: t25 / data.length, top12: t12 / data.length };
 }
 
+// The conferences that get the automatic bid outside the Power four.
+const NONP4 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
+
+// The committee's selection for each season, from data/cfp-fields.json. The
+// CFP site publishes the committee's final ranking and the selection is not
+// always the same list, so the field is the honest target for a predictor that
+// builds a field.
+function loadFields() {
+  if (!fs.existsSync(FIELDS_FILE)) return {};
+  const raw = JSON.parse(fs.readFileSync(FIELDS_FILE, "utf8")).seasons || {};
+  const out = {};
+  Object.keys(raw).forEach((y) => {
+    const f = raw[y];
+    if (!f || !f.field || !f.field.length) return;
+    out[y] = {
+      size: f.field.length,
+      teams: f.field.map((t) => ({
+        seed: t.seed, team: t.team, conference: t.conference || null, bid: t.bid || null
+      }))
+    };
+  });
+  return out;
+}
+
+// How many of the committee's field the resume order would have picked, and
+// where the non-Power teams the committee took sit in that order.
+function scoreFields(data, fields, penalty, w) {
+  const hits = {}, fourHits = {}, twelveHits = {}, twelveSeasons = [], nonPower = {};
+  let fourSum = 0, fourN = 0, npHit = 0, npN = 0;
+  data.forEach((d) => {
+    const f = fields[d.season];
+    if (!f) return;
+    const order = d.teams.slice().sort((a, b) =>
+      (b.rating - penalty * (b.l || 0) + w * ((b.sched || 0) - d.avg)) -
+      (a.rating - penalty * (a.l || 0) + w * ((a.sched || 0) - d.avg)));
+    const top = order.slice(0, f.size);
+    const rankOf = new Map();
+    order.forEach((t, i) => rankOf.set(t.team, i + 1));
+    let hit = 0;
+    f.teams.forEach((t) => {
+      const m = matchTeam(t.team, order);
+      if (m && top.some((x) => x.team === m.team)) hit++;
+    });
+    hits[d.season] = hit;
+    if (f.size === 12) { twelveHits[d.season] = hit; twelveSeasons.push(d.season); }
+    else { fourHits[d.season] = hit; fourSum += hit; fourN++; }
+    // The teams the committee took from outside the Power four, and where the
+    // resume order put them.
+    const np = f.teams.filter((t) => NONP4.indexOf(t.conference) !== -1);
+    if (np.length) {
+      nonPower[d.season] = np.map((t) => {
+        const m = matchTeam(t.team, order);
+        return { team: t.team, rank: m ? rankOf.get(m.team) : null, bid: t.bid };
+      });
+      npN += np.length;
+      npHit += np.filter((t) => {
+        const m = matchTeam(t.team, order);
+        return m && rankOf.get(m.team) <= 12;
+      }).length;
+    }
+  });
+  return {
+    hits: hits, seasons: Object.keys(hits), fourHits: fourHits,
+    fourTeamMeanHit: fourN ? fourSum / fourN : 0,
+    twelveHits: twelveHits, twelveSeasons: twelveSeasons,
+    twelveMeanHit: twelveSeasons.length
+      ? twelveSeasons.reduce((s, y) => s + twelveHits[y], 0) / twelveSeasons.length : 0,
+    nonPower: nonPower, nonPowerHit: npHit, nonPowerTeams: npN
+  };
+}
+
 const round4 = (x) => Math.round(x * 10000) / 10000;
 async function get(url, tries) {
   let last;
@@ -238,6 +310,7 @@ async function main() {
   const loo = looSpearman(data, penalty);
   const hits = meanTopHits(data, penalty, best.w);
   const looHits = looTopHits(data, penalty);
+  const fields = scoreFields(data, loadFields(), penalty, best.w);
   const out = {
     lossPenalty: penalty,
     sosWeight: best.w,
@@ -255,6 +328,18 @@ async function main() {
       leaveOneOutTop25: round4(looHits.top25),
       leaveOneOutTop12: round4(looHits.top12)
     },
+    fields: {
+      seasons: fields.seasons,
+      hits: fields.hits,
+      fourTeamHits: fields.fourHits,
+      fourTeamMeanHit: round4(fields.fourTeamMeanHit),
+      twelveTeamSeasons: fields.twelveSeasons,
+      twelveTeamHits: fields.twelveHits,
+      twelveTeamMeanHit: round4(fields.twelveMeanHit),
+      nonPower: fields.nonPower,
+      nonPowerInTop12: fields.nonPowerHit,
+      nonPowerTeams: fields.nonPowerTeams
+    },
     source: "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
     updated: new Date().toISOString().slice(0, 10)
   };
@@ -264,5 +349,15 @@ async function main() {
   console.log("mean Spearman: no SOS " + round4(base) + ", with SOS " + round4(best.score) + ", leave-one-out " + round4(loo));
   console.log("teams selected: top 25 " + round4(hits.top25) + " of 25, top 12 " + round4(hits.top12) + " of 12");
   console.log("leave-one-out selection: top 25 " + round4(looHits.top25) + " of 25, top 12 " + round4(looHits.top12) + " of 12");
+  if (fields.seasons.length) {
+    console.log("committee field: " + round4(fields.fourTeamMeanHit) + " of 4 over the four team seasons, " +
+      round4(fields.twelveMeanHit) + " of 12 over the twelve team seasons");
+    console.log("the committee's non-Power teams inside our top 12: " +
+      fields.nonPowerHit + " of " + fields.nonPowerTeams);
+    Object.keys(fields.nonPower).forEach((y) => {
+      console.log("  " + y + " non-Power teams the committee took: " +
+        fields.nonPower[y].map((t) => t.team + " (our rank " + t.rank + ")").join(", "));
+    });
+  }
 }
 main().catch((e) => { console.error(e); process.exit(1); });

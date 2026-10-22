@@ -1,8 +1,10 @@
 name: Calibrate resume weights
 
 # Manual trigger. Pulls the CFP final rankings and the paired Sagarin finals from
-# Wayback, refits the resume-score weights and commits them. Run it after a
-# season ends, once the committee's final ranking is posted in early December.
+# Wayback, pulls the committee's actual field for every season, refits the
+# resume-score weights and commits them. Run it after a season ends, once the
+# committee's final ranking is posted in early December and the bracket is set
+# in January.
 
 on:
   workflow_dispatch:
@@ -25,6 +27,9 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Fetch the committee's fields
+        run: node scripts/fetch-cfp-fields.js
+
       - name: Refresh inputs and fit the weights
         run: |
           ARGS="--refresh"
@@ -35,7 +40,7 @@ jobs:
 
       - name: Commit the weights
         run: |
-          git add data/cfp-finals.json data/sagarin-finals.json data/resume-weights.json
+          git add data/cfp-finals.json data/sagarin-finals.json data/cfp-fields.json data/resume-weights.json
           if git diff --cached --quiet; then
             echo "no change, nothing to commit"
             exit 0

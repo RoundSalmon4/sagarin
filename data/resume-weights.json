@@ -41,6 +41,81 @@
     "leaveOneOutTop25": 22,
     "leaveOneOutTop12": 10.75
   },
+  "fields": {
+    "seasons": [
+      "2014",
+      "2015",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "hits": {
+      "2014": 3,
+      "2015": 3,
+      "2016": 3,
+      "2017": 4,
+      "2018": 3,
+      "2019": 4,
+      "2020": 4,
+      "2021": 3,
+      "2022": 4,
+      "2023": 3,
+      "2024": 10,
+      "2025": 10
+    },
+    "fourTeamHits": {
+      "2014": 3,
+      "2015": 3,
+      "2016": 3,
+      "2017": 4,
+      "2018": 3,
+      "2019": 4,
+      "2020": 4,
+      "2021": 3,
+      "2022": 4,
+      "2023": 3
+    },
+    "fourTeamMeanHit": 3.4,
+    "twelveTeamSeasons": [
+      "2024",
+      "2025"
+    ],
+    "twelveTeamHits": {
+      "2024": 10,
+      "2025": 10
+    },
+    "twelveTeamMeanHit": 10,
+    "nonPower": {
+      "2024": [
+        {
+          "team": "Boise State",
+          "rank": 14,
+          "bid": "Conference champion"
+        }
+      ],
+      "2025": [
+        {
+          "team": "Tulane",
+          "rank": 27,
+          "bid": "Conference champion"
+        },
+        {
+          "team": "James Madison",
+          "rank": 17,
+          "bid": "Conference champion"
+        }
+      ]
+    },
+    "nonPowerInTop12": 0,
+    "nonPowerTeams": 3
+  },
   "source": "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
   "updated": "2026-10-22"
 }

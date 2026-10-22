@@ -1,0 +1,451 @@
+{
+ "source": "Wikipedia season articles and bracket templates (en.wikipedia.org); cross checked against the NCAA bracket and the CFP site's final ranking",
+ "note": "The committee's selection is not always the same list as the final ranking the CFP site publishes and this repo keeps in data/cfp-finals.json. This file holds the selection itself, with the seed, the conference and how each team qualified.",
+ "seasons": {
+  "2014": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Oregon",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Florida State",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Ohio State",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2015": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Michigan State",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Oklahoma",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2016": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Ohio State",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Washington",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2017": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Oklahoma",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Georgia",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2018": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Notre Dame",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Oklahoma",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2019": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "LSU",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Ohio State",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Oklahoma",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2020": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Clemson",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Ohio State",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Notre Dame",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2021": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Michigan",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Georgia",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Cincinnati",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2022": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Georgia",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Michigan",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "TCU",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Ohio State",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2023": {
+   "format": 4,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Michigan",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 2,
+     "team": "Washington",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 3,
+     "team": "Texas",
+     "conference": null,
+     "bid": null
+    },
+    {
+     "seed": 4,
+     "team": "Alabama",
+     "conference": null,
+     "bid": null
+    }
+   ]
+  },
+  "2024": {
+   "format": 12,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Oregon",
+     "conference": "BIG TEN",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 2,
+     "team": "Georgia",
+     "conference": "SEC",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 3,
+     "team": "Boise State",
+     "conference": "MOUNTAIN WEST",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 4,
+     "team": "Arizona State",
+     "conference": "BIG 12",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 5,
+     "team": "Texas",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 6,
+     "team": "Penn State",
+     "conference": "BIG TEN",
+     "bid": "At-large"
+    },
+    {
+     "seed": 7,
+     "team": "Notre Dame",
+     "conference": "I-A IND.",
+     "bid": "At-large"
+    },
+    {
+     "seed": 8,
+     "team": "Ohio State",
+     "conference": "BIG TEN",
+     "bid": "At-large"
+    },
+    {
+     "seed": 9,
+     "team": "Tennessee",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 10,
+     "team": "Indiana",
+     "conference": "BIG TEN",
+     "bid": "At-large"
+    },
+    {
+     "seed": 11,
+     "team": "SMU",
+     "conference": "ACC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 12,
+     "team": "Clemson",
+     "conference": "ACC",
+     "bid": "Conference champion"
+    }
+   ]
+  },
+  "2025": {
+   "format": 12,
+   "field": [
+    {
+     "seed": 1,
+     "team": "Indiana",
+     "conference": "BIG TEN",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 2,
+     "team": "Ohio State",
+     "conference": "BIG TEN",
+     "bid": "At-large"
+    },
+    {
+     "seed": 3,
+     "team": "Georgia",
+     "conference": "SEC",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 4,
+     "team": "Texas Tech",
+     "conference": "BIG 12",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 5,
+     "team": "Oregon",
+     "conference": "BIG TEN",
+     "bid": "At-large"
+    },
+    {
+     "seed": 6,
+     "team": "Mississippi",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 7,
+     "team": "Texas A&M",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 8,
+     "team": "Oklahoma",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 9,
+     "team": "Alabama",
+     "conference": "SEC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 10,
+     "team": "Miami-Florida",
+     "conference": "ACC",
+     "bid": "At-large"
+    },
+    {
+     "seed": 11,
+     "team": "Tulane",
+     "conference": "AMERICAN",
+     "bid": "Conference champion"
+    },
+    {
+     "seed": 12,
+     "team": "James Madison",
+     "conference": "SUN BELT",
+     "bid": "Conference champion"
+    }
+   ]
+  }
+ },
+ "updated": "2026-10-22"
+}

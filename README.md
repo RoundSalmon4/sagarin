@@ -163,6 +163,28 @@ all twelve seasons, so the misses sit in the 13 to 25 band rather than in the pl
 field. Read the selection counts, not the correlation, when you want to know how many of
 the committee's teams the predictor would have taken.
 
+### The committee's field
+
+The CFP site publishes the committee's final ranking and this repo keeps it in
+`data/cfp-finals.json`, but the committee's selection is not always the same list as its
+published ranking. In 2025 the ranking had Notre Dame and BYU in the top 12 while the
+field had Tulane and James Madison. The predictor builds a field, so the field is what it
+should be judged against, and `data/cfp-fields.json` holds it: every season, with the
+seed, the conference and how each team qualified.
+
+`scripts/fetch-cfp-fields.js` pulls that from the Wikipedia bracket templates and the
+season articles, checks it against the NCAA bracket and the CFP site's ranking, and writes
+the file only when something changed. It fills in any season that is missing, so running
+it after a season adds that season's field.
+
+The calibration reports the field next to the ranking: 3.4 of the committee's four over the
+ten four-team seasons, and 10 of 12 over the twelve-team seasons. It also prints where the
+teams the committee took from outside the Power four land in the resume order, because that
+is where the misses are. Over 2024 and 2025 the committee took Boise State, Tulane and
+James Madison, and the resume order put all three outside its top 12, at ranks 14, 27 and
+17. That is the honest read on the non-Power bids: the resume score rates a good non-Power
+team below where the committee put it.
+
 The refresh adds the newest completed season and, when the CFP final ranking for the current
 season is not posted yet, exits without touching the inputs:
 
@@ -220,6 +242,10 @@ these sources:
   endpoint. The AP poll is the Associated Press's and the coaches poll is the AFCA's.
 - **The College Football Playoff rankings** - read from the CFP site's rankings API. The
   committee rankings are the College Football Playoff's.
+- **The College Football Playoff field** - the committee's actual selection, with the seed
+  and how each team qualified, read from the Wikipedia season articles and bracket
+  templates and checked against the NCAA bracket. It is kept apart from the rankings
+  because the two are not always the same list.
 - **The playoff formats** - the 12-team rules follow NCAA.com's explanation of the 2026
   format, and the proposed 24-team plan follows ESPN's reporting. Those rules belong to their
   authors.
@@ -260,6 +286,7 @@ data/ap-poll.json         AP, Coaches and CFP poll snapshots
 data/bcs.json             BCS-style score for the season
 data/tv-games.json        upcoming games with TV and lines
 data/cfp-finals.json      CFP final top 25 per season, for the resume fit
+data/cfp-fields.json      the committee's actual field per season, with the bid types
 data/sagarin-finals.json  paired Sagarin finals per season, for the resume fit
 data/resume-weights.json  fitted resume weights read by the playoff predictor
 data/history/             weekly archived snapshots, one file per season week
@@ -273,6 +300,7 @@ scripts/archive-ratings.js    save the current week into data/history
 scripts/fetch-sagarin-history.js  backfill weeks from the Wayback Machine
 scripts/history-util.js   shared shape for the archived weeks
 scripts/calibrate-resume.js  fit the resume weights to the CFP finals
+scripts/fetch-cfp-fields.js  pull the committee's field for every season
 .github/workflows/        Sunday refresh, poll refresh, manual backfill, manual calibration
 ```
 
@@ -297,6 +325,7 @@ node scripts/fetch-ap.js
 node scripts/fetch-bcs.js
 node scripts/fetch-tv.js
 node scripts/archive-ratings.js
+node scripts/fetch-cfp-fields.js
 node scripts/calibrate-resume.js
 ```
 
@@ -304,8 +333,8 @@ node scripts/calibrate-resume.js
 and `--concurrency`; `fetch-logos.js` takes `--force` and `--concurrency`; `fetch-ap.js`
 takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`; `archive-ratings.js` takes
 `--ratings`; `fetch-sagarin-history.js` takes `--season` and `--dry-run`; `calibrate-resume.js`
-takes `--penalty` and `--refresh`. `fetch-bcs.js` needs `FIRECRAWL_API_KEY` set for the
-Massey page.
+takes `--penalty` and `--refresh`; `fetch-cfp-fields.js` takes `--season` and `--dry-run`.
+`fetch-bcs.js` needs `FIRECRAWL_API_KEY` set for the Massey page.
 
 ## Notes
 
