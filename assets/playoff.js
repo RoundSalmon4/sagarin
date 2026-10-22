@@ -258,8 +258,9 @@
       var atLarge24 = challengers.slice(0, 19);
       atLarge24.forEach(function (t) { bid[t.team] = "At-large"; });
       // The whole field is seeded 1-24 on the resume score (rating minus the
-      // per-loss penalty), the model's stand-in for the committee ranking, so a
-      // high rating with a pile of losses does not buy a top seed.
+      // per-loss penalty, plus the schedule and conference title terms), the
+      // model's stand-in for the committee ranking, so a high rating with a pile
+      // of losses does not buy a top seed.
       auto.concat(atLarge24)
         .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); })
         .forEach(function (t) { seeds.push(t); });
@@ -553,8 +554,9 @@
         : "24-team (proposed 2027): 19 at-large, the four Power 4 regular-season champions, and the highest Group of 6 team; the field seeds 1-24 on the resume score, with seeds 1-8 earning a bye and a home game and seeds 9-16 hosting the first round.") +
       " The G6 spot, the at-large spots and the seeds all use a resume score: rating minus " +
       AT_LARGE_LOSS_PENALTY + " points per projected loss plus " + AT_LARGE_SOS_WEIGHT +
-      " points for every point the schedule sits above the FBS average, so a weak schedule cannot hide behind a record. " +
-      "The schedule weight is fitted to the committee's final top 25 and checked against a held-out season, so it moves as more seasons are added. " +
+      " points for every point the schedule sits above the FBS average, plus " +
+      AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something. " +
+      "The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added. " +
       "The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
   }

@@ -50,8 +50,9 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   games and takes the four Power 4 regular-season champions, the highest Group of 6 team and
   19 at-large, seeded 1-24 on the resume score (seeds 1-8 get byes, seeds 9-16 host the first
   round). The G6 spot, the at-large spots and the seeds are all a resume call: the rating
-  minus five points per projected loss plus a schedule bonus, so a weak schedule cannot hide
-  behind a record. The schedule weight is fit to the committee's own final top 25 (see below).
+  minus five points per projected loss, plus a schedule bonus so a weak schedule cannot hide
+  behind a record, plus a bonus for winning the conference. The schedule weight and the
+  champion bonus are fit to the committee's own picks (see below).
   Draws either the 12-team or the 24-team bracket,
   seeds only by default with an option to show predicted results, and lists the projected
   conference championship matchups under the field (with the winner and win odds in the
@@ -320,7 +321,7 @@ scripts/fetch-tv.js       fetch the upcoming TV schedule
 scripts/archive-ratings.js    save the current week into data/history
 scripts/fetch-sagarin-history.js  backfill weeks from the Wayback Machine
 scripts/history-util.js   shared shape for the archived weeks
-scripts/calibrate-resume.js  fit the resume weights to the CFP finals
+scripts/calibrate-resume.js  fit the resume weights to the committee's picks
 scripts/fetch-cfp-fields.js  pull the committee's field for every season
 .github/workflows/        Sunday refresh, poll refresh, manual backfill, manual calibration
 ```
