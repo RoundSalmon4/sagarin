@@ -20,6 +20,9 @@
 
   var TITLE_RE =
     /(\d{4})\s+COLLEGE FOOTBALL through results of\s+(.+?)\s+-\s+WEEK\s+(\d+)/i;
+  // Older seasons drop the leading year and print the week as "WEEK #n":
+  //   COLLEGE FOOTBALL 2019 through results of 2019 NOVEMBER 9 SATURDAY
+  var TITLE_OLD_RE = /COLLEGE FOOTBALL\s+(\d{4})\s+through results of\s+(.+?)(?:\s*-\s*WEEK\s*#?\s*(\d+))?\s*$/i;
   var HOME_RE =
     /HOME ADVANTAGE=\[\s*(-?\d+\.\d+)\]\s*\[\s*(-?\d+\.\d+)\]\s*\[\s*(-?\d+\.\d+)\]\s*\[\s*(-?\d+\.\d+)\]\s*\[\s*(-?\d+\.\d+)\]/;
 
@@ -32,6 +35,22 @@
       "\\s*(-?\\d+\\.\\d+)\\s+(\\d+)\\s*\\|" +
       "\\s*(-?\\d+\\.\\d+)\\s+(\\d+)\\s*\\|" +
       "\\s*(-?\\d+\\.\\d+)\\s+(\\d+)\\s+(.+?)\\s*\\((A|AA|__)\\)\\s*$"
+  );
+
+  // Older seasons (roughly 2015 through 2023) print one fewer rating column:
+  // PREDICTOR, GOLDEN_MEAN and RECENT only, with the conference name at the end
+  // and no trailing level tag. The win-loss pair also carries a third number in
+  // the oldest years, so it is optional here.
+  //   1  Michigan   A  =  97.35  13  0  72.05( 56)  2  0 |  3  0 |  96.19  1 |  97.84  1 |  99.33  1  BIG TEN-EAST
+  var TEAM_OLD_RE = new RegExp(
+    "^\\s*(\\d{1,3})\\s+(.+?)\\s+(A|AA|__)\\s*=\\s*(-?\\d+\\.\\d+)" +
+      "\\s+(\\d+)\\s+(\\d+)(?:\\s+\\d+)?" +
+      "\\s+(-?\\d+\\.\\d+)\\(\\s*(\\d+)\\)" +
+      "\\s+(\\d+)\\s+(\\d+)(?:\\s+\\d+)?" +
+      "\\s*\\|\\s*(\\d+)\\s+(\\d+)(?:\\s+\\d+)?" +
+      "\\s*\\|\\s*(-?\\d+\\.\\d+)\\s+(\\d+)" +
+      "\\s*\\|\\s*(-?\\d+\\.\\d+)\\s+(\\d+)" +
+      "\\s*\\|\\s*(-?\\d+\\.\\d+)\\s+(\\d+)\\s*(.*?)\\s*$"
   );
 
   //   1  @ Delaware  6.55 6.06 7.77 5.09 3.43  Missouri State  204 67% 31.80 25.21 57.00 6.59 67% 204
@@ -98,33 +117,61 @@
 
   function parseTeam(line) {
     var m = TEAM_RE.exec(line);
-    if (!m) return null;
-    var name = m[2].trim();
-    var level = m[3];
-    if (level === "__" || /UNRATED/i.test(name)) return null;
+    if (m) {
+      var name = m[2].trim();
+      if (m[3] === "__" || /UNRATED/i.test(name)) return null;
+      return {
+        rank: parseInt10(m[1]),
+        team: name,
+        level: m[3],
+        rating: num(m[4]),
+        w: parseInt10(m[5]),
+        l: parseInt10(m[6]),
+        sched: num(m[7]),
+        schedRank: parseInt10(m[8]),
+        vs10w: parseInt10(m[9]),
+        vs10l: parseInt10(m[10]),
+        vs30w: parseInt10(m[11]),
+        vs30l: parseInt10(m[12]),
+        predictor: num(m[13]),
+        predictorRank: parseInt10(m[14]),
+        goldenMean: num(m[15]),
+        goldenMeanRank: parseInt10(m[16]),
+        recent: num(m[17]),
+        recentRank: parseInt10(m[18]),
+        strongRecent: num(m[19]),
+        strongRecentRank: parseInt10(m[20]),
+        conference: m[21].trim(),
+        confLevel: m[22]
+      };
+    }
+    var o = TEAM_OLD_RE.exec(line);
+    if (!o) return null;
+    var oldName = o[2].trim();
+    if (o[3] === "__" || /UNRATED/i.test(oldName)) return null;
     return {
-      rank: parseInt10(m[1]),
-      team: name,
-      level: level,
-      rating: num(m[4]),
-      w: parseInt10(m[5]),
-      l: parseInt10(m[6]),
-      sched: num(m[7]),
-      schedRank: parseInt10(m[8]),
-      vs10w: parseInt10(m[9]),
-      vs10l: parseInt10(m[10]),
-      vs30w: parseInt10(m[11]),
-      vs30l: parseInt10(m[12]),
-      predictor: num(m[13]),
-      predictorRank: parseInt10(m[14]),
-      goldenMean: num(m[15]),
-      goldenMeanRank: parseInt10(m[16]),
-      recent: num(m[17]),
-      recentRank: parseInt10(m[18]),
-      strongRecent: num(m[19]),
-      strongRecentRank: parseInt10(m[20]),
-      conference: m[21].trim(),
-      confLevel: m[22]
+      rank: parseInt10(o[1]),
+      team: oldName,
+      level: o[3],
+      rating: num(o[4]),
+      w: parseInt10(o[5]),
+      l: parseInt10(o[6]),
+      sched: num(o[7]),
+      schedRank: parseInt10(o[8]),
+      vs10w: parseInt10(o[9]),
+      vs10l: parseInt10(o[10]),
+      vs30w: parseInt10(o[11]),
+      vs30l: parseInt10(o[12]),
+      predictor: num(o[13]),
+      predictorRank: parseInt10(o[14]),
+      goldenMean: num(o[15]),
+      goldenMeanRank: parseInt10(o[16]),
+      recent: num(o[17]),
+      recentRank: parseInt10(o[18]),
+      strongRecent: null,
+      strongRecentRank: null,
+      conference: o[19].trim(),
+      confLevel: null
     };
   }
 
@@ -258,6 +305,11 @@
             through: tm[2].trim(),
             week: parseInt10(tm[3])
           };
+        } else {
+          var tom = TITLE_OLD_RE.exec(line);
+          if (tom) {
+            title = { season: parseInt10(tom[1]), through: tom[2].trim(), week: tom[3] ? parseInt10(tom[3]) : null };
+          }
         }
       }
 

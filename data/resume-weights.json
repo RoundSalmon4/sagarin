@@ -1,0 +1,41 @@
+{
+  "lossPenalty": 5,
+  "sosWeight": 0.45,
+  "method": "rank-correlation-fit",
+  "target": "CFP final top 25",
+  "seasons": [
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "teamCounts": [
+    128,
+    128,
+    128,
+    130,
+    130,
+    130,
+    130,
+    130,
+    131,
+    133,
+    134,
+    134
+  ],
+  "fit": {
+    "sosWeight": 0.45,
+    "meanSpearman": 0.9116,
+    "meanSpearmanNoSos": 0.8837
+  },
+  "source": "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
+  "updated": "2026-10-22"
+}

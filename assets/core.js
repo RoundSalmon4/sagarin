@@ -12,6 +12,7 @@
   SG.AP_URL = "data/ap-poll.json";
   SG.BCS_URL = "data/bcs.json";
   SG.TV_URL = "data/tv-games.json";
+  SG.RESUME_URL = "data/resume-weights.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ALIAS = window.TeamAlias || {};
@@ -24,6 +25,7 @@
     bcs: null,
     bcsSig: null,
     tv: null,
+    resume: null,
     sagToEspn: null,
     espnIdToSag: null,
     teamSort: { key: "rank", dir: 1 },
@@ -894,9 +896,10 @@
       loadJson(SG.LOGOS_URL).catch(function () { return null; }),
       loadJson(SG.AP_URL).catch(function () { return null; }),
       loadJson(SG.BCS_URL).catch(function () { return null; }),
-      loadJson(SG.TV_URL).catch(function () { return null; })
+      loadJson(SG.TV_URL).catch(function () { return null; }),
+      loadJson(SG.RESUME_URL).catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6] };
     });
   }
 
@@ -927,6 +930,8 @@
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
+      var resumeChanged = JSON.stringify(res.resume) !== JSON.stringify(SG.state.resume);
+      SG.state.resume = res.resume || null;
       if (ratingsChanged) {
         var changed = !!SG.state.data;
         SG.state.data = json;
@@ -942,7 +947,7 @@
       } else {
         SG.buildMapping();
         if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
-        if (apChanged || bcsChanged || tvChanged) SG.refreshModules();
+        if (apChanged || bcsChanged || tvChanged || resumeChanged) SG.refreshModules();
         if (manual) document.getElementById("dataStatus").textContent += " - no changes";
       }
     }).catch(function (err) {
@@ -984,6 +989,7 @@
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
+      SG.state.resume = res.resume || null;
       SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();

@@ -1,0 +1,1243 @@
+{
+ "source": "collegefootballplayoff.com/api/v2/rankings (the final release of each season)",
+ "releases": {
+  "2014": "2014-12-07",
+  "2015": "2015-12-06",
+  "2016": "2016-12-06",
+  "2017": "2017-12-03",
+  "2018": "2018-12-02",
+  "2019": "2019-12-08",
+  "2020": "2020-12-20",
+  "2021": "2021-12-05",
+  "2022": "2022-12-04",
+  "2023": "2023-12-03",
+  "2024": "2024-12-08",
+  "2025": "2025-12-07"
+ },
+ "seasons": {
+  "2014": [
+   {
+    "rank": 1,
+    "team": "Alabama"
+   },
+   {
+    "rank": 2,
+    "team": "Oregon"
+   },
+   {
+    "rank": 3,
+    "team": "Florida State"
+   },
+   {
+    "rank": 4,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 5,
+    "team": "Baylor"
+   },
+   {
+    "rank": 6,
+    "team": "TCU"
+   },
+   {
+    "rank": 7,
+    "team": "Mississippi State"
+   },
+   {
+    "rank": 8,
+    "team": "Michigan State"
+   },
+   {
+    "rank": 9,
+    "team": "Mississippi"
+   },
+   {
+    "rank": 10,
+    "team": "Arizona"
+   },
+   {
+    "rank": 11,
+    "team": "Kansas State"
+   },
+   {
+    "rank": 12,
+    "team": "Georgia Tech"
+   },
+   {
+    "rank": 13,
+    "team": "Georgia"
+   },
+   {
+    "rank": 14,
+    "team": "UCLA"
+   },
+   {
+    "rank": 15,
+    "team": "Arizona State"
+   },
+   {
+    "rank": 16,
+    "team": "Missouri"
+   },
+   {
+    "rank": 17,
+    "team": "Clemson"
+   },
+   {
+    "rank": 18,
+    "team": "Wisconsin"
+   },
+   {
+    "rank": 19,
+    "team": "Auburn"
+   },
+   {
+    "rank": 20,
+    "team": "Boise State"
+   },
+   {
+    "rank": 21,
+    "team": "Louisville"
+   },
+   {
+    "rank": 22,
+    "team": "Utah"
+   },
+   {
+    "rank": 23,
+    "team": "LSU"
+   },
+   {
+    "rank": 24,
+    "team": "Southern California"
+   },
+   {
+    "rank": 25,
+    "team": "Minnesota"
+   }
+  ],
+  "2015": [
+   {
+    "rank": 1,
+    "team": "Clemson"
+   },
+   {
+    "rank": 2,
+    "team": "Alabama"
+   },
+   {
+    "rank": 3,
+    "team": "Michigan State"
+   },
+   {
+    "rank": 4,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 5,
+    "team": "Iowa"
+   },
+   {
+    "rank": 6,
+    "team": "Stanford"
+   },
+   {
+    "rank": 7,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 8,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 9,
+    "team": "Florida State"
+   },
+   {
+    "rank": 10,
+    "team": "North Carolina"
+   },
+   {
+    "rank": 11,
+    "team": "TCU"
+   },
+   {
+    "rank": 12,
+    "team": "Mississippi"
+   },
+   {
+    "rank": 13,
+    "team": "Northwestern"
+   },
+   {
+    "rank": 14,
+    "team": "Michigan"
+   },
+   {
+    "rank": 15,
+    "team": "Oregon"
+   },
+   {
+    "rank": 16,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 17,
+    "team": "Baylor"
+   },
+   {
+    "rank": 18,
+    "team": "Houston"
+   },
+   {
+    "rank": 19,
+    "team": "Florida"
+   },
+   {
+    "rank": 20,
+    "team": "LSU"
+   },
+   {
+    "rank": 21,
+    "team": "Navy"
+   },
+   {
+    "rank": 22,
+    "team": "Utah"
+   },
+   {
+    "rank": 23,
+    "team": "Tennessee"
+   },
+   {
+    "rank": 24,
+    "team": "Temple"
+   },
+   {
+    "rank": 25,
+    "team": "Southern California"
+   }
+  ],
+  "2016": [
+   {
+    "rank": 1,
+    "team": "Alabama"
+   },
+   {
+    "rank": 2,
+    "team": "Clemson"
+   },
+   {
+    "rank": 3,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 4,
+    "team": "Washington"
+   },
+   {
+    "rank": 5,
+    "team": "Penn State"
+   },
+   {
+    "rank": 6,
+    "team": "Michigan"
+   },
+   {
+    "rank": 7,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 8,
+    "team": "Wisconsin"
+   },
+   {
+    "rank": 9,
+    "team": "Southern California"
+   },
+   {
+    "rank": 10,
+    "team": "Colorado"
+   },
+   {
+    "rank": 11,
+    "team": "Florida State"
+   },
+   {
+    "rank": 12,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 13,
+    "team": "Louisville"
+   },
+   {
+    "rank": 14,
+    "team": "Auburn"
+   },
+   {
+    "rank": 15,
+    "team": "Western Michigan"
+   },
+   {
+    "rank": 16,
+    "team": "West Virginia"
+   },
+   {
+    "rank": 17,
+    "team": "Florida"
+   },
+   {
+    "rank": 18,
+    "team": "Stanford"
+   },
+   {
+    "rank": 19,
+    "team": "Utah"
+   },
+   {
+    "rank": 20,
+    "team": "LSU"
+   },
+   {
+    "rank": 21,
+    "team": "Tennessee"
+   },
+   {
+    "rank": 22,
+    "team": "Virginia Tech"
+   },
+   {
+    "rank": 23,
+    "team": "Pittsburgh"
+   },
+   {
+    "rank": 24,
+    "team": "Temple"
+   },
+   {
+    "rank": 25,
+    "team": "Navy"
+   }
+  ],
+  "2017": [
+   {
+    "rank": 1,
+    "team": "Clemson"
+   },
+   {
+    "rank": 2,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 3,
+    "team": "Georgia"
+   },
+   {
+    "rank": 4,
+    "team": "Alabama"
+   },
+   {
+    "rank": 5,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 6,
+    "team": "Wisconsin"
+   },
+   {
+    "rank": 7,
+    "team": "Auburn"
+   },
+   {
+    "rank": 8,
+    "team": "Southern California"
+   },
+   {
+    "rank": 9,
+    "team": "Penn State"
+   },
+   {
+    "rank": 10,
+    "team": "Miami"
+   },
+   {
+    "rank": 11,
+    "team": "Washington"
+   },
+   {
+    "rank": 12,
+    "team": "UCF"
+   },
+   {
+    "rank": 13,
+    "team": "Stanford"
+   },
+   {
+    "rank": 14,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 15,
+    "team": "TCU"
+   },
+   {
+    "rank": 16,
+    "team": "Michigan State"
+   },
+   {
+    "rank": 17,
+    "team": "LSU"
+   },
+   {
+    "rank": 18,
+    "team": "Washington State"
+   },
+   {
+    "rank": 19,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 20,
+    "team": "Memphis"
+   },
+   {
+    "rank": 21,
+    "team": "Northwestern"
+   },
+   {
+    "rank": 22,
+    "team": "Virginia Tech"
+   },
+   {
+    "rank": 23,
+    "team": "Mississippi State"
+   },
+   {
+    "rank": 24,
+    "team": "NC State"
+   },
+   {
+    "rank": 25,
+    "team": "Boise State"
+   }
+  ],
+  "2018": [
+   {
+    "rank": 1,
+    "team": "Alabama"
+   },
+   {
+    "rank": 2,
+    "team": "Clemson"
+   },
+   {
+    "rank": 3,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 4,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 5,
+    "team": "Georgia"
+   },
+   {
+    "rank": 6,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 7,
+    "team": "Michigan"
+   },
+   {
+    "rank": 8,
+    "team": "UCF"
+   },
+   {
+    "rank": 9,
+    "team": "Washington"
+   },
+   {
+    "rank": 10,
+    "team": "Florida"
+   },
+   {
+    "rank": 11,
+    "team": "LSU"
+   },
+   {
+    "rank": 12,
+    "team": "Penn State"
+   },
+   {
+    "rank": 13,
+    "team": "Washington State"
+   },
+   {
+    "rank": 14,
+    "team": "Kentucky"
+   },
+   {
+    "rank": 15,
+    "team": "Texas"
+   },
+   {
+    "rank": 16,
+    "team": "West Virginia"
+   },
+   {
+    "rank": 17,
+    "team": "Utah"
+   },
+   {
+    "rank": 18,
+    "team": "Mississippi State"
+   },
+   {
+    "rank": 19,
+    "team": "Texas A&M"
+   },
+   {
+    "rank": 20,
+    "team": "Syracuse"
+   },
+   {
+    "rank": 21,
+    "team": "Fresno State"
+   },
+   {
+    "rank": 22,
+    "team": "Northwestern"
+   },
+   {
+    "rank": 23,
+    "team": "Missouri"
+   },
+   {
+    "rank": 24,
+    "team": "Iowa State"
+   },
+   {
+    "rank": 25,
+    "team": "Boise State"
+   }
+  ],
+  "2019": [
+   {
+    "rank": 1,
+    "team": "LSU"
+   },
+   {
+    "rank": 2,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 3,
+    "team": "Clemson"
+   },
+   {
+    "rank": 4,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 5,
+    "team": "Georgia"
+   },
+   {
+    "rank": 6,
+    "team": "Oregon"
+   },
+   {
+    "rank": 7,
+    "team": "Baylor"
+   },
+   {
+    "rank": 8,
+    "team": "Wisconsin"
+   },
+   {
+    "rank": 9,
+    "team": "Florida"
+   },
+   {
+    "rank": 10,
+    "team": "Penn State"
+   },
+   {
+    "rank": 11,
+    "team": "Utah"
+   },
+   {
+    "rank": 12,
+    "team": "Auburn"
+   },
+   {
+    "rank": 13,
+    "team": "Alabama"
+   },
+   {
+    "rank": 14,
+    "team": "Michigan"
+   },
+   {
+    "rank": 15,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 16,
+    "team": "Iowa"
+   },
+   {
+    "rank": 17,
+    "team": "Memphis"
+   },
+   {
+    "rank": 18,
+    "team": "Minnesota"
+   },
+   {
+    "rank": 19,
+    "team": "Boise State"
+   },
+   {
+    "rank": 20,
+    "team": "Appalachian State"
+   },
+   {
+    "rank": 21,
+    "team": "Cincinnati"
+   },
+   {
+    "rank": 22,
+    "team": "Southern California"
+   },
+   {
+    "rank": 23,
+    "team": "Navy"
+   },
+   {
+    "rank": 24,
+    "team": "Virginia"
+   },
+   {
+    "rank": 25,
+    "team": "Oklahoma State"
+   }
+  ],
+  "2020": [
+   {
+    "rank": 1,
+    "team": "Alabama"
+   },
+   {
+    "rank": 2,
+    "team": "Clemson"
+   },
+   {
+    "rank": 3,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 4,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 5,
+    "team": "Texas A&M"
+   },
+   {
+    "rank": 6,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 7,
+    "team": "Florida"
+   },
+   {
+    "rank": 8,
+    "team": "Cincinnati"
+   },
+   {
+    "rank": 9,
+    "team": "Georgia"
+   },
+   {
+    "rank": 10,
+    "team": "Iowa State"
+   },
+   {
+    "rank": 11,
+    "team": "Indiana"
+   },
+   {
+    "rank": 12,
+    "team": "Coastal Carolina"
+   },
+   {
+    "rank": 13,
+    "team": "North Carolina"
+   },
+   {
+    "rank": 14,
+    "team": "Northwestern University"
+   },
+   {
+    "rank": 15,
+    "team": "Iowa"
+   },
+   {
+    "rank": 16,
+    "team": "BYU"
+   },
+   {
+    "rank": 17,
+    "team": "Southern California"
+   },
+   {
+    "rank": 18,
+    "team": "Miami"
+   },
+   {
+    "rank": 19,
+    "team": "Louisiana"
+   },
+   {
+    "rank": 20,
+    "team": "Texas"
+   },
+   {
+    "rank": 21,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 22,
+    "team": "San Jose State University"
+   },
+   {
+    "rank": 23,
+    "team": "NC State"
+   },
+   {
+    "rank": 24,
+    "team": "Tulsa"
+   },
+   {
+    "rank": 25,
+    "team": "Oregon"
+   }
+  ],
+  "2021": [
+   {
+    "rank": 1,
+    "team": "Alabama"
+   },
+   {
+    "rank": 2,
+    "team": "Michigan"
+   },
+   {
+    "rank": 3,
+    "team": "Georgia"
+   },
+   {
+    "rank": 4,
+    "team": "Cincinnati"
+   },
+   {
+    "rank": 5,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 6,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 7,
+    "team": "Baylor"
+   },
+   {
+    "rank": 8,
+    "team": "Mississippi"
+   },
+   {
+    "rank": 9,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 10,
+    "team": "Michigan State"
+   },
+   {
+    "rank": 11,
+    "team": "Utah"
+   },
+   {
+    "rank": 12,
+    "team": "Pittsburgh"
+   },
+   {
+    "rank": 13,
+    "team": "BYU"
+   },
+   {
+    "rank": 14,
+    "team": "Oregon"
+   },
+   {
+    "rank": 15,
+    "team": "Iowa"
+   },
+   {
+    "rank": 16,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 17,
+    "team": "Wake Forest"
+   },
+   {
+    "rank": 18,
+    "team": "NC State"
+   },
+   {
+    "rank": 19,
+    "team": "Clemson"
+   },
+   {
+    "rank": 20,
+    "team": "Houston"
+   },
+   {
+    "rank": 21,
+    "team": "Arkansas"
+   },
+   {
+    "rank": 22,
+    "team": "Kentucky"
+   },
+   {
+    "rank": 23,
+    "team": "Louisiana"
+   },
+   {
+    "rank": 24,
+    "team": "San Diego State"
+   },
+   {
+    "rank": 25,
+    "team": "Texas A&M"
+   }
+  ],
+  "2022": [
+   {
+    "rank": 1,
+    "team": "Georgia"
+   },
+   {
+    "rank": 2,
+    "team": "Michigan"
+   },
+   {
+    "rank": 3,
+    "team": "TCU"
+   },
+   {
+    "rank": 4,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 5,
+    "team": "Alabama"
+   },
+   {
+    "rank": 6,
+    "team": "Tennessee"
+   },
+   {
+    "rank": 7,
+    "team": "Clemson"
+   },
+   {
+    "rank": 8,
+    "team": "Utah"
+   },
+   {
+    "rank": 9,
+    "team": "Kansas State"
+   },
+   {
+    "rank": 10,
+    "team": "Southern California"
+   },
+   {
+    "rank": 11,
+    "team": "Penn State"
+   },
+   {
+    "rank": 12,
+    "team": "Washington"
+   },
+   {
+    "rank": 13,
+    "team": "Florida State"
+   },
+   {
+    "rank": 14,
+    "team": "Oregon State"
+   },
+   {
+    "rank": 15,
+    "team": "Oregon"
+   },
+   {
+    "rank": 16,
+    "team": "Tulane"
+   },
+   {
+    "rank": 17,
+    "team": "LSU"
+   },
+   {
+    "rank": 18,
+    "team": "UCLA"
+   },
+   {
+    "rank": 19,
+    "team": "South Carolina"
+   },
+   {
+    "rank": 20,
+    "team": "Texas"
+   },
+   {
+    "rank": 21,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 22,
+    "team": "Mississippi State"
+   },
+   {
+    "rank": 23,
+    "team": "NC State"
+   },
+   {
+    "rank": 24,
+    "team": "Troy"
+   },
+   {
+    "rank": 25,
+    "team": "UTSA"
+   }
+  ],
+  "2023": [
+   {
+    "rank": 1,
+    "team": "Michigan"
+   },
+   {
+    "rank": 2,
+    "team": "Washington"
+   },
+   {
+    "rank": 3,
+    "team": "Texas"
+   },
+   {
+    "rank": 4,
+    "team": "Alabama"
+   },
+   {
+    "rank": 5,
+    "team": "Florida State"
+   },
+   {
+    "rank": 6,
+    "team": "Georgia"
+   },
+   {
+    "rank": 7,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 8,
+    "team": "Oregon"
+   },
+   {
+    "rank": 9,
+    "team": "Missouri"
+   },
+   {
+    "rank": 10,
+    "team": "Penn State"
+   },
+   {
+    "rank": 11,
+    "team": "Mississippi"
+   },
+   {
+    "rank": 12,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 13,
+    "team": "LSU"
+   },
+   {
+    "rank": 14,
+    "team": "Arizona"
+   },
+   {
+    "rank": 15,
+    "team": "Louisville"
+   },
+   {
+    "rank": 16,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 17,
+    "team": "Iowa"
+   },
+   {
+    "rank": 18,
+    "team": "NC State"
+   },
+   {
+    "rank": 19,
+    "team": "Oregon State"
+   },
+   {
+    "rank": 20,
+    "team": "Oklahoma State"
+   },
+   {
+    "rank": 21,
+    "team": "Tennessee"
+   },
+   {
+    "rank": 22,
+    "team": "Clemson"
+   },
+   {
+    "rank": 23,
+    "team": "Liberty"
+   },
+   {
+    "rank": 24,
+    "team": "SMU"
+   },
+   {
+    "rank": 25,
+    "team": "Kansas State"
+   }
+  ],
+  "2024": [
+   {
+    "rank": 1,
+    "team": "Oregon"
+   },
+   {
+    "rank": 2,
+    "team": "Georgia"
+   },
+   {
+    "rank": 3,
+    "team": "Texas"
+   },
+   {
+    "rank": 4,
+    "team": "Penn State"
+   },
+   {
+    "rank": 5,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 6,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 7,
+    "team": "Tennessee"
+   },
+   {
+    "rank": 8,
+    "team": "Indiana"
+   },
+   {
+    "rank": 9,
+    "team": "Boise State"
+   },
+   {
+    "rank": 10,
+    "team": "SMU"
+   },
+   {
+    "rank": 11,
+    "team": "Alabama"
+   },
+   {
+    "rank": 12,
+    "team": "Arizona State"
+   },
+   {
+    "rank": 13,
+    "team": "Miami"
+   },
+   {
+    "rank": 14,
+    "team": "Ole Miss"
+   },
+   {
+    "rank": 15,
+    "team": "South Carolina"
+   },
+   {
+    "rank": 16,
+    "team": "Clemson"
+   },
+   {
+    "rank": 17,
+    "team": "BYU"
+   },
+   {
+    "rank": 18,
+    "team": "Iowa State"
+   },
+   {
+    "rank": 19,
+    "team": "Missouri"
+   },
+   {
+    "rank": 20,
+    "team": "Illinois"
+   },
+   {
+    "rank": 21,
+    "team": "Syracuse"
+   },
+   {
+    "rank": 22,
+    "team": "Army"
+   },
+   {
+    "rank": 23,
+    "team": "Colorado"
+   },
+   {
+    "rank": 24,
+    "team": "UNLV"
+   },
+   {
+    "rank": 25,
+    "team": "Memphis"
+   }
+  ],
+  "2025": [
+   {
+    "rank": 1,
+    "team": "Indiana"
+   },
+   {
+    "rank": 2,
+    "team": "Ohio State"
+   },
+   {
+    "rank": 3,
+    "team": "Georgia"
+   },
+   {
+    "rank": 4,
+    "team": "Texas Tech"
+   },
+   {
+    "rank": 5,
+    "team": "Oregon"
+   },
+   {
+    "rank": 6,
+    "team": "Ole Miss"
+   },
+   {
+    "rank": 7,
+    "team": "Texas A&M"
+   },
+   {
+    "rank": 8,
+    "team": "Oklahoma"
+   },
+   {
+    "rank": 9,
+    "team": "Alabama"
+   },
+   {
+    "rank": 10,
+    "team": "Miami"
+   },
+   {
+    "rank": 11,
+    "team": "Notre Dame"
+   },
+   {
+    "rank": 12,
+    "team": "BYU"
+   },
+   {
+    "rank": 13,
+    "team": "Texas"
+   },
+   {
+    "rank": 14,
+    "team": "Vanderbilt"
+   },
+   {
+    "rank": 15,
+    "team": "Utah"
+   },
+   {
+    "rank": 16,
+    "team": "Southern California"
+   },
+   {
+    "rank": 17,
+    "team": "Arizona"
+   },
+   {
+    "rank": 18,
+    "team": "Michigan"
+   },
+   {
+    "rank": 19,
+    "team": "Virginia"
+   },
+   {
+    "rank": 20,
+    "team": "Tulane"
+   },
+   {
+    "rank": 21,
+    "team": "Houston"
+   },
+   {
+    "rank": 22,
+    "team": "Georgia Tech"
+   },
+   {
+    "rank": 23,
+    "team": "Iowa"
+   },
+   {
+    "rank": 24,
+    "team": "James Madison"
+   },
+   {
+    "rank": 25,
+    "team": "North Texas"
+   }
+  ]
+ }
+}

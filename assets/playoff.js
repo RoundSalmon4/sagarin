@@ -10,11 +10,17 @@
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
   var SIMS = 10000;
   // Selection and seeding are a resume call, not a pure power call: the G6 spot,
-  // the at-large pool and the seeds are ranked on the rating with a five-point
-  // penalty per projected loss, so an undefeated or one-loss team is not passed by
-  // a stronger team carrying extra losses. Same idea as the published resume
-  // ratings, which dock points for every loss.
+  // the at-large pool and the seeds are ranked on the selected rating minus a
+  // penalty per projected loss plus a bonus for schedule strength, so a weak
+  // schedule cannot hide behind a record. Weights come from
+  // data/resume-weights.json (fit by scripts/calibrate-resume.js).
   var AT_LARGE_LOSS_PENALTY = 5;
+  var AT_LARGE_SOS_WEIGHT = 0;
+  function loadResumeWeights() {
+    var r = SG.state.resume || {};
+    if (typeof r.lossPenalty === "number") AT_LARGE_LOSS_PENALTY = r.lossPenalty;
+    if (typeof r.sosWeight === "number") AT_LARGE_SOS_WEIGHT = r.sosWeight;
+  }
 
   var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
 
@@ -199,12 +205,16 @@
     var seeds = [null];
     var bid = {};
 
-    // Ranking proxy: selected rating minus a penalty for each projected loss
-    // (the resume score), so a team that keeps losing slides instead of sitting on
-    // a frozen rating. Used for the G6 spot, the at-large order and the seeds.
+    // Resume score: selected rating minus a penalty per projected loss plus the
+    // SOS weight times the schedule edge over the FBS average. Drives the G6
+    // spot, the at-large order and the seeds.
+    loadResumeWeights();
+    var avgSched = 0;
+    for (var ai = 0; ai < teams.length; ai++) avgSched += teams[ai].sched || 0;
+    avgSched = teams.length ? avgSched / teams.length : 0;
     function atLargeScore(t) {
       var r = std[t.team];
-      return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0);
+      return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0) + AT_LARGE_SOS_WEIGHT * ((t.sched || 0) - avgSched);
     }
     function byResume(a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }
     var ranked = teams.slice().sort(byResume);
@@ -533,8 +543,10 @@
         ? "12-team (2026 rules): the ACC, Big 12, Big Ten and SEC champions, the highest Group of 6 team, and the best remaining resumes to fill 12 (Notre Dame gets a bid when it ranks in the top 12); the field seeds 1-12 on the resume score, the top four get byes and seeds 5-8 host seeds 9-12."
         : "24-team (proposed 2027): 19 at-large, the four Power 4 regular-season champions, and the highest Group of 6 team; the field seeds 1-24 on the resume score, with seeds 1-8 earning a bye and a home game and seeds 9-16 hosting the first round.") +
       " The G6 spot, the at-large spots and the seeds all use a resume score: rating minus " +
-      AT_LARGE_LOSS_PENALTY + " points per projected loss, so an undefeated or one-loss team is not passed by " +
-      "a stronger team carrying more losses. The projected field table shows the selected rating for each team.";
+      AT_LARGE_LOSS_PENALTY + " points per projected loss plus " + AT_LARGE_SOS_WEIGHT +
+      " points for every point the schedule sits above the FBS average, so a weak schedule cannot hide behind a record. " +
+      "Both weights are fitted to the committee's final top 25, so they move as more seasons are added. " +
+      "The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
   }
 

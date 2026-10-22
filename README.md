@@ -49,8 +49,9 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   games and takes the four Power 4 regular-season champions, the highest Group of 6 team and
   19 at-large, seeded 1-24 on the resume score (seeds 1-8 get byes, seeds 9-16 host the first
   round). The G6 spot, the at-large spots and the seeds are all a resume call: the rating
-  minus five points per projected loss, so a one-loss team is not passed by a stronger team
-  carrying more losses. Draws either the 12-team or the 24-team bracket,
+  minus five points per projected loss plus a schedule bonus, so a weak schedule cannot hide
+  behind a record. The two weights are fit to the committee's own final top 25 (see below).
+  Draws either the 12-team or the 24-team bracket,
   seeds only by default with an option to show predicted results, and lists the projected
   conference championship matchups under the field (with the winner and win odds in the
   predicted-results view). A full-season Monte Carlo plays out the remaining games and the
@@ -122,9 +123,32 @@ node scripts/fetch-sagarin-history.js --season 2026
 node scripts/fetch-sagarin-history.js --season 2026 --dry-run
 ```
 
-The parser targets the current cfsend.htm layout. Wayback captures that use that same
-layout parse cleanly; seasons with an older column layout come back as zero teams and are
-skipped (the backfill logs each one) until they get their own parser.
+The parser handles the current cfsend.htm layout and the older one Sagarin used from about
+2015 through 2023, which prints three rating columns instead of four and drops the trailing
+level tag on the conference name. Seasons older than that still come back as zero teams and
+are skipped (the backfill logs each one).
+
+## Resume weights
+
+The playoff predictor does not rank on the raw rating. It ranks on a resume score: the
+rating, minus a penalty for each projected loss, plus a bonus for every point the schedule
+sits above the FBS average. Both weights are fitted, not chosen by hand.
+`scripts/calibrate-resume.js` scores the resume order against the selection committee's
+final top 25 for every archived season and keeps the schedule weight that fits best averaged
+over all of them, then writes `data/resume-weights.json`, which the site reads at load.
+
+The inputs are committed so the fit reproduces without the network: `data/cfp-finals.json`
+(each season's final top 25, from the CFP site's rankings API) and `data/sagarin-finals.json`
+(the Sagarin snapshot around the conference championships, from the Wayback Machine).
+Passing `--refresh` pulls both again first. Over 2014-2025 the fit picks a 5-point loss
+penalty and a 0.45 schedule weight, which lifts the average rank correlation with the
+committee from 0.884 to 0.912. Re-run it after a season ends so the weight tracks the
+committee. Run it from the "Calibrate resume weights" Action (manual trigger), or by hand:
+
+```
+node scripts/calibrate-resume.js
+node scripts/calibrate-resume.js --refresh
+```
 
 The polls are a separate, more frequent thing. `scripts/fetch-ap.js` reads ESPN's rankings
 endpoint for the AP Top 25 and the AFCA Coaches Poll, and the College Football Playoff site
@@ -214,6 +238,9 @@ data/logos.json           manifest of which logos are on file
 data/ap-poll.json         AP, Coaches and CFP poll snapshots
 data/bcs.json             BCS-style score for the season
 data/tv-games.json        upcoming games with TV and lines
+data/cfp-finals.json      CFP final top 25 per season, for the resume fit
+data/sagarin-finals.json  paired Sagarin finals per season, for the resume fit
+data/resume-weights.json  fitted resume weights read by the playoff predictor
 data/history/             weekly archived snapshots, one file per season week
 scripts/fetch-sagarin.js  fetch + parse cfsend.htm
 scripts/fetch-espn.js     fetch ESPN teams + schedules
@@ -224,7 +251,8 @@ scripts/fetch-tv.js       fetch the upcoming TV schedule
 scripts/archive-ratings.js    save the current week into data/history
 scripts/fetch-sagarin-history.js  backfill weeks from the Wayback Machine
 scripts/history-util.js   shared shape for the archived weeks
-.github/workflows/        Sunday refresh, poll refresh, manual history backfill
+scripts/calibrate-resume.js  fit the resume weights to the CFP finals
+.github/workflows/        Sunday refresh, poll refresh, manual backfill, manual calibration
 ```
 
 ## Running locally
@@ -248,13 +276,15 @@ node scripts/fetch-ap.js
 node scripts/fetch-bcs.js
 node scripts/fetch-tv.js
 node scripts/archive-ratings.js
+node scripts/calibrate-resume.js
 ```
 
 `fetch-sagarin.js` takes `--source URL` and `--out PATH`; `fetch-espn.js` takes `--out`
 and `--concurrency`; `fetch-logos.js` takes `--force` and `--concurrency`; `fetch-ap.js`
 takes `--out`; `fetch-tv.js` takes `--out` and `--weeks`; `archive-ratings.js` takes
-`--ratings`; `fetch-sagarin-history.js` takes `--season` and `--dry-run`. `fetch-bcs.js`
-needs `FIRECRAWL_API_KEY` set for the Massey page.
+`--ratings`; `fetch-sagarin-history.js` takes `--season` and `--dry-run`; `calibrate-resume.js`
+takes `--penalty` and `--refresh`. `fetch-bcs.js` needs `FIRECRAWL_API_KEY` set for the
+Massey page.
 
 ## Notes
 
@@ -279,7 +309,9 @@ needs `FIRECRAWL_API_KEY` set for the Massey page.
   best remaining resumes to fill 12, seeded 1-12 on the resume score (top four byes). The
   24-team field follows the ESPN-reported 2027 plan: 19 at-large, the four Power 4
   regular-season champions, and the highest Group of 6 team, seeded 1-24 on the resume score
-  (seeds 1-8 byes, 9-16 host the first round). This is a ratings model, not the committee.
+  (seeds 1-8 byes, 9-16 host the first round). The resume score is the rating minus the
+  fitted per-loss penalty plus the fitted schedule weight (`data/resume-weights.json`, see
+  Resume weights above). This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
 
 ## License
