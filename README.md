@@ -133,35 +133,44 @@ are skipped (the backfill logs each one).
 
 The playoff predictor does not rank on the raw rating. It ranks on a resume score: the
 rating, minus a penalty for each projected loss, plus a bonus for every point the schedule
-sits above the FBS average. The loss penalty is held at five points and the schedule weight
-is fitted. The penalty is not fitted. It was set by hand before the schedule term existed
-and it stays at five because the selection comes out best there: with the weight fitted the
-same way, five ties for the best top 25 pick of any penalty on the grid and ties for the
-best top 12 pick, while a penalty of seven scores higher on rank correlation and picks
-fewer of the committee's teams.
+sits above the FBS average, plus a bonus for winning the conference. The loss penalty is
+held at five points and the other two weights are fitted. The penalty is not fitted. It
+was set by hand before the schedule term existed and it stays at five because the selection
+comes out best there: with the weight fitted the same way, five ties for the best top 25
+pick of any penalty on the grid and ties for the best top 12 pick, while a penalty of seven
+scores higher on rank correlation and picks fewer of the committee's teams.
 `scripts/calibrate-resume.js` scores the resume order against the selection committee's
-final top 25 for every archived season and keeps the schedule weight that fits best averaged
-over all of them, then writes `data/resume-weights.json`, which the site reads at load.
+final top 25 for every archived season and keeps the schedule weight and the champion
+bonus that fit best averaged over all of them, then writes `data/resume-weights.json`,
+which the site reads at load.
+
+The champion bonus is there because the committee counts a conference title as its own
+criterion, and the resume score had no way to say so. Without it a non-Power conference
+champion was discounted twice, once by the rating, which already knows the team beat
+nobody of note, and again by the schedule term, and it landed below the field. The
+committee's own non-Power picks, Boise State and James Madison, sat at ranks 14 and 17 in
+the resume order without the bonus.
 
 The inputs are committed so the fit reproduces without the network: `data/cfp-finals.json`
 (each season's final top 25, from the CFP site's rankings API) and `data/sagarin-finals.json`
 (the Sagarin snapshot around the conference championships, from the Wayback Machine).
 Passing `--refresh` pulls both again first. With the loss penalty held at 5, over 2014-2025
-the fit picks a 0.45 schedule weight, which lifts the average rank correlation with the
-committee from 0.884 to 0.912. It also reports a leave-one-out score, refitting the weight
-on every season but one and scoring the held-out season, which is the honest read on a
-season the fit has not seen (currently 0.910 against 0.912 in-sample). Re-run it after a
-season ends so the weight tracks the committee. Run it from the "Calibrate resume weights"
-Action (manual trigger), or by hand.
+the fit picks a 0.40 schedule weight and a 3.5 champion bonus, which lifts the average
+rank correlation with the committee from 0.884 to 0.914. It also reports a leave-one-out
+score, refitting the weights on every season but one and scoring the held-out season,
+which is the honest read on a season the fit has not seen (currently 0.912 against 0.914
+in-sample). Re-run it after a season ends so the weights track the committee. Run it from
+the "Calibrate resume weights" Action (manual trigger), or by hand.
 
-The rank correlation only measures the order of the committee's own picks, so the script
-reports the selection as well: rank every team in the season by the resume score, take the
-top 25 and the top 12, and count how many the committee picked. Over 2014-2025 that is 22
-of the committee's top 25 and 10.75 of the top 12, and the leave-one-out fit gives the same
-counts. Every one of the predictor's top 12 teams landed inside the committee's top 25 in
-all twelve seasons, so the misses sit in the 13 to 25 band rather than in the playoff
-field. Read the selection counts, not the correlation, when you want to know how many of
-the committee's teams the predictor would have taken.
+The fit optimizes the picks rather than the correlation. The rank correlation measures the
+order of the committee's own top 25, so it cannot tell a good pick from a good order, and
+a champion bonus lifts it for free, which is why fitting on it sends the schedule weight
+the wrong way. The number that matters is how many of the committee's teams the resume
+order takes: rank every team in the season by the resume score, take the top 25 and the
+top 12, and count how many the committee picked. Over 2014-2025 that is 22.08 of the
+committee's top 25 and 11 of the top 12, and the leave-one-out fit gives 22.08 and 10.83.
+Read the selection counts, not the correlation, when you want to know how many of the
+committee's teams the predictor would have taken.
 
 ### The committee's field
 
@@ -179,14 +188,14 @@ it after a season adds that season's field. The bid types come from the College 
 Playoff article's table of selections by year, which covers every season, and the file also
 keeps the teams the committee recorded as conference champions, picked or not.
 
-The calibration reports the field next to the ranking: 3.4 of the committee's four over the
-ten four-team seasons, and 10 of 12 over the twelve-team seasons. It also prints where the
+The calibration reports the field next to the ranking: 3.8 of the committee's four over the
+ten four-team seasons, and 10.5 of 12 over the twelve-team seasons. It also prints where the
 teams the committee took from outside the Power four land in the resume order, because that
-is where the misses are, and which non-Power team the resume order leads with. Over 2024
-and 2025 the committee took Boise State, Tulane and James Madison, and the resume order put
-all three outside its top 12, at ranks 14, 27 and 17. It also leads with the right team in
-both seasons, so the score finds the non-Power team the committee took and then ranks it
-too low. That is the honest read on the non-Power bids.
+is where the misses were, and which non-Power team the resume order leads with. Over 2024
+and 2025 the committee took Boise State, Tulane and James Madison, and without the champion
+bonus the resume order put all three outside its top 12, at ranks 14, 27 and 17. With it
+Boise State and James Madison come back inside, and over the twelve seasons five of the
+seven non-Power teams the committee took now sit in the resume top 12 against four before.
 
 Telling a non-Power team from a Power one needs each team's conference, and it has to be
 the conference the team was in that season rather than the one it is in now, because there
@@ -373,8 +382,9 @@ takes `--penalty` and `--refresh`; `fetch-cfp-fields.js` takes `--season` and `-
   24-team field follows the ESPN-reported 2027 plan: 19 at-large, the four Power 4
   regular-season champions, and the highest Group of 6 team, seeded 1-24 on the resume score
   (seeds 1-8 byes, 9-16 host the first round). The resume score is the rating minus the
-  five point per-loss penalty plus the fitted schedule weight (`data/resume-weights.json`,
-  see Resume weights above). This is a ratings model, not the committee.
+  five point per-loss penalty plus the fitted schedule weight and champion bonus
+  (`data/resume-weights.json`, see Resume weights above). This is a ratings model, not the
+  committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
 
 ## License

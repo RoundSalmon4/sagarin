@@ -12,14 +12,17 @@
   // Selection and seeding are a resume call, not a pure power call: the G6 spot,
   // the at-large pool and the seeds are ranked on the selected rating minus a
   // penalty per projected loss plus a bonus for schedule strength, so a weak
-  // schedule cannot hide behind a record. Weights come from
+  // schedule cannot hide behind a record, plus a bonus for winning the
+  // conference, which the committee counts on its own. Weights come from
   // data/resume-weights.json (fit by scripts/calibrate-resume.js).
   var AT_LARGE_LOSS_PENALTY = 5;
   var AT_LARGE_SOS_WEIGHT = 0;
+  var AT_LARGE_CHAMPION_BONUS = 0;
   function loadResumeWeights() {
     var r = SG.state.resume || {};
     if (typeof r.lossPenalty === "number") AT_LARGE_LOSS_PENALTY = r.lossPenalty;
     if (typeof r.sosWeight === "number") AT_LARGE_SOS_WEIGHT = r.sosWeight;
+    if (typeof r.championBonus === "number") AT_LARGE_CHAMPION_BONUS = r.championBonus;
   }
 
   var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
@@ -206,15 +209,21 @@
     var bid = {};
 
     // Resume score: selected rating minus a penalty per projected loss plus the
-    // SOS weight times the schedule edge over the FBS average. Drives the G6
-    // spot, the at-large order and the seeds.
+    // SOS weight times the schedule edge over the FBS average, plus a bonus for
+    // the projected conference champion. Drives the G6 spot, the at-large order
+    // and the seeds.
     loadResumeWeights();
     var avgSched = 0;
     for (var ai = 0; ai < teams.length; ai++) avgSched += teams[ai].sched || 0;
     avgSched = teams.length ? avgSched / teams.length : 0;
+    // The teams projected to win their conference, so the champion's title is
+    // worth something on its own.
+    var champOf = {};
+    Object.keys(champs).forEach(function (c) { champOf[champs[c].team] = true; });
     function atLargeScore(t) {
       var r = std[t.team];
-      return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0) + AT_LARGE_SOS_WEIGHT * ((t.sched || 0) - avgSched);
+      return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0) + AT_LARGE_SOS_WEIGHT * ((t.sched || 0) - avgSched)
+        + (champOf[t.team] ? AT_LARGE_CHAMPION_BONUS : 0);
     }
     function byResume(a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }
     var ranked = teams.slice().sort(byResume);

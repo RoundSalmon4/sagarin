@@ -1,7 +1,8 @@
 {
   "lossPenalty": 5,
-  "sosWeight": 0.45,
-  "method": "rank-correlation-fit",
+  "sosWeight": 0.4,
+  "championBonus": 3.5,
+  "method": "selection-fit",
   "target": "CFP final top 25",
   "seasons": [
     "2014",
@@ -32,14 +33,15 @@
     134
   ],
   "fit": {
-    "sosWeight": 0.45,
-    "meanSpearman": 0.9116,
+    "sosWeight": 0.4,
+    "championBonus": 3.5,
+    "meanSpearman": 0.9137,
     "meanSpearmanNoSos": 0.8837,
-    "leaveOneOut": 0.9103,
-    "meanTop25": 22,
-    "meanTop12": 10.75,
-    "leaveOneOutTop25": 22,
-    "leaveOneOutTop12": 10.75
+    "leaveOneOut": 0.9123,
+    "meanTop25": 22.0833,
+    "meanTop12": 11,
+    "leaveOneOutTop25": 22.0833,
+    "leaveOneOutTop12": 10.8333
   },
   "fields": {
     "seasons": [
@@ -58,40 +60,40 @@
     ],
     "hits": {
       "2014": 3,
-      "2015": 3,
-      "2016": 3,
+      "2015": 4,
+      "2016": 4,
       "2017": 4,
       "2018": 3,
       "2019": 4,
       "2020": 4,
-      "2021": 3,
+      "2021": 4,
       "2022": 4,
-      "2023": 3,
-      "2024": 10,
+      "2023": 4,
+      "2024": 11,
       "2025": 10
     },
     "fourTeamHits": {
       "2014": 3,
-      "2015": 3,
-      "2016": 3,
+      "2015": 4,
+      "2016": 4,
       "2017": 4,
       "2018": 3,
       "2019": 4,
       "2020": 4,
-      "2021": 3,
+      "2021": 4,
       "2022": 4,
-      "2023": 3
+      "2023": 4
     },
-    "fourTeamMeanHit": 3.4,
+    "fourTeamMeanHit": 3.8,
     "twelveTeamSeasons": [
       "2024",
       "2025"
     ],
     "twelveTeamHits": {
-      "2024": 10,
+      "2024": 11,
       "2025": 10
     },
-    "twelveTeamMeanHit": 10,
+    "twelveTeamMeanHit": 10.5,
     "nonPower": {
       "2014": [
         {
@@ -103,40 +105,40 @@
       "2016": [
         {
           "team": "Washington",
-          "rank": 5,
+          "rank": 4,
           "bid": "Conference champion"
         }
       ],
       "2021": [
         {
           "team": "Cincinnati",
-          "rank": 6,
+          "rank": 4,
           "bid": "Conference champion"
         }
       ],
       "2023": [
         {
           "team": "Washington",
-          "rank": 5,
+          "rank": 4,
           "bid": "Conference champion"
         }
       ],
       "2024": [
         {
           "team": "Boise State",
-          "rank": 14,
+          "rank": 11,
           "bid": "Conference champion"
         }
       ],
       "2025": [
         {
           "team": "Tulane",
-          "rank": 27,
+          "rank": 21,
           "bid": "Conference champion"
         },
         {
           "team": "James Madison",
-          "rank": 17,
+          "rank": 15,
           "bid": "Conference champion"
         }
       ]
@@ -154,7 +156,7 @@
       },
       "2016": {
         "team": "Washington",
-        "rank": 5,
+        "rank": 4,
         "took": true
       },
       "2017": {
@@ -169,7 +171,7 @@
       },
       "2019": {
         "team": "Oregon",
-        "rank": 7,
+        "rank": 5,
         "took": false
       },
       "2020": {
@@ -179,31 +181,31 @@
       },
       "2021": {
         "team": "Cincinnati",
-        "rank": 6,
+        "rank": 4,
         "took": true
       },
       "2022": {
         "team": "Utah",
-        "rank": 8,
+        "rank": 7,
         "took": false
       },
       "2023": {
         "team": "Washington",
-        "rank": 5,
+        "rank": 4,
         "took": true
       },
       "2024": {
         "team": "Boise State",
-        "rank": 14,
+        "rank": 11,
         "took": true
       },
       "2025": {
         "team": "James Madison",
-        "rank": 17,
+        "rank": 15,
         "took": true
       }
     },
-    "nonPowerInTop12": 4,
+    "nonPowerInTop12": 5,
     "nonPowerTeams": 7
   },
   "source": "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",

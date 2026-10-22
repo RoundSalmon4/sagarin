@@ -74,29 +74,50 @@ function spearman(a, b) {
 function loadInputs() {
   const cfp = JSON.parse(fs.readFileSync(CFP_FILE, "utf8")).seasons;
   const sag = JSON.parse(fs.readFileSync(SAG_FILE, "utf8")).seasons;
+  const fields = loadFields();
   return Object.keys(cfp).filter((y) => sag[y] && sag[y].teams && sag[y].teams.length > 100).sort().map((y) => {
     const teams = sag[y].teams;
     const avg = teams.reduce((s, t) => s + (t.sched || 0), 0) / teams.length;
     const rows = [];
     cfp[y].forEach((t, i) => { const m = matchTeam(t.team, teams); if (m) rows.push({ r: i + 1, t: m }); });
-    return { season: y, avg: avg, rows: rows, teams: teams, count: teams.length, through: sag[y].through || "" };
+    const champs = new Set(fields[y] ? fields[y].champions : []);
+    return { season: y, avg: avg, rows: rows, teams: teams, champs: champs, count: teams.length, through: sag[y].through || "" };
   });
 }
 
-function meanSpearman(data, penalty, w) {
+// The resume score: the rating, minus a penalty for every projected loss, plus
+// the schedule weight times the edge over the season average, plus a bonus for
+// a team that won its conference. The committee lists a conference title as its
+// own criterion, so a champion gets credit for it, and the schedule term stops
+// discounting a weak slate twice.
+function resumeScore(t, d, penalty, w, c) {
+  return t.rating - penalty * (t.l || 0) + w * ((t.sched || 0) - d.avg)
+    + (c && d.champs.has(normalize(t.team)) ? c : 0);
+}
+
+function meanSpearman(data, penalty, w, c) {
   let sum = 0;
   data.forEach((d) => {
-    const s = d.rows.map((o) => -(o.t.rating - penalty * (o.t.l || 0) + w * ((o.t.sched || 0) - d.avg)));
+    const s = d.rows.map((o) => -resumeScore(o.t, d, penalty, w, c));
     sum += spearman(s, d.rows.map((o) => o.r));
   });
   return sum / data.length;
 }
 
+// The fit optimizes the picks, not the correlation. The correlation measures
+// the order of the committee's own top 25, so it cannot tell a good pick from
+// a good order, and a champion bonus lifts it for free. The number that
+// matters is how many of the committee's teams the resume order takes, so the
+// schedule weight and the champion bonus are fitted on the top twelve.
 function fit(data, penalty) {
-  let best = { w: 0, score: -Infinity };
+  let best = { w: 0.45, c: 0, score: -Infinity };
   for (let w = 0; w <= 1.5001; w += 0.05) {
-    const score = meanSpearman(data, penalty, w);
-    if (score > best.score + 1e-9) best = { w: Math.round(w * 100) / 100, score: score };
+    for (let c = 0; c <= 5.001; c += 0.5) {
+      const ww = Math.round(w * 100) / 100;
+      const cc = Math.round(c * 10) / 10;
+      const score = meanTopHits(data, penalty, ww, cc).top12;
+      if (score > best.score + 1e-9) best = { w: ww, c: cc, score: score };
+    }
   }
   return best;
 }
@@ -105,8 +126,8 @@ function fit(data, penalty) {
 // says nothing about which teams the predictor would have picked. This counts
 // the picks: rank every team in the season by the resume score, take the top
 // 25 and the top 12, and see how many the committee put in the same place.
-function topHits(d, penalty, w) {
-  const score = (t) => t.rating - penalty * (t.l || 0) + w * ((t.sched || 0) - d.avg);
+function topHits(d, penalty, w, c) {
+  const score = (t) => resumeScore(t, d, penalty, w, c);
   const order = d.teams.slice().sort((a, b) => score(b) - score(a));
   const ours25 = new Set(order.slice(0, 25).map((t) => t.team));
   const ours12 = new Set(order.slice(0, 12).map((t) => t.team));
@@ -117,38 +138,26 @@ function topHits(d, penalty, w) {
     top12: [...ours12].filter((t) => theirs12.has(t)).length
   };
 }
-function meanTopHits(data, penalty, w) {
+function meanTopHits(data, penalty, w, c) {
   let t25 = 0, t12 = 0;
-  data.forEach((d) => { const h = topHits(d, penalty, w); t25 += h.top25; t12 += h.top12; });
+  data.forEach((d) => { const h = topHits(d, penalty, w, c); t25 += h.top25; t12 += h.top12; });
   return { top25: t25 / data.length, top12: t12 / data.length };
 }
 
-// Leave-one-out: fit the SOS weight on every season but one, then score the
-// held-out season, and average. This is the honest read on a season the fit has
-// not seen, so a weight that only helps in-sample shows up flat here.
-function looSpearman(data, penalty) {
-  if (data.length < 2) return 0;
-  let sum = 0;
+// Leave one out: fit on every season but one, then score the held-out season.
+// The honest read on a season the fit has not seen, so a weight that only
+// helps in-sample shows up flat here.
+function loo(data, penalty) {
+  if (data.length < 2) return { spearman: 0, top25: 0, top12: 0 };
+  let sp = 0, t25 = 0, t12 = 0;
   for (let i = 0; i < data.length; i++) {
     const train = data.filter((d, j) => j !== i);
     const b = fit(train, penalty);
-    sum += meanSpearman([data[i]], penalty, b.w);
-  }
-  return sum / data.length;
-}
-
-// Same holdout for the selection counts, so the picks are scored on a season
-// the weight has not seen.
-function looTopHits(data, penalty) {
-  if (data.length < 2) return { top25: 0, top12: 0 };
-  let t25 = 0, t12 = 0;
-  for (let i = 0; i < data.length; i++) {
-    const train = data.filter((d, j) => j !== i);
-    const b = fit(train, penalty);
-    const h = topHits(data[i], penalty, b.w);
+    sp += meanSpearman([data[i]], penalty, b.w, b.c);
+    const h = topHits(data[i], penalty, b.w, b.c);
     t25 += h.top25; t12 += h.top12;
   }
-  return { top25: t25 / data.length, top12: t12 / data.length };
+  return { spearman: sp / data.length, top25: t25 / data.length, top12: t12 / data.length };
 }
 
 // The conferences that get the automatic bid outside the Power four.
@@ -174,7 +183,8 @@ function loadFields() {
       size: f.field.length,
       teams: f.field.map((t) => ({
         seed: t.seed, team: t.team, conference: t.conference || null, bid: t.bid || null
-      }))
+      })),
+      champions: (f.champions || []).map(normalize)
     };
   });
   return out;
@@ -182,15 +192,13 @@ function loadFields() {
 
 // How many of the committee's field the resume order would have picked, and
 // where the non-Power teams the committee took sit in that order.
-function scoreFields(data, fields, penalty, w) {
+function scoreFields(data, fields, penalty, w, c) {
   const hits = {}, fourHits = {}, twelveHits = {}, twelveSeasons = [], nonPower = {}, ourNonPower = {};
   let fourSum = 0, fourN = 0, npHit = 0, npN = 0;
   data.forEach((d) => {
     const f = fields[d.season];
     if (!f) return;
-    const order = d.teams.slice().sort((a, b) =>
-      (b.rating - penalty * (b.l || 0) + w * ((b.sched || 0) - d.avg)) -
-      (a.rating - penalty * (a.l || 0) + w * ((a.sched || 0) - d.avg)));
+    const order = d.teams.slice().sort((a, b) => resumeScore(b, d, penalty, w, c) - resumeScore(a, d, penalty, w, c));
     const top = order.slice(0, f.size);
     const rankOf = new Map();
     order.forEach((t, i) => rankOf.set(t.team, i + 1));
@@ -322,28 +330,30 @@ async function main() {
     if ((await refresh()) === false) { console.log("weights left unchanged"); return; }
   }
   const data = loadInputs();
-  const base = meanSpearman(data, penalty, 0);
+  const base = meanSpearman(data, penalty, 0, 0);
   const best = fit(data, penalty);
-  const loo = looSpearman(data, penalty);
-  const hits = meanTopHits(data, penalty, best.w);
-  const looHits = looTopHits(data, penalty);
-  const fields = scoreFields(data, loadFields(), penalty, best.w);
+  const held = loo(data, penalty);
+  const hits = meanTopHits(data, penalty, best.w, best.c);
+  const sp = meanSpearman(data, penalty, best.w, best.c);
+  const fields = scoreFields(data, loadFields(), penalty, best.w, best.c);
   const out = {
     lossPenalty: penalty,
     sosWeight: best.w,
-    method: "rank-correlation-fit",
+    championBonus: best.c,
+    method: "selection-fit",
     target: "CFP final top 25",
     seasons: data.map((d) => d.season),
     teamCounts: data.map((d) => d.count),
     fit: {
       sosWeight: best.w,
-      meanSpearman: round4(best.score),
+      championBonus: best.c,
+      meanSpearman: round4(sp),
       meanSpearmanNoSos: round4(base),
-      leaveOneOut: round4(loo),
+      leaveOneOut: round4(held.spearman),
       meanTop25: round4(hits.top25),
       meanTop12: round4(hits.top12),
-      leaveOneOutTop25: round4(looHits.top25),
-      leaveOneOutTop12: round4(looHits.top12)
+      leaveOneOutTop25: round4(held.top25),
+      leaveOneOutTop12: round4(held.top12)
     },
     fields: {
       seasons: fields.seasons,
@@ -363,10 +373,10 @@ async function main() {
   };
   fs.writeFileSync(OUT_FILE, JSON.stringify(out, null, 2) + "\n");
   console.log("seasons " + out.seasons.join(","));
-  console.log("loss penalty " + penalty + ", sos weight " + best.w);
-  console.log("mean Spearman: no SOS " + round4(base) + ", with SOS " + round4(best.score) + ", leave-one-out " + round4(loo));
+  console.log("loss penalty " + penalty + ", schedule weight " + best.w + ", champion bonus " + best.c);
+  console.log("mean Spearman: no SOS " + round4(base) + ", with the fit " + round4(sp) + ", leave-one-out " + round4(held.spearman));
   console.log("teams selected: top 25 " + round4(hits.top25) + " of 25, top 12 " + round4(hits.top12) + " of 12");
-  console.log("leave-one-out selection: top 25 " + round4(looHits.top25) + " of 25, top 12 " + round4(looHits.top12) + " of 12");
+  console.log("leave-one-out selection: top 25 " + round4(held.top25) + " of 25, top 12 " + round4(held.top12) + " of 12");
   if (fields.seasons.length) {
     console.log("committee field: " + round4(fields.fourTeamMeanHit) + " of 4 over the four team seasons, " +
       round4(fields.twelveMeanHit) + " of 12 over the twelve team seasons");
