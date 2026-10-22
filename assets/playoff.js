@@ -9,11 +9,11 @@
   var P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
   var SIMS = 10000;
-  // At-large spots are a resume call, not a pure power call: conference champions
-  // are ranked on rating alone, but the at-large pool is ranked on rating with a
-  // five-point penalty per projected loss, so an undefeated or one-loss team is
-  // not passed by a stronger team carrying extra losses. Same idea as the
-  // published resume ratings, which dock points for every loss.
+  // Selection and seeding are a resume call, not a pure power call: the G6 spot,
+  // the at-large pool and the seeds are ranked on the rating with a five-point
+  // penalty per projected loss, so an undefeated or one-loss team is not passed by
+  // a stronger team carrying extra losses. Same idea as the published resume
+  // ratings, which dock points for every loss.
   var AT_LARGE_LOSS_PENALTY = 5;
 
   var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
@@ -199,34 +199,37 @@
     var seeds = [null];
     var bid = {};
 
-    // At-large resume score: selected rating minus a penalty for each projected
-    // loss. Champions and seeding still use the raw rating.
+    // Ranking proxy: selected rating minus a penalty for each projected loss
+    // (the resume score), so a team that keeps losing slides instead of sitting on
+    // a frozen rating. Used for the G6 spot, the at-large order and the seeds.
     function atLargeScore(t) {
       var r = std[t.team];
       return t[method] - AT_LARGE_LOSS_PENALTY * (r ? r.ol : 0);
     }
+    function byResume(a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); }
+    var ranked = teams.slice().sort(byResume);
+    function rankOf(t) { return ranked.indexOf(t) + 1; }
 
     if (is12) {
-      var champList = Object.keys(champs)
-        .map(function (c) { return { conf: c, team: champs[c] }; })
-        .sort(function (a, b) { return b.team[method] - a.team[method]; });
-      var qual = champList.slice(0, 5);
+      var qual = P4.map(function (c) { return champs[c]; }).filter(Boolean);
+      qual.forEach(function (t) { bid[t.team] = "P4 champ (" + mergeConf(t.conference) + ")"; });
+      var g6 = ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })[0];
+      var nd = ranked.filter(function (t) { return t.team === "Notre Dame"; })[0];
+      if (g6) { qual.push(g6); bid[g6.team] = "G6 bid (" + mergeConf(g6.conference) + ")"; }
+      if (nd && rankOf(nd) <= 12) { qual.push(nd); bid[nd.team] = "At-large (top 12)"; }
       var used = {};
-      qual.forEach(function (x) { used[x.team.team] = true; bid[x.team.team] = "Conf champ (" + x.conf + ")"; });
-      var challengers = teams.filter(function (t) { return !used[t.team]; })
-        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); });
-      var atLarge = challengers.slice(0, 7);
+      qual.forEach(function (t) { used[t.team] = true; });
+      var challengers = teams.filter(function (t) { return !used[t.team]; }).sort(byResume);
+      var atLarge = challengers.slice(0, 12 - qual.length);
       atLarge.forEach(function (t) { bid[t.team] = "At-large"; });
-      var top4 = qual.slice(0, 4).map(function (x) { return x.team; });
-      var rest = [qual[4].team].concat(atLarge).sort(function (a, b) { return b[method] - a[method]; });
-      top4.forEach(function (t) { seeds.push(t); });
-      rest.forEach(function (t) { seeds.push(t); });
+      qual.concat(atLarge).sort(byResume).forEach(function (t) { seeds.push(t); });
     } else {
       var p4 = P4.map(function (c) { return champs[c]; }).filter(Boolean);
       p4.forEach(function (t) { bid[t.team] = "P4 champ (" + mergeConf(t.conference) + ")"; });
-      var g6pool = teams.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })
-        .sort(function (a, b) { return b[method] - a[method]; });
-      var g6 = g6pool[0];
+      // The G6 spot goes to the highest Group of 6 team on the resume score, the
+      // model's stand-in for the highest-ranked G6 team in the committee ranking.
+      // It is a team spot, not a conference-champion spot.
+      var g6 = ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })[0];
       if (g6) bid[g6.team] = "G6 bid (" + mergeConf(g6.conference) + ")";
       var auto = p4.concat(g6 ? [g6] : []);
       var autoNames = {};
@@ -235,8 +238,11 @@
         .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); });
       var atLarge24 = challengers.slice(0, 19);
       atLarge24.forEach(function (t) { bid[t.team] = "At-large"; });
+      // The whole field is seeded 1-24 on the resume score (rating minus the
+      // per-loss penalty), the model's stand-in for the committee ranking, so a
+      // high rating with a pile of losses does not buy a top seed.
       auto.concat(atLarge24)
-        .sort(function (a, b) { return b[method] - a[method]; })
+        .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); })
         .forEach(function (t) { seeds.push(t); });
     }
     // atLarge is the full resume ranking of teams that missed the auto bids, so
@@ -524,10 +530,10 @@
     document.getElementById("playoffNote").textContent =
       "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
       (Number(view.format) === 12
-        ? "12-team: five highest-rated conference champions plus seven at-large; top four champions seed 1-4 with byes; seeds 5-8 host seeds 9-12."
-        : "24-team (proposed 2027): 19 at-large, the four Power 4 champions, and the highest-rated Group of 6 team; seeds 1-8 get a bye and a home game, seeds 9-16 host the first round.") +
-      " Champions are seeded on rating, but the at-large spots are a resume call: they are ranked on rating with a " +
-      AT_LARGE_LOSS_PENALTY + "-point penalty per projected loss, so an undefeated or one-loss team is not passed by " +
+        ? "12-team (2026 rules): the ACC, Big 12, Big Ten and SEC champions, the highest Group of 6 team, and the best remaining resumes to fill 12 (Notre Dame gets a bid when it ranks in the top 12); the field seeds 1-12 on the resume score, the top four get byes and seeds 5-8 host seeds 9-12."
+        : "24-team (proposed 2027): 19 at-large, the four Power 4 regular-season champions, and the highest Group of 6 team; the field seeds 1-24 on the resume score, with seeds 1-8 earning a bye and a home game and seeds 9-16 hosting the first round.") +
+      " The G6 spot, the at-large spots and the seeds all use a resume score: rating minus " +
+      AT_LARGE_LOSS_PENALTY + " points per projected loss, so an undefeated or one-loss team is not passed by " +
       "a stronger team carrying more losses. The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
   }

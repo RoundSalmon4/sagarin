@@ -42,11 +42,15 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest); in the 12-team field the top two play a projected title
   game (neutral where the league plays it there, otherwise at the higher seed) and the
-  result is folded into those two teams' records. The proposed 24-team field drops title
-  games and uses the regular-season champion. Champions and seeding go on the rating alone;
-  the at-large spots (seven in the 12-team field, 19 in the 24-team) are a resume call,
-  ranked on the rating minus five points per projected loss so a one-loss team is not passed
-  by a stronger team carrying more losses. Draws either the 12-team or the 24-team bracket,
+  result is folded into those two teams' records. The 12-team field follows the 2026 rules:
+  the ACC, Big 12, Big Ten and SEC champions, the highest Group of 6 team, Notre Dame when it
+  ranks in the top 12, and the best remaining resumes to fill 12, seeded 1-12 on the resume
+  score (top four get byes, seeds 5-8 host the first round). The 24-team field drops title
+  games and takes the four Power 4 regular-season champions, the highest Group of 6 team and
+  19 at-large, seeded 1-24 on the resume score (seeds 1-8 get byes, seeds 9-16 host the first
+  round). The G6 spot, the at-large spots and the seeds are all a resume call: the rating
+  minus five points per projected loss, so a one-loss team is not passed by a stronger team
+  carrying more losses. Draws either the 12-team or the 24-team bracket,
   seeds only by default with an option to show predicted results, and lists the projected
   conference championship matchups under the field (with the winner and win odds in the
   predicted-results view). A full-season Monte Carlo plays out the remaining games and the
@@ -171,6 +175,9 @@ these sources:
   endpoint. The AP poll is the Associated Press's and the coaches poll is the AFCA's.
 - **The College Football Playoff rankings** - read from the CFP site's rankings API. The
   committee rankings are the College Football Playoff's.
+- **The playoff formats** - the 12-team rules follow NCAA.com's explanation of the 2026
+  format, and the proposed 24-team plan follows ESPN's reporting. Those rules belong to their
+  authors.
 - **The BCS computer rankings** - Colley Matrix (colleyrankings.com), Billingsley
   (cfrc.com), Anderson & Hester (andersonsports.com), Massey (masseyratings.com) and Wolfe
   (wolferatings.com), each read for its current top 25 and used with Sagarin for the
@@ -267,8 +274,12 @@ needs `FIRECRAWL_API_KEY` set for the Massey page.
   refreshed by the Actions, not the browser.
 - Playoff conference champions come from projected final conference records (real results
   for games played, predicted winners for the rest; tiebreak: overall record, then rating).
-  Seeding follows the CFP fact sheet for 12 teams and the ESPN-reported plan for 24 teams.
-  This is a ratings model, not the committee.
+  The 12-team field follows the NCAA's 2026 rules: the ACC, Big 12, Big Ten and SEC
+  champions, the highest Group of 6 team, Notre Dame when it ranks in the top 12, and the
+  best remaining resumes to fill 12, seeded 1-12 on the resume score (top four byes). The
+  24-team field follows the ESPN-reported 2027 plan: 19 at-large, the four Power 4
+  regular-season champions, and the highest Group of 6 team, seeded 1-24 on the resume score
+  (seeds 1-8 byes, 9-16 host the first round). This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
 
 ## License
