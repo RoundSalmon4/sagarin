@@ -948,7 +948,10 @@
         SG.buildMapping();
         if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
         if (apChanged || bcsChanged || tvChanged || resumeChanged) SG.refreshModules();
-        if (manual) document.getElementById("dataStatus").textContent += " - no changes";
+        if (manual) {
+          SG.renderStatus(false);
+          document.getElementById("dataStatus").textContent += " - no changes";
+        }
       }
     }).catch(function (err) {
       document.getElementById("dataStatus").textContent =
@@ -986,6 +989,8 @@
       SG.prepareLogos(res.logos);
       SG.state.ap = res.ap;
       SG.state.apSig = res.ap && res.ap.signature;
+      SG.state.bcs = res.bcs;
+      SG.state.bcsSig = res.bcs && res.bcs.signature;
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;

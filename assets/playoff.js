@@ -545,7 +545,7 @@
       " The G6 spot, the at-large spots and the seeds all use a resume score: rating minus " +
       AT_LARGE_LOSS_PENALTY + " points per projected loss plus " + AT_LARGE_SOS_WEIGHT +
       " points for every point the schedule sits above the FBS average, so a weak schedule cannot hide behind a record. " +
-      "Both weights are fitted to the committee's final top 25, so they move as more seasons are added. " +
+      "The schedule weight is fitted to the committee's final top 25, so it moves as more seasons are added. " +
       "The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
   }

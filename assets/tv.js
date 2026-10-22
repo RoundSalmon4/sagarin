@@ -330,7 +330,7 @@
           '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
           (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
           '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
-          ' <span class="dim">at</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
+          ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
           '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
           (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
       }).join("");

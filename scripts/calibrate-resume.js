@@ -139,13 +139,20 @@ async function refresh() {
   const cfp = { source: "collegefootballplayoff.com/api/v2/rankings (final release of each season)", seasons: {} };
   const sag = { source: "web.archive.org snapshots of sagarin.com/sports/cfsend.htm (around the conference championships)", seasons: {} };
   const end = new Date().getUTCFullYear();
+  const oldCfp = fs.existsSync(CFP_FILE) ? JSON.parse(fs.readFileSync(CFP_FILE, "utf8")).seasons : {};
   const oldSag = fs.existsSync(SAG_FILE) ? JSON.parse(fs.readFileSync(SAG_FILE, "utf8")).seasons : {};
   for (let y = 2014; y <= end; y++) {
     const f = await cfpFinal(y);
-    if (f) cfp.seasons[y] = f.teams;
-    console.log("cfp", y, f ? f.date + " " + f.teams.length : "no final yet");
+    // Keep a season we already captured when the API gives nothing back for it.
+    const teams = (f && f.teams) || oldCfp[y];
+    if (teams) {
+      cfp.seasons[y] = teams;
+      console.log("cfp", y, f ? f.date + " " + teams.length : "kept " + teams.length);
+    } else {
+      console.log("cfp", y, "no final yet");
+    }
     await sleep(200);
-    if (!f) continue;
+    if (!teams) continue;
     if (oldSag[y] && oldSag[y].teams && oldSag[y].teams.length > 100) { sag.seasons[y] = oldSag[y]; continue; }
     const s = await sagFinal(Parser, y);
     if (s) { sag.seasons[y] = s; console.log("sag", y, s.captured, "FBS", s.teams.length); }

@@ -34,8 +34,9 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected closeness (market line when posted, otherwise the Sagarin margin), combined team
   rating, what the game could do to the projected playoff field, and a curated rivalry list,
   then labels each game from Background through Must watch. The board is split into the four
-  usual kickoff windows (early afternoon, afternoon, evening, late night, judged in Eastern
-  time), showing the best few per window so the picks are not all in one slot. The picks are
+  usual kickoff windows (early afternoon, afternoon, evening, late night, judged in the
+  selected time zone, local by default), showing the best few per window so the picks are not
+  all in one slot. The picks are
   the same either way, but with the sort set to kickoff they are listed in kickoff order
   rather than by watch score.
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
@@ -50,7 +51,7 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   19 at-large, seeded 1-24 on the resume score (seeds 1-8 get byes, seeds 9-16 host the first
   round). The G6 spot, the at-large spots and the seeds are all a resume call: the rating
   minus five points per projected loss plus a schedule bonus, so a weak schedule cannot hide
-  behind a record. The two weights are fit to the committee's own final top 25 (see below).
+  behind a record. The schedule weight is fit to the committee's own final top 25 (see below).
   Draws either the 12-team or the 24-team bracket,
   seeds only by default with an option to show predicted results, and lists the projected
   conference championship matchups under the field (with the winner and win odds in the
@@ -132,7 +133,7 @@ are skipped (the backfill logs each one).
 
 The playoff predictor does not rank on the raw rating. It ranks on a resume score: the
 rating, minus a penalty for each projected loss, plus a bonus for every point the schedule
-sits above the FBS average. Both weights are fitted, not chosen by hand.
+sits above the FBS average. The loss penalty is held at five points and the schedule weight is fitted, not chosen by hand.
 `scripts/calibrate-resume.js` scores the resume order against the selection committee's
 final top 25 for every archived season and keeps the schedule weight that fits best averaged
 over all of them, then writes `data/resume-weights.json`, which the site reads at load.
@@ -140,8 +141,8 @@ over all of them, then writes `data/resume-weights.json`, which the site reads a
 The inputs are committed so the fit reproduces without the network: `data/cfp-finals.json`
 (each season's final top 25, from the CFP site's rankings API) and `data/sagarin-finals.json`
 (the Sagarin snapshot around the conference championships, from the Wayback Machine).
-Passing `--refresh` pulls both again first. Over 2014-2025 the fit picks a 5-point loss
-penalty and a 0.45 schedule weight, which lifts the average rank correlation with the
+Passing `--refresh` pulls both again first. With the loss penalty held at 5, over 2014-2025
+the fit picks a 0.45 schedule weight, which lifts the average rank correlation with the
 committee from 0.884 to 0.912. Re-run it after a season ends so the weight tracks the
 committee. Run it from the "Calibrate resume weights" Action (manual trigger), or by hand.
 The refresh adds the newest completed season and, when the CFP final ranking for the current
@@ -305,7 +306,8 @@ Massey page.
   polls come from ESPN's rankings endpoint and the CFP rankings from the CFP site. All are
   refreshed by the Actions, not the browser.
 - Playoff conference champions come from projected final conference records (real results
-  for games played, predicted winners for the rest; tiebreak: overall record, then rating).
+  for games played, predicted winners for the rest; tiebreak: conference record, then
+  overall record, then rating).
   The 12-team field follows the NCAA's 2026 rules: the ACC, Big 12, Big Ten and SEC
   champions, the highest Group of 6 team, Notre Dame when it ranks in the top 12, and the
   best remaining resumes to fill 12, seeded 1-12 on the resume score (top four byes). The

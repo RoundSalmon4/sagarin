@@ -211,12 +211,13 @@
     var favorite = m[3].trim();
     var underdog = m[10].trim();
     if (!favorite || !underdog) return null;
+    var neutral = favHome === "n" || dogHome === "n";
     return {
       num: parseInt10(m[1]),
       favorite: favorite,
       underdog: underdog,
-      home: favHome ? favorite : dogHome ? underdog : null,
-      neutral: favHome === "n" || dogHome === "n",
+      home: neutral ? favorite : (favHome ? favorite : dogHome ? underdog : null),
+      neutral: neutral,
       rating: num(m[4]),
       pred: num(m[5]),
       golden: num(m[6]),
@@ -241,11 +242,12 @@
     var favorite = m[3].trim();
     var underdog = m[8].trim();
     if (!favorite || !underdog) return null;
+    var neutral = favHome === "n" || dogHome === "n";
     return {
       num: parseInt10(m[1]),
       favorite: favorite,
       underdog: underdog,
-      home: favHome ? favorite : dogHome ? underdog : null,
+      home: neutral ? favorite : (favHome ? favorite : dogHome ? underdog : null),
       spread: num(m[4]),
       odds: num(m[5]),
       pct: num(m[6])
