@@ -1,8 +1,9 @@
-# CFS Explorer
+# CFS Explorer - College Football Ratings
 
 Turns Jeff Sagarin's college football ratings page (cfsend.htm) into something you can
 actually click around: sortable tables, conference rankings, a record predictor (team or
-conference), a TV watch list, a CFP field builder, and a head to head tool.
+conference), a TV watch list, a CFP field builder, a head to head tool, and a BCS-style
+rating.
 
 Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there).
 
@@ -157,7 +158,7 @@ it rebuilds in place, so a tab left open picks up new numbers on its own. There 
 
 ## Sources and attribution
 
-This is an unaffiliated, unofficial viewer. Everything on the page traces back to one of
+This is an **unaffiliated, unofficial viewer**. Everything on the page traces back to one of
 these sources:
 
 - **Jeff Sagarin's college football ratings** - sagarin.com/sports/cfsend.htm. The ratings,
@@ -165,15 +166,17 @@ these sources:
   Jeff Sagarin's work, shown here for personal, non-commercial reading.
 - **The ESPN API** (site.web.api.espn.com) - team and game schedules, the scoreboard
   (kickoff time, TV listing, betting line, venue) and the rankings endpoint. ESPN's data
-  belongs to ESPN. It is prefetched by the Action, so a visitor's browser never calls ESPN.
+  belongs to ESPN. It is prefetched by the GitHub Action, so a visitor's browser never calls ESPN.
 - **The Associated Press Top 25 and the AFCA Coaches Poll** - read from ESPN's rankings
   endpoint. The AP poll is the Associated Press's and the coaches poll is the AFCA's.
 - **The College Football Playoff rankings** - read from the CFP site's rankings API. The
   committee rankings are the College Football Playoff's.
 - **The BCS computer rankings** - Colley Matrix (colleyrankings.com), Billingsley
-  (cfrc.com), Anderson & Hester (andersonsports.com), Massey (masseyratings.com, rendered
-  through Firecrawl) and Wolfe (wolferatings.com), each read for its current top 25 and
-  used with Sagarin for the BCS-style score. Those rankings belong to their authors.
+  (cfrc.com), Anderson & Hester (andersonsports.com), Massey (masseyratings.com) and Wolfe
+  (wolferatings.com), each read for its current top 25 and used with Sagarin for the
+  BCS-style score. Those rankings belong to their authors.
+- **Firecrawl** (api.firecrawl.dev) - renders the Massey page, which sits behind Cloudflare,
+  so the fetch script can read it. Firecrawl is a separate third-party service.
 - **The ESPN logo CDN** (a.espncdn.com) - team and conference logos. Those marks belong to
   the schools and conferences and are used here only to identify the teams.
 - **The Internet Archive Wayback Machine** - used to backfill older weekly snapshots.
@@ -267,3 +270,8 @@ needs `FIRECRAWL_API_KEY` set for the Massey page.
   Seeding follows the CFP fact sheet for 12 teams and the ESPN-reported plan for 24 teams.
   This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
+
+## License
+
+The code here is under the MIT License (see LICENSE). It covers the code only. The ratings,
+polls, rankings, logos and other data belong to the sources above and keep their own terms.
