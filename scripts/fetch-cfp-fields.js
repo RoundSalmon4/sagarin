@@ -115,7 +115,53 @@ function participantsFromArticle(wt) {
   }
   return rows;
 }
-async function season(season) {
+// The CFP article's "Selections by year" table lists, for every season, the
+// conference champions that were selected, the other power conference teams
+// that were selected, the group of five champions that were selected, and the
+// champions that were not selected. That is the bid type for every team the
+// committee picked, and it covers the seasons before the twelve team format.
+const SELECTION_ARTICLE = "College Football Playoff";
+function selectionsFromArticle(wt) {
+  const i = wt.indexOf("===Selections by year===");
+  if (i < 0) return {};
+  const j = wt.indexOf("{|", i);
+  const k = wt.indexOf("|}", j);
+  if (j < 0 || k < 0) return {};
+  const out = {};
+  // Rows are separated by "|-". The first two cells are the season and the
+  // playoff, then the format, then the six selection columns. The format cell
+  // rides along with the playoff cell on the earlier rows and stands alone on
+  // the later ones, so drop anything that names it.
+  const rows = wt.slice(j, k).split(/\n\|-\s*\n/);
+  rows.forEach((row) => {
+    const season = /NCAA Division I FBS football season\|(\d{4})\]\]/.exec(row);
+    if (!season) return;
+    const cells = row.replace(/\n\|/g, "||").split("||").slice(1)
+      .filter((c) => c.indexOf("rowspan") === -1 && c.indexOf("College Football Playoff|") === -1);
+    if (cells.length < 6) { console.log("  " + season[1] + ": only " + cells.length + " selection columns"); return; }
+    const picked = {};
+    const champs = [];
+    const pick = (cell, bid, isChamp) => {
+      const re = /<small>(\d{1,2})<\/small>\s*\[\[[^\]]*\|([^\]]+)\]\]/g;
+      let m;
+      while ((m = re.exec(cell)) !== null) {
+        const name = clean(m[2]);
+        if (!name) continue;
+        picked[name] = { seed: Number(m[1]), bid: bid };
+        if (isChamp) champs.push(name);
+      }
+    };
+    pick(cells[0], "Conference champion", true);
+    pick(cells[1], "At-large", false);
+    pick(cells[2], "Conference champion", true);
+    pick(cells[3], "Conference champion", true);
+    pick(cells[4], "At-large", false);
+    pick(cells[5], "At-large", false);
+    out[season[1]] = { picked: picked, champions: champs };
+  });
+  return out;
+}
+async function season(season, selections) {
   const wt = await raw(templateTitle(season));
   if (!wt) return null;
   const seeds = fieldFromTemplate(wt);
@@ -126,21 +172,32 @@ async function season(season) {
   const parts = aw ? participantsFromArticle(aw) : [];
   const byName = new Map();
   parts.forEach((p) => byName.set(norm(p.team), p));
+  const sel = selections[season] || {};
+  const picked = sel.picked || {};
+  const selByName = new Map();
+  Object.keys(picked).forEach((k) => {
+    selByName.set(norm(k), picked[k]);
+    selByName.set(norm(siteName(k)), picked[k]);
+  });
   const field = list.map((s) => {
     const raw = seeds[s];
     const name = siteName(raw);
     // The article may spell the team the way the site does or the way the
     // bracket does, so look under both.
     const p = byName.get(norm(name)) || byName.get(norm(raw));
-    if (!p && parts.length) console.log("  " + season + ": no bid type for " + name);
+    const selRow = selByName.get(norm(name)) || selByName.get(norm(raw));
+    if (!p && parts.length) console.log("  " + season + ": no participants row for " + name);
+    if (!selRow) console.log("  " + season + ": no selection row for " + name);
     return {
       seed: s,
       team: name,
       conference: p ? p.conference : null,
-      bid: p ? p.bid : null
+      bid: selRow ? selRow.bid : (p ? p.bid : null)
     };
   });
-  return { format: list.length, field: field };
+  // Every team the committee recorded as a conference champion, picked or not.
+  const champions = (sel.champions || []).map(siteName);
+  return { format: list.length, field: field, champions: champions };
 }
 (async () => {
   const i = process.argv.indexOf("--season");
@@ -149,6 +206,10 @@ async function season(season) {
   const old = fs.existsSync(OUT_FILE) ? JSON.parse(fs.readFileSync(OUT_FILE, "utf8")) : { seasons: {} };
   const seasons = {};
   const years = one || [];
+  // The selections table covers every season, so read it once.
+  const sw = await raw(SELECTION_ARTICLE);
+  const selections = sw ? selectionsFromArticle(sw) : {};
+  console.log("selection table covers " + Object.keys(selections).sort().join(", "));
   if (!one) {
     // Every season from the first one through the last the CFP site has
     // published a final ranking for.
@@ -157,7 +218,7 @@ async function season(season) {
     for (let y = FIRST_SEASON; y <= last; y++) years.push(y);
   }
   for (const y of years) {
-    const r = await season(y);
+    const r = await season(y, selections);
     if (!r) { console.log(y + ": no bracket found"); await sleep(400); continue; }
     seasons[String(y)] = r;
     console.log(y + ": " + r.field.length + " teams, " +

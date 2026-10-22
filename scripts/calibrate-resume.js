@@ -204,8 +204,11 @@ function scoreFields(data, fields, penalty, w) {
     else { fourHits[d.season] = hit; fourSum += hit; fourN++; }
     // The teams the committee took from outside the Power four, and where the
     // resume order put them, plus the non-Power team the resume order leads
-    // with and whether the committee took that one.
-    const np = f.teams.filter((t) => isNonPower(t.conference));
+    // with and whether the committee took that one. The conference comes from
+    // the archived snapshot, which has it for every team in the season.
+    const confOf = {};
+    d.teams.forEach((t) => { confOf[normalize(t.team)] = t.conference; });
+    const np = f.teams.filter((t) => isNonPower(confOf[normalize(t.team)]));
     if (np.length) {
       nonPower[d.season] = np.map((t) => {
         const m = matchTeam(t.team, order);

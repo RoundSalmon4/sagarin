@@ -175,7 +175,9 @@ seed, the conference and how each team qualified.
 `scripts/fetch-cfp-fields.js` pulls that from the Wikipedia bracket templates and the
 season articles, checks it against the NCAA bracket and the CFP site's ranking, and writes
 the file only when something changed. It fills in any season that is missing, so running
-it after a season adds that season's field.
+it after a season adds that season's field. The bid types come from the College Football
+Playoff article's table of selections by year, which covers every season, and the file also
+keeps the teams the committee recorded as conference champions, picked or not.
 
 The calibration reports the field next to the ranking: 3.4 of the committee's four over the
 ten four-team seasons, and 10 of 12 over the twelve-team seasons. It also prints where the
@@ -252,9 +254,10 @@ these sources:
 - **The College Football Playoff rankings** - read from the CFP site's rankings API. The
   committee rankings are the College Football Playoff's.
 - **The College Football Playoff field** - the committee's actual selection, with the seed
-  and how each team qualified, read from the Wikipedia season articles and bracket
-  templates and checked against the NCAA bracket. It is kept apart from the rankings
-  because the two are not always the same list.
+  and how each team qualified, read from the Wikipedia bracket templates, the season
+  articles and the College Football Playoff article's table of selections by year, and
+  checked against the NCAA bracket. It is kept apart from the rankings because the two are
+  not always the same list.
 - **The playoff formats** - the 12-team rules follow NCAA.com's explanation of the 2026
   format, and the proposed 24-team plan follows ESPN's reporting. Those rules belong to their
   authors.
