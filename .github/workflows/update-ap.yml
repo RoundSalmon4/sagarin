@@ -32,7 +32,6 @@ jobs:
 
       - name: Build the BCS-style rating
         run: node scripts/fetch-bcs.js
-        continue-on-error: true
         env:
           FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
 
