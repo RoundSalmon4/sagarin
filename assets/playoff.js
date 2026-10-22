@@ -486,8 +486,8 @@
       var site = m.neutral ? "Neutral site" : ("at " + home.team);
       return '<div class="ccg-card">' +
         '<div class="ccg-conf">' + SG.esc(m.conf) + "</div>" +
-        ccgTeam(away, m.winner === away, view.method, showResults, (m.neutral ? m.p : (m.b === home ? 1 - m.p : m.p))) +
-        ccgTeam(home, m.winner === home, view.method, showResults, (m.neutral ? 1 - m.p : (m.b === home ? m.p : 1 - m.p))) +
+        ccgTeam(away, m.winner === away, view.method, showResults, (away === m.a ? m.p : 1 - m.p)) +
+        ccgTeam(home, m.winner === home, view.method, showResults, (home === m.a ? m.p : 1 - m.p)) +
         '<div class="ccg-site">' + SG.esc(site) + "</div></div>";
     }).join("");
   }
