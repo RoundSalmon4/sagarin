@@ -35,7 +35,11 @@
     "sosWeight": 0.45,
     "meanSpearman": 0.9116,
     "meanSpearmanNoSos": 0.8837,
-    "leaveOneOut": 0.9103
+    "leaveOneOut": 0.9103,
+    "meanTop25": 22,
+    "meanTop12": 10.75,
+    "leaveOneOutTop25": 22,
+    "leaveOneOutTop12": 10.75
   },
   "source": "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
   "updated": "2026-10-22"

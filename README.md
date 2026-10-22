@@ -133,9 +133,12 @@ are skipped (the backfill logs each one).
 
 The playoff predictor does not rank on the raw rating. It ranks on a resume score: the
 rating, minus a penalty for each projected loss, plus a bonus for every point the schedule
-sits above the FBS average. The loss penalty is held at five points and the schedule weight is fitted, not chosen by hand.
-A held-out check on the penalty picks five on every season it is tested on, so it stays
-fixed rather than fitted.
+sits above the FBS average. The loss penalty is held at five points and the schedule weight
+is fitted. The penalty is not fitted. It was set by hand before the schedule term existed
+and it stays at five because the selection comes out best there: with the weight fitted the
+same way, five ties for the best top 25 pick of any penalty on the grid and ties for the
+best top 12 pick, while a penalty of seven scores higher on rank correlation and picks
+fewer of the committee's teams.
 `scripts/calibrate-resume.js` scores the resume order against the selection committee's
 final top 25 for every archived season and keeps the schedule weight that fits best averaged
 over all of them, then writes `data/resume-weights.json`, which the site reads at load.
@@ -150,6 +153,16 @@ on every season but one and scoring the held-out season, which is the honest rea
 season the fit has not seen (currently 0.910 against 0.912 in-sample). Re-run it after a
 season ends so the weight tracks the committee. Run it from the "Calibrate resume weights"
 Action (manual trigger), or by hand.
+
+The rank correlation only measures the order of the committee's own picks, so the script
+reports the selection as well: rank every team in the season by the resume score, take the
+top 25 and the top 12, and count how many the committee picked. Over 2014-2025 that is 22
+of the committee's top 25 and 10.75 of the top 12, and the leave-one-out fit gives the same
+counts. Every one of the predictor's top 12 teams landed inside the committee's top 25 in
+all twelve seasons, so the misses sit in the 13 to 25 band rather than in the playoff
+field. Read the selection counts, not the correlation, when you want to know how many of
+the committee's teams the predictor would have taken.
+
 The refresh adds the newest completed season and, when the CFP final ranking for the current
 season is not posted yet, exits without touching the inputs:
 
@@ -319,8 +332,8 @@ Massey page.
   24-team field follows the ESPN-reported 2027 plan: 19 at-large, the four Power 4
   regular-season champions, and the highest Group of 6 team, seeded 1-24 on the resume score
   (seeds 1-8 byes, 9-16 host the first round). The resume score is the rating minus the
-  fitted per-loss penalty plus the fitted schedule weight (`data/resume-weights.json`, see
-  Resume weights above). This is a ratings model, not the committee.
+  five point per-loss penalty plus the fitted schedule weight (`data/resume-weights.json`,
+  see Resume weights above). This is a ratings model, not the committee.
 - This is an unaffiliated viewer. Ratings are Jeff Sagarin's.
 
 ## License

@@ -11,6 +11,12 @@
  * data/cfp-finals.json and data/sagarin-finals.json; this writes
  * data/resume-weights.json. Add --refresh to pull the inputs again first.
  *
+ * The rank correlation only scores the order of the committee's own picks, so
+ * this also reports the selection itself: rank every team in the season by the
+ * resume score, take the top 25 and the top 12, and count how many the
+ * committee picked. Those are the numbers to read, since they say how many of
+ * the committee's teams the predictor would have chosen.
+ *
  *   node scripts/calibrate-resume.js [--penalty 5] [--refresh]
  */
 "use strict";
@@ -72,7 +78,7 @@ function loadInputs() {
     const avg = teams.reduce((s, t) => s + (t.sched || 0), 0) / teams.length;
     const rows = [];
     cfp[y].forEach((t, i) => { const m = matchTeam(t.team, teams); if (m) rows.push({ r: i + 1, t: m }); });
-    return { season: y, avg: avg, rows: rows, count: teams.length, through: sag[y].through || "" };
+    return { season: y, avg: avg, rows: rows, teams: teams, count: teams.length, through: sag[y].through || "" };
   });
 }
 
@@ -94,6 +100,28 @@ function fit(data, penalty) {
   return best;
 }
 
+// The rank correlation scores the order of the committee's own 25 picks, so it
+// says nothing about which teams the predictor would have picked. This counts
+// the picks: rank every team in the season by the resume score, take the top
+// 25 and the top 12, and see how many the committee put in the same place.
+function topHits(d, penalty, w) {
+  const score = (t) => t.rating - penalty * (t.l || 0) + w * ((t.sched || 0) - d.avg);
+  const order = d.teams.slice().sort((a, b) => score(b) - score(a));
+  const ours25 = new Set(order.slice(0, 25).map((t) => t.team));
+  const ours12 = new Set(order.slice(0, 12).map((t) => t.team));
+  const theirs25 = new Set(d.rows.map((o) => o.t.team));
+  const theirs12 = new Set(d.rows.filter((o) => o.r <= 12).map((o) => o.t.team));
+  return {
+    top25: [...ours25].filter((t) => theirs25.has(t)).length,
+    top12: [...ours12].filter((t) => theirs12.has(t)).length
+  };
+}
+function meanTopHits(data, penalty, w) {
+  let t25 = 0, t12 = 0;
+  data.forEach((d) => { const h = topHits(d, penalty, w); t25 += h.top25; t12 += h.top12; });
+  return { top25: t25 / data.length, top12: t12 / data.length };
+}
+
 // Leave-one-out: fit the SOS weight on every season but one, then score the
 // held-out season, and average. This is the honest read on a season the fit has
 // not seen, so a weight that only helps in-sample shows up flat here.
@@ -106,6 +134,20 @@ function looSpearman(data, penalty) {
     sum += meanSpearman([data[i]], penalty, b.w);
   }
   return sum / data.length;
+}
+
+// Same holdout for the selection counts, so the picks are scored on a season
+// the weight has not seen.
+function looTopHits(data, penalty) {
+  if (data.length < 2) return { top25: 0, top12: 0 };
+  let t25 = 0, t12 = 0;
+  for (let i = 0; i < data.length; i++) {
+    const train = data.filter((d, j) => j !== i);
+    const b = fit(train, penalty);
+    const h = topHits(data[i], penalty, b.w);
+    t25 += h.top25; t12 += h.top12;
+  }
+  return { top25: t25 / data.length, top12: t12 / data.length };
 }
 
 const round4 = (x) => Math.round(x * 10000) / 10000;
@@ -194,6 +236,8 @@ async function main() {
   const base = meanSpearman(data, penalty, 0);
   const best = fit(data, penalty);
   const loo = looSpearman(data, penalty);
+  const hits = meanTopHits(data, penalty, best.w);
+  const looHits = looTopHits(data, penalty);
   const out = {
     lossPenalty: penalty,
     sosWeight: best.w,
@@ -201,7 +245,16 @@ async function main() {
     target: "CFP final top 25",
     seasons: data.map((d) => d.season),
     teamCounts: data.map((d) => d.count),
-    fit: { sosWeight: best.w, meanSpearman: round4(best.score), meanSpearmanNoSos: round4(base), leaveOneOut: round4(loo) },
+    fit: {
+      sosWeight: best.w,
+      meanSpearman: round4(best.score),
+      meanSpearmanNoSos: round4(base),
+      leaveOneOut: round4(loo),
+      meanTop25: round4(hits.top25),
+      meanTop12: round4(hits.top12),
+      leaveOneOutTop25: round4(looHits.top25),
+      leaveOneOutTop12: round4(looHits.top12)
+    },
     source: "collegefootballplayoff.com/api/v2/rankings; web.archive.org snapshots of sagarin.com/sports/cfsend.htm",
     updated: new Date().toISOString().slice(0, 10)
   };
@@ -209,5 +262,7 @@ async function main() {
   console.log("seasons " + out.seasons.join(","));
   console.log("loss penalty " + penalty + ", sos weight " + best.w);
   console.log("mean Spearman: no SOS " + round4(base) + ", with SOS " + round4(best.score) + ", leave-one-out " + round4(loo));
+  console.log("teams selected: top 25 " + round4(hits.top25) + " of 25, top 12 " + round4(hits.top12) + " of 12");
+  console.log("leave-one-out selection: top 25 " + round4(looHits.top25) + " of 25, top 12 " + round4(looHits.top12) + " of 12");
 }
 main().catch((e) => { console.error(e); process.exit(1); });
