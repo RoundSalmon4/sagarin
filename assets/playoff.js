@@ -857,10 +857,17 @@ SG.debug.simQuery = function (filters) {
     if (filters.champion) {
       if (run.champion !== filters.champion) return false;
     }
-    // Filter by conference champion
+    // Filter by conference champion (single, legacy)
     if (filters.confChamp) {
       var found = run.confChamps.some(function (c) { return c.conf === filters.confChamp && c.champ === filters.teamInField; });
       if (!found) return false;
+    }
+    // Filter by multiple conference champions: confChamps: [{team, conf}, ...]
+    if (filters.confChamps) {
+      var allMatch = filters.confChamps.every(function (req) {
+        return run.confChamps.some(function (c) { return c.conf === req.conf && c.champ === req.team; });
+      });
+      if (!allMatch) return false;
     }
     // Filter by specific field composition (e.g., 1-loss JMU + 1-loss Pac12 + 1-loss American)
     if (filters.fieldHas) {

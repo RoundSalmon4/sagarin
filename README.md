@@ -359,6 +359,9 @@ SG.debug.simQuery({ champion: "Team Name" })
 
 // Runs where a team had a specific record
 SG.debug.simQuery({ teamRecord: { team: "Team Name", ow: 11, ol: 1, cw: 7, cl: 1 } })
+
+// Runs where specific teams won specific conference championships
+SG.debug.simQuery({ confChamps: [{team: "Team A", conf: "CONFERENCE A"}, {team: "Team B", conf: "CONFERENCE B"}] })
 ```
 
 Each query returns an array of run objects with:
