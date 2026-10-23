@@ -21,9 +21,10 @@
     buildTeamToConf();
 
     document.getElementById("simdeepAddFilter").addEventListener("click", addFilterRow);
+    document.getElementById("simdeepRunSim").addEventListener("click", runSimulationThenFilter);
     addFilterRow();
 
-    // Listen for playoff sim completion
+    // Listen for simulation completion on playoff tab
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
       var originalRender = SG.state.modules.playoff.render;
       SG.state.modules.playoff.render = function () {
@@ -60,9 +61,10 @@
       '</div>' +
       '<div class="simdeep-row-fields">' +
         '<label class="inline-label">Team' +
-          '<select class="simdeep-team" aria-label="Team">' +
-            '<option value="">Any team</option>' +
-          '</select>' +
+          '<div class="combo">' +
+            '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false">' +
+            '<div class="combo-list hidden" role="listbox"></div>' +
+          '</div>' +
         '</label>' +
         '<label class="inline-label">Conf champ' +
           '<select class="simdeep-conf-champ" aria-label="Conference champion">' +
@@ -91,17 +93,95 @@
 
     container.appendChild(row);
 
-    // Wire up remove button
-    row.querySelector(".simdeep-remove-row").addEventListener("click", function () {
-      if (container.querySelectorAll(".simdeep-filter-row").length <= 1) return;
-      row.remove();
-      updateRowLabels();
-    });
+    // Set up combo box for team search (like schedule tab)
+    var combo = row.querySelector(".combo");
+    var searchInput = combo.querySelector(".simdeep-team-search");
+    var listEl = combo.querySelector(".combo-list");
+    var activeIndex = -1;
+    var searchTimer = null;
 
-    // Wire up team change: sync conf champ + update ranges
-    var teamSelect = row.querySelector(".simdeep-team");
-    teamSelect.addEventListener("change", function () {
-      var teamName = this.value;
+    function currentTeam() {
+      return searchInput.value.trim();
+    }
+
+    function closeList() {
+      listEl.classList.add("hidden");
+      searchInput.setAttribute("aria-expanded", "false");
+      activeIndex = -1;
+    }
+
+    function renderList(open) {
+      var query = currentTeam().toLowerCase();
+      var teams = SG.state.data.teams.filter(function (t) {
+        return t.level === "A" && (t.team.toLowerCase().indexOf(query) !== -1 || t.conference.toLowerCase().indexOf(query) !== -1);
+      });
+      var confFilter = row.querySelector(".simdeep-conf-champ").value;
+      if (confFilter) {
+        teams = teams.filter(function (t) { return t.conference === confFilter; });
+      }
+      if (!teams.length) {
+        listEl.innerHTML = '<div class="combo-empty">No teams match</div>';
+      } else {
+        listEl.innerHTML = teams.map(function (t) {
+          return '<div class="combo-item" role="option" data-name="' + t.team + '">' +
+            SG.teamLogo(t.team) + '<span class="ci-name">' + SG.esc(t.team) + '</span>' +
+            '<span class="ci-meta">' + SG.esc(t.conference) + '</span>' +
+          '</div>';
+        }).join("");
+      }
+      activeIndex = -1;
+      if (open) listEl.classList.remove("hidden"); else listEl.classList.add("hidden");
+      searchInput.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    function setActive(i) {
+      var arr = listEl.querySelectorAll(".combo-item");
+      if (!arr.length) return;
+      if (i < 0) i = arr.length - 1;
+      if (i >= arr.length) i = 0;
+      for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === i);
+      if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
+    }
+
+    function onInput() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () { renderList(true); }, 120);
+    }
+
+    function onKeyDown(e) {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (listEl.classList.contains("hidden")) renderList(true);
+        setActive(activeIndex + 1);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setActive(activeIndex - 1);
+      } else if (e.key === "Enter") {
+        var arr = listEl.querySelectorAll(".combo-item");
+        if (activeIndex >= 0 && arr[activeIndex]) {
+          e.preventDefault();
+          pick(arr[activeIndex].dataset.name);
+        }
+      } else if (e.key === "Escape") {
+        closeList();
+      }
+    }
+
+    function pick(name) {
+      searchInput.value = name;
+      searchInput.dispatchEvent(new Event("change", { bubbles: true }));
+      closeList();
+    }
+
+    var searchTimer = null;
+    searchInput.addEventListener("input", function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () { renderList(true); }, 120);
+    });
+    searchInput.addEventListener("focus", function () { renderList(true); });
+    searchInput.addEventListener("keydown", onKeyDown);
+    searchInput.addEventListener("change", function () {
+      var teamName = searchInput.value;
       var confChampSelect = row.querySelector(".simdeep-conf-champ");
       if (teamName && teamToConf[teamName]) {
         confChampSelect.value = teamToConf[teamName];
@@ -109,47 +189,103 @@
       updateRecordRanges(row, teamName);
     });
 
-    // Wire up conf champ change: filter team dropdown
+    var listEl = row.querySelector(".combo-list");
+    var activeIndex = -1;
+
+    function currentTeam() {
+      return searchInput.value.trim();
+    }
+
+    function closeList() {
+      listEl.classList.add("hidden");
+      searchInput.setAttribute("aria-expanded", "false");
+      activeIndex = -1;
+    }
+
+    function setActive(i) {
+      var arr = listEl.querySelectorAll(".combo-item");
+      if (!arr.length) return;
+      if (i < 0) i = arr.length - 1;
+      if (i >= arr.length) i = 0;
+      for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === i);
+      if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
+    }
+
+    var searchTimer = null;
+    searchInput.addEventListener("input", function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () { renderList(true); }, 120);
+    });
+    searchInput.addEventListener("focus", function () { renderList(true); });
+    searchInput.addEventListener("keydown", onKeyDown);
+    searchInput.addEventListener("change", function () {
+      var teamName = searchInput.value;
+      var confChampSelect = row.querySelector(".simdeep-conf-champ");
+      if (teamName && teamToConf[teamName]) {
+        confChampSelect.value = teamToConf[teamName];
+      }
+      updateRecordRanges(row, teamName);
+    });
+
+    listEl.addEventListener("click", function (e) {
+      var item = e.target.closest ? e.target.closest(".combo-item") : null;
+      if (item) pick(item.dataset.name);
+    });
+    document.addEventListener("click", function (e) {
+      if (!combo.contains(e.target)) closeList();
+    });
+
+    function closeList() {
+      listEl.classList.add("hidden");
+      searchInput.setAttribute("aria-expanded", "false");
+      activeIndex = -1;
+    }
+
+    function pick(name) {
+      searchInput.value = name;
+      searchInput.dispatchEvent(new Event("change", { bubbles: true }));
+      closeList();
+    }
+
+    function setActive(i) {
+      var arr = listEl.querySelectorAll(".combo-item");
+      if (!arr.length) return;
+      if (i < 0) i = arr.length - 1;
+      if (i >= arr.length) i = 0;
+      for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === i);
+      if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
+    }
+
+    // Conf champ change -> filter team list
     var confChampSelect = row.querySelector(".simdeep-conf-champ");
     confChampSelect.addEventListener("change", function () {
       var confName = this.value;
-      var teamSelect = row.querySelector(".simdeep-team");
       if (confName) {
-        filterTeamSelectByConf(teamSelect, confName);
-      } else {
-        populateTeamSelect(teamSelect);
+        // Just update the combo list when it opens
       }
     });
 
     // Wire up remove button
     row.querySelector(".simdeep-remove-row").addEventListener("click", function () {
-      if (container.querySelectorAll(".simdeep-filter-row").length <= 1) return;
+      if (document.querySelectorAll(".simdeep-filter-row").length <= 1) return;
       row.remove();
       updateRowLabels();
     });
 
-    // Populate selects
-    populateTeamSelect(teamSelect);
-    populateConfChampSelect(confChampSelect);
+    // Conf champ change -> sync team search
+    confChampSelect.addEventListener("change", function () {
+      var confName = this.value;
+      var searchInput = row.querySelector(".simdeep-team-search");
+      if (confName) {
+        searchInput.value = "";
+      }
+    });
+
+    // Populate conf champ select
+    populateConfChampSelect(row.querySelector(".simdeep-conf-champ"));
     populateBidTypeSelect(row.querySelector(".simdeep-bid-type"));
 
-    // Show record ranges if team pre-selected
-    if (teamSelect.value) {
-      updateRecordRanges(row, teamSelect.value);
-    }
-  }
-
-  function filterTeamSelectByConf(teamSelect, confName) {
-    var current = teamSelect.value;
-    var teams = SG.state.data.teams.filter(function (t) { return t.level === "A" && t.conference === confName; });
-    teamSelect.innerHTML = '<option value="">Any team</option>';
-    teams.forEach(function (t) {
-      var opt = document.createElement("option");
-      opt.value = t.team;
-      opt.textContent = t.team;
-      teamSelect.appendChild(opt);
-    });
-    teamSelect.value = current;
+    container.appendChild(row);
   }
 
   function updateRowLabels() {
@@ -160,19 +296,6 @@
       row.querySelector(".simdeep-remove-row").setAttribute("data-row", row.id);
     });
     filterRowCount = rows.length;
-  }
-
-  function populateTeamSelect(select) {
-    var teams = SG.state.data.teams.filter(function (t) { return t.level === "A"; });
-    var current = select.value;
-    select.innerHTML = '<option value="">Any team</option>';
-    teams.forEach(function (t) {
-      var opt = document.createElement("option");
-      opt.value = t.team;
-      opt.textContent = t.team;
-      select.appendChild(opt);
-    });
-    select.value = current;
   }
 
   function populateConfChampSelect(select) {
@@ -251,19 +374,6 @@
     filterRowCount = rows.length;
   }
 
-  function populateTeamSelect(select) {
-    var teams = SG.state.data.teams.filter(function (t) { return t.level === "A"; });
-    var current = select.value;
-    select.innerHTML = '<option value="">Any team</option>';
-    teams.forEach(function (t) {
-      var opt = document.createElement("option");
-      opt.value = t.team;
-      opt.textContent = t.team;
-      select.appendChild(opt);
-    });
-    select.value = current;
-  }
-
   function populateConfChampSelect(select) {
     var conferences = SG.state.data.conferences
       .filter(function (c) { return c.level === "A"; })
@@ -308,7 +418,7 @@
   }
 
   function runSimulationThenFilter() {
-    var btn = document.getElementById("simdeepRun");
+    var btn = document.getElementById("simdeepRunSim");
     var note = document.getElementById("simdeepNote");
     var loading = document.getElementById("simdeepLoading");
 
@@ -326,7 +436,7 @@
     if (!playoffModule) {
       note.textContent = "Playoff module not available.";
       btn.disabled = false;
-      btn.textContent = "Run deep dive";
+      btn.textContent = "Run simulation";
       loading.classList.add("hidden");
       return;
     }
@@ -348,7 +458,7 @@
       } finally {
         playoffModule.computeSim = originalComputeSim;
         btn.disabled = false;
-        btn.textContent = "Run deep dive";
+        btn.textContent = "Run simulation";
         loading.classList.add("hidden");
       }
     }, 40);
@@ -392,7 +502,7 @@
 
   function applyFilters() {
     if (!view.sim || !view.sim.debugRuns) {
-      document.getElementById("simdeepNote").textContent = "No simulation data. Click Run deep dive first.";
+      document.getElementById("simdeepNote").textContent = "No simulation data. Click Run simulation first.";
       return;
     }
 
@@ -401,7 +511,7 @@
     var hasValidFilter = false;
 
     rows.forEach(function (row) {
-      var team = row.querySelector(".simdeep-team").value || null;
+      var team = row.querySelector(".simdeep-team-search").value.trim() || null;
       var confChamp = row.querySelector(".simdeep-conf-champ").value || null;
       var bidType = row.querySelector(".simdeep-bid-type").value || null;
       var ow = parseInt(row.querySelector(".simdeep-ow").value) || null;
