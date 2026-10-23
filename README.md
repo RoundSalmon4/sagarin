@@ -348,24 +348,17 @@ Logs the playoff projection details: format, method, CFP availability, conferenc
 Enables full simulation run capture. After clicking "Run simulation" on the Playoff Predictor tab, the complete results of all 10,000 runs are stored in memory. Then query them from the console:
 
 ```js
-// All runs where James Madison made the field
-SG.debug.simQuery({ teamInField: "James Madison" })
+// All runs where a team made the field
+SG.debug.simQuery({ teamInField: "Team Name" })
 
-// Runs where JMU is a 1-loss conference champ and there's also a 1-loss Pac-12 champ and 1-loss American champ
-SG.debug.simQuery({ fieldHas: [{team: "James Madison"}, {team: "Oregon"}, {team: "Tulane"}] })
+// Runs where multiple specific teams all made the field
+SG.debug.simQuery({ fieldHas: [{team: "Team A"}, {team: "Team B"}] })
 
-// Runs where JMU won the championship
-SG.debug.simQuery({ champion: "James Madison" })
+// Runs where a team won the championship
+SG.debug.simQuery({ champion: "Team Name" })
 
-// Runs where JMU went 11-1 overall with 7-1 conference
-SG.debug.simQuery({ teamRecord: { team: "James Madison", ow: 11, ol: 1, cw: 7, cl: 1 } })
-
-// Combined: JMU as 1-loss Sun Belt champ, 1-loss Pac-12 champ, 1-loss American champ all in field
-SG.debug.simQuery({
-  teamInField: "James Madison",
-  teamRecord: { team: "James Madison", ol: 1, cl: 1 },
-  fieldHas: [{team: "Oregon"}, {team: "Tulane"}]
-})
+// Runs where a team had a specific record
+SG.debug.simQuery({ teamRecord: { team: "Team Name", ow: 11, ol: 1, cw: 7, cl: 1 } })
 ```
 
 Each query returns an array of run objects with:
@@ -375,7 +368,7 @@ Each query returns an array of run objects with:
 - `confChamps`: array of {conf, champ} for conference title games
 - `records`: full record object for every team in that run
 
-This lets you analyze scenario probabilities without modifying code.
+**Important**: You must load the site with `?debug=sim` URL parameter, then click "Run simulation" on the Playoff Predictor tab before the query commands will work.
 
 To refresh the data by hand:
 
