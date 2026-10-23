@@ -207,7 +207,7 @@
       "Home edge for " + SG.methodLabel(method) + " is " + SG.fmt(edge) +
       " points. Schedule from ESPN, refreshed weekly. Opponents not rated by Sagarin show nr.";
 
-    var rec = SG.rec(SG.espnW(teamSag), SG.espnL(teamSag));
+    var rec = SG.recWithConf(teamSag);
     var projFinal = (SG.espnW(teamSag) + projWins) + "-" + (SG.espnL(teamSag) + (remaining - projWins));
     document.getElementById("schedSummary").innerHTML =
       chip("Team", name) +
@@ -292,8 +292,7 @@
       { key: "team", label: "Team", cls: "left", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } },
       { key: "rating", label: "Rating", cell: function (r) { return SG.esc(r.rating); }, value: function (r) { return r.ratingVal; } },
       { key: "current", label: "Current", cell: function (r) { return r.current; }, value: function (r) { return r.currentVal; } },
-      { key: "conf", label: "Proj conf", cell: function (r) { return r.conf; }, value: function (r) { return r.confVal; } },
-      { key: "overall", label: "Proj overall", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
+      { key: "overall", label: "Projected", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
       { key: "title", label: "Title game", cls: "left", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
     ];
 
@@ -302,17 +301,23 @@
       var titleText = "", titleHtml = "";
       if (ccg && ccg.winner.team === t.team) { titleText = "Champion"; titleHtml = '<span class="win">Champion</span>'; }
       else if (ccg && ccg.loser.team === t.team) { titleText = "Runner-up"; titleHtml = '<span class="dim">Runner-up</span>'; }
+      // Current: ESPN overall (conf)
+      var curW = SG.espnW(t), curL = SG.espnL(t);
+      var curCW = SG.espnConfW(t), curCL = SG.espnConfL(t);
+      var current = SG.esc(SG.rec(curW, curL) + (curCW > 0 || curCL > 0 ? " (" + SG.rec(curCW, curCL) + ")" : ""));
+      // Projected: final overall with projected conference record in parentheses
+      var projCW = fin.cw, projCL = fin.cl;
+      var projOW = fin.ow, projOL = fin.ol;
+      var overall = SG.esc(SG.rec(projOW, projOL) + (projCW > 0 || projCL > 0 ? " (" + SG.rec(projCW, projCL) + ")" : ""));
       return {
         pos: i + 1,
         team: t.team,
         rating: SG.fmt(t[method]),
         ratingVal: t[method],
-        current: SG.esc(SG.rec(SG.espnW(t), SG.espnL(t))),
-        currentVal: recVal(SG.espnW(t), SG.espnL(t)),
-        conf: SG.esc(SG.rec(fin.cw, fin.cl)),
-        confVal: recVal(fin.cw, fin.cl),
-        overall: SG.esc(SG.rec(fin.ow, fin.ol)),
-        overallVal: recVal(fin.ow, fin.ol),
+        current: current,
+        currentVal: recVal(curW, curL),
+        overall: overall,
+        overallVal: recVal(projOW, projOL),
         title: titleHtml,
         titleText: titleText
       };

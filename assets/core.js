@@ -67,6 +67,20 @@
   SG.espnW = espnW;
   SG.espnL = espnL;
 
+  // Conference record from ESPN intra-conference games.
+  function espnConfW(t) { return SG.state.espnConfRecord && SG.state.espnConfRecord[t.team] ? SG.state.espnConfRecord[t.team].w : 0; }
+  function espnConfL(t) { return SG.state.espnConfRecord && SG.state.espnConfRecord[t.team] ? SG.state.espnConfRecord[t.team].l : 0; }
+  SG.espnConfW = espnConfW;
+  SG.espnConfL = espnConfL;
+
+  // Format record as "W-L (confW-confL)" when conference record exists, else "W-L".
+  SG.recWithConf = function (t) {
+    var w = SG.espnW(t), l = SG.espnL(t);
+    var cw = SG.espnConfW(t), cl = SG.espnConfL(t);
+    var base = SG.rec(w, l);
+    return (cw > 0 || cl > 0) ? base + " (" + SG.rec(cw, cl) + ")" : base;
+  };
+
   SG.erf = function (x) {
     var s = x < 0 ? -1 : 1;
     x = Math.abs(x);
@@ -462,7 +476,7 @@
         return SG.fmt(s[key], 1) + ' <span class="dim">(' + (s[key + "Rank"] || "-") + ")</span>";
       }
       var rows = [
-        { label: "Record", cell: function (t) { return SG.esc(SG.rec(SG.espnW(t), SG.espnL(t))); } },
+        { label: "Record", cell: function (t) { return SG.esc(SG.recWithConf(t)); } },
         { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
           return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
@@ -875,6 +889,22 @@
       else { ensure(a.team).w += 1; ensure(h.team).l += 1; }
     });
     SG.state.espnRecord = rec;
+
+    // Compute conference W-L from ESPN completed games (intra-conference only).
+    var confRec = {};
+    function ensureConf(n) { return confRec[n] || (confRec[n] = { w: 0, l: 0 }); }
+    var confKey = {};
+    SG.state.data.teams.forEach(function (t) { confKey[t.team] = confOf(t); });
+    games.forEach(function (g) {
+      if (!g.completed || g.homeScore === null || g.awayScore === null) return;
+      var h = espnIdToSag[g.homeId];
+      var a = espnIdToSag[g.awayId];
+      if (!h || !a) return;
+      if (confKey[h.team] !== confKey[a.team]) return;
+      if (g.homeScore > g.awayScore) { ensureConf(h.team).w += 1; ensureConf(a.team).l += 1; }
+      else { ensureConf(a.team).w += 1; ensureConf(h.team).l += 1; }
+    });
+    SG.state.espnConfRecord = confRec;
   };
 
   SG.espnTeamById = function (id) {

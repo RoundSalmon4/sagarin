@@ -444,10 +444,8 @@
       { key: "team", label: "Team", cls: "left", type: "str",
         cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
-      { key: "cw", label: "Conf (proj)", cls: "left", cell: function (r) { return SG.esc(r.cw); }, value: function (r) { return r.cwV; } },
-      { key: "proj", label: "Proj", cls: "left", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
-      { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true },
       { key: "now", label: "Now", cls: "left", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
+      { key: "proj", label: "Projected", cls: "left", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
     var std = finalRecords(view.method, view.format);
@@ -455,17 +453,22 @@
     for (var i = 1; i < field.seeds.length; i++) {
       var t = field.seeds[i];
       var r = std[t.team];
+      // Now: ESPN overall (conf)
+      var nowW = SG.espnW(t), nowL = SG.espnL(t);
+      var nowCW = SG.espnConfW(t), nowCL = SG.espnConfL(t);
+      var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
+      // Projected: final overall (projected conf)
+      var projCW = r && r.cw ? r.cw : 0, projCL = r && r.cl ? r.cl : 0;
+      var projOW = r ? r.ow : 0, projOL = r ? r.ol : 0;
+      var proj = SG.rec(projOW, projOL) + (projCW > 0 || projCL > 0 ? " (" + SG.rec(projCW, projCL) + ")" : "");
       rows.push({
         seed: i,
         team: t.team,
         conf: mergeConf(t.conference),
-        cw: r && (r.cw + r.cl) ? r.cw + "-" + r.cl : "-",
-        cwV: r && (r.cw + r.cl) ? recSortVal(r.cw, r.cl) : -1,
-        proj: r ? r.ow + "-" + r.ol : "-",
-        projV: r ? recSortVal(r.ow, r.ol) : -1,
-        rating: t[view.method],
-        now: SG.espnW(t) + "-" + SG.espnL(t),
-        nowV: recSortVal(SG.espnW(t), SG.espnL(t)),
+        now: now,
+        nowV: recSortVal(nowW, nowL),
+        proj: proj,
+        projV: recSortVal(projOW, projOL),
         bid: field.bid[t.team] || "At-large"
       });
     }
