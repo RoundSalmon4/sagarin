@@ -147,7 +147,12 @@
     var rows = [];
     var remaining = 0;
     var projWins = 0;
+    var projConfWins = 0;
+    var projConfLosses = 0;
     var id = String(et.id);
+    var confKey = {};
+    SG.state.data.teams.forEach(function (t) { confKey[t.team] = SG.mergeConf ? SG.mergeConf(t.conference) : t.conference; });
+    var myConf = confKey[name];
 
     games.forEach(function (g) {
       var isHome = String(g.homeId) === id;
@@ -155,6 +160,8 @@
       var oppTeam = SG.espnTeamById(oppId);
       var oppSag = SG.state.espnIdToSag[oppId];
       var neutral = !!g.neutral;
+      var oppConf = oppSag ? confKey[oppSag.team] : null;
+      var isConfGame = oppConf && oppConf === myConf && myConf !== "I-A IND.";
 
       var row = {
         date: fmtDate(g.date),
@@ -189,6 +196,10 @@
         row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(row.pickText) + "</span>";
         remaining++;
         if (wp >= 0.5) projWins++;
+        if (isConfGame) {
+          if (wp >= 0.5) projConfWins++;
+          else projConfLosses++;
+        }
       } else {
         row.pick = '<span class="dim">no rating</span>';
       }
@@ -208,7 +219,14 @@
       " points. Schedule from ESPN, refreshed weekly. Opponents not rated by Sagarin show nr.";
 
     var rec = SG.recWithConf(teamSag);
-    var projFinal = (SG.espnW(teamSag) + projWins) + "-" + (SG.espnL(teamSag) + (remaining - projWins));
+    var projOverallW = SG.espnW(teamSag) + projWins;
+    var projOverallL = SG.espnL(teamSag) + (remaining - projWins);
+    var projConfW = SG.espnConfW(teamSag) + projConfWins;
+    var projConfL = SG.espnConfL(teamSag) + projConfLosses;
+    var projFinal = SG.rec(projOverallW, projOverallL);
+    if (projConfW > 0 || projConfL > 0) {
+      projFinal += " (" + SG.rec(projConfW, projConfL) + ")";
+    }
     document.getElementById("schedSummary").innerHTML =
       chip("Team", name) +
       chip("Rating", SG.fmt(teamSag[method])) +
