@@ -12,7 +12,7 @@
     if (!SG.state.data) return;
     teamToConf = {};
     SG.state.data.teams.forEach(function (t) {
-      if (t.level === "A") teamToConf[t.team] = t.conference;
+      if (t.level === "A") teamToConf[t.team] = (SG.mergeConf ? SG.mergeConf(t.conference) : t.conference);
     });
   }
 
@@ -74,15 +74,26 @@
         '</label>' +
         '<label class="inline-label">' +
           '<input type="checkbox" class="simdeep-param-check" data-param="overall" checked aria-label="Include overall record filter"> Overall' +
+          '<select class="simdeep-op-ow" aria-label="Overall wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
+          '<select class="simdeep-op-ol" aria-label="Overall losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses">' +
-          '<span class="simdeep-record-range overall" style="display:none;"></span>' +
+          '<span class="simdeep-record-range overall" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
           '<input type="checkbox" class="simdeep-param-check" data-param="conf" checked aria-label="Include conf record filter"> Conf' +
+          '<select class="simdeep-op-cw" aria-label="Conf wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
+          '<select class="simdeep-op-cl" aria-label="Conf losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses">' +
-          '<span class="simdeep-record-range conf" style="display:none;"></span>' +
+          '<span class="simdeep-record-range conf" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
+        '</label>' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field"> In field' +
+        '</label>' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="champion" aria-label="Filter by champion team"> Champion' +
+          '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team" style="width: 8rem;">' +
         '</label>' +
       '</div>';
 
@@ -171,6 +182,14 @@
       var confChampSelect = row.querySelector(".simdeep-conf-champ");
       if (teamName && teamToConf[teamName]) {
         confChampSelect.value = teamToConf[teamName];
+        // Restrict conf champ dropdown to this team’s conference
+        var confName = teamToConf[teamName];
+        var opts = confChampSelect.querySelectorAll("option");
+        opts.forEach(function (o) { o.style.display = (o.value === "" || o.value === confName) ? "" : "none"; });
+      } else {
+        // Restore all conf options when team cleared
+        var opts = confChampSelect.querySelectorAll("option");
+        opts.forEach(function (o) { o.style.display = ""; });
       }
       updateRecordRanges(row, teamName);
     });
@@ -191,7 +210,15 @@
       if (searchInput.value && teamToConf[searchInput.value] && teamToConf[searchInput.value] !== confName) {
         // Team doesn't belong to selected conf - clear team
         searchInput.value = "";
+        searchInput.dispatchEvent(new Event("change", { bubbles: true }));
         updateRecordRanges(row, "");
+      }
+      // If conf cleared, restore all conf options; if set, restrict to match team if any
+      var opts = confChampSelect.querySelectorAll("option");
+      if (!confName) {
+        opts.forEach(function (o) { o.style.display = ""; });
+      } else if (searchInput.value && teamToConf[searchInput.value]) {
+        // Already handled by team change; just ensure consistency
       }
     });
 
@@ -214,7 +241,8 @@
   function populateConfChampSelect(select) {
     var conferences = SG.state.data.conferences
       .filter(function (c) { return c.level === "A"; })
-      .map(function (c) { return c.name; })
+      .map(function (c) { return (SG.mergeConf ? SG.mergeConf(c.name) : c.name); })
+      .filter(function (c, idx, arr) { return arr.indexOf(c) === idx; })
       .sort();
     var current = select.value;
     select.innerHTML = '<option value="">Any</option>';
@@ -294,6 +322,10 @@
   }
 
   function runSimulationThenFilter() {
+    if (view.sim && view.sim.debugRuns) {
+      applyFilters();
+      return;
+    }
     var btn = document.getElementById("simdeepRunSim");
     var note = document.getElementById("simdeepNote");
     var loading = document.getElementById("simdeepLoading");
@@ -372,9 +404,17 @@
       var confChampCheck = row.querySelector('.simdeep-param-check[data-param="confChamp"]');
       var overallCheck = row.querySelector('.simdeep-param-check[data-param="overall"]');
       var confCheck = row.querySelector('.simdeep-param-check[data-param="conf"]');
+      var inFieldCheck = row.querySelector('.simdeep-param-check[data-param="inField"]');
+      var championCheck = row.querySelector('.simdeep-param-check[data-param="champion"]');
 
       var team = (teamCheck && teamCheck.checked) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
       var confChamp = (confChampCheck && confChampCheck.checked) ? row.querySelector(".simdeep-conf-champ").value || null : null;
+      var inField = (inFieldCheck && inFieldCheck.checked) ? true : false;
+      var champion = (championCheck && championCheck.checked) ? (row.querySelector(".simdeep-champion-search").value.trim() || null) : null;
+      var owOp = (overallCheck && overallCheck.checked) ? (row.querySelector(".simdeep-op-ow").value || "=") : "=";
+      var olOp = (overallCheck && overallCheck.checked) ? (row.querySelector(".simdeep-op-ol").value || "=") : "=";
+      var cwOp = (confCheck && confCheck.checked) ? (row.querySelector(".simdeep-op-cw").value || "=") : "=";
+      var clOp = (confCheck && confCheck.checked) ? (row.querySelector(".simdeep-op-cl").value || "=") : "=";
       var ow = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ow").value) || null : null;
       var ol = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ol").value) || null : null;
       var cw = (confCheck && confCheck.checked) ? parseInt(row.querySelector(".simdeep-cw").value) || null : null;
@@ -389,7 +429,7 @@
         return;
       }
 
-      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl });
+      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, inField: inField, champion: champion });
       hasValidFilter = true;
     });
 
@@ -415,18 +455,41 @@
       if (!teamInField) return false;
     }
     if (filter.confChamp) {
-      var isChamp = run.confChamps.some(function (c) { return c.conf === filter.confChamp; });
-      if (!isChamp) return false;
+      if (filter.team) {
+        // Team specified: require that team is champion of this conference
+        var isChamp = run.confChamps.some(function (c) { return c.conf === filter.confChamp && c.champ === filter.team; });
+        if (!isChamp) return false;
+      } else {
+        var hasConf = run.confChamps.some(function (c) { return c.conf === filter.confChamp; });
+        if (!hasConf) return false;
+      }
+    }
+    if (filter.champion) {
+      if (run.champion !== filter.champion) return false;
+    }
+    if (filter.inField) {
+      var found = run.field.some(function (f) { return f.team === (filter.team || filter.champion); });
+      if (!found) return false;
     }
     if (filter.team && (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null)) {
       var rec = run.records[filter.team];
       if (!rec) return false;
-      if (filter.ow !== null && rec.ow !== filter.ow) return false;
-      if (filter.ol !== null && rec.ol !== filter.ol) return false;
-      if (filter.cw !== null && rec.cw !== filter.cw) return false;
-      if (filter.cl !== null && rec.cl !== filter.cl) return false;
+      if (filter.ow !== null && !compareOp(rec.ow, filter.ow, filter.owOp || "=")) return false;
+      if (filter.ol !== null && !compareOp(rec.ol, filter.ol, filter.olOp || "=")) return false;
+      if (filter.cw !== null && !compareOp(rec.cw, filter.cw, filter.cwOp || "=")) return false;
+      if (filter.cl !== null && !compareOp(rec.cl, filter.cl, filter.clOp || "=")) return false;
     }
     return true;
+  }
+
+  function compareOp(a, b, op) {
+    switch (op) {
+      case ">": return a > b;
+      case "<": return a < b;
+      case ">=": return a >= b;
+      case "<=": return a <= b;
+      case "=": default: return a === b;
+    }
   }
 
   function renderResults(runs, totalSims) {
@@ -444,7 +507,11 @@
 
     note.textContent = runs.length + " of " + totalSims.toLocaleString() + " runs match the filters (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
 
-    var html = runs.map(function (run, idx) {
+    var LIMIT = 100;
+    var shownRuns = runs.slice(0, LIMIT);
+    var hasMore = runs.length > LIMIT;
+
+    var html = shownRuns.map(function (run, idx) {
       var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
         var bidClass = "";
         if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
@@ -471,11 +538,13 @@
         championHtml +
         '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' +
         '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
-        '<div class="simdeep-details" id="simdeep-details-' + run.run + '">' +
-          buildDetailsHtml(run) +
-        '</div>' +
+        '<div class="simdeep-details" id="simdeep-details-' + run.run + '" data-run="' + run.run + '"></div>' +
       '</div>';
     }).join("");
+
+    if (hasMore) {
+      html += '<div class="simdeep-more">Showing first 100 of ' + runs.length + ' matches (performance limit).</div>';
+    }
 
     container.innerHTML = html;
 
@@ -483,12 +552,55 @@
       btn.addEventListener("click", function () {
         var runIdx = btn.getAttribute("data-run");
         var details = document.getElementById("simdeep-details-" + runIdx);
-        if (details) {
-          details.classList.toggle("open");
-          btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
+        if (!details) return;
+        if (details.innerHTML.trim() === "") {
+          var run = runs.find(function (r) { return r.run == runIdx; });
+          if (run) details.innerHTML = buildDetailsHtml(run);
         }
+        details.classList.toggle("open");
+        btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
       });
     });
+
+    var loadMoreBtn = document.getElementById("simdeepLoadMore");
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener("click", function () {
+        var currentLimit = shownRuns.length;
+        var nextRuns = runs.slice(currentLimit, currentLimit + 100);
+        if (!nextRuns.length) return;
+        var frag = document.createDocumentFragment();
+        nextRuns.forEach(function (run) {
+          var card = document.createElement("div");
+          card.className = "simdeep-card";
+          card.innerHTML = '<div class="simdeep-card-header"><div class="simdeep-team"><span class="simdeep-seed">Run #' + (run.run + 1) + '</span></div><button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button></div>' +
+            '<div class="simdeep-stats"><div class="simdeep-stat"><span class="simdeep-stat-label">Teams in field</span><span class="simdeep-stat-value">' + run.field.length + '</span></div><div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div></div>' +
+            '<div class="simdeep-field">' + run.field.slice(0, 12).map(function (f, i) {
+              var bidClass = f.bid.indexOf("P4 champ") !== -1 ? "bid-p4" : (f.bid.indexOf("G6 bid") !== -1 ? "bid-g6" : "bid-atlarge");
+              return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+            }).join("") + '</div>' +
+            (run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '') +
+            '<div class="simdeep-conf-champs">' + run.confChamps.map(function (c) { return '<span class="simdeep-conf-champ">' + c.conf + ': ' + c.champ + '</span>'; }).join(" ") + '</div>' +
+            '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
+            '<div class="simdeep-details" id="simdeep-details-' + run.run + '" data-run="' + run.run + '"></div>';
+          frag.appendChild(card);
+        });
+        container.insertBefore(frag, loadMoreBtn.parentElement);
+        loadMoreBtn.parentElement.remove();
+        container.querySelectorAll(".simdeep-expand").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var runIdx = btn.getAttribute("data-run");
+            var details = document.getElementById("simdeep-details-" + runIdx);
+            if (!details) return;
+            if (details.innerHTML.trim() === "") {
+              var run = runs.find(function (r) { return r.run == runIdx; });
+              if (run) details.innerHTML = buildDetailsHtml(run);
+            }
+            details.classList.toggle("open");
+            btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
+          });
+        });
+      });
+    }
   }
 
   function buildDetailsHtml(run) {
