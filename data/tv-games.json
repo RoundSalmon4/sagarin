@@ -1,6 +1,6 @@
 {
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard",
-  "fetched_at": "2026-10-20T16:34:27.464Z",
+  "fetched_at": "2026-10-23T14:05:11.105Z",
   "season": 2026,
   "startWeek": 8,
   "games": [
@@ -9,7 +9,7 @@
       "date": "2026-10-20T23:00Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2229",
       "awayId": "2393",
       "homeName": "FIU",
@@ -19,16 +19,16 @@
       "tv": "CBSSN",
       "venue": "Pitbull Stadium",
       "city": "Miami, FL",
-      "spread": -10,
-      "details": "FIU -10",
-      "overUnder": 45.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401871069",
       "date": "2026-10-20T23:00Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "48",
       "awayId": "2623",
       "homeName": "Delaware",
@@ -38,16 +38,16 @@
       "tv": "ESPNU",
       "venue": "Delaware Stadium",
       "city": "Newark, DE",
-      "spread": -2.5,
-      "details": "DEL -2.5",
-      "overUnder": 52.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401871092",
       "date": "2026-10-20T23:30Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "276",
       "awayId": "6",
       "homeName": "Marshall",
@@ -57,16 +57,16 @@
       "tv": "ESPN2",
       "venue": "Joan C. Edwards Stadium",
       "city": "Huntington, WV",
-      "spread": 2.5,
-      "details": "USA -2.5",
-      "overUnder": 66.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401871070",
       "date": "2026-10-22T00:00Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2534",
       "awayId": "166",
       "homeName": "Sam Houston",
@@ -76,16 +76,16 @@
       "tv": "ESPN2",
       "venue": "Elliott T. Bowers Stadium",
       "city": "Huntsville, TX",
-      "spread": 3,
-      "details": "NMSU -3",
-      "overUnder": 44.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401869845",
       "date": "2026-10-22T23:00Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2026",
       "awayId": "256",
       "homeName": "App State",
@@ -95,16 +95,16 @@
       "tv": "ESPNU",
       "venue": "Kidd Brewer Stadium",
       "city": "Boone, NC",
-      "spread": 10.5,
-      "details": "JMU -10.5",
-      "overUnder": 56.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401871056",
       "date": "2026-10-22T23:00Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "338",
       "awayId": "2335",
       "homeName": "Kennesaw St",
@@ -114,16 +114,16 @@
       "tv": "CBSSN",
       "venue": "Walens Family Field at Fifth Third Stadium",
       "city": "Kennesaw, GA",
-      "spread": 10,
-      "details": "LIB -10",
-      "overUnder": 50.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401862807",
       "date": "2026-10-22T23:30Z",
       "week": 8,
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "235",
       "awayId": "151",
       "homeName": "Memphis",
@@ -133,9 +133,9 @@
       "tv": "ESPN2",
       "venue": "Simmons Bank Liberty Stadium",
       "city": "Memphis, TN",
-      "spread": -10,
-      "details": "MEM -10",
-      "overUnder": 54.5
+      "spread": null,
+      "details": "",
+      "overUnder": null
     },
     {
       "id": "401867955",
@@ -152,9 +152,9 @@
       "tv": "ESPN2",
       "venue": "Alumni Stadium (DE)",
       "city": "Dover, DE",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -5.5,
+      "details": "DSU -5.5",
+      "overUnder": 55.5
     },
     {
       "id": "401858271",
@@ -171,9 +171,9 @@
       "tv": "ESPN",
       "venue": "Scott Stadium",
       "city": "Charlottesville, VA",
-      "spread": -1.5,
-      "details": "UVA -1.5",
-      "overUnder": 47.5
+      "spread": -2.5,
+      "details": "UVA -2.5",
+      "overUnder": 46.5
     },
     {
       "id": "401861965",
@@ -192,7 +192,7 @@
       "city": "East Hartford, CT",
       "spread": -14.5,
       "details": "CONN -14.5",
-      "overUnder": 49.5
+      "overUnder": 50.5
     },
     {
       "id": "401870841",
@@ -209,9 +209,9 @@
       "tv": "ESPNU",
       "venue": "Franklin Field",
       "city": "Philadelphia, PA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": 5.5,
+      "details": "YALE -5.5",
+      "overUnder": 49.5
     },
     {
       "id": "401862808",
@@ -247,9 +247,9 @@
       "tv": "CW",
       "venue": "War Memorial Stadium",
       "city": "Laramie, WY",
-      "spread": 4.5,
-      "details": "AF -4.5",
-      "overUnder": 45.5
+      "spread": 5.5,
+      "details": "AF -5.5",
+      "overUnder": 44.5
     },
     {
       "id": "401858272",
@@ -285,8 +285,8 @@
       "tv": "ABC",
       "venue": "Jordan-Hare Stadium",
       "city": "Auburn, AL",
-      "spread": 7.5,
-      "details": "LSU -7.5",
+      "spread": 7,
+      "details": "LSU -7",
       "overUnder": 51.5
     },
     {
@@ -304,8 +304,8 @@
       "tv": "FS1",
       "venue": "Nippert Stadium",
       "city": "Cincinnati, OH",
-      "spread": 10.5,
-      "details": "TTU -10.5",
+      "spread": 11.5,
+      "details": "TTU -11.5",
       "overUnder": 56.5
     },
     {
@@ -323,9 +323,9 @@
       "tv": "ESPN2",
       "venue": "Amon G. Carter Stadium",
       "city": "Fort Worth, TX",
-      "spread": -9.5,
-      "details": "TCU -9.5",
-      "overUnder": 56.5
+      "spread": -10.5,
+      "details": "TCU -10.5",
+      "overUnder": 57.5
     },
     {
       "id": "401858270",
@@ -344,7 +344,7 @@
       "city": "Dallas, TX",
       "spread": -19.5,
       "details": "SMU -19.5",
-      "overUnder": 54.5
+      "overUnder": 55.5
     },
     {
       "id": "401858274",
@@ -358,12 +358,12 @@
       "awayName": "Pitt",
       "homeScore": null,
       "awayScore": null,
-      "tv": "ESPN",
+      "tv": "ESPN, Disney+",
       "venue": "Hard Rock Stadium",
       "city": "Miami Gardens, FL",
-      "spread": -20.5,
-      "details": "MIA -20.5",
-      "overUnder": 50.5
+      "spread": -19.5,
+      "details": "MIA -19.5",
+      "overUnder": 48.5
     },
     {
       "id": "401858496",
@@ -380,9 +380,9 @@
       "tv": "Fox",
       "venue": "Michigan Stadium",
       "city": "Ann Arbor, MI",
-      "spread": 7,
-      "details": "IU -7",
-      "overUnder": 41.5
+      "spread": 7.5,
+      "details": "IU -7.5",
+      "overUnder": 42.5
     },
     {
       "id": "401858498",
@@ -420,7 +420,7 @@
       "city": "Boca Raton, FL",
       "spread": -7.5,
       "details": "FAU -7.5",
-      "overUnder": 53.5
+      "overUnder": 52.5
     },
     {
       "id": "401866450",
@@ -439,7 +439,7 @@
       "city": "Toledo, OH",
       "spread": -3,
       "details": "TOL -3",
-      "overUnder": 45.5
+      "overUnder": 47.5
     },
     {
       "id": "401866670",
@@ -608,8 +608,8 @@
       "tv": "TNT",
       "venue": "David Booth Kansas Memorial Stadium",
       "city": "Lawrence, KS",
-      "spread": 3,
-      "details": "BAY -3",
+      "spread": 2.5,
+      "details": "BAY -2.5",
       "overUnder": 53.5
     },
     {
@@ -629,7 +629,7 @@
       "city": "Kent, OH",
       "spread": -3,
       "details": "KENT -3",
-      "overUnder": 46.5
+      "overUnder": 47.5
     },
     {
       "id": "401866476",
@@ -646,9 +646,9 @@
       "tv": "ESPN+",
       "venue": "Kelly/Shorts Stadium",
       "city": "Mount Pleasant, MI",
-      "spread": 2.5,
-      "details": "M-OH -2.5",
-      "overUnder": 40.5
+      "spread": 3,
+      "details": "M-OH -3",
+      "overUnder": 39.5
     },
     {
       "id": "401866671",
@@ -1045,9 +1045,9 @@
       "tv": "BTN",
       "venue": "Gies Memorial Stadium",
       "city": "Champaign, IL",
-      "spread": 8.5,
-      "details": "ORE -8.5",
-      "overUnder": 50.5
+      "spread": 9.5,
+      "details": "ORE -9.5",
+      "overUnder": 49.5
     },
     {
       "id": "401867689",
@@ -1273,8 +1273,8 @@
       "tv": "ABC",
       "venue": "Bryant-Denny Stadium",
       "city": "Tuscaloosa, AL",
-      "spread": -14,
-      "details": "ALA -14",
+      "spread": -13.5,
+      "details": "ALA -13.5",
       "overUnder": 50.5
     },
     {
@@ -1292,9 +1292,9 @@
       "tv": "SEC Network",
       "venue": "Davis Wade Stadium",
       "city": "Starkville, MS",
-      "spread": 4,
-      "details": "OU -4",
-      "overUnder": 44.5
+      "spread": 3,
+      "details": "OU -3",
+      "overUnder": 46.5
     },
     {
       "id": "401856731",
@@ -1308,7 +1308,7 @@
       "awayName": "Tennessee",
       "homeScore": null,
       "awayScore": null,
-      "tv": "ESPN",
+      "tv": "ESPN, Disney+",
       "venue": "Williams-Brice Stadium",
       "city": "Columbia, SC",
       "spread": -2.5,
@@ -1330,8 +1330,8 @@
       "tv": "Fox",
       "venue": "Acrisure Bounce House",
       "city": "Orlando, FL",
-      "spread": 6.5,
-      "details": "BYU -6.5",
+      "spread": 7,
+      "details": "BYU -7",
       "overUnder": 43.5
     },
     {
@@ -1349,9 +1349,9 @@
       "tv": "ACC Network",
       "venue": "Bobby Dodd Stadium",
       "city": "Atlanta, GA",
-      "spread": -4,
-      "details": "GT -4",
-      "overUnder": 49.5
+      "spread": -5.5,
+      "details": "GT -5.5",
+      "overUnder": 50.5
     },
     {
       "id": "401858497",
@@ -1387,9 +1387,9 @@
       "tv": "CBS",
       "venue": "Rose Bowl",
       "city": "Pasadena, CA",
-      "spread": -14,
-      "details": "UCLA -14",
-      "overUnder": 44.5
+      "spread": -14.5,
+      "details": "UCLA -14.5",
+      "overUnder": 43.5
     },
     {
       "id": "401862810",
@@ -1408,7 +1408,7 @@
       "city": "Annapolis, MD",
       "spread": 2.5,
       "details": "UNT -2.5",
-      "overUnder": 61.5
+      "overUnder": 62.5
     },
     {
       "id": "401864526",
@@ -1425,8 +1425,8 @@
       "tv": "MW+",
       "venue": "Huskie Stadium",
       "city": "Dekalb, IL",
-      "spread": 4.5,
-      "details": "HAW -4.5",
+      "spread": 4,
+      "details": "HAW -4",
       "overUnder": 47.5
     },
     {
@@ -1463,8 +1463,8 @@
       "tv": "ESPN+",
       "venue": "Broadview Stadium",
       "city": "Buffalo, NY",
-      "spread": -3.5,
-      "details": "BUF -3.5",
+      "spread": -3,
+      "details": "BUF -3",
       "overUnder": 44.5
     },
     {
@@ -1539,9 +1539,9 @@
       "tv": "ESPN2",
       "venue": "Mountain America Stadium",
       "city": "Tempe, AZ",
-      "spread": 3.5,
-      "details": "KSU -3.5",
-      "overUnder": 56.5
+      "spread": 2.5,
+      "details": "KSU -2.5",
+      "overUnder": 55.5
     },
     {
       "id": "401866449",
@@ -1558,8 +1558,8 @@
       "tv": "ESPNU",
       "venue": "Peden Stadium",
       "city": "Athens, OH",
-      "spread": -12.5,
-      "details": "OHIO -12.5",
+      "spread": -11.5,
+      "details": "OHIO -11.5",
       "overUnder": 48.5
     },
     {
@@ -1615,9 +1615,9 @@
       "tv": "ESPN+",
       "venue": "Veterans Memorial Stadium (AL)",
       "city": "Troy, AL",
-      "spread": -14.5,
-      "details": "TROY -14.5",
-      "overUnder": 51.5
+      "spread": -13.5,
+      "details": "TROY -13.5",
+      "overUnder": 50.5
     },
     {
       "id": "401864528",
@@ -1634,8 +1634,8 @@
       "tv": "MW+",
       "venue": "Mackay Stadium",
       "city": "Reno, NV",
-      "spread": -5.5,
-      "details": "NEV -5.5",
+      "spread": -6.5,
+      "details": "NEV -6.5",
       "overUnder": 46.5
     },
     {
@@ -1748,9 +1748,9 @@
       "tv": "ESPN+",
       "venue": "Joe Aillet Stadium",
       "city": "Ruston, LA",
-      "spread": -12.5,
-      "details": "LT -12.5",
-      "overUnder": 46.5
+      "spread": -13.5,
+      "details": "LT -13.5",
+      "overUnder": 45.5
     },
     {
       "id": "401860907",
@@ -1767,9 +1767,9 @@
       "tv": "USA Net",
       "venue": "Martin Stadium",
       "city": "Pullman, WA",
-      "spread": 12.5,
-      "details": "BOIS -12.5",
-      "overUnder": 51.5
+      "spread": 13.5,
+      "details": "BOIS -13.5",
+      "overUnder": 53.5
     },
     {
       "id": "401868106",
@@ -1826,7 +1826,7 @@
       "city": "Fort Collins, CO",
       "spread": 1.5,
       "details": "SDSU -1.5",
-      "overUnder": 63.5
+      "overUnder": 62.5
     },
     {
       "id": "401856836",
@@ -1843,9 +1843,9 @@
       "tv": "FS1",
       "venue": "Boone Pickens Stadium",
       "city": "Stillwater, OK",
-      "spread": -12.5,
-      "details": "OKST -12.5",
-      "overUnder": 55.5
+      "spread": -13.5,
+      "details": "OKST -13.5",
+      "overUnder": 56.5
     },
     {
       "id": "401858276",
@@ -1940,7 +1940,7 @@
       "city": "Jonesboro, AR",
       "spread": 2.5,
       "details": "GAST -2.5",
-      "overUnder": 58.5
+      "overUnder": 57.5
     },
     {
       "id": "401856729",
@@ -1959,7 +1959,7 @@
       "city": "Lexington, KY",
       "spread": -10.5,
       "details": "UK -10.5",
-      "overUnder": 51.5
+      "overUnder": 52.5
     },
     {
       "id": "401856732",
@@ -1976,8 +1976,8 @@
       "tv": "ABC",
       "venue": "DKR-Texas Memorial Stadium",
       "city": "Austin, TX",
-      "spread": -3,
-      "details": "TEX -3",
+      "spread": -3.5,
+      "details": "TEX -3.5",
       "overUnder": 53.5
     },
     {
@@ -1997,7 +1997,7 @@
       "city": "Tucson, AZ",
       "spread": -10,
       "details": "ARIZ -10",
-      "overUnder": 50.5
+      "overUnder": 51.5
     },
     {
       "id": "401858275",
@@ -2014,8 +2014,8 @@
       "tv": "ACC Network",
       "venue": "Kenan Stadium",
       "city": "Chapel Hill, NC",
-      "spread": -7.5,
-      "details": "UNC -7.5",
+      "spread": -9.5,
+      "details": "UNC -9.5",
       "overUnder": 46.5
     },
     {
@@ -2035,7 +2035,7 @@
       "city": "Madison, WI",
       "spread": 3,
       "details": "USC -3",
-      "overUnder": 49.5
+      "overUnder": 50.5
     },
     {
       "id": "401860906",
@@ -2052,9 +2052,9 @@
       "tv": "CBSSN",
       "venue": "UFCU Stadium",
       "city": "San Marcos, TX",
-      "spread": -12.5,
-      "details": "TXST -12.5",
-      "overUnder": 60.5
+      "spread": -13.5,
+      "details": "TXST -13.5",
+      "overUnder": 61.5
     },
     {
       "id": "401862811",
@@ -2071,8 +2071,8 @@
       "tv": "ESPNU",
       "venue": "Yulman Stadium",
       "city": "New Orleans, LA",
-      "spread": 2.5,
-      "details": "UTSA -2.5",
+      "spread": 3,
+      "details": "UTSA -3",
       "overUnder": 51.5
     },
     {
@@ -2092,7 +2092,7 @@
       "city": "Albuquerque, NM",
       "spread": -4.5,
       "details": "UNM -4.5",
-      "overUnder": 41.5
+      "overUnder": 40.5
     },
     {
       "id": "401856837",
@@ -2337,9 +2337,9 @@
       "tv": "",
       "venue": "Autzen Stadium",
       "city": "Eugene, OR",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -7.5,
+      "details": "ORE -7.5",
+      "overUnder": 52.5
     },
     {
       "id": "401858506",
@@ -2361,25 +2361,6 @@
       "overUnder": null
     },
     {
-      "id": "401858508",
-      "date": "2026-10-31T04:00Z",
-      "week": 9,
-      "neutral": false,
-      "completed": false,
-      "homeId": "26",
-      "awayId": "2440",
-      "homeName": "UCLA",
-      "awayName": "Nevada",
-      "homeScore": null,
-      "awayScore": null,
-      "tv": "",
-      "venue": "Rose Bowl",
-      "city": "Pasadena, CA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
-    },
-    {
       "id": "401856842",
       "date": "2026-10-31T16:00Z",
       "week": 9,
@@ -2394,9 +2375,9 @@
       "tv": "",
       "venue": "Galaxy Stadium",
       "city": "Lubbock, TX",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -7.5,
+      "details": "TTU -7.5",
+      "overUnder": 54.5
     },
     {
       "id": "401858277",
@@ -2470,9 +2451,9 @@
       "tv": "Fox",
       "venue": "Kinnick Stadium",
       "city": "Iowa City, IA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -4.5,
+      "details": "IOWA -4.5",
+      "overUnder": 39.5
     },
     {
       "id": "401858503",
@@ -2508,9 +2489,9 @@
       "tv": "",
       "venue": "Gillette Stadium",
       "city": "Foxborough, MA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": 28.5,
+      "details": "ND -28.5",
+      "overUnder": 53.5
     },
     {
       "id": "401862816",
@@ -2831,9 +2812,9 @@
       "tv": "SEC Network",
       "venue": "Vaught-Hemingway Stadium",
       "city": "Oxford, MS",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -10.5,
+      "details": "MISS -10.5",
+      "overUnder": 53.5
     },
     {
       "id": "401866678",
@@ -3572,9 +3553,9 @@
       "tv": "ABC",
       "venue": "Mercedes-Benz Stadium",
       "city": "Atlanta, GA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -10.5,
+      "details": "UGA -10.5",
+      "overUnder": 56.5
     },
     {
       "id": "401856843",
@@ -3591,9 +3572,9 @@
       "tv": "Fox",
       "venue": "LaVell Edwards Stadium",
       "city": "Provo, UT",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -16.5,
+      "details": "BYU -16.5",
+      "overUnder": 51.5
     },
     {
       "id": "401856845",
@@ -3629,9 +3610,9 @@
       "tv": "CBS",
       "venue": "Memorial Stadium (Bloomington, IN)",
       "city": "Bloomington, IN",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": -22.5,
+      "details": "IU -22.5",
+      "overUnder": 45.5
     },
     {
       "id": "401860910",
@@ -3762,9 +3743,9 @@
       "tv": "",
       "venue": "Nippert Stadium",
       "city": "Cincinnati, OH",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": 9.5,
+      "details": "UTAH -9.5",
+      "overUnder": 56.5
     },
     {
       "id": "401858284",
@@ -3933,6 +3914,25 @@
       "tv": "SEC Network",
       "venue": "Memorial Stadium (Norman, OK)",
       "city": "Norman, OK",
+      "spread": -5.5,
+      "details": "OU -5.5",
+      "overUnder": 43.5
+    },
+    {
+      "id": "401858508",
+      "date": "2026-10-31T20:15Z",
+      "week": 9,
+      "neutral": false,
+      "completed": false,
+      "homeId": "26",
+      "awayId": "2440",
+      "homeName": "UCLA",
+      "awayName": "Nevada",
+      "homeScore": null,
+      "awayScore": null,
+      "tv": "BTN",
+      "venue": "Rose Bowl",
+      "city": "Pasadena, CA",
       "spread": null,
       "details": "",
       "overUnder": null
@@ -4123,9 +4123,9 @@
       "tv": "",
       "venue": "Kenan Stadium",
       "city": "Chapel Hill, NC",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": 14.5,
+      "details": "MIA -14.5",
+      "overUnder": 50.5
     },
     {
       "id": "401858509",
@@ -4142,9 +4142,9 @@
       "tv": "NBC",
       "venue": "Los Angeles Memorial Coliseum",
       "city": "Los Angeles, CA",
-      "spread": null,
-      "details": "",
-      "overUnder": null
+      "spread": 6.5,
+      "details": "OSU -6.5",
+      "overUnder": 53.5
     },
     {
       "id": "401856733",
@@ -4299,5 +4299,5 @@
       "overUnder": null
     }
   ],
-  "signature": "e6aed84b"
+  "signature": "dcafae7e"
 }
