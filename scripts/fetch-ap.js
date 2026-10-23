@@ -203,13 +203,22 @@ function trimPoll(poll, espnIdToSag) {
     .map((r) => {
       const id = r.team && r.team.id ? String(r.team.id) : "";
       const espnName = r.team ? (r.team.shortDisplayName || r.team.displayName || r.team.name) : "";
+      // ESPN rankings include the team's record at poll time (e.g., "7-0")
+      const record = r.team && r.team.record ? r.team.record.items[0] : null;
+      let w = null, l = null;
+      if (record && record.summary) {
+        const m = record.summary.match(/(\d+)-(\d+)/);
+        if (m) { w = Number(m[1]); l = Number(m[2]); }
+      }
       return {
         rank: r.current,
         id: id,
         espn: espnName,
         sagarin: espnIdToSag[id] || null,
         points: typeof r.points === "number" ? r.points : null,
-        firstPlaceVotes: typeof r.firstPlaceVotes === "number" ? r.firstPlaceVotes : null
+        firstPlaceVotes: typeof r.firstPlaceVotes === "number" ? r.firstPlaceVotes : null,
+        w: w,
+        l: l
       };
     });
   const byTeam = {};
