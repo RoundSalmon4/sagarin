@@ -823,6 +823,11 @@
     render: render,
     view: view,
     setSim: function (sim) { view.sim = sim; },
+    computeSim: computeSim,
+    simContext: simContext,
+    ccgOutcomes: ccgOutcomes,
+    fieldFromRecords: fieldFromRecords,
+    runOnce: runOnce,
 };
 
   // Exposed so the TV tab can measure what a game does to the projected field.

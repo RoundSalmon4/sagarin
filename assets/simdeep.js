@@ -42,7 +42,7 @@
   }
 
   function onSimDataReady() {
-    document.getElementById("simdeepNote").textContent = "Simulation data ready. Add filters and click Run deep dive.";
+    document.getElementById("simdeepNote").textContent = "Simulation data ready. Add filters to explore results (not to create events) and click Run deep dive.";
   }
 
   function addFilterRow() {
@@ -59,23 +59,27 @@
         '<button type="button" class="simdeep-remove-row" data-row="' + rowId + '" title="Remove filter" aria-label="Remove filter">\u2715</button>' +
       '</div>' +
       '<div class="simdeep-row-fields">' +
-        '<label class="inline-label">Team' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="team" checked aria-label="Include team filter"> Team' +
           '<div class="combo">' +
             '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false">' +
             '<div class="combo-list hidden" role="listbox"></div>' +
           '</div>' +
         '</label>' +
-        '<label class="inline-label">Conf champ' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" checked aria-label="Include conf champ filter"> Conf champ' +
           '<select class="simdeep-conf-champ" aria-label="Conference champion">' +
             '<option value="">Any</option>' +
           '</select>' +
         '</label>' +
-        '<label class="inline-label">Overall' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="overall" checked aria-label="Include overall record filter"> Overall' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
           '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses">' +
           '<span class="simdeep-record-range overall" style="display:none;"></span>' +
         '</label>' +
-        '<label class="inline-label">Conf' +
+        '<label class="inline-label">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="conf" checked aria-label="Include conf record filter"> Conf' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
           '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses">' +
           '<span class="simdeep-record-range conf" style="display:none;"></span>' +
@@ -257,9 +261,25 @@
       overallEl.style.display = "inline";
       confEl.textContent = " (range: " + cwMin + "-" + cwMax + " W, " + clMin + "-" + clMax + " L)";
       confEl.style.display = "inline";
+      var owInput = row.querySelector(".simdeep-ow");
+      var olInput = row.querySelector(".simdeep-ol");
+      var cwInput = row.querySelector(".simdeep-cw");
+      var clInput = row.querySelector(".simdeep-cl");
+      if (owInput) { owInput.min = owMin; owInput.max = owMax; }
+      if (olInput) { olInput.min = olMin; olInput.max = olMax; }
+      if (cwInput) { cwInput.min = cwMin; cwInput.max = cwMax; }
+      if (clInput) { clInput.min = clMin; clInput.max = clMax; }
     } else {
       overallEl.style.display = "none";
       confEl.style.display = "none";
+      var owInput = row.querySelector(".simdeep-ow");
+      var olInput = row.querySelector(".simdeep-ol");
+      var cwInput = row.querySelector(".simdeep-cw");
+      var clInput = row.querySelector(".simdeep-cl");
+      if (owInput) { owInput.min = 0; owInput.max = 15; }
+      if (olInput) { olInput.min = 0; olInput.max = 15; }
+      if (cwInput) { cwInput.min = 0; cwInput.max = 15; }
+      if (clInput) { clInput.min = 0; clInput.max = 15; }
     }
   }
 
@@ -303,56 +323,29 @@
     loading.classList.remove("hidden");
     note.textContent = "Running 10,000 simulations...";
 
-    var originalComputeSim = playoffModule.computeSim;
-    playoffModule.computeSim = function () {
-      return computeSimWithDebug();
-    };
+    var prevDebug = (SG.debug && SG.debug.sim) ? SG.debug.sim : false;
+    SG.debug = SG.debug || {};
+    SG.debug.sim = true;
 
     setTimeout(function () {
       try {
         var simResult = playoffModule.computeSim();
+        SG.debug.sim = prevDebug;
         playoffView.sim = simResult;
         view.sim = simResult;
         playoffModule.render();
         onSimDataReady();
         applyFilters();
+      } catch (e) {
+        SG.debug.sim = prevDebug;
+        console.error("Simulation failed:", e);
+        note.textContent = "Simulation failed. See console for details.";
       } finally {
-        playoffModule.computeSim = originalComputeSim;
         btn.disabled = false;
         btn.textContent = "Run simulation";
         loading.classList.add("hidden");
       }
     }, 40);
-  }
-
-  function computeSimWithDebug() {
-    var playoffView = SG.state.modules.playoff.view;
-    var method = playoffView.method;
-    var format = playoffView.format;
-    var is12 = Number(format) === 12;
-
-    var ctx = simContext(method);
-    var debugRuns = [];
-
-    for (var i = 0; i < SIMS; i++) {
-      var regRec = cloneRecords(ctx.base);
-      for (var j = 0; j < ctx.games.length; j++) {
-        var g = ctx.games[j];
-        var hw = Math.random() < g.p;
-        var rh = getRec(regRec, g.h), ra = getRec(regRec, g.a);
-        rh.ow += hw ? 1 : 0; rh.ol += hw ? 0 : 1;
-        ra.ow += hw ? 0 : 1; ra.ol += hw ? 1 : 0;
-        if (g.conf) { rh.cw += hw ? 1 : 0; rh.cl += hw ? 0 : 1; ra.cw += hw ? 0 : 1; ra.cl += hw ? 1 : 0; }
-      }
-      var ccgs = is12 ? ccgOutcomes(regRec, method, true) : null;
-      var f = fieldFromRecords(format, method, regRec, ccgs);
-
-      var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
-      var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
-      debugRuns.push({ run: i, field: fieldTeams, champion: r.champion.team.team, confChamps: confChamps, records: regRec });
-    }
-
-    return { n: SIMS, debugRuns: debugRuns };
   }
 
   // ---- Filter application ----
@@ -375,12 +368,17 @@
     var hasValidFilter = false;
 
     rows.forEach(function (row) {
-      var team = row.querySelector(".simdeep-team-search").value.trim() || null;
-      var confChamp = row.querySelector(".simdeep-conf-champ").value || null;
-      var ow = parseInt(row.querySelector(".simdeep-ow").value) || null;
-      var ol = parseInt(row.querySelector(".simdeep-ol").value) || null;
-      var cw = parseInt(row.querySelector(".simdeep-cw").value) || null;
-      var cl = parseInt(row.querySelector(".simdeep-cl").value) || null;
+      var teamCheck = row.querySelector('.simdeep-param-check[data-param="team"]');
+      var confChampCheck = row.querySelector('.simdeep-param-check[data-param="confChamp"]');
+      var overallCheck = row.querySelector('.simdeep-param-check[data-param="overall"]');
+      var confCheck = row.querySelector('.simdeep-param-check[data-param="conf"]');
+
+      var team = (teamCheck && teamCheck.checked) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
+      var confChamp = (confChampCheck && confChampCheck.checked) ? row.querySelector(".simdeep-conf-champ").value || null : null;
+      var ow = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ow").value) || null : null;
+      var ol = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ol").value) || null : null;
+      var cw = (confCheck && confCheck.checked) ? parseInt(row.querySelector(".simdeep-cw").value) || null : null;
+      var cl = (confCheck && confCheck.checked) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
 
       // Skip empty rows
       if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null) return;
@@ -511,12 +509,6 @@
   }
 
   var SIMS = 10000;
-  function getRec(rec, team) { return rec[team] || (rec[team] = { cw: 0, cl: 0, ow: 0, ol: 0 }); }
-  function cloneRecords(rec) { var out = {}; Object.keys(rec).forEach(function (k) { out[k] = { cw: rec[k].cw, cl: rec[k].cl, ow: rec[k].ow, ol: rec[k].ol }; }); return out; }
-  function simContext(method) { return SG.state.modules.playoff.simContext(method); }
-  function ccgOutcomes(regRec, method, stochastic) { return SG.state.modules.playoff.ccgOutcomes(regRec, method, stochastic); }
-  function fieldFromRecords(format, method, regRec, ccgs) { return SG.state.modules.playoff.fieldFromRecords(format, method, regRec, ccgs); }
-  function runOnce(seeds, format, method, stochastic) { return SG.state.modules.playoff.runOnce(seeds, format, method, stochastic); }
 
   SG.state.modules.simdeep = { init: init, render: function () { if (!SG.state.data) return; if (view.sim && view.sim.debugRuns) onSimDataReady(); } };
 
