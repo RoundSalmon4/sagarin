@@ -60,20 +60,20 @@
       '</div>' +
       '<div class="simdeep-row-fields">' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="team" checked aria-label="Include team filter"> Team' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="team" checked aria-label="Include team filter" title="Filter by a specific team in the playoff projection"> Team' +
           '<div class="combo">' +
             '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false">' +
             '<div class="combo-list hidden" role="listbox"></div>' +
           '</div>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" checked aria-label="Include conf champ filter"> Conf champ' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" checked aria-label="Include conf champ filter" title="Filter by conference champion (select conference; if team is also set, requires that team to be the champ)"> Conf champ' +
           '<select class="simdeep-conf-champ" aria-label="Conference champion">' +
             '<option value="">Any</option>' +
           '</select>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="overall" checked aria-label="Include overall record filter"> Overall' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="overall" checked aria-label="Include overall record filter" title="Filter by overall win/loss record (use operators for greater/less than)"> Overall' +
           '<select class="simdeep-op-ow" aria-label="Overall wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
           '<select class="simdeep-op-ol" aria-label="Overall losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
@@ -81,7 +81,7 @@
           '<span class="simdeep-record-range overall" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="conf" checked aria-label="Include conf record filter"> Conf' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="conf" checked aria-label="Include conf record filter" title="Filter by conference win/loss record (use operators for greater/less than)"> Conf' +
           '<select class="simdeep-op-cw" aria-label="Conf wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
           '<select class="simdeep-op-cl" aria-label="Conf losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
@@ -89,10 +89,10 @@
           '<span class="simdeep-record-range conf" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field"> In field' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field" title="Only count runs where this team appears in the playoff field"> In field' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="champion" aria-label="Filter by champion team"> Champion' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="champion" aria-label="Filter by champion team" title="Only match runs where this team wins the championship"> Champion' +
           '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team" style="width: 8rem;">' +
         '</label>' +
       '</div>';
@@ -259,11 +259,13 @@
     var overallEl = row.querySelector(".simdeep-record-range.overall");
     var confEl = row.querySelector(".simdeep-record-range.conf");
 
-    if (!teamName || !view.sim || !view.sim.debugRuns) {
-      overallEl.style.display = "none";
-      confEl.style.display = "none";
-      return;
-    }
+    // Always show a static reference; upgrade to per-team sim range when possible
+    overallEl.textContent = " (typical range: 0-15 W, 0-15 L)";
+    confEl.textContent = " (typical range: 0-15 W, 0-15 L)";
+    overallEl.style.display = "inline";
+    confEl.style.display = "inline";
+
+    if (!teamName || !view.sim || !view.sim.debugRuns) return;
 
     var runs = view.sim.debugRuns;
     var owMin = 99, owMax = -1, olMin = 99, olMax = -1;
@@ -285,10 +287,8 @@
     });
 
     if (found) {
-      overallEl.textContent = " (range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
-      overallEl.style.display = "inline";
-      confEl.textContent = " (range: " + cwMin + "-" + cwMax + " W, " + clMin + "-" + clMax + " L)";
-      confEl.style.display = "inline";
+      overallEl.textContent = " (sim range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
+      confEl.textContent = " (sim range: " + cwMin + "-" + cwMax + " W, " + clMin + "-" + clMax + " L)";
       var owInput = row.querySelector(".simdeep-ow");
       var olInput = row.querySelector(".simdeep-ol");
       var cwInput = row.querySelector(".simdeep-cw");
