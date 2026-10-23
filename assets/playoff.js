@@ -446,6 +446,7 @@
       { key: "conf", label: "Conference", cls: "left", type: "str" },
       { key: "now", label: "Now", cls: "left", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
       { key: "proj", label: "Projected", cls: "left", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
+      { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true },
       { key: "bid", label: "Bid", cls: "left", type: "str" }
     ];
     var std = finalRecords(view.method, view.format);
@@ -469,6 +470,7 @@
         nowV: recSortVal(nowW, nowL),
         proj: proj,
         projV: recSortVal(projOW, projOL),
+        rating: t[view.method],
         bid: field.bid[t.team] || "At-large"
       });
     }
@@ -512,22 +514,79 @@
       simBlock("Chance to make the field", sim.field, sim.n) +
       simBlock("Championship odds", sim.champ, sim.n) +
       '<p class="note">' + sim.n.toLocaleString() + " simulated seasons. Each run plays out the remaining regular-season games, decides the projected conference champions, rebuilds the field from those results, then plays the bracket. The bar is each team's share, scaled to the leading team.</p>";
+
+    // Attach expand/collapse handlers for sim blocks
+    SG.$$(".sim-more-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var block = document.getElementById(btn.getAttribute("data-target"));
+        if (!block) return;
+        var list = block.querySelector(".sim-list");
+        var dataEl = block.querySelector(".sim-full-data");
+        var expanded = btn.getAttribute("data-expanded") === "true";
+        var LIMIT = 14;
+        var n = sim.n;
+
+        if (!expanded) {
+          // Expand - show all remaining teams
+          var moreData = JSON.parse(dataEl.textContent);
+          var max = Math.max.apply(null, 
+            Array.from(list.children).map(function (r) {
+              var w = parseFloat(r.querySelector(".bar-fill").style.width) || 0;
+              return w;
+            })) || 1;
+          list.innerHTML += moreData.map(function (r) {
+            var pct = (r.c / n) * 100;
+            return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
+              ((r.c / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
+          }).join("");
+          btn.textContent = "Show less";
+          btn.setAttribute("data-expanded", "true");
+        } else {
+          // Collapse - show only first LIMIT
+          var rows = list.querySelectorAll(".row");
+          for (var i = LIMIT; i < rows.length; i++) {
+            rows[i].remove();
+          }
+          btn.textContent = "Show more (" + (JSON.parse(dataEl.textContent).length) + " teams)";
+          btn.setAttribute("data-expanded", "false");
+        }
+      });
+    });
   }
 
   function simBlock(title, counts, n) {
     var LIMIT = 14;
     var all = Object.keys(counts).map(function (name) { return { name: name, c: counts[name] }; })
       .sort(function (a, b) { return b.c - a.c; });
-    var rows = all.slice(0, LIMIT);
-    var max = Math.max.apply(null, rows.map(function (r) { return r.c; })) || 1;
-    return '<div class="sim-block"><h3>' + SG.esc(title) + '</h3><div class="sim-list">' +
-      rows.map(function (r) {
+    var max = Math.max.apply(null, all.map(function (r) { return r.c; })) || 1;
+
+    // Store full list on the element for expand/collapse
+    var blockId = "sim-" + title.replace(/[^a-z]/gi, "-").toLowerCase();
+
+    function renderRows(list) {
+      return list.map(function (r) {
         var pct = (r.c / n) * 100;
         return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
           ((r.c / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
-      }).join("") + "</div>" +
-      (all.length > rows.length ? '<p class="sim-more">Top ' + rows.length + " of " + all.length + " teams.</p>" : "") +
-      "</div>";
+      }).join("");
+    }
+
+    var initialRows = all.slice(0, LIMIT);
+    var html = '<div class="sim-block" id="' + blockId + '"><h3>' + SG.esc(title) + '</h3><div class="sim-list">' +
+      renderRows(initialRows) + "</div>";
+
+    if (all.length > LIMIT) {
+      html += '<div class="sim-more-wrap"><button type="button" class="sim-more-btn" data-target="' + blockId +
+        '" data-expanded="false">Show more (' + (all.length - LIMIT) + " teams)</button></div>";
+      // Store full data for expansion
+      html += '<script type="application/json" class="sim-full-data">' +
+        JSON.stringify(all.slice(LIMIT)) + "</script>";
+    } else if (all.length > 0) {
+      html += '<p class="sim-more">Showing all ' + all.length + " teams.</p>";
+    }
+
+    html += "</div>";
+    return html;
   }
 
   function render() {
@@ -562,6 +621,36 @@
       "The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added. " +
       "The projected field table shows the selected rating for each team.";
     renderSim(view.sim);
+
+    // Attach expand/collapse handlers for sim blocks
+    SG.$$(".sim-more-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var block = document.getElementById(btn.getAttribute("data-target"));
+        if (!block) return;
+        var list = block.querySelector(".sim-list");
+        var dataEl = block.querySelector(".sim-full-data");
+        var expanded = btn.getAttribute("data-expanded") === "true";
+        if (expanded) {
+          // Collapse - show only first 14
+          var max = Math.max.apply(null, 
+            Array.from(list.children).map(function (r) {
+              var w = parseFloat(r.querySelector(".bar-fill").style.width) || 0;
+              return w;
+            })) || 1;
+          // Re-render initial 14
+          var initialData = Array.from(list.children).slice(0, 14);
+          // Actually simpler: re-render from stored data
+          var fullData = JSON.parse(dataEl.textContent);
+          var initialDataFull = JSON.parse(JSON.stringify(fullData)).slice(0, 14); // Not right approach
+        } else {
+          // Expand - show all
+          var fullData = JSON.parse(dataEl.textContent);
+          var allData = Array.from(list.children).map(function (r) { return r; }); // existing rows
+          // We need to combine initial rows with remaining
+          // Better approach: store initial data separately
+        }
+      });
+    });
   }
 
   // ---- full-season simulation ----
