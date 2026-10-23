@@ -836,4 +836,52 @@
     foldCcg(fin, ccgs);
     return { reg: reg, final: fin, ccgs: ccgs, order: conferenceOrder(method, reg) };
   };
+
+
+// Debug query function for simulation runs (exposed on SG.debug.simQuery)
+SG.debug = SG.debug || {};
+SG.debug.simQuery = function (filters) {
+  if (!SG.debug.sim || !view.sim || !view.sim.debugRuns) {
+    console.warn("No simulation debug data available. Run simulation with ?debug=sim first.");
+    return [];
+  }
+  var runs = view.sim.debugRuns;
+  var filtered = runs.filter(function (run) {
+    if (!filters) return true;
+    // Filter by team in field
+    if (filters.teamInField) {
+      var found = run.field.some(function (f) { return f.team === filters.teamInField; });
+      if (!found) return false;
+    }
+    // Filter by team as champion
+    if (filters.champion) {
+      if (run.champion !== filters.champion) return false;
+    }
+    // Filter by conference champion
+    if (filters.confChamp) {
+      var found = run.confChamps.some(function (c) { return c.conf === filters.confChamp && c.champ === filters.teamInField; });
+      if (!found) return false;
+    }
+    // Filter by specific field composition (e.g., 1-loss JMU + 1-loss Pac12 + 1-loss American)
+    if (filters.fieldHas) {
+      var match = filters.fieldHas.every(function (req) {
+        return run.field.some(function (f) { return f.team === req.team; });
+      });
+      if (!match) return false;
+    }
+    // Filter by team records
+    if (filters.teamRecord) {
+      var team = filters.teamRecord.team;
+      var rec = run.records[team];
+      if (!rec) return false;
+      if (filters.teamRecord.ow !== undefined && rec.ow !== filters.teamRecord.ow) return false;
+      if (filters.teamRecord.ol !== undefined && rec.ol !== filters.teamRecord.ol) return false;
+      if (filters.teamRecord.cw !== undefined && rec.cw !== filters.teamRecord.cw) return false;
+      if (filters.teamRecord.cl !== undefined && rec.cl !== filters.teamRecord.cl) return false;
+    }
+    return true;
+  });
+  return filtered;
+};
+
 })();
