@@ -740,6 +740,11 @@
     var is12 = Number(format) === 12;
     var ctx = simContext(method);
     var fieldCount = {}, champCount = {};
+
+    // Debug: store full run data when debug mode enabled
+    var debugRuns = [];
+    var debugEnabled = SG.debug && SG.debug.sim;
+
     for (var i = 0; i < SIMS; i++) {
       var regRec = cloneRecords(ctx.base);
       for (var j = 0; j < ctx.games.length; j++) {
@@ -756,8 +761,17 @@
       var r = runOnce(f.seeds, format, method, true);
       var c = r.champion.team.team;
       champCount[c] = (champCount[c] || 0) + 1;
+
+      if (debugEnabled) {
+        // Build field composition for this run
+        var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
+        var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
+        debugRuns.push({ run: i, field: fieldTeams, champion: c, confChamps: confChamps, records: regRec });
+      }
     }
-    return { n: SIMS, field: fieldCount, champ: champCount };
+    var result = { n: SIMS, field: fieldCount, champ: champCount };
+    if (debugEnabled) result.debugRuns = debugRuns;
+    return result;
   }
 
   function simulate() {
