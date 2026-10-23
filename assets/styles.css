@@ -287,9 +287,9 @@ input[type="search"] { min-width: 240px; }
 
 /* Field table column widths */
 #fieldTable { table-layout: fixed; width: 100%; }
-.proj-col { min-width: 150px; width: 150px; }
-.rating-col { min-width: 70px; width: 70px; }
-.bid-col { min-width: 180px; width: 180px; }
+.proj-col { min-width: 130px; width: 130px; }
+.rating-col { min-width: 80px; width: 80px; }
+.bid-col { min-width: 160px; width: 160px; }
 
 /* bracket */
 .bracket { display: flex; gap: 0.9rem; overflow-x: auto; padding: 0.4rem 0 1rem; align-items: stretch; }
