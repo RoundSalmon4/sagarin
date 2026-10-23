@@ -255,19 +255,34 @@
     select.value = current;
   }
 
+  function computeDataRanges(teamName) {
+    var teams = SG.state.data && SG.state.data.teams ? SG.state.data.teams : [];
+    var owMin = 99, owMax = -1, olMin = 99, olMax = -1;
+    var cwMin = 99, cwMax = -1, clMin = 99, clMax = -1;
+    teams.forEach(function (t) {
+      if (t.level !== "A") return;
+      if (teamName && t.team !== teamName) return;
+      var ow = t.ow || 0, ol = t.ol || 0, cw = t.cw || 0, cl = t.cl || 0;
+      if (ow < owMin) owMin = ow; if (ow > owMax) owMax = ow;
+      if (ol < olMin) olMin = ol; if (ol > olMax) olMax = ol;
+      if (cw < cwMin) cwMin = cw; if (cw > cwMax) cwMax = cw;
+      if (cl < clMin) clMin = cl; if (cl > clMax) clMax = cl;
+    });
+    if (owMax < 0) { owMin = 0; owMax = 15; olMin = 0; olMax = 15; cwMin = 0; cwMax = 15; clMin = 0; clMax = 15; }
+    return { owMin: owMin, owMax: owMax, olMin: olMin, olMax: olMax, cwMin: cwMin, cwMax: cwMax, clMin: clMin, clMax: clMax };
+  }
+
   function updateRecordRanges(row, teamName) {
     var overallEl = row.querySelector(".simdeep-record-range.overall");
     var confEl = row.querySelector(".simdeep-record-range.conf");
 
-    // Always show a static reference; upgrade to per-team sim range when possible
-    overallEl.textContent = " (typical range: 0-15 W, 0-15 L)";
-    confEl.textContent = " (typical range: 0-15 W, 0-15 L)";
-    overallEl.style.display = "inline";
-    confEl.style.display = "inline";
+    // Compute possible ranges from site data for any team (before sim)
+    var dataRanges = computeDataRanges(teamName);
+    overallEl.textContent = " (possible: " + dataRanges.owMin + "-" + dataRanges.owMax + " W, " + dataRanges.olMin + "-" + dataRanges.olMax + " L)";
+    confEl.textContent = " (possible: " + dataRanges.cwMin + "-" + dataRanges.cwMax + " W, " + dataRanges.clMin + "-" + dataRanges.clMax + " L)";
 
-    if (!teamName || !view.sim || !view.sim.debugRuns) return;
-
-    var runs = view.sim.debugRuns;
+    if (teamName && view.sim && view.sim.debugRuns) {
+      var runs = view.sim.debugRuns;
     var owMin = 99, owMax = -1, olMin = 99, olMax = -1;
     var cwMin = 99, cwMax = -1, clMin = 99, clMax = -1;
     var found = false;
@@ -289,6 +304,9 @@
     if (found) {
       overallEl.textContent = " (sim range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
       confEl.textContent = " (sim range: " + cwMin + "-" + cwMax + " W, " + clMin + "-" + clMax + " L)";
+    } else {
+      // Keep possible-range text already set above
+    }
       var owInput = row.querySelector(".simdeep-ow");
       var olInput = row.querySelector(".simdeep-ol");
       var cwInput = row.querySelector(".simdeep-cw");
@@ -297,17 +315,6 @@
       if (olInput) { olInput.min = olMin; olInput.max = olMax; }
       if (cwInput) { cwInput.min = cwMin; cwInput.max = cwMax; }
       if (clInput) { clInput.min = clMin; clInput.max = clMax; }
-    } else {
-      overallEl.style.display = "none";
-      confEl.style.display = "none";
-      var owInput = row.querySelector(".simdeep-ow");
-      var olInput = row.querySelector(".simdeep-ol");
-      var cwInput = row.querySelector(".simdeep-cw");
-      var clInput = row.querySelector(".simdeep-cl");
-      if (owInput) { owInput.min = 0; owInput.max = 15; }
-      if (olInput) { olInput.min = 0; olInput.max = 15; }
-      if (cwInput) { cwInput.min = 0; cwInput.max = 15; }
-      if (clInput) { clInput.min = 0; clInput.max = 15; }
     }
   }
 
