@@ -1039,6 +1039,14 @@
   function init() {
     SG.initTheme();
 
+    // Debug mode: ?debug=playoff logs playoff projection details to console
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("debug") === "playoff") {
+      SG.debug = SG.debug || {};
+      SG.debug.playoff = true;
+      console.log("[DEBUG] Playoff projection debug mode enabled");
+    }
+
     loadAll().then(function (res) {
       SG.state.data = res.data;
       SG.state.espn = res.espn;

@@ -208,10 +208,15 @@
     var seeds = [null];
     var bid = {};
 
+    // Check if CFP rankings are available (primary poll is CFP)
+    var ap = SG.state.ap;
+    var hasCfp = ap && ap.primary === "cfp" && ap.byTeam;
+    var cfpRank = hasCfp ? ap.byTeam : null;
+
     // Resume score: selected rating minus a penalty per projected loss plus the
     // SOS weight times the schedule edge over the FBS average, plus a bonus for
     // the projected conference champion. Drives the G6 spot, the at-large order
-    // and the seeds.
+    // and the seeds when CFP rankings are not available.
     loadResumeWeights();
     var avgSched = 0;
     for (var ai = 0; ai < teams.length; ai++) avgSched += teams[ai].sched || 0;
@@ -229,25 +234,52 @@
     var ranked = teams.slice().sort(byResume);
     function rankOf(t) { return ranked.indexOf(t) + 1; }
 
+    // When CFP rankings are available, use them for G6 bid, ND bid, at-large order, and seeding.
+    // P4 champs still get auto bids but are seeded by CFP rank.
+    function cfpOrder(a, b) {
+      var ra = cfpRank[a.team] || 999;
+      var rb = cfpRank[b.team] || 999;
+      return ra - rb;
+    }
+
     if (is12) {
       var qual = P4.map(function (c) { return champs[c]; }).filter(Boolean);
       qual.forEach(function (t) { bid[t.team] = "P4 champ (" + mergeConf(t.conference) + ")"; });
-      var g6 = ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })[0];
-      var nd = ranked.filter(function (t) { return t.team === "Notre Dame"; })[0];
+
+      // G6 bid: highest G6 team in CFP ranking when available, else resume score
+      var g6 = hasCfp
+        ? ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; }).sort(cfpOrder)[0]
+        : ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })[0];
       if (g6) { qual.push(g6); bid[g6.team] = "G6 bid (" + mergeConf(g6.conference) + ")"; }
-      if (nd && rankOf(nd) <= 12) { qual.push(nd); bid[nd.team] = "At-large (top 12)"; }
+
+      // Notre Dame: auto bid if in CFP top 12, else resume top 12
+      var nd = ranked.filter(function (t) { return t.team === "Notre Dame"; })[0];
+      var ndCfpRank = nd && cfpRank ? cfpRank[nd.team] : null;
+      if (nd && (ndCfpRank ? ndCfpRank <= 12 : rankOf(nd) <= 12)) {
+        qual.push(nd);
+        bid[nd.team] = ndCfpRank ? "At-large (CFP top 12)" : "At-large (top 12)";
+      }
+
       var used = {};
       qual.forEach(function (t) { used[t.team] = true; });
-      var challengers = teams.filter(function (t) { return !used[t.team]; }).sort(byResume);
+
+      // At-large and seeding: CFP rank when available, else resume score
+      var challengers = teams.filter(function (t) { return !used[t.team]; });
+      if (hasCfp) challengers.sort(cfpOrder);
+      else challengers.sort(byResume);
+
       var atLarge = challengers.slice(0, 12 - qual.length);
       atLarge.forEach(function (t) { bid[t.team] = "At-large"; });
-      qual.concat(atLarge).sort(byResume).forEach(function (t) { seeds.push(t); });
+
+      // Final field: auto bids + at-large, seeded by CFP rank or resume
+      var field = qual.concat(atLarge);
+      if (hasCfp) field.sort(cfpOrder);
+      else field.sort(byResume);
+      field.forEach(function (t) { seeds.push(t); });
     } else {
+      // 24-team format logic unchanged (CFP rankings not used for 24-team yet)
       var p4 = P4.map(function (c) { return champs[c]; }).filter(Boolean);
       p4.forEach(function (t) { bid[t.team] = "P4 champ (" + mergeConf(t.conference) + ")"; });
-      // The G6 spot goes to the highest Group of 6 team on the resume score, the
-      // model's stand-in for the highest-ranked G6 team in the committee ranking.
-      // It is a team spot, not a conference-champion spot.
       var g6 = ranked.filter(function (t) { return G6.indexOf(mergeConf(t.conference)) !== -1; })[0];
       if (g6) bid[g6.team] = "G6 bid (" + mergeConf(g6.conference) + ")";
       var auto = p4.concat(g6 ? [g6] : []);
@@ -257,10 +289,6 @@
         .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); });
       var atLarge24 = challengers.slice(0, 19);
       atLarge24.forEach(function (t) { bid[t.team] = "At-large"; });
-      // The whole field is seeded 1-24 on the resume score (rating minus the
-      // per-loss penalty, plus the schedule and conference title terms), the
-      // model's stand-in for the committee ranking, so a high rating with a pile
-      // of losses does not buy a top seed.
       auto.concat(atLarge24)
         .sort(function (a, b) { return (atLargeScore(b) - atLargeScore(a)) || (b[method] - a[method]); })
         .forEach(function (t) { seeds.push(t); });
@@ -445,9 +473,9 @@
         cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
       { key: "now", label: "Now", cls: "left", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
-      { key: "proj", label: "Projected", cls: "left", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
-      { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true },
-      { key: "bid", label: "Bid", cls: "left", type: "str" }
+      { key: "proj", label: "Projected", cls: "left proj-col", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
+      { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true, cls: "rating-col" },
+      { key: "bid", label: "Bid", cls: "left bid-col", type: "str" }
     ];
     var std = finalRecords(view.method, view.format);
     var rows = [];
@@ -591,6 +619,26 @@
 
   function render() {
     if (!SG.state.data) return;
+
+    // Debug: log playoff projection details when ?debug=playoff
+    if (SG.debug && SG.debug.playoff) {
+      var regRec = projectedRecords(view.method);
+      var ccgs = Number(view.format) === 12 ? ccgOutcomes(regRec, view.method, false) : null;
+      var field = fieldFromRecords(view.format, view.method, regRec, ccgs);
+      var std = finalRecords(view.method, view.format);
+      var ap = SG.state.ap;
+      var hasCfp = ap && ap.primary === "cfp" && ap.byTeam;
+      console.group("[DEBUG] Playoff projection");
+      console.log("Format:", view.format, "Method:", view.method);
+      console.log("CFP rankings available:", hasCfp);
+      console.log("Conference champions:", Object.keys(ccgs || {}).map(function (c) { return c + ": " + ccgs[c].winner.team; }));
+      console.log("Field seeds:", field.seeds.slice(1).map(function (t, i) { return (i+1) + ". " + t.team + " (" + field.bid[t.team] + ")"; }));
+      console.log("Base records (completed games):", regRec);
+      console.log("Projected records (with CCG):", std);
+      if (hasCfp) console.log("CFP ranks:", ap.byTeam);
+      console.groupEnd();
+    }
+
     var field = buildField(view.format, view.method);
     view.field = field;
     renderField(field);
