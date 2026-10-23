@@ -788,9 +788,10 @@
     poll.ranks.forEach(function (r) {
       var t = r.sagarin ? SG.teamByName(r.sagarin) : null;
       var logo = r.sagarin ? SG.teamLogo(r.sagarin) : SG.logoById(r.id);
-      // Use the record from the poll itself (snapshot at poll time), else fall back to ESPN/Sagarin
-      var w = (r.w !== null && r.w !== undefined) ? r.w : (t ? SG.espnW(t) : null);
-      var l = (r.l !== null && r.l !== undefined) ? r.l : (t ? SG.espnL(t) : null);
+      // Use the record from the poll itself (snapshot at poll time).
+      // AP/Coaches include records. CFP does not, so fall back to Sagarin (weekly snapshot aligned with CFP releases).
+      var w = (r.w !== null && r.w !== undefined) ? r.w : (t ? t.w : null);
+      var l = (r.l !== null && r.l !== undefined) ? r.l : (t ? t.l : null);
       var rec = (w !== null && l !== null) ? SG.rec(w, l) : '<span class="dim">-</span>';
       html += '<tr><td class="num">' + r.rank + '</td><td class="left">' + logo +
         SG.esc(r.sagarin || r.espn) + "</td><td>" + (t ? SG.esc(rec) : '<span class="dim">-</span>') +
