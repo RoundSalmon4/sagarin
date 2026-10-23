@@ -539,7 +539,7 @@
             return '<div class="row"><span>' + SG.esc(r.name) + '</span><span class="bar-track"><span class="bar-fill" style="width:' +
               ((r.c / max) * 100).toFixed(1) + '%"></span></span><span>' + pct.toFixed(1) + "%</span></div>";
           }).join("");
-          btn.textContent = "Show less";
+          btn.textContent = "Show top 14";
           btn.setAttribute("data-expanded", "true");
         } else {
           // Collapse - show only first LIMIT
@@ -547,7 +547,7 @@
           for (var i = LIMIT; i < rows.length; i++) {
             rows[i].remove();
           }
-          btn.textContent = "Show more (" + (JSON.parse(dataEl.textContent).length) + " teams)";
+          btn.textContent = "Show all teams";
           btn.setAttribute("data-expanded", "false");
         }
       });
@@ -577,7 +577,7 @@
 
     if (all.length > LIMIT) {
       html += '<div class="sim-more-wrap"><button type="button" class="sim-more-btn" data-target="' + blockId +
-        '" data-expanded="false">Show more (' + (all.length - LIMIT) + " teams)</button></div>";
+        '" data-expanded="false">Show all teams</button></div>';
       // Store full data for expansion
       html += '<script type="application/json" class="sim-full-data">' +
         JSON.stringify(all.slice(LIMIT)) + "</script>";
