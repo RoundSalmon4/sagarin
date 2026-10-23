@@ -6,13 +6,24 @@
   var view = { sim: null, simRuns: null };
   var filterRowCount = 0;
 
+  // Build team -> conference map for sync logic
+  var teamToConf = {};
+  function buildTeamToConf() {
+    if (!SG.state.data) return;
+    teamToConf = {};
+    SG.state.data.teams.forEach(function (t) {
+      if (t.level === "A") teamToConf[t.team] = t.conference;
+    });
+  }
+
   function init() {
     if (!SG.state.data) return;
+    buildTeamToConf();
 
     document.getElementById("simdeepAddFilter").addEventListener("click", addFilterRow);
-    addFilterRow(); // start with one row
+    addFilterRow();
 
-    // Listen for simulation completion on playoff tab
+    // Listen for playoff sim completion
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
       var originalRender = SG.state.modules.playoff.render;
       SG.state.modules.playoff.render = function () {
@@ -21,6 +32,12 @@
           onSimDataReady();
         }
       };
+    }
+
+    // Check if playoff already has sim data
+    if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view.sim && SG.state.modules.playoff.view.sim.debugRuns) {
+      view.sim = SG.state.modules.playoff.view.sim;
+      onSimDataReady();
     }
   }
 
@@ -76,26 +93,63 @@
 
     // Wire up remove button
     row.querySelector(".simdeep-remove-row").addEventListener("click", function () {
-      if (container.querySelectorAll(".simdeep-filter-row").length <= 1) return; // keep at least one
+      if (container.querySelectorAll(".simdeep-filter-row").length <= 1) return;
       row.remove();
       updateRowLabels();
     });
 
-    // Wire up team change to update record ranges
+    // Wire up team change: sync conf champ + update ranges
     var teamSelect = row.querySelector(".simdeep-team");
     teamSelect.addEventListener("change", function () {
-      updateRecordRanges(row, this.value);
+      var teamName = this.value;
+      var confChampSelect = row.querySelector(".simdeep-conf-champ");
+      if (teamName && teamToConf[teamName]) {
+        confChampSelect.value = teamToConf[teamName];
+      }
+      updateRecordRanges(row, teamName);
+    });
+
+    // Wire up conf champ change: filter team dropdown
+    var confChampSelect = row.querySelector(".simdeep-conf-champ");
+    confChampSelect.addEventListener("change", function () {
+      var confName = this.value;
+      var teamSelect = row.querySelector(".simdeep-team");
+      if (confName) {
+        filterTeamSelectByConf(teamSelect, confName);
+      } else {
+        populateTeamSelect(teamSelect);
+      }
+    });
+
+    // Wire up remove button
+    row.querySelector(".simdeep-remove-row").addEventListener("click", function () {
+      if (container.querySelectorAll(".simdeep-filter-row").length <= 1) return;
+      row.remove();
+      updateRowLabels();
     });
 
     // Populate selects
     populateTeamSelect(teamSelect);
-    populateConfChampSelect(row.querySelector(".simdeep-conf-champ"));
+    populateConfChampSelect(confChampSelect);
     populateBidTypeSelect(row.querySelector(".simdeep-bid-type"));
 
-    // Show/hide min/max when team selected
+    // Show record ranges if team pre-selected
     if (teamSelect.value) {
       updateRecordRanges(row, teamSelect.value);
     }
+  }
+
+  function filterTeamSelectByConf(teamSelect, confName) {
+    var current = teamSelect.value;
+    var teams = SG.state.data.teams.filter(function (t) { return t.level === "A" && t.conference === confName; });
+    teamSelect.innerHTML = '<option value="">Any team</option>';
+    teams.forEach(function (t) {
+      var opt = document.createElement("option");
+      opt.value = t.team;
+      opt.textContent = t.team;
+      teamSelect.appendChild(opt);
+    });
+    teamSelect.value = current;
   }
 
   function updateRowLabels() {
@@ -148,9 +202,12 @@
   }
 
   function updateRecordRanges(row, teamName) {
+    var overallEl = row.querySelector(".simdeep-record-range.overall");
+    var confEl = row.querySelector(".simdeep-record-range.conf");
+
     if (!teamName || !view.sim || !view.sim.debugRuns) {
-      row.querySelector(".simdeep-record-range.overall").style.display = "none";
-      row.querySelector(".simdeep-record-range.conf").style.display = "none";
+      overallEl.style.display = "none";
+      confEl.style.display = "none";
       return;
     }
 
@@ -173,9 +230,6 @@
       if (rec.cl > clMax) clMax = rec.cl;
     });
 
-    var overallEl = row.querySelector(".simdeep-record-range.overall");
-    var confEl = row.querySelector(".simdeep-record-range.conf");
-
     if (found) {
       overallEl.textContent = " (range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
       overallEl.style.display = "inline";
@@ -187,10 +241,66 @@
     }
   }
 
+  function updateRowLabels() {
+    var rows = document.querySelectorAll(".simdeep-filter-row");
+    rows.forEach(function (row, idx) {
+      row.querySelector(".simdeep-row-label").textContent = "Filter " + (idx + 1);
+      row.id = "filterRow-" + (idx + 1);
+      row.querySelector(".simdeep-remove-row").setAttribute("data-row", row.id);
+    });
+    filterRowCount = rows.length;
+  }
+
+  function populateTeamSelect(select) {
+    var teams = SG.state.data.teams.filter(function (t) { return t.level === "A"; });
+    var current = select.value;
+    select.innerHTML = '<option value="">Any team</option>';
+    teams.forEach(function (t) {
+      var opt = document.createElement("option");
+      opt.value = t.team;
+      opt.textContent = t.team;
+      select.appendChild(opt);
+    });
+    select.value = current;
+  }
+
+  function populateConfChampSelect(select) {
+    var conferences = SG.state.data.conferences
+      .filter(function (c) { return c.level === "A"; })
+      .map(function (c) { return c.name; })
+      .sort();
+    var current = select.value;
+    select.innerHTML = '<option value="">Any</option>';
+    conferences.forEach(function (c) {
+      var opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      select.appendChild(opt);
+    });
+    select.value = current;
+  }
+
+  function populateBidTypeSelect(select) {
+    var current = select.value;
+    select.innerHTML =
+      '<option value="">Any</option>' +
+      '<option value="P4 champ">P4 champ</option>' +
+      '<option value="G6 bid">G6 bid</option>' +
+      '<option value="At-large">At-large</option>';
+    select.value = current;
+  }
+
   // ---- Simulation ----
 
   function runDeepDive() {
+    // Check if playoff predictor has existing sim data
     if (!view.sim || !view.sim.debugRuns) {
+      if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view.sim && SG.state.modules.playoff.view.sim.debugRuns) {
+        view.sim = SG.state.modules.playoff.view.sim;
+        onSimDataReady();
+        applyFilters();
+        return;
+      }
       runSimulationThenFilter();
       return;
     }
@@ -212,7 +322,6 @@
     loading.classList.remove("hidden");
     note.textContent = "Running 10,000 simulations...";
 
-    // Use the playoff module's computeSim directly but with debug capture
     var playoffModule = SG.state.modules.playoff;
     if (!playoffModule) {
       note.textContent = "Playoff module not available.";
@@ -222,9 +331,6 @@
       return;
     }
 
-    // We need to trigger a fresh simulation with debug capture
-    // The playoff module stores view.sim after computeSim
-    // We'll call the internal computeSim with debug enabled
     var originalComputeSim = playoffModule.computeSim;
     playoffModule.computeSim = function () {
       return computeSimWithDebug();
@@ -235,6 +341,8 @@
         var simResult = playoffModule.computeSim();
         playoffModule.renderSim(simResult);
         view.sim = simResult;
+        // Sync back to playoff module
+        SG.state.modules.playoff.view.sim = simResult;
         onSimDataReady();
         applyFilters();
       } finally {
@@ -272,7 +380,6 @@
       var c = r.champion.team.team;
       champCount[c] = (champCount[c] || 0) + 1;
 
-      // Build field composition for this run
       var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
       var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
       debugRuns.push({ run: i, field: fieldTeams, champion: c, confChamps: confChamps, records: regRec });
@@ -291,33 +398,38 @@
 
     var rows = document.querySelectorAll(".simdeep-filter-row");
     var allFilters = [];
+    var hasValidFilter = false;
 
     rows.forEach(function (row) {
-      var filter = {
-        team: row.querySelector(".simdeep-team").value || null,
-        confChamp: row.querySelector(".simdeep-conf-champ").value || null,
-        bidType: row.querySelector(".simdeep-bid-type").value || null,
-        ow: parseInt(row.querySelector(".simdeep-ow").value) || null,
-        ol: parseInt(row.querySelector(".simdeep-ol").value) || null,
-        cw: parseInt(row.querySelector(".simdeep-cw").value) || null,
-        cl: parseInt(row.querySelector(".simdeep-cl").value) || null,
-      };
-      // Only include filter if it has any criteria
-      if (filter.team || filter.confChamp || filter.bidType ||
-          filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null) {
+      var team = row.querySelector(".simdeep-team").value || null;
+      var confChamp = row.querySelector(".simdeep-conf-champ").value || null;
+      var bidType = row.querySelector(".simdeep-bid-type").value || null;
+      var ow = parseInt(row.querySelector(".simdeep-ow").value) || null;
+      var ol = parseInt(row.querySelector(".simdeep-ol").value) || null;
+      var cw = parseInt(row.querySelector(".simdeep-cw").value) || null;
+      var cl = parseInt(row.querySelector(".simdeep-cl").value) || null;
+
+      // Conflict check: team + conf champ mismatch
+      if (team && confChamp && teamToConf[team] !== confChamp) {
+        document.getElementById("simdeepNote").textContent = "Conflict: " + team + " is not in " + confChamp;
+        return;
+      }
+
+      var filter = { team: team, confChamp: confChamp, bidType: bidType, ow: ow, ol: ol, cw: cw, cl: cl };
+      if (team || confChamp || bidType || ow !== null || ol !== null || cw !== null || cl !== null) {
         allFilters.push(filter);
+        hasValidFilter = true;
       }
     });
 
-    if (allFilters.length === 0) {
-      document.getElementById("simdeepNote").textContent = "Add at least one filter criterion.";
+    if (!hasValidFilter) {
+      document.getElementById("simdeepNote").textContent = "Add at least one filter criterion (team, conf champ, bid type, or record).";
       document.getElementById("simdeepResults").innerHTML = "";
       return;
     }
 
     var runs = view.sim.debugRuns;
     var filtered = runs.filter(function (run) {
-      // Each filter row is OR (any row matches)
       return allFilters.some(function (filter) {
         return matchesFilter(run, filter);
       });
@@ -341,7 +453,7 @@
     }
     if (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null) {
       var team = filter.team;
-      if (!team) return false; // record filters require a team
+      if (!team) return false;
       var rec = run.records[team];
       if (!rec) return false;
       if (filter.ow !== null && rec.ow !== filter.ow) return false;
@@ -432,7 +544,6 @@
     return '<div class="simdeep-detail-header">Full records for this run</div>' + rows;
   }
 
-  // Need to import functions from playoff module
   var SIMS = 10000;
   function getRec(rec, team) { return rec[team] || (rec[team] = { cw: 0, cl: 0, ow: 0, ol: 0 }); }
   function cloneRecords(rec) { var out = {}; Object.keys(rec).forEach(function (k) { out[k] = { cw: rec[k].cw, cl: rec[k].cl, ow: rec[k].ow, ol: rec[k].ol }; }); return out; }
@@ -441,7 +552,6 @@
   function fieldFromRecords(format, method, regRec, ccgs) { return SG.state.modules.playoff.fieldFromRecords(format, method, regRec, ccgs); }
   function runOnce(seeds, format, method, stochastic) { return SG.state.modules.playoff.runOnce(seeds, format, method, stochastic); }
 
-  // Expose for tab switching
   SG.state.modules.simdeep = { init: init, render: function () { if (!SG.state.data) return; if (view.sim && view.sim.debugRuns) onSimDataReady(); } };
 
   if (document.readyState === "loading") {
