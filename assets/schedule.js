@@ -207,8 +207,8 @@
       "Home edge for " + SG.methodLabel(method) + " is " + SG.fmt(edge) +
       " points. Schedule from ESPN, refreshed weekly. Opponents not rated by Sagarin show nr.";
 
-    var rec = SG.rec(teamSag.w, teamSag.l);
-    var projFinal = (teamSag.w + projWins) + "-" + (teamSag.l + (remaining - projWins));
+    var rec = SG.rec(SG.espnW(teamSag), SG.espnL(teamSag));
+    var projFinal = (SG.espnW(teamSag) + projWins) + "-" + (SG.espnL(teamSag) + (remaining - projWins));
     document.getElementById("schedSummary").innerHTML =
       chip("Team", name) +
       chip("Rating", SG.fmt(teamSag[method])) +
@@ -307,8 +307,8 @@
         team: t.team,
         rating: SG.fmt(t[method]),
         ratingVal: t[method],
-        current: SG.esc(SG.rec(t.w, t.l)),
-        currentVal: recVal(t.w, t.l),
+        current: SG.esc(SG.rec(SG.espnW(t), SG.espnL(t))),
+        currentVal: recVal(SG.espnW(t), SG.espnL(t)),
         conf: SG.esc(SG.rec(fin.cw, fin.cl)),
         confVal: recVal(fin.cw, fin.cl),
         overall: SG.esc(SG.rec(fin.ow, fin.ol)),

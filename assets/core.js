@@ -61,6 +61,12 @@
   SG.pct = function (w, l) { var n = w + l; return n ? w / n : 0; };
   SG.rec = function (w, l) { return w + "-" + l; };
 
+  // Use ESPN-computed record when available (midweek updates), else fall back to Sagarin.
+  function espnW(t) { return SG.state.espnRecord && SG.state.espnRecord[t.team] ? SG.state.espnRecord[t.team].w : t.w; }
+  function espnL(t) { return SG.state.espnRecord && SG.state.espnRecord[t.team] ? SG.state.espnRecord[t.team].l : t.l; }
+  SG.espnW = espnW;
+  SG.espnL = espnL;
+
   SG.erf = function (x) {
     var s = x < 0 ? -1 : 1;
     x = Math.abs(x);
@@ -306,9 +312,9 @@
     { key: "ap", label: "AP", cls: "left", type: "str", value: function (t) { return apSortKey(t.team); },
       cell: function (t) { var r = SG.apRank(t.team); return r ? '<span class="ap-rank">' + r + "</span>" : '<span class="dim">-</span>'; } },
     { key: "conference", label: "Conference", cls: "left", type: "str" },
-    { key: "w", label: "W" },
-    { key: "l", label: "L" },
-    { key: "pct", label: "Pct", value: function (t) { return SG.pct(t.w, t.l); }, cell: function (t) { return SG.pct(t.w, t.l).toFixed(3).replace(/^0/, ""); } },
+    { key: "w", label: "W", value: function (t) { return SG.espnW(t); } },
+    { key: "l", label: "L", value: function (t) { return SG.espnL(t); } },
+    { key: "pct", label: "Pct", value: function (t) { return SG.pct(SG.espnW(t), SG.espnL(t)); }, cell: function (t) { return SG.pct(SG.espnW(t), SG.espnL(t)).toFixed(3).replace(/^0/, ""); } },
     { key: "rating", label: "RATING", strong: true },
     { key: "predictor", label: "PREDICTOR" },
     { key: "goldenMean", label: "GOLDEN_MEAN" },
@@ -456,7 +462,7 @@
         return SG.fmt(s[key], 1) + ' <span class="dim">(' + (s[key + "Rank"] || "-") + ")</span>";
       }
       var rows = [
-        { label: "Record", cell: function (t) { return SG.esc(SG.rec(t.w, t.l)); } },
+        { label: "Record", cell: function (t) { return SG.esc(SG.rec(SG.espnW(t), SG.espnL(t))); } },
         { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
           return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
@@ -783,7 +789,7 @@
       var t = r.sagarin ? SG.teamByName(r.sagarin) : null;
       var logo = r.sagarin ? SG.teamLogo(r.sagarin) : SG.logoById(r.id);
       html += '<tr><td class="num">' + r.rank + '</td><td class="left">' + logo +
-        SG.esc(r.sagarin || r.espn) + "</td><td>" + (t ? SG.esc(SG.rec(t.w, t.l)) : '<span class="dim">-</span>') +
+        SG.esc(r.sagarin || r.espn) + "</td><td>" + (t ? SG.esc(SG.rec(SG.espnW(t), SG.espnL(t))) : '<span class="dim">-</span>') +
         "</td><td>" + (t ? SG.esc(confOf(t)) : '<span class="dim">-</span>') + "</td></tr>";
     });
     html += "</tbody></table></div>";
@@ -849,6 +855,21 @@
     });
     SG.state.sagToEspn = sagToEspn;
     SG.state.espnIdToSag = espnIdToSag;
+
+    // Compute W-L from ESPN completed games for each team.
+    // This keeps the displayed record current midweek while Sagarin ratings stay weekly.
+    var rec = {};
+    function ensure(n) { return rec[n] || (rec[n] = { w: 0, l: 0 }); }
+    var games = SG.state.espn.games || [];
+    games.forEach(function (g) {
+      if (!g.completed || g.homeScore === null || g.awayScore === null) return;
+      var h = espnIdToSag[g.homeId];
+      var a = espnIdToSag[g.awayId];
+      if (!h || !a) return;
+      if (g.homeScore > g.awayScore) { ensure(h.team).w += 1; ensure(a.team).l += 1; }
+      else { ensure(a.team).w += 1; ensure(h.team).l += 1; }
+    });
+    SG.state.espnRecord = rec;
   };
 
   SG.espnTeamById = function (id) {

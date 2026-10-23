@@ -464,8 +464,8 @@
         proj: r ? r.ow + "-" + r.ol : "-",
         projV: r ? recSortVal(r.ow, r.ol) : -1,
         rating: t[view.method],
-        now: t.w + "-" + t.l,
-        nowV: recSortVal(t.w, t.l),
+        now: SG.espnW(t) + "-" + SG.espnL(t),
+        nowV: recSortVal(SG.espnW(t), SG.espnL(t)),
         bid: field.bid[t.team] || "At-large"
       });
     }
