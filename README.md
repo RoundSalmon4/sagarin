@@ -337,6 +337,46 @@ python -m http.server 8000
 
 Then visit http://localhost:8000/
 
+## Debug tools
+
+The site exposes console commands for debugging when URL parameters are set:
+
+### `?debug=playoff`
+Logs the playoff projection details: format, method, CFP availability, conference champions, field seeds with bid types, base records (completed games), projected records, and CFP ranks.
+
+### `?debug=sim`
+Enables full simulation run capture. After clicking "Run simulation" on the Playoff Predictor tab, the complete results of all 10,000 runs are stored in memory. Then query them from the console:
+
+```js
+// All runs where James Madison made the field
+SG.debug.simQuery({ teamInField: "James Madison" })
+
+// Runs where JMU is a 1-loss conference champ and there's also a 1-loss Pac-12 champ and 1-loss American champ
+SG.debug.simQuery({ fieldHas: [{team: "James Madison"}, {team: "Oregon"}, {team: "Tulane"}] })
+
+// Runs where JMU won the championship
+SG.debug.simQuery({ champion: "James Madison" })
+
+// Runs where JMU went 11-1 overall with 7-1 conference
+SG.debug.simQuery({ teamRecord: { team: "James Madison", ow: 11, ol: 1, cw: 7, cl: 1 } })
+
+// Combined: JMU as 1-loss Sun Belt champ, 1-loss Pac-12 champ, 1-loss American champ all in field
+SG.debug.simQuery({
+  teamInField: "James Madison",
+  teamRecord: { team: "James Madison", ol: 1, cl: 1 },
+  fieldHas: [{team: "Oregon"}, {team: "Tulane"}]
+})
+```
+
+Each query returns an array of run objects with:
+- `run`: run index (0-9999)
+- `field`: array of {seed, team, bid} for all 12 teams
+- `champion`: champion team name
+- `confChamps`: array of {conf, champ} for conference title games
+- `records`: full record object for every team in that run
+
+This lets you analyze scenario probabilities without modifying code.
+
 To refresh the data by hand:
 
 ```
