@@ -324,34 +324,10 @@
 
     <section id="tab-simdeep" class="panel hidden">
       <div class="toolbar">
-        <label class="inline-label">Scenario filters
-          <select id="simdeepTeam">
-            <option value="">Any team</option>
-          </select>
-        </label>
-        <label class="inline-label">Conference champ
-          <select id="simdeepConfChamp">
-            <option value="">Any</option>
-          </select>
-        </label>
-        <label class="inline-label">Bid type
-          <select id="simdeepBidType">
-            <option value="">Any</option>
-            <option value="P4 champ">P4 champ</option>
-            <option value="G6 bid">G6 bid</option>
-            <option value="At-large">At-large</option>
-          </select>
-        </label>
-        <label class="inline-label">Record (overall)
-          <input id="simdeepOw" type="number" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">
-          <input id="simdeepOl" type="number" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses">
-        </label>
-        <label class="inline-label">Record (conf)
-          <input id="simdeepCw" type="number" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">
-          <input id="simdeepCl" type="number" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses">
-        </label>
-        <button id="simdeepRun" type="button" class="btn">Run deep dive</button>
+        <button id="simdeepAddFilter" type="button" class="btn" style="margin-right: 0.5rem;">+ Add filter</button>
+        <span class="toolbar-label" style="color: var(--muted); font-size: 0.8rem;">Each row = AND. Within row = AND.</span>
       </div>
+      <div id="simdeepFilterRows"></div>
       <p class="note" id="simdeepNote"></p>
       <div id="simdeepLoading" class="hidden">Running deep dive&hellip;</div>
       <div id="simdeepResults" class="simdeep-results"></div>
