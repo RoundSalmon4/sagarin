@@ -60,33 +60,31 @@
       '</div>' +
       '<div class="simdeep-row-fields">' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="team" checked aria-label="Include team filter" title="Filter by a specific team in the playoff projection"> Team' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="team" aria-label="Include team filter" title="Filter by a specific team in the playoff projection"> Team' +
           '<div class="combo">' +
-            '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false">' +
+            '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false" title="Search for a team to filter by">' +
             '<div class="combo-list hidden" role="listbox"></div>' +
           '</div>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" checked aria-label="Include conf champ filter" title="Filter by conference champion (select conference; if team is also set, requires that team to be the champ)"> Conf champ' +
-          '<select class="simdeep-conf-champ" aria-label="Conference champion">' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" aria-label="Include conf champ filter" title="Filter by conference champion (select conference; if team is also set, requires that team to be the champ)"> Conf champ' +
+          '<select class="simdeep-conf-champ" aria-label="Conference champion" title="Choose a conference; if Team is also selected, that team must be the conference champion">' +
             '<option value="">Any</option>' +
           '</select>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="overall" checked aria-label="Include overall record filter" title="Filter by overall win/loss record (use operators for greater/less than)"> Overall' +
-          '<select class="simdeep-op-ow" aria-label="Overall wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="overall" aria-label="Include overall record filter" title="Filter by overall win/loss record (use operators for greater/less than)"> Overall' +
+          '<select class="simdeep-op-ow" aria-label="Overall wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
-          '<select class="simdeep-op-ol" aria-label="Overall losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses">' +
-          '<span class="simdeep-record-range overall" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
+          '<select class="simdeep-op-ol" aria-label="Overall losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+          '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses" title="Overall losses filter (use operator for comparisons)"> <br><span class="simdeep-record-range overall" style="font-size:0.75rem;color:var(--muted);"></span>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="conf" checked aria-label="Include conf record filter" title="Filter by conference win/loss record (use operators for greater/less than)"> Conf' +
-          '<select class="simdeep-op-cw" aria-label="Conf wins operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+          '<input type="checkbox" class="simdeep-param-check" data-param="conf" aria-label="Include conf record filter" title="Filter by conference win/loss record (use operators for greater/less than)"> Conf' +
+          '<select class="simdeep-op-cw" aria-label="Conf wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
-          '<select class="simdeep-op-cl" aria-label="Conf losses operator"><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses">' +
-          '<span class="simdeep-record-range conf" style="display:inline; font-size:0.75rem; color:var(--muted); margin-left:0.3rem;"></span>' +
+          '<select class="simdeep-op-cl" aria-label="Conf losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+          '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses" title="Conference losses filter (use operator for comparisons)"> <br><span class="simdeep-record-range conf" style="font-size:0.75rem;color:var(--muted);"></span>' +
         '</label>' +
         '<label class="inline-label">' +
           '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field" title="Only count runs where this team appears in the playoff field"> In field' +
@@ -202,6 +200,18 @@
       if (!combo.contains(e.target)) closeList();
     });
 
+    // Auto-apply when any filter value changes (if sim ready)
+    function tryApply() {
+      if (view.sim && view.sim.debugRuns) applyFilters();
+    }
+    var inputs = row.querySelectorAll("input[type='number'], input[type='text'], input[type='checkbox'], select");
+    inputs.forEach(function (el) {
+      el.addEventListener("change", tryApply);
+      if (el.tagName === "INPUT" && el.type === "text") {
+        el.addEventListener("blur", tryApply);
+      }
+    });
+
     // Conf champ change -> clear team search if team not in that conf
     var confChampSelect = row.querySelector(".simdeep-conf-champ");
     confChampSelect.addEventListener("change", function () {
@@ -262,7 +272,10 @@
     teams.forEach(function (t) {
       if (t.level !== "A") return;
       if (teamName && t.team !== teamName) return;
-      var ow = t.ow || 0, ol = t.ol || 0, cw = t.cw || 0, cl = t.cl || 0;
+      var ow = t.w || 0, ol = t.l || 0;
+      // Conf records often not in ratings.json; approximate from overall
+      var cw = (t.cw !== undefined && t.cw !== null) ? t.cw : Math.round(ow * 0.6);
+      var cl = (t.cl !== undefined && t.cl !== null) ? t.cl : Math.round(ol * 0.6);
       if (ow < owMin) owMin = ow; if (ow > owMax) owMax = ow;
       if (ol < olMin) olMin = ol; if (ol > olMax) olMax = ol;
       if (cw < cwMin) cwMin = cw; if (cw > cwMax) cwMax = cw;
@@ -512,13 +525,26 @@
       return;
     }
 
-    note.textContent = runs.length + " of " + totalSims.toLocaleString() + " runs match the filters (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
+    note.textContent = shown.length + " of " + groupArr.length + " unique outcomes (" + runs.length + " of " + totalSims.toLocaleString() + " runs) (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
 
+    // Aggregate identical results and sort by frequency
+    var groups = {};
+    runs.forEach(function (run) {
+      var key = (run.champion || "") + "|" + run.confChamps.map(function (c) { return c.conf + ":" + c.champ; }).sort().join(";") + "|" + run.field.slice(0, 12).map(function (f) { return f.team + ":" + f.bid; }).join(";");
+      if (!groups[key]) groups[key] = { count: 0, run: run, pct: 0 };
+      groups[key].count++;
+    });
+    var groupArr = Object.values(groups);
+    groupArr.sort(function (a, b) { return b.count - a.count; });
+    groupArr.forEach(function (g) { g.pct = (g.count / totalSims * 100).toFixed(2); });
+
+    // Render top groups (up to 100 cards, now representing grouped outcomes)
     var LIMIT = 100;
-    var shownRuns = runs.slice(0, LIMIT);
-    var hasMore = runs.length > LIMIT;
+    var shown = groupArr.slice(0, LIMIT);
+    var hasMore = groupArr.length > LIMIT;
 
-    var html = shownRuns.map(function (run, idx) {
+    var html = shown.map(function (group, idx) {
+      var run = group.run;
       var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
         var bidClass = "";
         if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
@@ -534,7 +560,7 @@
 
       return '<div class="simdeep-card">' +
         '<div class="simdeep-card-header">' +
-          '<div class="simdeep-team"><span class="simdeep-seed">Run #' + (run.run + 1) + '</span></div>' +
+          '<div class="simdeep-team"><span class="simdeep-seed">Run #' + (run.run + 1) + '</span> <span style="font-size:0.8rem;color:var(--accent);font-weight:600;">' + group.count + 'x (' + group.pct + '%)</span></div>' +
           '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
         '</div>' +
         '<div class="simdeep-stats">' +
@@ -550,7 +576,7 @@
     }).join("");
 
     if (hasMore) {
-      html += '<div class="simdeep-more">Showing first 100 of ' + runs.length + ' matches (performance limit).</div>';
+      html += '<div class="simdeep-more">Showing first 100 of ' + groupArr.length + ' unique outcomes.</div>';
     }
 
     container.innerHTML = html;
