@@ -1,0 +1,41 @@
+name: Midweek score updates
+
+on:
+  schedule:
+    # Midweek games (Tue-Fri nights) finish overnight Eastern.
+    # Run early morning UTC to catch them before the day starts.
+    - cron: "0 6 * * 3"   # Wednesday 06:00 UTC (Tue night games)
+    - cron: "0 6 * * 4"   # Thursday 06:00 UTC (Wed night games)
+    - cron: "0 6 * * 5"   # Friday 06:00 UTC (Thu night games)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Fetch ESPN games and stats (scores, records)
+        run: node scripts/fetch-espn.js
+
+      - name: Fetch updated TV schedule
+        run: node scripts/fetch-tv.js
+
+      - name: Commit when scores moved
+        run: |
+          git add data/espn-games.json data/tv-games.json
+          if git diff --cached --quiet; then
+            echo "no change, nothing to commit"
+            exit 0
+          fi
+          git config user.name "roundsalmon4"
+          git config user.email "209016228+RoundSalmon4@users.noreply.github.com"
+          git commit -m "Midweek score and TV update from ESPN"
+          git push
