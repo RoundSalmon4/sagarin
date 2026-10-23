@@ -1,9 +1,9 @@
-/* Simulation Deep Dive: analyze Monte Carlo simulation results with filters. */
+/* Simulation Deep Dive (beta): analyze Monte Carlo simulation results with filters. */
 (function () {
   "use strict";
 
   var SG = window.SG;
-  var view = { sim: null, simRuns: null };
+  var view = { sim: null };
   var filterRowCount = 0;
 
   // Build team -> conference map for sync logic
@@ -22,7 +22,6 @@
 
     document.getElementById("simdeepAddFilter").addEventListener("click", addFilterRow);
     document.getElementById("simdeepRunSim").addEventListener("click", runSimulationThenFilter);
-    addFilterRow();
 
     // Listen for simulation completion on playoff tab
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
@@ -71,14 +70,6 @@
             '<option value="">Any</option>' +
           '</select>' +
         '</label>' +
-        '<label class="inline-label">Bid type' +
-          '<select class="simdeep-bid-type" aria-label="Bid type">' +
-            '<option value="">Any</option>' +
-            '<option value="P4 champ">P4 champ</option>' +
-            '<option value="G6 bid">G6 bid</option>' +
-            '<option value="At-large">At-large</option>' +
-          '</select>' +
-        '</label>' +
         '<label class="inline-label">Overall' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
           '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses">' +
@@ -98,7 +89,6 @@
     var searchInput = combo.querySelector(".simdeep-team-search");
     var listEl = combo.querySelector(".combo-list");
     var activeIndex = -1;
-    var searchTimer = null;
 
     function currentTeam() {
       return searchInput.value.trim();
@@ -143,12 +133,18 @@
       if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
     }
 
-    function onInput() {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(function () { renderList(true); }, 120);
+    function pick(name) {
+      searchInput.value = name;
+      searchInput.dispatchEvent(new Event("change", { bubbles: true }));
+      closeList();
     }
 
-    function onKeyDown(e) {
+    searchInput.addEventListener("input", function () {
+      clearTimeout(window.simdeepTimer);
+      window.simdeepTimer = setTimeout(function () { renderList(true); }, 120);
+    });
+    searchInput.addEventListener("focus", function () { renderList(true); });
+    searchInput.addEventListener("keydown", function (e) {
       if (e.key === "ArrowDown") {
         e.preventDefault();
         if (listEl.classList.contains("hidden")) renderList(true);
@@ -165,59 +161,7 @@
       } else if (e.key === "Escape") {
         closeList();
       }
-    }
-
-    function pick(name) {
-      searchInput.value = name;
-      searchInput.dispatchEvent(new Event("change", { bubbles: true }));
-      closeList();
-    }
-
-    var searchTimer = null;
-    searchInput.addEventListener("input", function () {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(function () { renderList(true); }, 120);
     });
-    searchInput.addEventListener("focus", function () { renderList(true); });
-    searchInput.addEventListener("keydown", onKeyDown);
-    searchInput.addEventListener("change", function () {
-      var teamName = searchInput.value;
-      var confChampSelect = row.querySelector(".simdeep-conf-champ");
-      if (teamName && teamToConf[teamName]) {
-        confChampSelect.value = teamToConf[teamName];
-      }
-      updateRecordRanges(row, teamName);
-    });
-
-    var listEl = row.querySelector(".combo-list");
-    var activeIndex = -1;
-
-    function currentTeam() {
-      return searchInput.value.trim();
-    }
-
-    function closeList() {
-      listEl.classList.add("hidden");
-      searchInput.setAttribute("aria-expanded", "false");
-      activeIndex = -1;
-    }
-
-    function setActive(i) {
-      var arr = listEl.querySelectorAll(".combo-item");
-      if (!arr.length) return;
-      if (i < 0) i = arr.length - 1;
-      if (i >= arr.length) i = 0;
-      for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === i);
-      if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
-    }
-
-    var searchTimer = null;
-    searchInput.addEventListener("input", function () {
-      clearTimeout(searchTimer);
-      searchTimer = setTimeout(function () { renderList(true); }, 120);
-    });
-    searchInput.addEventListener("focus", function () { renderList(true); });
-    searchInput.addEventListener("keydown", onKeyDown);
     searchInput.addEventListener("change", function () {
       var teamName = searchInput.value;
       var confChampSelect = row.querySelector(".simdeep-conf-champ");
@@ -235,55 +179,20 @@
       if (!combo.contains(e.target)) closeList();
     });
 
-    function closeList() {
-      listEl.classList.add("hidden");
-      searchInput.setAttribute("aria-expanded", "false");
-      activeIndex = -1;
-    }
-
-    function pick(name) {
-      searchInput.value = name;
-      searchInput.dispatchEvent(new Event("change", { bubbles: true }));
-      closeList();
-    }
-
-    function setActive(i) {
-      var arr = listEl.querySelectorAll(".combo-item");
-      if (!arr.length) return;
-      if (i < 0) i = arr.length - 1;
-      if (i >= arr.length) i = 0;
-      for (var k = 0; k < arr.length; k++) arr[k].classList.toggle("active", k === i);
-      if (arr[i] && arr[i].scrollIntoView) arr[i].scrollIntoView({ block: "nearest" });
-    }
-
-    // Conf champ change -> filter team list
+    // Conf champ change -> clear team search if team not in that conf
     var confChampSelect = row.querySelector(".simdeep-conf-champ");
     confChampSelect.addEventListener("change", function () {
       var confName = this.value;
-      if (confName) {
-        // Just update the combo list when it opens
-      }
-    });
-
-    // Wire up remove button
-    row.querySelector(".simdeep-remove-row").addEventListener("click", function () {
-      if (document.querySelectorAll(".simdeep-filter-row").length <= 1) return;
-      row.remove();
-      updateRowLabels();
-    });
-
-    // Conf champ change -> sync team search
-    confChampSelect.addEventListener("change", function () {
-      var confName = this.value;
       var searchInput = row.querySelector(".simdeep-team-search");
-      if (confName) {
+      if (searchInput.value && teamToConf[searchInput.value] && teamToConf[searchInput.value] !== confName) {
+        // Team doesn't belong to selected conf - clear team
         searchInput.value = "";
+        updateRecordRanges(row, "");
       }
     });
 
     // Populate conf champ select
     populateConfChampSelect(row.querySelector(".simdeep-conf-champ"));
-    populateBidTypeSelect(row.querySelector(".simdeep-bid-type"));
 
     container.appendChild(row);
   }
@@ -311,16 +220,6 @@
       opt.textContent = c;
       select.appendChild(opt);
     });
-    select.value = current;
-  }
-
-  function populateBidTypeSelect(select) {
-    var current = select.value;
-    select.innerHTML =
-      '<option value="">Any</option>' +
-      '<option value="P4 champ">P4 champ</option>' +
-      '<option value="G6 bid">G6 bid</option>' +
-      '<option value="At-large">At-large</option>';
     select.value = current;
   }
 
@@ -364,53 +263,10 @@
     }
   }
 
-  function updateRowLabels() {
-    var rows = document.querySelectorAll(".simdeep-filter-row");
-    rows.forEach(function (row, idx) {
-      row.querySelector(".simdeep-row-label").textContent = "Filter " + (idx + 1);
-      row.id = "filterRow-" + (idx + 1);
-      row.querySelector(".simdeep-remove-row").setAttribute("data-row", row.id);
-    });
-    filterRowCount = rows.length;
-  }
-
-  function populateConfChampSelect(select) {
-    var conferences = SG.state.data.conferences
-      .filter(function (c) { return c.level === "A"; })
-      .map(function (c) { return c.name; })
-      .sort();
-    var current = select.value;
-    select.innerHTML = '<option value="">Any</option>';
-    conferences.forEach(function (c) {
-      var opt = document.createElement("option");
-      opt.value = c;
-      opt.textContent = c;
-      select.appendChild(opt);
-    });
-    select.value = current;
-  }
-
-  function populateBidTypeSelect(select) {
-    var current = select.value;
-    select.innerHTML =
-      '<option value="">Any</option>' +
-      '<option value="P4 champ">P4 champ</option>' +
-      '<option value="G6 bid">G6 bid</option>' +
-      '<option value="At-large">At-large</option>';
-    select.value = current;
-  }
-
   // ---- Simulation ----
 
   function runDeepDive() {
-    // Check if playoff predictor has existing sim data
     if (!view.sim || !view.sim.debugRuns) {
-      if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view.sim && SG.state.modules.playoff.view.sim.debugRuns) {
-        view.sim = SG.state.modules.playoff.view.sim;
-        onSimDataReady();
-        applyFilters();
-        return;
-      }
       runSimulationThenFilter();
       return;
     }
@@ -433,13 +289,19 @@
     note.textContent = "Running 10,000 simulations...";
 
     var playoffModule = SG.state.modules.playoff;
-    if (!playoffModule) {
+    var playoffView = playoffModule.view;
+    if (!playoffModule || !playoffView) {
       note.textContent = "Playoff module not available.";
       btn.disabled = false;
       btn.textContent = "Run simulation";
       loading.classList.add("hidden");
       return;
     }
+
+    btn.disabled = true;
+    btn.textContent = "Simulating...";
+    loading.classList.remove("hidden");
+    note.textContent = "Running 10,000 simulations...";
 
     var originalComputeSim = playoffModule.computeSim;
     playoffModule.computeSim = function () {
@@ -449,10 +311,9 @@
     setTimeout(function () {
       try {
         var simResult = playoffModule.computeSim();
-        playoffModule.renderSim(simResult);
+        playoffView.sim = simResult;
         view.sim = simResult;
-        // Sync back to playoff module
-        SG.state.modules.playoff.view.sim = simResult;
+        playoffModule.render();
         onSimDataReady();
         applyFilters();
       } finally {
@@ -465,12 +326,12 @@
   }
 
   function computeSimWithDebug() {
-    var method = SG.state.modules.playoff.view.method;
-    var format = SG.state.modules.playoff.view.format;
+    var playoffView = SG.state.modules.playoff.view;
+    var method = playoffView.method;
+    var format = playoffView.format;
     var is12 = Number(format) === 12;
 
     var ctx = simContext(method);
-    var fieldCount = {}, champCount = {};
     var debugRuns = [];
 
     for (var i = 0; i < SIMS; i++) {
@@ -485,25 +346,28 @@
       }
       var ccgs = is12 ? ccgOutcomes(regRec, method, true) : null;
       var f = fieldFromRecords(format, method, regRec, ccgs);
-      for (var k = 1; k < f.seeds.length; k++) { var t = f.seeds[k]; if (t) fieldCount[t.team] = (fieldCount[t.team] || 0) + 1; }
-      var r = runOnce(f.seeds, format, method, true);
-      var c = r.champion.team.team;
-      champCount[c] = (champCount[c] || 0) + 1;
 
       var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
       var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
-      debugRuns.push({ run: i, field: fieldTeams, champion: c, confChamps: confChamps, records: regRec });
+      debugRuns.push({ run: i, field: fieldTeams, champion: r.champion.team.team, confChamps: confChamps, records: regRec });
     }
 
-    return { n: SIMS, field: fieldCount, champ: champCount, debugRuns: debugRuns };
+    return { n: SIMS, debugRuns: debugRuns };
   }
 
   // ---- Filter application ----
 
   function applyFilters() {
-    if (!view.sim || !view.sim.debugRuns) {
+    var playoffView = SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+    if ((!view.sim || !view.sim.debugRuns) && (!playoffView || !playoffView.sim || !playoffView.sim.debugRuns)) {
       document.getElementById("simdeepNote").textContent = "No simulation data. Click Run simulation first.";
       return;
+    }
+
+    // Use playoff's sim if local doesn't have it
+    if (!view.sim || !view.sim.debugRuns) {
+      view.sim = playoffView.sim;
+      onSimDataReady();
     }
 
     var rows = document.querySelectorAll(".simdeep-filter-row");
@@ -513,27 +377,26 @@
     rows.forEach(function (row) {
       var team = row.querySelector(".simdeep-team-search").value.trim() || null;
       var confChamp = row.querySelector(".simdeep-conf-champ").value || null;
-      var bidType = row.querySelector(".simdeep-bid-type").value || null;
       var ow = parseInt(row.querySelector(".simdeep-ow").value) || null;
       var ol = parseInt(row.querySelector(".simdeep-ol").value) || null;
       var cw = parseInt(row.querySelector(".simdeep-cw").value) || null;
       var cl = parseInt(row.querySelector(".simdeep-cl").value) || null;
 
-      // Conflict check: team + conf champ mismatch
+      // Skip empty rows
+      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null) return;
+
+      // Conflict check: team must belong to selected conf champ
       if (team && confChamp && teamToConf[team] !== confChamp) {
-        document.getElementById("simdeepNote").textContent = "Conflict: " + team + " is not in " + confChamp;
+        document.getElementById("simdeepNote").textContent = "Filter " + row.querySelector(".simdeep-row-label").textContent + ": " + team + " is not in " + confChamp;
         return;
       }
 
-      var filter = { team: team, confChamp: confChamp, bidType: bidType, ow: ow, ol: ol, cw: cw, cl: cl };
-      if (team || confChamp || bidType || ow !== null || ol !== null || cw !== null || cl !== null) {
-        allFilters.push(filter);
-        hasValidFilter = true;
-      }
+      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl });
+      hasValidFilter = true;
     });
 
     if (!hasValidFilter) {
-      document.getElementById("simdeepNote").textContent = "Add at least one filter criterion (team, conf champ, bid type, or record).";
+      document.getElementById("simdeepNote").textContent = "Add at least one filter criterion (team, conf champ, or record).";
       document.getElementById("simdeepResults").innerHTML = "";
       return;
     }
@@ -557,14 +420,8 @@
       var isChamp = run.confChamps.some(function (c) { return c.conf === filter.confChamp; });
       if (!isChamp) return false;
     }
-    if (filter.bidType && filter.team) {
-      var bid = run.field.find(function (f) { return f.team === filter.team; });
-      if (!bid || bid.bid.indexOf(filter.bidType) === -1) return false;
-    }
-    if (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null) {
-      var team = filter.team;
-      if (!team) return false;
-      var rec = run.records[team];
+    if (filter.team && (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null)) {
+      var rec = run.records[filter.team];
       if (!rec) return false;
       if (filter.ow !== null && rec.ow !== filter.ow) return false;
       if (filter.ol !== null && rec.ol !== filter.ol) return false;
@@ -599,7 +456,6 @@
       }).join("");
 
       var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
-
       var confChampsHtml = run.confChamps.map(function (c) {
         return '<span class="simdeep-conf-champ">' + c.conf + ': ' + c.champ + '</span>';
       }).join(" ");

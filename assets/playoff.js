@@ -818,7 +818,12 @@
     render();
   }
 
-  SG.state.modules.playoff = { init: init, render: render };
+  SG.state.modules.playoff = {
+    init: init,
+    render: render,
+    view: view,
+    setSim: function (sim) { view.sim = sim; },
+};
 
   // Exposed so the TV tab can measure what a game does to the projected field.
   SG.playoffField = function (format, method) {
