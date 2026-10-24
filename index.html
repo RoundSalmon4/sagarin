@@ -350,8 +350,21 @@
 
   <style>
     .simdeep-filter-row { border: 1px solid var(--line, #e2e8f0); border-radius: 10px; padding: 1rem 1.2rem; background: var(--surface, #fff); box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 0.75rem; }
-    .simdeep-row-fields { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-start; }
-    .simdeep-record-range { display: block; font-variant-numeric: tabular-nums; font-size: 0.75rem; color: var(--muted, #64748b); margin-top: 0.25rem; }
+    .simdeep-row-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; align-items: start; }
+    .simdeep-param-group { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 0.6rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .simdeep-param-header { display: flex; align-items: center; }
+    .simdeep-param-btn { background: var(--accent); color: var(--accent-ink); border: none; border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.75rem; cursor: pointer; font-weight: 600; }
+    .simdeep-param-btn.active { background: var(--good); }
+    .simdeep-param-btn:not(.active) { background: var(--line); color: var(--muted); }
+    .simdeep-param-body { display: flex; flex-direction: column; gap: 0.3rem; }
+    .simdeep-record-row { display: flex; align-items: center; gap: 0.3rem; }
+    .simdeep-record-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; min-width: 1rem; }
+    .simdeep-param-body select,
+    .simdeep-param-body input[type="number"],
+    .simdeep-param-body input[type="text"] { padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 6px; font: inherit; background: var(--surface); color: var(--ink); }
+    .simdeep-param-body input[type="number"] { width: 4rem; }
+    .simdeep-param-body .combo input { min-width: 160px; }
+    .simdeep-record-range { font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
     .simdeep-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
     .simdeep-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .simdeep-field { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.5rem 0; }

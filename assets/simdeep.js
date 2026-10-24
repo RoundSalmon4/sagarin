@@ -79,43 +79,78 @@
         '<button type="button" class="simdeep-remove-row" data-row="' + rowId + '" title="Remove filter" aria-label="Remove filter">\u2715</button>' +
       '</div>' +
       '<div class="simdeep-row-fields">' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="team" aria-label="Team filter" title="Filter by a specific team">Team</button>' +
-          '<div class="combo">' +
-            '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false" title="Search for a team to filter by">' +
-            '<div class="combo-list hidden" role="listbox"></div>' +
+        '<div class="simdeep-param-group" data-param="team">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="team" aria-label="Team filter" title="Filter by a specific team">Team</button>' +
           '</div>' +
-        '</label>' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="confChamp" aria-label="Conf champ filter" title="Filter by conference champion">Conf champ</button>' +
-          '<select class="simdeep-conf-champ" aria-label="Conference champion" title="Choose a conference; if Team is also selected, that team must be the conference champion">' +
-            '<option value="">Any</option>' +
-          '</select>' +
-        '</label>' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="overall" aria-label="Overall record filter" title="Filter by overall win/loss record">Overall</button>' +
-          '<select class="simdeep-op-ow" aria-label="Overall wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
-          '<select class="simdeep-op-ol" aria-label="Overall losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses" title="Overall losses filter (use operator for comparisons)"> <span class="simdeep-record-range overall" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
-        '</label>' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="conf" aria-label="Conf record filter" title="Filter by conference win/loss record">Conf</button>' +
-          '<select class="simdeep-op-cw" aria-label="Conf wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
-          '<select class="simdeep-op-cl" aria-label="Conf losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses" title="Conference losses filter (use operator for comparisons)"> <span class="simdeep-record-range conf" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
-        '</label>' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
-        '</label>' +
-        '<label class="inline-label">' +
-          '<button type="button" class="simdeep-param-btn active" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
-          '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team" style="width: 8rem;">' +
-        '</label>' +
+          '<div class="simdeep-param-body">' +
+            '<div class="combo">' +
+              '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false" title="Search for a team to filter by">' +
+              '<div class="combo-list hidden" role="listbox"></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="confChamp">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="confChamp" aria-label="Conf champ filter" title="Filter by conference champion">Conf champ</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<select class="simdeep-conf-champ" aria-label="Conference champion" title="Choose a conference; if Team is also selected, that team must be the conference champion">' +
+              '<option value="">Any</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="overall">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="overall" aria-label="Overall record filter" title="Filter by overall win/loss record">Overall</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<div class="simdeep-record-row">' +
+              '<span class="simdeep-record-label">W</span>' +
+              '<select class="simdeep-op-ow" aria-label="Overall wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+              '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" aria-label="Wins">' +
+            '</div>' +
+            '<div class="simdeep-record-row">' +
+              '<span class="simdeep-record-label">L</span>' +
+              '<select class="simdeep-op-ol" aria-label="Overall losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+              '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" aria-label="Losses">' +
+            '</div>' +
+            '<span class="simdeep-record-range overall"></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="conf">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="conf" aria-label="Conf record filter" title="Filter by conference win/loss record">Conf</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<div class="simdeep-record-row">' +
+              '<span class="simdeep-record-label">W</span>' +
+              '<select class="simdeep-op-cw" aria-label="Conf wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+              '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" aria-label="Conf Wins">' +
+            '</div>' +
+            '<div class="simdeep-record-row">' +
+              '<span class="simdeep-record-label">L</span>' +
+              '<select class="simdeep-op-cl" aria-label="Conf losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
+              '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" aria-label="Conf Losses">' +
+            '</div>' +
+            '<span class="simdeep-record-range conf"></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="inField">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body"></div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="champion">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn active" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team">' +
+          '</div>' +
+        '</div>' +
       '</div>';
-
-    container.appendChild(row);
 
     // Set up combo box for team search (like schedule tab)
     var combo = row.querySelector(".combo");
