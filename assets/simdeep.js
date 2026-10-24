@@ -173,7 +173,9 @@
       var teams = SG.state.data.teams.filter(function (t) {
         return t.level === "A" && (t.team.toLowerCase().indexOf(query) !== -1 || t.conference.toLowerCase().indexOf(query) !== -1);
       });
-      var confFilter = row.querySelector(".simdeep-conf-champ").value;
+      var confChampGroup = row.querySelector('.simdeep-param-group[data-param="confChamp"]');
+      var confChampActive = confChampGroup && confChampGroup.classList.contains("active");
+      var confFilter = confChampActive ? row.querySelector(".simdeep-conf-champ").value : "";
       if (confFilter) {
         teams = teams.filter(function (t) { return t.conference === confFilter; });
       }
@@ -237,9 +239,9 @@
       var confChampActive = confChampGroup && confChampGroup.classList.contains("active");
 
       if (teamName && teamToConf[teamName]) {
-        confChampSelect.value = teamToConf[teamName];
-        // Only restrict conf champ dropdown if confChamp param is active
+        // Only set confChamp dropdown value when confChamp param is active
         if (confChampActive) {
+          confChampSelect.value = teamToConf[teamName];
           var confName = teamToConf[teamName];
           var opts = confChampSelect.querySelectorAll("option");
           opts.forEach(function (o) { o.style.display = (o.value === "" || o.value === confName) ? "" : "none"; });
