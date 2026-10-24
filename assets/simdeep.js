@@ -574,7 +574,14 @@
       return;
     }
 
-    note.textContent = shown.length + " of " + groupArr.length + " unique outcomes (" + runs.length + " of " + totalSims.toLocaleString() + " runs) (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
+    // Normalize runs to prevent missing properties
+    runs.forEach(function(run) {
+      if (!run) return;
+      if (!run.field) run.field = [];
+      if (!run.confChamps) run.confChamps = [];
+      if (!run.records) run.records = {};
+      if (!run.champion) run.champion = "";
+    });
 
     // Aggregate identical results and sort by frequency
     var groups = {};
@@ -591,6 +598,8 @@
     var LIMIT = 100;
     var shown = groupArr.slice(0, LIMIT);
     var hasMore = groupArr.length > LIMIT;
+
+    note.textContent = shown.length + " of " + groupArr.length + " unique outcomes (" + runs.length + " of " + totalSims.toLocaleString() + " runs) (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
