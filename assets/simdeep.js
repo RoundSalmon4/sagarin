@@ -22,6 +22,11 @@
 
     document.getElementById("simdeepAddFilter").addEventListener("click", addFilterRow);
     document.getElementById("simdeepRunSim").addEventListener("click", runSimulationThenFilter);
+    document.getElementById("simdeepFormat").addEventListener("change", function () {
+      if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view) {
+        SG.state.modules.playoff.view.format = this.value;
+      }
+    });
 
     // Listen for simulation completion on playoff tab
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
@@ -77,14 +82,14 @@
           '<select class="simdeep-op-ow" aria-label="Overall wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
           '<select class="simdeep-op-ol" aria-label="Overall losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses" title="Overall losses filter (use operator for comparisons)"> <br><span class="simdeep-record-range overall" style="font-size:0.75rem;color:var(--muted);"></span>' +
+          '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses" title="Overall losses filter (use operator for comparisons)"> <span class="simdeep-record-range overall" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
           '<input type="checkbox" class="simdeep-param-check" data-param="conf" aria-label="Include conf record filter" title="Filter by conference win/loss record (use operators for greater/less than)"> Conf' +
           '<select class="simdeep-op-cw" aria-label="Conf wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
           '<select class="simdeep-op-cl" aria-label="Conf losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
-          '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses" title="Conference losses filter (use operator for comparisons)"> <br><span class="simdeep-record-range conf" style="font-size:0.75rem;color:var(--muted);"></span>' +
+          '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses" title="Conference losses filter (use operator for comparisons)"> <span class="simdeep-record-range conf" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
           '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field" title="Only count runs where this team appears in the playoff field"> In field' +
@@ -266,20 +271,48 @@
   }
 
   function computeDataRanges(teamName) {
-    var teams = SG.state.data && SG.state.data.teams ? SG.state.data.teams : [];
-    var owMin = 99, owMax = -1, olMin = 99, olMax = -1;
-    var cwMin = 99, cwMax = -1, clMin = 99, clMax = -1;
-    teams.forEach(function (t) {
-      if (t.level !== "A") return;
-      if (teamName && t.team !== teamName) return;
-      var ow = t.w || 0, ol = t.l || 0;
-      // Conf records often not in ratings.json; approximate from overall
-      var cw = (t.cw !== undefined && t.cw !== null) ? t.cw : Math.round(ow * 0.6);
-      var cl = (t.cl !== undefined && t.cl !== null) ? t.cl : Math.round(ol * 0.6);
-      if (ow < owMin) owMin = ow; if (ow > owMax) owMax = ow;
-      if (ol < olMin) olMin = ol; if (ol > olMax) olMax = ol;
-      if (cw < cwMin) cwMin = cw; if (cw > cwMax) cwMax = cw;
-      if (cl < clMin) clMin = cl; if (cl > clMax) clMax = cl;
+    var method = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.method : "predictor";
+    var ctx = null;
+    try { ctx = SG.state.modules.playoff.simContext(method); } catch (e) {}
+    var base = (ctx && ctx.base) ? ctx.base : {};
+    var games = (ctx && ctx.games) ? ctx.games : [];
+    // Count remaining games per team
+    var remW = {}, remL = {}, remCW = {}, remCL = {};
+    games.forEach(function (g) {
+      var h = g.h, a = g.a, conf = g.conf;
+      if (h) { remW[h] = (remW[h] || 0) + 1; remL[h] = (remL[h] || 0) + 1; }
+      if (a) { remW[a] = (remW[a] || 0) + 1; remL[a] = (remL[a] || 0) + 1; }
+      if (conf) {
+        if (h) { remCW[h] = (remCW[h] || 0) + 1; remCL[h] = (remCL[h] || 0) + 1; }
+        if (a) { remCW[a] = (remCW[a] || 0) + 1; remCL[a] = (remCL[a] || 0) + 1; }
+      }
+    });
+    function range(name) {
+      var rec = base[name] || { ow: 0, ol: 0, cw: 0, cl: 0 };
+      return {
+        owMin: rec.ow, owMax: rec.ow + (remW[name] || 0),
+        olMin: rec.ol, olMax: rec.ol + (remL[name] || 0),
+        cwMin: rec.cw, cwMax: rec.cw + (remCW[name] || 0),
+        clMin: rec.cl, clMax: rec.cl + (remCL[name] || 0)
+      };
+    }
+    if (teamName) {
+      var r = range(teamName);
+      return { owMin: r.owMin, owMax: r.owMax, olMin: r.olMin, olMax: r.olMax, cwMin: r.cwMin, cwMax: r.cwMax, clMin: r.clMin, clMax: r.clMax };
+    }
+    // No team: compute from all FBS data using current records as base
+    var all = SG.state.data && SG.state.data.teams ? SG.state.data.teams.filter(function(t){ return t.level === "A"; }) : [];
+    var owMin = 99, owMax = -1, olMin = 99, olMax = -1, cwMin = 99, cwMax = -1, clMin = 99, clMax = -1;
+    all.forEach(function (t) {
+      var r = range(t.team);
+      if (r.owMin < owMin) owMin = r.owMin;
+      if (r.owMax > owMax) owMax = r.owMax;
+      if (r.olMin < olMin) olMin = r.olMin;
+      if (r.olMax > olMax) olMax = r.olMax;
+      if (r.cwMin < cwMin) cwMin = r.cwMin;
+      if (r.cwMax > cwMax) cwMax = r.cwMax;
+      if (r.clMin < clMin) clMin = r.clMin;
+      if (r.clMax > clMax) clMax = r.clMax;
     });
     if (owMax < 0) { owMin = 0; owMax = 15; olMin = 0; olMax = 15; cwMin = 0; cwMax = 15; clMin = 0; clMax = 15; }
     return { owMin: owMin, owMax: owMax, olMin: olMin, olMax: olMax, cwMin: cwMin, cwMax: cwMax, clMin: clMin, clMax: clMax };
@@ -294,41 +327,49 @@
     overallEl.textContent = " (possible: " + dataRanges.owMin + "-" + dataRanges.owMax + " W, " + dataRanges.olMin + "-" + dataRanges.olMax + " L)";
     confEl.textContent = " (possible: " + dataRanges.cwMin + "-" + dataRanges.cwMax + " W, " + dataRanges.clMin + "-" + dataRanges.clMax + " L)";
 
+    var owMin = 0, owMax = 15, olMin = 0, olMax = 15, cwMin = 0, cwMax = 15, clMin = 0, clMax = 15;
     if (teamName && view.sim && view.sim.debugRuns) {
       var runs = view.sim.debugRuns;
-    var owMin = 99, owMax = -1, olMin = 99, olMax = -1;
-    var cwMin = 99, cwMax = -1, clMin = 99, clMax = -1;
-    var found = false;
-
-    runs.forEach(function (run) {
-      var rec = run.records[teamName];
-      if (!rec) return;
-      found = true;
-      if (rec.ow < owMin) owMin = rec.ow;
-      if (rec.ow > owMax) owMax = rec.ow;
-      if (rec.ol < olMin) olMin = rec.ol;
-      if (rec.ol > olMax) olMax = rec.ol;
-      if (rec.cw < cwMin) cwMin = rec.cw;
-      if (rec.cw > cwMax) cwMax = rec.cw;
-      if (rec.cl < clMin) clMin = rec.cl;
-      if (rec.cl > clMax) clMax = rec.cl;
-    });
-
-    if (found) {
-      overallEl.textContent = " (sim range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
-      confEl.textContent = " (sim range: " + cwMin + "-" + cwMax + " W, " + clMin + "-" + clMax + " L)";
+      owMin = 99; owMax = -1; olMin = 99; olMax = -1;
+      var cwMinS = 99, cwMaxS = -1, clMinS = 99, clMaxS = -1;
+      var found = false;
+      runs.forEach(function (run) {
+        var rec = run.records[teamName];
+        if (!rec) return;
+        found = true;
+        if (rec.ow < owMin) owMin = rec.ow;
+        if (rec.ow > owMax) owMax = rec.ow;
+        if (rec.ol < olMin) olMin = rec.ol;
+        if (rec.ol > olMax) olMax = rec.ol;
+        if (rec.cw < cwMinS) cwMinS = rec.cw;
+        if (rec.cw > cwMaxS) cwMaxS = rec.cw;
+        if (rec.cl < clMinS) clMinS = rec.cl;
+        if (rec.cl > clMaxS) clMaxS = rec.cl;
+      });
+      if (found) {
+        overallEl.textContent = " (sim range: " + owMin + "-" + owMax + " W, " + olMin + "-" + olMax + " L)";
+        confEl.textContent = " (sim range: " + cwMinS + "-" + cwMaxS + " W, " + clMinS + "-" + clMaxS + " L)";
+        owMin = Math.max(0, owMin); owMax = Math.min(15, owMax);
+        olMin = Math.max(0, olMin); olMax = Math.min(15, olMax);
+        cwMin = Math.max(0, cwMinS); cwMax = Math.min(15, cwMaxS);
+        clMin = Math.max(0, clMinS); clMax = Math.min(15, clMaxS);
+      }
     } else {
-      // Keep possible-range text already set above
+      // Use data-based possible ranges
+      var dr = computeDataRanges(teamName);
+      owMin = dr.owMin; owMax = dr.owMax;
+      olMin = dr.olMin; olMax = dr.olMax;
+      cwMin = dr.cwMin; cwMax = dr.cwMax;
+      clMin = dr.clMin; clMax = dr.clMax;
     }
-      var owInput = row.querySelector(".simdeep-ow");
-      var olInput = row.querySelector(".simdeep-ol");
-      var cwInput = row.querySelector(".simdeep-cw");
-      var clInput = row.querySelector(".simdeep-cl");
-      if (owInput) { owInput.min = owMin; owInput.max = owMax; }
-      if (olInput) { olInput.min = olMin; olInput.max = olMax; }
-      if (cwInput) { cwInput.min = cwMin; cwInput.max = cwMax; }
-      if (clInput) { clInput.min = clMin; clInput.max = clMax; }
-    }
+    var owInput = row.querySelector(".simdeep-ow");
+    var olInput = row.querySelector(".simdeep-ol");
+    var cwInput = row.querySelector(".simdeep-cw");
+    var clInput = row.querySelector(".simdeep-cl");
+    if (owInput) { owInput.min = Math.max(0, owMin); owInput.max = Math.min(15, owMax); }
+    if (olInput) { olInput.min = Math.max(0, olMin); olInput.max = Math.min(15, olMax); }
+    if (cwInput) { cwInput.min = Math.max(0, cwMin); cwInput.max = Math.min(15, cwMax); }
+    if (clInput) { clInput.min = Math.max(0, clMin); clInput.max = Math.min(15, clMax); }
   }
 
   // ---- Simulation ----
@@ -342,10 +383,7 @@
   }
 
   function runSimulationThenFilter() {
-    if (view.sim && view.sim.debugRuns) {
-      applyFilters();
-      return;
-    }
+    // Always allow re-run; do not exit early
     var btn = document.getElementById("simdeepRunSim");
     var note = document.getElementById("simdeepNote");
     var loading = document.getElementById("simdeepLoading");
@@ -375,6 +413,11 @@
     loading.classList.remove("hidden");
     note.textContent = "Running 10,000 simulations...";
 
+    var formatSelect = document.getElementById("simdeepFormat");
+    if (formatSelect && playoffView) {
+      playoffView.format = formatSelect.value;
+    }
+
     var prevDebug = (SG.debug && SG.debug.sim) ? SG.debug.sim : false;
     SG.debug = SG.debug || {};
     SG.debug.sim = true;
@@ -390,11 +433,10 @@
         applyFilters();
       } catch (e) {
         SG.debug.sim = prevDebug;
-        console.error("Simulation failed:", e);
-        note.textContent = "Simulation failed. See console for details.";
+        note.textContent = "Simulation failed. The data may be incomplete or the simulator encountered an unexpected state. Try checking for updates or running again.";
       } finally {
         btn.disabled = false;
-        btn.textContent = "Run simulation";
+        btn.textContent = "Run / Re-run simulation";
         loading.classList.add("hidden");
       }
     }, 40);

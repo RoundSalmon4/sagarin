@@ -324,7 +324,11 @@
 
     <section id="tab-simdeep" class="panel hidden">
       <div class="toolbar">
-        <button id="simdeepRunSim" type="button" class="btn" style="margin-right: 0.5rem;">Run simulation</button>
+        <button id="simdeepRunSim" type="button" class="btn" style="margin-right: 0.5rem;">Run / Re-run simulation</button>
+        <select id="simdeepFormat" aria-label="Playoff format" style="margin-right: 0.5rem; width: auto; min-width: 120px;">
+          <option value="12">12 team (current)</option>
+          <option value="24">24 team (proposed 2027)</option>
+        </select>
         <button id="simdeepAddFilter" type="button" class="btn" style="margin-right: 0.5rem;">+ Add filter</button>
         <span class="toolbar-label" style="color: var(--muted); font-size: 0.8rem;">Filters analyze existing simulation runs to understand the simulator. They do not create events. Each row = AND. Within row = AND.</span>
       </div>
