@@ -292,50 +292,106 @@
   // across the day instead of piling into one slot.
   var PER_WINDOW = 3;
 
+  function getDayOfWeek(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    var tzid = tz ? TZ[tz] : undefined;
+    var parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: tzid,
+      weekday: "long"
+    }).formatToParts(d);
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i].type === "weekday") return parts[i].value;
+    }
+    return "";
+  }
+
   function renderWatch(list) {
     var box = document.getElementById("tvWatch");
     if (!box) return;
     if (!list.length) { box.innerHTML = '<p class="note">No upcoming games match the filters.</p>'; return; }
     var watchSort = document.getElementById("tvSort") && document.getElementById("tvSort").value === "kickoff";
-    var byWin = {};
+
+    // Group by day of week
+    var byDay = {};
     list.forEach(function (g) {
-      var w = windowOf(g.date);
-      (byWin[w] = byWin[w] || []).push(g);
+      var day = getDayOfWeek(g.date) || "Unknown";
+      (byDay[day] = byDay[day] || []).push(g);
     });
+
+    var dayOrder = ["Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday", "Unknown"];
     var html = "";
-    WINDOWS.forEach(function (w) {
-      var all = byWin[w.key] || [];
-      if (!all.length) return;
-      // The picks are the best games in the window by watch score. When the
-      // table is sorted by kickoff, those picks are listed in kickoff order
-      // instead of by score.
-      var arr = all.slice().sort(function (a, b) {
-        return score(b, curCtx).value - score(a, curCtx).value;
-      }).slice(0, PER_WINDOW);
-      if (watchSort) {
-        arr.sort(function (a, b) {
-          if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+
+    dayOrder.forEach(function (day) {
+      var games = byDay[day];
+      if (!games || !games.length) return;
+
+      if (day === "Saturday") {
+        // Saturday: group by kickoff windows as before
+        var byWin = {};
+        games.forEach(function (g) {
+          var w = windowOf(g.date);
+          (byWin[w] = byWin[w] || []).push(g);
+        });
+        WINDOWS.forEach(function (w) {
+          var all = byWin[w.key] || [];
+          if (!all.length) return;
+          var arr = all.slice().sort(function (a, b) {
+            return score(b, curCtx).value - score(a, curCtx).value;
+          }).slice(0, PER_WINDOW);
+          if (watchSort) {
+            arr.sort(function (a, b) {
+              if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+              return score(b, curCtx).value - score(a, curCtx).value;
+            });
+          }
+          var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
+          html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
+            ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
+          html += arr.map(function (g) {
+            var s = score(g, curCtx);
+            var away = teamName(g.awayId, g.awayName);
+            var home = teamName(g.homeId, g.homeName);
+            return '<div class="watch-card">' +
+              '<div class="watch-head"><span class="watch-score">' + s.value + "</span>" +
+              '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
+              (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
+              '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
+              ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
+              '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
+              (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
+          }).join("");
+          html += "</div></div>";
+        });
+      } else {
+        // Non-Saturday days: show all games sorted by watch score (or kickoff if watchSort)
+        var arr = games.slice().sort(function (a, b) {
           return score(b, curCtx).value - score(a, curCtx).value;
         });
+        if (watchSort) {
+          arr.sort(function (a, b) {
+            if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+            return score(b, curCtx).value - score(a, curCtx).value;
+          });
+        }
+        html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(day) + ' games</h4><div class="watch-grid">';
+        html += arr.map(function (g) {
+          var s = score(g, curCtx);
+          var away = teamName(g.awayId, g.awayName);
+          var home = teamName(g.homeId, g.homeName);
+          return '<div class="watch-card">' +
+            '<div class="watch-head"><span class="watch-score">' + s.value + "</span>" +
+            '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
+            (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
+            '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
+            ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
+            '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
+            (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
+        }).join("");
+        html += "</div></div>";
       }
-      var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
-      html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
-        ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
-      html += arr.map(function (g) {
-        var s = score(g, curCtx);
-        var away = teamName(g.awayId, g.awayName);
-        var home = teamName(g.homeId, g.homeName);
-        return '<div class="watch-card">' +
-          '<div class="watch-head"><span class="watch-score">' + s.value + "</span>" +
-          '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
-          (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
-          '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
-          ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
-          '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
-          (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
-      }).join("");
-      html += "</div></div>";
     });
+
     box.innerHTML = html;
   }
 
