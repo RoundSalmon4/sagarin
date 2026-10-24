@@ -498,9 +498,10 @@ input[type="search"] { min-width: 240px; }
 .simdeep-remove-row:hover { opacity: 0.7; }
 .simdeep-row-fields {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, max-content));
   gap: 0.75rem;
   align-items: start;
+  justify-content: start;
 }
 .simdeep-param-group {
   background: var(--surface-2);
