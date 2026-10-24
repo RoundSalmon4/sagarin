@@ -528,9 +528,12 @@ input[type="search"] { min-width: 240px; }
 .simdeep-param-btn.active { background: var(--good); }
 .simdeep-param-btn:not(.active) { background: var(--line); color: var(--muted); }
 .simdeep-param-body {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 0.3rem;
+}
+.simdeep-param-group.active .simdeep-param-body {
+  display: flex;
 }
 .simdeep-record-row {
   display: flex;
@@ -595,3 +598,23 @@ input[type="search"] { min-width: 240px; }
   outline: 2px solid var(--accent);
   border-color: var(--accent);
 }
+
+.simdeep-more-wrap { margin-top: 0.5rem; text-align: center; }
+.simdeep-load-more {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--ink);
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.simdeep-load-more:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.simdeep-load-more:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

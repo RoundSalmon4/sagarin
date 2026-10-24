@@ -81,7 +81,7 @@
       '<div class="simdeep-row-fields">' +
         '<div class="simdeep-param-group" data-param="team">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="team" aria-label="Team filter" title="Filter by a specific team">Team</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="team" aria-label="Team filter" title="Filter by a specific team">Team</button>' +
           '</div>' +
           '<div class="simdeep-param-body">' +
             '<div class="combo">' +
@@ -92,7 +92,7 @@
         '</div>' +
         '<div class="simdeep-param-group" data-param="confChamp">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="confChamp" aria-label="Conf champ filter" title="Filter by conference champion">Conf champ</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="confChamp" aria-label="Conf champ filter" title="Filter by conference champion">Conf champ</button>' +
           '</div>' +
           '<div class="simdeep-param-body">' +
             '<select class="simdeep-conf-champ" aria-label="Conference champion" title="Choose a conference; if Team is also selected, that team must be the conference champion">' +
@@ -102,7 +102,7 @@
         '</div>' +
         '<div class="simdeep-param-group" data-param="overall">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="overall" aria-label="Overall record filter" title="Filter by overall win/loss record">Overall</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="overall" aria-label="Overall record filter" title="Filter by overall win/loss record">Overall</button>' +
           '</div>' +
           '<div class="simdeep-param-body">' +
             '<div class="simdeep-record-row">' +
@@ -120,7 +120,7 @@
         '</div>' +
         '<div class="simdeep-param-group" data-param="conf">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="conf" aria-label="Conf record filter" title="Filter by conference win/loss record">Conf</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="conf" aria-label="Conf record filter" title="Filter by conference win/loss record">Conf</button>' +
           '</div>' +
           '<div class="simdeep-param-body">' +
             '<div class="simdeep-record-row">' +
@@ -138,13 +138,13 @@
         '</div>' +
         '<div class="simdeep-param-group" data-param="inField">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
           '</div>' +
           '<div class="simdeep-param-body"></div>' +
         '</div>' +
         '<div class="simdeep-param-group" data-param="champion">' +
           '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn active" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
+            '<button type="button" class="simdeep-param-btn" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
           '</div>' +
           '<div class="simdeep-param-body">' +
             '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team">' +
@@ -270,6 +270,8 @@
     btns.forEach(function (btn) {
       btn.addEventListener("click", function () {
         btn.classList.toggle("active");
+        var group = btn.closest(".simdeep-param-group");
+        if (group) group.classList.toggle("active", btn.classList.contains("active"));
         tryApply();
       });
     });
@@ -559,6 +561,22 @@
     }
 
     var runs = view.sim.debugRuns;
+
+    // Check if team filter has any matches in field across all runs
+    var teamFilters = allFilters.filter(function(f) { return f.team; });
+    if (teamFilters.length > 0) {
+      teamFilters.forEach(function(tf) {
+        var teamInAnyField = runs.some(function(run) {
+          return run.field.some(function(f) { return f.team === tf.team; });
+        });
+        if (!teamInAnyField) {
+          document.getElementById("simdeepNote").textContent = tf.team + " does not make the playoff field in any simulation run. Try a different team or remove the team filter.";
+          document.getElementById("simdeepResults").innerHTML = "";
+          return;
+        }
+      });
+    }
+
     var filtered = runs.filter(function (run) {
       return allFilters.some(function (filter) {
         return matchesFilter(run, filter);
@@ -707,20 +725,36 @@
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener("click", function () {
         var currentLimit = shown.length;
-        var nextRuns = runs.slice(currentLimit, currentLimit + 100);
-        if (!nextRuns.length) return;
+        var nextGroups = groupArr.slice(currentLimit, currentLimit + 100);
+        if (!nextGroups.length) return;
         var frag = document.createDocumentFragment();
-        nextRuns.forEach(function (run) {
+        nextGroups.forEach(function (group, idx) {
+          var run = group.run;
+          var absoluteIdx = currentLimit + idx;
+          var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
+            var bidClass = "";
+            if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
+            else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";
+            else bidClass = "bid-atlarge";
+            return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+          }).join("");
+          var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
+          var confChampsHtml = run.confChamps.map(function (c) {
+            return '<span class="simdeep-conf-champ">' + c.conf + ': ' + c.champ + '</span>';
+          }).join(" ");
           var card = document.createElement("div");
           card.className = "simdeep-card";
-          card.innerHTML = '<div class="simdeep-card-header"><div class="simdeep-team"><span class="simdeep-seed">Run #' + (run.run + 1) + '</span></div><button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button></div>' +
-            '<div class="simdeep-stats"><div class="simdeep-stat"><span class="simdeep-stat-label">Teams in field</span><span class="simdeep-stat-value">' + run.field.length + '</span></div><div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div></div>' +
-            '<div class="simdeep-field">' + run.field.slice(0, 12).map(function (f, i) {
-              var bidClass = f.bid.indexOf("P4 champ") !== -1 ? "bid-p4" : (f.bid.indexOf("G6 bid") !== -1 ? "bid-g6" : "bid-atlarge");
-              return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
-            }).join("") + '</div>' +
-            (run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '') +
-            '<div class="simdeep-conf-champs">' + run.confChamps.map(function (c) { return '<span class="simdeep-conf-champ">' + c.conf + ': ' + c.champ + '</span>'; }).join(" ") + '</div>' +
+          card.innerHTML = '<div class="simdeep-card-header">' +
+            '<div class="simdeep-card-title">Outcome #' + (absoluteIdx + 1) + ' &mdash; ' + group.count + ' runs (' + group.pct + '%)</div>' +
+            '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
+            '</div>' +
+            '<div class="simdeep-stats">' +
+              '<div class="simdeep-stat"><span class="simdeep-stat-label">Field size</span><span class="simdeep-stat-value">' + (run.field ? run.field.length : 0) + '</span></div>' +
+              '<div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div>' +
+            '</div>' +
+            '<div class="simdeep-field">' + fieldHtml + '</div>' +
+            (championHtml ? '<div class="simdeep-conf-champs">' + championHtml + '</div>' : '') +
+            (confChampsHtml ? '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' : '') +
             '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
             '<div class="simdeep-details" id="simdeep-details-' + run.run + '" data-run="' + run.run + '"></div>';
           frag.appendChild(card);
@@ -745,20 +779,18 @@
   }
 
   function buildDetailsHtml(run) {
-    var rec = run.records;
-    var teamNames = Object.keys(rec).sort();
+    var fieldTeams = run.field || [];
 
-    var rows = teamNames.map(function (team) {
-      var r = rec[team];
-      var ow = r.ow || 0, ol = r.ol || 0, cw = r.cw || 0, cl = r.cl || 0;
-      var bid = run.field.find(function (f) { return f.team === team; });
+    var rows = fieldTeams.map(function (f) {
+      var rec = run.records[f.team] || { ow: 0, ol: 0, cw: 0, cl: 0 };
+      var ow = rec.ow || 0, ol = rec.ol || 0, cw = rec.cw || 0, cl = rec.cl || 0;
       return '<div class="simdeep-detail-row">' +
-        '<span class="simdeep-detail-label">' + team + '</span>' +
-        '<span class="simdeep-detail-value">' + ow + '-' + ol + ' (' + cw + '-' + cl + ')' + (bid ? ' [' + bid.bid + ']' : '') + '</span>' +
+        '<span class="simdeep-detail-label">' + f.team + '</span>' +
+        '<span class="simdeep-detail-value">' + ow + '-' + ol + ' (' + cw + '-' + cl + ') [' + f.bid + ']</span>' +
       '</div>';
     }).join("");
 
-    return '<div class="simdeep-detail-header">Full records for this run</div>' + rows;
+    return '<div class="simdeep-detail-header">Field teams for this outcome</div>' + rows;
   }
 
   var SIMS = 10000;

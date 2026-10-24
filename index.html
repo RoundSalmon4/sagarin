@@ -356,7 +356,8 @@
     .simdeep-param-btn { background: var(--accent); color: var(--accent-ink); border: none; border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.75rem; cursor: pointer; font-weight: 600; }
     .simdeep-param-btn.active { background: var(--good); }
     .simdeep-param-btn:not(.active) { background: var(--line); color: var(--muted); }
-    .simdeep-param-body { display: flex; flex-direction: column; gap: 0.3rem; }
+    .simdeep-param-body { display: none; flex-direction: column; gap: 0.3rem; }
+    .simdeep-param-group.active .simdeep-param-body { display: flex; }
     .simdeep-record-row { display: flex; align-items: center; gap: 0.3rem; }
     .simdeep-record-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; min-width: 1rem; }
     .simdeep-param-body select,
@@ -365,6 +366,24 @@
     .simdeep-param-body input[type="number"] { width: 4rem; }
     .simdeep-param-body .combo input { min-width: 160px; }
     .simdeep-record-range { font-size: 0.7rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .simdeep-more-wrap { margin-top: 0.5rem; text-align: center; }
+    .simdeep-load-more {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      color: var(--ink);
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .simdeep-load-more:hover {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
     .simdeep-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
     .simdeep-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .simdeep-field { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.5rem 0; }
