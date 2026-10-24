@@ -44,6 +44,9 @@
     document.getElementById("simdeepLimit").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
     });
+    document.getElementById("simdeepLogic").addEventListener("change", function () {
+      if (view.sim && view.sim.debugRuns) applyFilters();
+    });
     updateFilterRowStates();
 
     // Listen for simulation completion on playoff tab
@@ -601,11 +604,19 @@
       });
     }
 
-    // Filter runs: ALL filter rows must match (AND between rows), each row is AND within
+    // Filter runs: AND/OR between rows based on selector
+    var logicEl = document.getElementById("simdeepLogic");
+    var useAnd = logicEl ? logicEl.value === "and" : true;
     var filtered = runs.filter(function (run) {
-      return allFilters.every(function (filter) {
-        return matchesFilter(run, filter);
-      });
+      if (useAnd) {
+        return allFilters.every(function (filter) {
+          return matchesFilter(run, filter);
+        });
+      } else {
+        return allFilters.some(function (filter) {
+          return matchesFilter(run, filter);
+        });
+      }
     });
 
     renderResults(filtered, view.sim.n);

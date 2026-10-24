@@ -339,7 +339,13 @@
             <option value="500">500</option>
           </select>
         </label>
-        <span class="toolbar-label" style="color: var(--muted); font-size: 0.8rem;">Filters analyze existing simulation runs. Each row = AND. Within row = AND.</span>
+        <label class="inline-label">Logic
+          <select id="simdeepLogic" aria-label="Filter logic between rows" style="width: auto;">
+            <option value="and" selected>AND (all rows must match)</option>
+            <option value="or">OR (any row can match)</option>
+          </select>
+        </label>
+        <span class="toolbar-label" style="color: var(--muted); font-size: 0.8rem;">Filters analyze existing simulation runs. Within row = AND.</span>
       </div>
       <div id="simdeepFilterRows"></div>
       <p class="note" id="simdeepNote"></p>
