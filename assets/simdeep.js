@@ -16,6 +16,19 @@
     });
   }
 
+  function updateFilterRowStates() {
+    var format = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
+    var disableConf = format === "24";
+    document.querySelectorAll(".simdeep-param-btn[data-param='confChamp']").forEach(function (btn) {
+      btn.disabled = disableConf;
+      btn.style.opacity = disableConf ? "0.3" : "1";
+      btn.title = disableConf ? "Conference champions are not used in the 24-team format" : btn.title;
+    });
+    document.querySelectorAll(".simdeep-conf-champ").forEach(function (sel) {
+      sel.disabled = disableConf;
+    });
+  }
+
   function init() {
     if (!SG.state.data) return;
     buildTeamToConf();
@@ -26,7 +39,9 @@
       if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view) {
         SG.state.modules.playoff.view.format = this.value;
       }
+      updateFilterRowStates();
     });
+    updateFilterRowStates();
 
     // Listen for simulation completion on playoff tab
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
@@ -618,23 +633,23 @@
 
       return '<div class="simdeep-card">' +
         '<div class="simdeep-card-header">' +
-          '<div class="simdeep-team"><span class="simdeep-seed">Run #' + (run.run + 1) + '</span> <span style="font-size:0.8rem;color:var(--accent);font-weight:600;">' + group.count + 'x (' + group.pct + '%)</span></div>' +
+          '<div class="simdeep-card-title">Outcome #' + (idx + 1) + ' &mdash; ' + group.count + ' runs (' + group.pct + '%)</div>' +
           '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
         '</div>' +
         '<div class="simdeep-stats">' +
-          '<div class="simdeep-stat"><span class="simdeep-stat-label">Teams in field</span><span class="simdeep-stat-value">' + run.field.length + '</span></div>' +
+          '<div class="simdeep-stat"><span class="simdeep-stat-label">Field size</span><span class="simdeep-stat-value">' + (run.field ? run.field.length : 0) + '</span></div>' +
           '<div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div>' +
         '</div>' +
         '<div class="simdeep-field">' + fieldHtml + '</div>' +
-        championHtml +
-        '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' +
+        (championHtml ? '<div class="simdeep-conf-champs">' + championHtml + '</div>' : '') +
+        (confChampsHtml ? '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' : '') +
         '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
         '<div class="simdeep-details" id="simdeep-details-' + run.run + '" data-run="' + run.run + '"></div>' +
       '</div>';
     }).join("");
 
     if (hasMore) {
-      html += '<div class="simdeep-more">Showing first 100 of ' + groupArr.length + ' unique outcomes.</div>';
+      html += '<div class="simdeep-more-wrap"><button type="button" id="simdeepLoadMore" class="simdeep-load-more">Show more results</button></div>';
     }
 
     container.innerHTML = html;
@@ -656,7 +671,7 @@
     var loadMoreBtn = document.getElementById("simdeepLoadMore");
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener("click", function () {
-        var currentLimit = shownRuns.length;
+        var currentLimit = shown.length;
         var nextRuns = runs.slice(currentLimit, currentLimit + 100);
         if (!nextRuns.length) return;
         var frag = document.createDocumentFragment();
