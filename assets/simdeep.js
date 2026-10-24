@@ -65,37 +65,37 @@
       '</div>' +
       '<div class="simdeep-row-fields">' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="team" aria-label="Include team filter" title="Filter by a specific team in the playoff projection"> Team' +
+          '<button type="button" class="simdeep-param-btn active" data-param="team" aria-label="Team filter" title="Filter by a specific team">Team</button>' +
           '<div class="combo">' +
             '<input type="text" class="simdeep-team-search" placeholder="Type a team name" autocomplete="off" aria-label="Team" role="combobox" aria-expanded="false" title="Search for a team to filter by">' +
             '<div class="combo-list hidden" role="listbox"></div>' +
           '</div>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="confChamp" aria-label="Include conf champ filter" title="Filter by conference champion (select conference; if team is also set, requires that team to be the champ)"> Conf champ' +
+          '<button type="button" class="simdeep-param-btn active" data-param="confChamp" aria-label="Conf champ filter" title="Filter by conference champion">Conf champ</button>' +
           '<select class="simdeep-conf-champ" aria-label="Conference champion" title="Choose a conference; if Team is also selected, that team must be the conference champion">' +
             '<option value="">Any</option>' +
           '</select>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="overall" aria-label="Include overall record filter" title="Filter by overall win/loss record (use operators for greater/less than)"> Overall' +
+          '<button type="button" class="simdeep-param-btn active" data-param="overall" aria-label="Overall record filter" title="Filter by overall win/loss record">Overall</button>' +
           '<select class="simdeep-op-ow" aria-label="Overall wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ow" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Wins">' +
           '<select class="simdeep-op-ol" aria-label="Overall losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-ol" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Losses" title="Overall losses filter (use operator for comparisons)"> <span class="simdeep-record-range overall" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="conf" aria-label="Include conf record filter" title="Filter by conference win/loss record (use operators for greater/less than)"> Conf' +
+          '<button type="button" class="simdeep-param-btn active" data-param="conf" aria-label="Conf record filter" title="Filter by conference win/loss record">Conf</button>' +
           '<select class="simdeep-op-cw" aria-label="Conf wins operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cw" min="0" max="15" placeholder="W" style="width: 3rem;" aria-label="Conf Wins">' +
           '<select class="simdeep-op-cl" aria-label="Conf losses operator" title="Choose comparison operator: =, >, <, >=, <="><option value="=" selected>=</option><option value=">">></option><option value="<"><</option><option value=">=">>=</option><option value="<="><=</option></select>' +
           '<input type="number" class="simdeep-cl" min="0" max="15" placeholder="L" style="width: 3rem;" aria-label="Conf Losses" title="Conference losses filter (use operator for comparisons)"> <span class="simdeep-record-range conf" style="font-size:0.75rem;color:var(--muted);display:inline-block;margin-left:0.3rem;"></span>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="inField" aria-label="Team must be in projected field" title="Only count runs where this team appears in the playoff field"> In field' +
+          '<button type="button" class="simdeep-param-btn active" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
         '</label>' +
         '<label class="inline-label">' +
-          '<input type="checkbox" class="simdeep-param-check" data-param="champion" aria-label="Filter by champion team" title="Only match runs where this team wins the championship"> Champion' +
+          '<button type="button" class="simdeep-param-btn active" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
           '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team" style="width: 8rem;">' +
         '</label>' +
       '</div>';
@@ -209,12 +209,19 @@
     function tryApply() {
       if (view.sim && view.sim.debugRuns) applyFilters();
     }
-    var inputs = row.querySelectorAll("input[type='number'], input[type='text'], input[type='checkbox'], select");
+    var inputs = row.querySelectorAll("input[type='number'], input[type='text'], select");
     inputs.forEach(function (el) {
       el.addEventListener("change", tryApply);
       if (el.tagName === "INPUT" && el.type === "text") {
         el.addEventListener("blur", tryApply);
       }
+    });
+    var btns = row.querySelectorAll(".simdeep-param-btn");
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        btn.classList.toggle("active");
+        tryApply();
+      });
     });
 
     // Conf champ change -> clear team search if team not in that conf
@@ -433,7 +440,7 @@
         applyFilters();
       } catch (e) {
         SG.debug.sim = prevDebug;
-        note.textContent = "Simulation failed. The data may be incomplete or the simulator encountered an unexpected state. Try checking for updates or running again.";
+        note.textContent = "Simulation failed: " + (e && e.message ? e.message : String(e)) + ". Please check data and try again.";
       } finally {
         btn.disabled = false;
         btn.textContent = "Run / Re-run simulation";
@@ -462,25 +469,25 @@
     var hasValidFilter = false;
 
     rows.forEach(function (row) {
-      var teamCheck = row.querySelector('.simdeep-param-check[data-param="team"]');
-      var confChampCheck = row.querySelector('.simdeep-param-check[data-param="confChamp"]');
-      var overallCheck = row.querySelector('.simdeep-param-check[data-param="overall"]');
-      var confCheck = row.querySelector('.simdeep-param-check[data-param="conf"]');
-      var inFieldCheck = row.querySelector('.simdeep-param-check[data-param="inField"]');
-      var championCheck = row.querySelector('.simdeep-param-check[data-param="champion"]');
+      var teamBtn = row.querySelector('.simdeep-param-btn[data-param="team"]');
+      var confChampBtn = row.querySelector('.simdeep-param-btn[data-param="confChamp"]');
+      var overallBtn = row.querySelector('.simdeep-param-btn[data-param="overall"]');
+      var confBtn = row.querySelector('.simdeep-param-btn[data-param="conf"]');
+      var inFieldBtn = row.querySelector('.simdeep-param-btn[data-param="inField"]');
+      var championBtn = row.querySelector('.simdeep-param-btn[data-param="champion"]');
 
-      var team = (teamCheck && teamCheck.checked) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
-      var confChamp = (confChampCheck && confChampCheck.checked) ? row.querySelector(".simdeep-conf-champ").value || null : null;
-      var inField = (inFieldCheck && inFieldCheck.checked) ? true : false;
-      var champion = (championCheck && championCheck.checked) ? (row.querySelector(".simdeep-champion-search").value.trim() || null) : null;
-      var owOp = (overallCheck && overallCheck.checked) ? (row.querySelector(".simdeep-op-ow").value || "=") : "=";
-      var olOp = (overallCheck && overallCheck.checked) ? (row.querySelector(".simdeep-op-ol").value || "=") : "=";
-      var cwOp = (confCheck && confCheck.checked) ? (row.querySelector(".simdeep-op-cw").value || "=") : "=";
-      var clOp = (confCheck && confCheck.checked) ? (row.querySelector(".simdeep-op-cl").value || "=") : "=";
-      var ow = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ow").value) || null : null;
-      var ol = (overallCheck && overallCheck.checked) ? parseInt(row.querySelector(".simdeep-ol").value) || null : null;
-      var cw = (confCheck && confCheck.checked) ? parseInt(row.querySelector(".simdeep-cw").value) || null : null;
-      var cl = (confCheck && confCheck.checked) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
+      var team = (teamBtn && teamBtn.classList.contains('active')) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
+      var confChamp = (confChampBtn && confChampBtn.classList.contains('active')) ? row.querySelector(".simdeep-conf-champ").value || null : null;
+      var inField = (inFieldBtn && inFieldBtn.classList.contains('active')) ? true : false;
+      var champion = (championBtn && championBtn.classList.contains('active')) ? (row.querySelector(".simdeep-champion-search").value.trim() || null) : null;
+      var owOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ow").value || "=") : "=";
+      var olOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ol").value || "=") : "=";
+      var cwOp = (confBtn && confBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-cw").value || "=") : "=";
+      var clOp = (confBtn && confBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-cl").value || "=") : "=";
+      var ow = (overallBtn && overallBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-ow").value) || null : null;
+      var ol = (overallBtn && overallBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-ol").value) || null : null;
+      var cw = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cw").value) || null : null;
+      var cl = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
 
       // Skip empty rows
       if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null) return;
