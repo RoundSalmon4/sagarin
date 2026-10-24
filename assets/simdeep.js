@@ -704,7 +704,8 @@
     var totalMatchingRuns = runs.length;
     var totalUniqueOutcomes = groupArr.length;
     var avgOccurrences = totalMatchingRuns / totalUniqueOutcomes;
-    note.textContent = "Showing " + shown.length + " of " + totalUniqueOutcomes + " unique outcomes (" + totalMatchingRuns.toLocaleString() + " of " + totalSims.toLocaleString() + " total runs match filters, " + (totalMatchingRuns / totalSims * 100).toFixed(2) + "%). Each outcome occurred an average of " + avgOccurrences.toFixed(1) + " times.";
+    note.innerHTML = "Showing " + shown.length + " of " + totalUniqueOutcomes + " unique outcomes (" + totalMatchingRuns.toLocaleString() + " of " + totalSims.toLocaleString() + " total runs match filters, " + (totalMatchingRuns / totalSims * 100).toFixed(2) + "%). Each outcome occurred an average of " + avgOccurrences.toFixed(1) + " times." +
+      '<br><span class="simdeep-note">Note: The Playoff Predictor tab shows a single deterministic projection based on current ratings. This Deep Dive runs 10,000 Monte Carlo simulations with game-by-game variance, revealing the full distribution of possible outcomes. The most common outcome here may differ from the single projection because ratings have uncertainty.</span>';
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
