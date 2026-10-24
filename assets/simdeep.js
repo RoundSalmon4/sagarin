@@ -142,12 +142,6 @@
             '<span class="simdeep-record-range conf"></span>' +
           '</div>' +
         '</div>' +
-        '<div class="simdeep-param-group" data-param="inField">' +
-          '<div class="simdeep-param-header">' +
-            '<button type="button" class="simdeep-param-btn" data-param="inField" aria-label="In field" title="Only count runs where team is in projected playoff field">In field</button>' +
-          '</div>' +
-          '<div class="simdeep-param-body"></div>' +
-        '</div>' +
         '<div class="simdeep-param-group" data-param="champion">' +
           '<div class="simdeep-param-header">' +
             '<button type="button" class="simdeep-param-btn" data-param="champion" aria-label="Champion filter" title="Only match runs where this team is champion">Champion</button>' +
@@ -239,12 +233,17 @@
     searchInput.addEventListener("change", function () {
       var teamName = searchInput.value;
       var confChampSelect = row.querySelector(".simdeep-conf-champ");
+      var confChampGroup = row.querySelector('.simdeep-param-group[data-param="confChamp"]');
+      var confChampActive = confChampGroup && confChampGroup.classList.contains("active");
+
       if (teamName && teamToConf[teamName]) {
         confChampSelect.value = teamToConf[teamName];
-        // Restrict conf champ dropdown to this team’s conference
-        var confName = teamToConf[teamName];
-        var opts = confChampSelect.querySelectorAll("option");
-        opts.forEach(function (o) { o.style.display = (o.value === "" || o.value === confName) ? "" : "none"; });
+        // Only restrict conf champ dropdown if confChamp param is active
+        if (confChampActive) {
+          var confName = teamToConf[teamName];
+          var opts = confChampSelect.querySelectorAll("option");
+          opts.forEach(function (o) { o.style.display = (o.value === "" || o.value === confName) ? "" : "none"; });
+        }
       } else {
         // Restore all conf options when team cleared
         var opts = confChampSelect.querySelectorAll("option");
@@ -308,7 +307,6 @@
         var search = group.querySelector(".simdeep-champion-search");
         if (search) { search.value = ""; }
       }
-      // inField has no inputs to reset
     }
 
     // Conf champ change -> clear team search if team not in that conf
@@ -559,12 +557,10 @@
       var confChampBtn = row.querySelector('.simdeep-param-btn[data-param="confChamp"]');
       var overallBtn = row.querySelector('.simdeep-param-btn[data-param="overall"]');
       var confBtn = row.querySelector('.simdeep-param-btn[data-param="conf"]');
-      var inFieldBtn = row.querySelector('.simdeep-param-btn[data-param="inField"]');
       var championBtn = row.querySelector('.simdeep-param-btn[data-param="champion"]');
 
       var team = (teamBtn && teamBtn.classList.contains('active')) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
       var confChamp = (confChampBtn && confChampBtn.classList.contains('active')) ? row.querySelector(".simdeep-conf-champ").value || null : null;
-      var inField = (inFieldBtn && inFieldBtn.classList.contains('active')) ? true : false;
       var champion = (championBtn && championBtn.classList.contains('active')) ? (row.querySelector(".simdeep-champion-search").value.trim() || null) : null;
       var owOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ow").value || "=") : "=";
       var olOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ol").value || "=") : "=";
@@ -576,7 +572,7 @@
       var cl = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
 
       // Skip empty rows (no active params with values)
-      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null && !inField && !champion) return;
+      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null && !champion) return;
 
       // Conflict check: team must belong to selected conf champ
       if (team && confChamp && teamToConf[team] !== confChamp) {
@@ -584,7 +580,7 @@
         return;
       }
 
-      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, inField: inField, champion: champion });
+      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, champion: champion });
     });
 
     var runs = view.sim.debugRuns;
@@ -639,15 +635,6 @@
     }
     if (filter.champion) {
       if (run.champion !== filter.champion) return false;
-    }
-    if (filter.inField) {
-      var targetTeam = filter.team || filter.champion;
-      if (!targetTeam) {
-        // inField with no team/champion specified - no-op
-      } else {
-        var found = run.field.some(function (f) { return f.team === targetTeam; });
-        if (!found) return false;
-      }
     }
     if (filter.team && (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null)) {
       var rec = run.records[filter.team];
