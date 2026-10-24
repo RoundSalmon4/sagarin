@@ -269,12 +269,41 @@
     var btns = row.querySelectorAll(".simdeep-param-btn");
     btns.forEach(function (btn) {
       btn.addEventListener("click", function () {
+        var wasActive = btn.classList.contains("active");
         btn.classList.toggle("active");
         var group = btn.closest(".simdeep-param-group");
         if (group) group.classList.toggle("active", btn.classList.contains("active"));
+        if (!wasActive && btn.classList.contains("active")) {
+          // Just turned on - will apply on next change
+        } else if (wasActive && !btn.classList.contains("active")) {
+          // Just turned off - reset this parameter's inputs
+          resetParamGroup(group);
+        }
         tryApply();
       });
     });
+
+    function resetParamGroup(group) {
+      if (!group) return;
+      var param = group.getAttribute("data-param");
+      if (param === "team") {
+        var search = group.querySelector(".simdeep-team-search");
+        if (search) { search.value = ""; search.dispatchEvent(new Event("change", { bubbles: true })); }
+      } else if (param === "confChamp") {
+        var sel = group.querySelector(".simdeep-conf-champ");
+        if (sel) { sel.value = ""; sel.dispatchEvent(new Event("change", { bubbles: true })); }
+      } else if (param === "overall") {
+        group.querySelectorAll(".simdeep-op-ow, .simdeep-op-ol").forEach(function(s) { s.value = "="; });
+        group.querySelectorAll(".simdeep-ow, .simdeep-ol").forEach(function(i) { i.value = ""; });
+      } else if (param === "conf") {
+        group.querySelectorAll(".simdeep-op-cw, .simdeep-op-cl").forEach(function(s) { s.value = "="; });
+        group.querySelectorAll(".simdeep-cw, .simdeep-cl").forEach(function(i) { i.value = ""; });
+      } else if (param === "champion") {
+        var search = group.querySelector(".simdeep-champion-search");
+        if (search) { search.value = ""; }
+      }
+      // inField has no inputs to reset
+    }
 
     // Conf champ change -> clear team search if team not in that conf
     var confChampSelect = row.querySelector(".simdeep-conf-champ");
@@ -605,8 +634,13 @@
       if (run.champion !== filter.champion) return false;
     }
     if (filter.inField) {
-      var found = run.field.some(function (f) { return f.team === (filter.team || filter.champion); });
-      if (!found) return false;
+      var targetTeam = filter.team || filter.champion;
+      if (!targetTeam) {
+        // inField with no team/champion specified - no-op
+      } else {
+        var found = run.field.some(function (f) { return f.team === targetTeam; });
+        if (!found) return false;
+      }
     }
     if (filter.team && (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null)) {
       var rec = run.records[filter.team];
@@ -667,7 +701,10 @@
     var shown = groupArr.slice(0, LIMIT);
     var hasMore = groupArr.length > LIMIT;
 
-    note.textContent = shown.length + " of " + groupArr.length + " unique outcomes (" + runs.length + " of " + totalSims.toLocaleString() + " runs) (" + (runs.length / totalSims * 100).toFixed(2) + "%).";
+    var totalMatchingRuns = runs.length;
+    var totalUniqueOutcomes = groupArr.length;
+    var avgOccurrences = totalMatchingRuns / totalUniqueOutcomes;
+    note.textContent = "Showing " + shown.length + " of " + totalUniqueOutcomes + " unique outcomes (" + totalMatchingRuns.toLocaleString() + " of " + totalSims.toLocaleString() + " total runs match filters, " + (totalMatchingRuns / totalSims * 100).toFixed(2) + "%). Each outcome occurred an average of " + avgOccurrences.toFixed(1) + " times.";
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
