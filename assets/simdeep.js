@@ -47,6 +47,35 @@
     document.getElementById("simdeepLogic").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
     });
+
+    // Remove filter row (event delegation)
+    document.getElementById("simdeepFilterRows").addEventListener("click", function (e) {
+      var btn = e.target.closest(".simdeep-remove-row");
+      if (!btn) return;
+      var row = btn.closest(".simdeep-filter-row");
+      if (!row) return;
+      var rows = document.querySelectorAll(".simdeep-filter-row");
+      if (rows.length === 1) {
+        // Only one row: clear all its inputs instead of removing
+        row.querySelectorAll(".simdeep-param-btn.active").forEach(function (btn) {
+          btn.classList.remove("active");
+          var group = btn.closest(".simdeep-param-group");
+          if (group) group.classList.remove("active");
+        });
+        row.querySelectorAll(".simdeep-team-search, .simdeep-champion-search").forEach(function (i) { i.value = ""; });
+        row.querySelectorAll(".simdeep-conf-champ").forEach(function (s) { s.value = ""; });
+        row.querySelectorAll(".simdeep-op-ow, .simdeep-op-ol, .simdeep-op-cw, .simdeep-op-cl").forEach(function (s) { s.value = "="; });
+        row.querySelectorAll(".simdeep-ow, .simdeep-ol, .simdeep-cw, .simdeep-cl").forEach(function (i) { i.value = ""; });
+        // Restore conf champ dropdown options
+        row.querySelectorAll(".simdeep-conf-champ option").forEach(function (o) { o.style.display = ""; });
+        if (view.sim && view.sim.debugRuns) applyFilters();
+      } else {
+        row.remove();
+        updateRowLabels();
+        if (view.sim && view.sim.debugRuns) applyFilters();
+      }
+    });
+
     updateFilterRowStates();
 
     // Listen for simulation completion on playoff tab
