@@ -314,7 +314,11 @@
     confChampSelect.addEventListener("change", function () {
       var confName = this.value;
       var searchInput = row.querySelector(".simdeep-team-search");
-      if (searchInput.value && teamToConf[searchInput.value] && teamToConf[searchInput.value] !== confName) {
+      var teamGroup = row.querySelector('.simdeep-param-group[data-param="team"]');
+      var teamActive = teamGroup && teamGroup.classList.contains("active");
+
+      // Only clear team if team param is active and team doesn't belong to selected conf
+      if (teamActive && searchInput.value && teamToConf[searchInput.value] && teamToConf[searchInput.value] !== confName) {
         // Team doesn't belong to selected conf - clear team
         searchInput.value = "";
         searchInput.dispatchEvent(new Event("change", { bubbles: true }));
