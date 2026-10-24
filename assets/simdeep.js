@@ -41,6 +41,9 @@
       }
       updateFilterRowStates();
     });
+    document.getElementById("simdeepLimit").addEventListener("change", function () {
+      if (view.sim && view.sim.debugRuns) applyFilters();
+    });
     updateFilterRowStates();
 
     // Listen for simulation completion on playoff tab
@@ -547,7 +550,6 @@
 
     var rows = document.querySelectorAll(".simdeep-filter-row");
     var allFilters = [];
-    var hasValidFilter = false;
 
     rows.forEach(function (row) {
       var teamBtn = row.querySelector('.simdeep-param-btn[data-param="team"]');
@@ -570,8 +572,8 @@
       var cw = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cw").value) || null : null;
       var cl = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
 
-      // Skip empty rows
-      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null) return;
+      // Skip empty rows (no active params with values)
+      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null && !inField && !champion) return;
 
       // Conflict check: team must belong to selected conf champ
       if (team && confChamp && teamToConf[team] !== confChamp) {
@@ -580,14 +582,7 @@
       }
 
       allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, inField: inField, champion: champion });
-      hasValidFilter = true;
     });
-
-    if (!hasValidFilter) {
-      document.getElementById("simdeepNote").textContent = "Add at least one filter criterion (team, conf champ, or record).";
-      document.getElementById("simdeepResults").innerHTML = "";
-      return;
-    }
 
     var runs = view.sim.debugRuns;
 
@@ -606,8 +601,9 @@
       });
     }
 
+    // Filter runs: ALL filter rows must match (AND between rows), each row is AND within
     var filtered = runs.filter(function (run) {
-      return allFilters.some(function (filter) {
+      return allFilters.every(function (filter) {
         return matchesFilter(run, filter);
       });
     });
@@ -696,8 +692,9 @@
     groupArr.sort(function (a, b) { return b.count - a.count; });
     groupArr.forEach(function (g) { g.pct = (g.count / totalSims * 100).toFixed(2); });
 
-    // Render top groups (up to 100 cards, now representing grouped outcomes)
-    var LIMIT = 100;
+    // Render top groups (limit from selector, default 100)
+    var limitEl = document.getElementById("simdeepLimit");
+    var LIMIT = limitEl ? parseInt(limitEl.value) : 100;
     var shown = groupArr.slice(0, LIMIT);
     var hasMore = groupArr.length > LIMIT;
 
@@ -705,7 +702,7 @@
     var totalUniqueOutcomes = groupArr.length;
     var avgOccurrences = totalMatchingRuns / totalUniqueOutcomes;
     note.innerHTML = "Showing " + shown.length + " of " + totalUniqueOutcomes + " unique outcomes (" + totalMatchingRuns.toLocaleString() + " of " + totalSims.toLocaleString() + " total runs match filters, " + (totalMatchingRuns / totalSims * 100).toFixed(2) + "%). Each outcome occurred an average of " + avgOccurrences.toFixed(1) + " times." +
-      '<br><span class="simdeep-note">Note: The Playoff Predictor tab shows a single deterministic projection based on current ratings. This Deep Dive runs 10,000 Monte Carlo simulations with game-by-game variance, revealing the full distribution of possible outcomes. The most common outcome here may differ from the single projection because ratings have uncertainty.</span>';
+      '<br><span class="simdeep-note">This uses the same 10,000 Monte Carlo simulations from the Playoff Predictor tab. The Predictor shows a single deterministic projection; this Deep Dive reveals the full distribution of outcomes from those simulations.</span>';
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
