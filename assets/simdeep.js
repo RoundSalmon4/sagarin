@@ -877,7 +877,7 @@
         if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
         else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";
         else bidClass = "bid-atlarge";
-        return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name simdeep-team-link" data-team="' + SG.esc(f.team) + '">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+        return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name simdeep-team-link" data-team="' + f.team + '">' + SG.esc(f.team) + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
       }).join("");
 
       var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
@@ -937,7 +937,7 @@
             if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
             else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";
             else bidClass = "bid-atlarge";
-            return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+            return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name simdeep-team-link" data-team="' + f.team + '">' + SG.esc(f.team) + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
           }).join("");
           var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
           var confChampsHtml = run.confChamps.map(function (c) {
@@ -973,6 +973,14 @@
             }
             details.classList.toggle("open");
             btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
+          });
+        });
+
+        // Team distribution click handler for new cards
+        container.querySelectorAll(".simdeep-team-link").forEach(function (link) {
+          link.addEventListener("click", function () {
+            var teamName = this.getAttribute("data-team");
+            showTeamDistribution(teamName, runs, totalSims);
           });
         });
 
