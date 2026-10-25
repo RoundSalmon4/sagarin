@@ -922,6 +922,17 @@
       });
     });
 
+    // Team distribution click handler - event delegation (capture phase)
+    container.addEventListener("click", function (e) {
+      var link = e.target.closest(".simdeep-team-link");
+      if (link) {
+        e.preventDefault();
+        e.stopPropagation();
+        var teamName = link.getAttribute("data-team");
+        if (teamName) showTeamDistribution(teamName, runs, totalSims);
+      }
+    }, true);
+
     var loadMoreBtn = document.getElementById("simdeepLoadMore");
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener("click", function () {
