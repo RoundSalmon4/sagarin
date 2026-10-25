@@ -600,6 +600,199 @@ input[type="search"] { min-width: 240px; }
   border-color: var(--accent);
 }
 
+/* Outcome cards redesign */
+.simdeep-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.simdeep-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: var(--accent);
+}
+.simdeep-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  border-left: 4px solid var(--card-color);
+}
+.simdeep-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.simdeep-card-rank {
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.simdeep-card-occurrence {
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.simdeep-card-pct {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.simdeep-expand {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.simdeep-expand:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.simdeep-card-body {
+  padding: 1rem;
+}
+.simdeep-card-summary {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.simdeep-stat-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 80px;
+}
+.simdeep-stat-chip .simdeep-stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+.simdeep-stat-chip .simdeep-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.simdeep-champion-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--card-color);
+}
+.simdeep-champion-badge span {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+}
+.simdeep-champion-badge strong {
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.simdeep-seed-visual {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+.simdeep-field-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--bid-color);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.simdeep-field-team:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.simdeep-seed {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  min-width: 1.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.simdeep-team-name {
+  font-weight: 500;
+  color: var(--ink);
+}
+.simdeep-team-link {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.simdeep-team-link:hover { color: var(--accent); }
+.simdeep-bid-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.simdeep-conf-champs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.simdeep-conf-chip {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+.simdeep-conf-chip:hover {
+  border-color: var(--accent);
+}
+.simdeep-details {
+  display: none;
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.simdeep-details.open { display: block; }
+.simdeep-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  font-size: 0.8rem;
+}
+.simdeep-detail-label { color: var(--muted); }
+.simdeep-detail-value { font-weight: 500; font-variant-numeric: tabular-nums; }
+.simdeep-loading { text-align: center; padding: 2rem; color: var(--muted); }
+.simdeep-empty { text-align: center; padding: 2rem; color: var(--muted); }
+
 .simdeep-more-wrap { margin-top: 0.5rem; text-align: center; }
 .simdeep-load-more {
   border: 1px solid var(--line);

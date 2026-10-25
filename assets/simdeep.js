@@ -874,30 +874,47 @@
       var run = group.run;
       var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
         var bidClass = "";
-        if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
-        else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";
-        else bidClass = "bid-atlarge";
-        return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name simdeep-team-link" data-team="' + f.team + '">' + SG.esc(f.team) + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+        var bidColor = "";
+        var bidLabel = "";
+        if (f.bid.indexOf("P4 champ") !== -1) { bidClass = "bid-p4"; bidColor = "var(--good)"; bidLabel = "P4"; }
+        else if (f.bid.indexOf("G6 bid") !== -1) { bidClass = "bid-g6"; bidColor = "var(--accent)"; bidLabel = "G6"; }
+        else { bidClass = "bid-atlarge"; bidColor = "var(--warn)"; bidLabel = "AL"; }
+        return '<div class="simdeep-field-team" style="--bid-color: ' + bidColor + '">' +
+          '<span class="simdeep-seed">' + (i + 1) + '</span>' +
+          '<span class="simdeep-team-name simdeep-team-link" data-team="' + f.team + '">' + SG.esc(f.team) + '</span>' +
+          '<span class="simdeep-bid-badge" style="background: ' + bidColor + '">' + bidLabel + '</span>' +
+        '</div>';
       }).join("");
 
-      var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
+      var championHtml = run.champion ? '<div class="simdeep-champion-badge" style="--card-color: var(--good)"><span>Champion</span><strong>' + SG.esc(run.champion) + '</strong></div>' : '';
       var confChampsHtml = run.confChamps.map(function (c) {
-        return '<span class="simdeep-conf-champ">' + c.conf + ': ' + c.champ + '</span>';
+        return '<span class="simdeep-conf-chip">' + SG.esc(c.conf) + ': ' + SG.esc(c.champ) + '</span>';
       }).join(" ");
 
+      // Determine if this outcome has the user's filtered team
+      var highlightTeam = null;
+      if (group.filterTeam && run.field.find(function(f) { return f.team === group.filterTeam; })) {
+        highlightTeam = group.filterTeam;
+      }
+
       return '<div class="simdeep-card">' +
-        '<div class="simdeep-card-header">' +
-          '<div class="simdeep-card-title">Outcome #' + (idx + 1) + ' &mdash; ' + group.count + ' runs (' + group.pct + '%)</div>' +
-          '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
+        '<div class="simdeep-card-header" style="--card-color: var(--accent)">' +
+          '<div class="simdeep-card-meta">' +
+            '<span class="simdeep-card-rank">#' + (idx + 1) + '</span>' +
+            '<span class="simdeep-card-occurrence">' + group.count + ' runs</span>' +
+            '<span class="simdeep-card-pct">(' + group.pct + '%)</span>' +
+          '</div>' +
+          '<button type="button" class="simdeep-expand" data-run="' + run.run + '" aria-label="Show details">Details</button>' +
         '</div>' +
-        '<div class="simdeep-stats">' +
-          '<div class="simdeep-stat"><span class="simdeep-stat-label">Field size</span><span class="simdeep-stat-value">' + (run.field ? run.field.length : 0) + '</span></div>' +
-          '<div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div>' +
+        '<div class="simdeep-card-body">' +
+          '<div class="simdeep-card-summary">' +
+            '<div class="simdeep-stat-chip"><span class="simdeep-stat-label">Field</span><span class="simdeep-stat-value">' + (run.field ? run.field.length : 0) + '</span></div>' +
+            (championHtml || '<div class="simdeep-stat-chip"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + (run.champion || "—") + '</span></div>') +
+          '</div>' +
+          '<div class="simdeep-seed-visual">' + fieldHtml + '</div>' +
+          (confChampsHtml ? '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' : '') +
         '</div>' +
-        '<div class="simdeep-field">' + fieldHtml + '</div>' +
-        (championHtml ? '<div class="simdeep-conf-champs">' + championHtml + '</div>' : '') +
-        (confChampsHtml ? '<div class="simdeep-conf-champs">' + confChampsHtml + '</div>' : '') +
-        '<button type="button" class="simdeep-expand" data-run="' + run.run + '">Show details</button>' +
+        '<button type="button" class="simdeep-expand" data-run="' + run.run + '" aria-label="Show details">Show details</button>' +
         '<div class="simdeep-details" id="simdeep-details-' + run.run + '" data-run="' + run.run + '"></div>' +
       '</div>';
     }).join("");
