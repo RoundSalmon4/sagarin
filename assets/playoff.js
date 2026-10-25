@@ -25,7 +25,7 @@
     if (typeof r.championBonus === "number") AT_LARGE_CHAMPION_BONUS = r.championBonus;
   }
 
-  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: null, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
+  var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: { "12": null, "24": null }, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
 
   function mergeConf(c) {
     if (c === "SUN BELT EAST" || c === "SUN BELT WEST") return "SUN BELT";
@@ -668,7 +668,7 @@
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something. " +
       "The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added. " +
       "The projected field table shows the selected rating for each team.";
-    renderSim(view.sim);
+    renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
     SG.$$(".sim-more-btn").forEach(function (btn) {
@@ -784,8 +784,8 @@
     if (btn) { btn.disabled = true; btn.textContent = "Simulating..."; }
     setTimeout(function () {
       try {
-        view.sim = computeSim();
-        renderSim(view.sim);
+        view.sim[view.format] = computeSim();
+        renderSim(view.sim[view.format]);
       } finally {
         view.simBusy = false;
         if (btn) { btn.disabled = false; btn.textContent = label; }
@@ -798,7 +798,7 @@
       seg.addEventListener("click", function () {
         view.format = seg.dataset.format;
         SG.$$("#playoffFormat .seg").forEach(function (s) { s.classList.toggle("active", s === seg); });
-        view.sim = null;
+        view.sim[seg.dataset.format] = null;
         render();
       });
     });
@@ -811,7 +811,7 @@
     });
     document.getElementById("playoffMethod").addEventListener("change", function (e) {
       view.method = e.target.value;
-      view.sim = null;
+      view.sim[view.format] = null;
       render();
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
@@ -822,7 +822,7 @@
     init: init,
     render: render,
     view: view,
-    setSim: function (sim) { view.sim = sim; },
+    setSim: function (sim) { view.sim[view.format] = sim; },
     computeSim: computeSim,
     simContext: simContext,
     ccgOutcomes: ccgOutcomes,
@@ -851,11 +851,11 @@
 // Debug query function for simulation runs (exposed on SG.debug.simQuery)
 SG.debug = SG.debug || {};
 SG.debug.simQuery = function (filters) {
-  if (!SG.debug.sim || !view.sim || !view.sim.debugRuns) {
+  if (!SG.debug.sim || !view.sim[view.format] || !view.sim[view.format].debugRuns) {
     console.warn("No simulation debug data available. Run simulation with ?debug=sim first.");
     return [];
   }
-  var runs = view.sim.debugRuns;
+  var runs = view.sim[view.format].debugRuns;
   var filtered = runs.filter(function (run) {
     if (!filters) return true;
     // Filter by team in field

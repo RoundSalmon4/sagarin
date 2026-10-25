@@ -39,8 +39,11 @@
       if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view) {
         SG.state.modules.playoff.view.format = this.value;
       }
+      // Clear local sim so it picks up the playoff sim for the new format
+      view.sim = null;
       updateFilterRowStates();
       populateRoundReachedSelect();
+      if (view.sim && view.sim.debugRuns) applyFilters();
     });
     document.getElementById("simdeepLimit").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
@@ -664,16 +667,23 @@
 
   function applyFilters() {
     var playoffView = SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
-    if ((!view.sim || !view.sim.debugRuns) && (!playoffView || !playoffView.sim || !playoffView.sim.debugRuns)) {
+    var currentFormat = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
+    var playoffSim = playoffView && playoffView.sim ? playoffView.sim[currentFormat] : null;
+
+    if ((!view.sim || !view.sim.debugRuns) && (!playoffSim || !playoffSim.debugRuns)) {
       document.getElementById("simdeepNote").textContent = "No simulation data. Click Run simulation first.";
       return;
     }
 
     // Use playoff's sim if local doesn't have it
     if (!view.sim || !view.sim.debugRuns) {
-      view.sim = playoffView.sim;
+      view.sim = playoffSim;
       onSimDataReady();
     }
+
+    // Store unfiltered runs for distribution modals (before filtering)
+    view.unfilteredRuns = view.sim.debugRuns;
+    var totalSims = view.sim.n;
 
     var rows = document.querySelectorAll(".simdeep-filter-row");
     var allFilters = [];
@@ -749,6 +759,9 @@
 
     renderResults(filtered, view.sim.n);
   }
+
+  // Expose unfiltered runs for distribution modals
+  view.allSimRuns = view.unfilteredRuns;
 
   function matchesFilter(run, filter) {
     if (filter.team) {
@@ -988,7 +1001,7 @@
         e.preventDefault();
         e.stopPropagation();
         var teamName = link.getAttribute("data-team");
-        if (teamName) showTeamDistribution(teamName, runs, totalSims);
+        if (teamName) showTeamDistribution(teamName, view.allSimRuns || [], view.sim ? view.sim.n : 0);
       }
     }, true);
 
