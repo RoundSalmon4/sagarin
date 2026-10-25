@@ -925,9 +925,13 @@
       }).join("");
 
       var championHtml = run.champion ? '<div class="simdeep-champion-badge" style="--card-color: var(--good)"><span>Champion</span><strong>' + SG.esc(run.champion) + '</strong></div>' : '';
-      var confChampsHtml = run.confChamps.map(function (c) {
-        return '<span class="simdeep-conf-chip">' + SG.esc(c.conf) + ': ' + SG.esc(c.champ) + '</span>';
-      }).join(" ");
+      var confChampsHtml = run.confChamps.length ? (
+        '<div class="simdeep-conf-champs">' +
+        run.confChamps.map(function (c) {
+          return '<span class="simdeep-conf-chip">' + SG.esc(c.conf) + ' <span class="simdeep-conf-champ-name">' + SG.esc(c.champ) + '</span></span>';
+        }).join("") +
+        '</div>'
+      ) : '';
 
       // Determine if this outcome has the user's filtered team
       var highlightTeam = null;
