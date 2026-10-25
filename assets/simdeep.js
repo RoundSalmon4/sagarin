@@ -1101,6 +1101,26 @@
         applyTeamSeedFilter(team, seed);
       });
     });
+
+    // Round reached click handler - filter outcomes by team + round
+    modal.querySelectorAll(".simdeep-round-clickable").forEach(function (card) {
+      card.addEventListener("click", function () {
+        var round = this.getAttribute("data-round");
+        var team = this.getAttribute("data-team");
+        closeTeamModal();
+        applyTeamRoundFilter(team, round);
+      });
+    });
+
+    // Bid type click handler - filter outcomes by team + bid type
+    modal.querySelectorAll(".simdeep-bid-clickable").forEach(function (card) {
+      card.addEventListener("click", function () {
+        var bid = this.getAttribute("data-bid");
+        var team = this.getAttribute("data-team");
+        closeTeamModal();
+        applyTeamBidFilter(team, bid);
+      });
+    });
   }
 
   function closeTeamModal() {
@@ -1149,6 +1169,82 @@
     }
 
     // Apply filters
+    if (view.sim && view.sim.debugRuns) applyFilters();
+  }
+
+  function applyTeamRoundFilter(teamName, round) {
+    // Find or create a filter row
+    var rows = document.querySelectorAll(".simdeep-filter-row");
+    var row = rows[0];
+    if (!row) {
+      document.getElementById("simdeepAddFilter").click();
+      row = document.querySelector(".simdeep-filter-row");
+    }
+
+    // Activate and set team filter
+    var teamBtn = row.querySelector('.simdeep-param-btn[data-param="team"]');
+    var teamGroup = row.querySelector('.simdeep-param-group[data-param="team"]');
+    var teamInput = row.querySelector(".simdeep-team-search");
+    if (teamBtn && !teamBtn.classList.contains("active")) {
+      teamBtn.classList.add("active");
+      teamGroup.classList.add("active");
+    }
+    if (teamInput) {
+      teamInput.value = teamName;
+      teamInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // Activate and set round filter
+    var roundBtn = row.querySelector('.simdeep-param-btn[data-param="roundReached"]');
+    var roundGroup = row.querySelector('.simdeep-param-group[data-param="roundReached"]');
+    var roundSelect = row.querySelector(".simdeep-round-reached");
+    if (roundBtn && !roundBtn.classList.contains("active")) {
+      roundBtn.classList.add("active");
+      roundGroup.classList.add("active");
+    }
+    if (roundSelect) {
+      roundSelect.value = round;
+      roundSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    if (view.sim && view.sim.debugRuns) applyFilters();
+  }
+
+  function applyTeamBidFilter(teamName, bid) {
+    // Find or create a filter row
+    var rows = document.querySelectorAll(".simdeep-filter-row");
+    var row = rows[0];
+    if (!row) {
+      document.getElementById("simdeepAddFilter").click();
+      row = document.querySelector(".simdeep-filter-row");
+    }
+
+    // Activate and set team filter
+    var teamBtn = row.querySelector('.simdeep-param-btn[data-param="team"]');
+    var teamGroup = row.querySelector('.simdeep-param-group[data-param="team"]');
+    var teamInput = row.querySelector(".simdeep-team-search");
+    if (teamBtn && !teamBtn.classList.contains("active")) {
+      teamBtn.classList.add("active");
+      teamGroup.classList.add("active");
+    }
+    if (teamInput) {
+      teamInput.value = teamName;
+      teamInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // Activate and set bid type filter
+    var bidBtn = row.querySelector('.simdeep-param-btn[data-param="bidType"]');
+    var bidGroup = row.querySelector('.simdeep-param-group[data-param="bidType"]');
+    var bidSelect = row.querySelector(".simdeep-bid-type");
+    if (bidBtn && !bidBtn.classList.contains("active")) {
+      bidBtn.classList.add("active");
+      bidGroup.classList.add("active");
+    }
+    if (bidSelect) {
+      bidSelect.value = bid;
+      bidSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
     if (view.sim && view.sim.debugRuns) applyFilters();
   }
 
@@ -1255,7 +1351,8 @@
     var roundHtml = roundOrder.map(function (r) {
       var count = dist.roundCounts[r.key] || 0;
       var pct = dist.totalRuns > 0 ? (count / dist.totalRuns * 100).toFixed(1) : 0;
-      return '<div class="simdeep-round-card" style="--card-color: ' + r.color + '">' +
+      var clickable = count > 0 ? ' simdeep-round-clickable' : '';
+      return '<div class="simdeep-round-card' + clickable + '" style="--card-color: ' + r.color + '" data-round="' + r.key + '" data-team="' + teamName + '">' +
         '<span class="simdeep-round-label">' + r.label + '</span>' +
         '<span class="simdeep-round-count">' + count + '</span>' +
         '<span class="simdeep-round-pct">(' + pct + '%)</span>' +
@@ -1273,7 +1370,8 @@
     var bidHtml = bidOrder.map(function (b) {
       var count = dist.bidCounts[b.key] || 0;
       var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
-      return '<div class="simdeep-bid-card" style="--card-color: ' + b.color + '">' +
+      var clickable = count > 0 ? ' simdeep-bid-clickable' : '';
+      return '<div class="simdeep-bid-card' + clickable + '" style="--card-color: ' + b.color + '" data-bid="' + b.key + '" data-team="' + teamName + '">' +
         '<span class="simdeep-bid-label">' + b.label + '</span>' +
         '<span class="simdeep-bid-count">' + count + '</span>' +
         '<span class="simdeep-bid-pct">(' + pct + '%)</span>' +
