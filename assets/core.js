@@ -1083,8 +1083,6 @@
       t.addEventListener("click", function () { SG.switchTab(t.dataset.tab); });
     });
 
-    document.getElementById("refreshBtn").addEventListener("click", function () { SG.poll(true); });
-
     document.getElementById("teamSearch").addEventListener("input", function (e) {
       SG.state.teamSearch = e.target.value;
       SG.renderTeams();
