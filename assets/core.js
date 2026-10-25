@@ -960,62 +960,6 @@
   }
 
   SG.prepareLogos = function (raw) {
-    if (!raw) { SG.state.logos = null; return; }
-    var light = {}, dark = {}, conf = {};
-    (raw.light || []).forEach(function (id) { light[id] = true; });
-    (raw.dark || []).forEach(function (id) { dark[id] = true; });
-    (raw.conf || []).forEach(function (c) { conf[c.name] = { id: c.id, light: c.light, dark: c.dark }; });
-    SG.state.logos = { light: light, dark: dark, conf: conf };
-  };
-
-  SG.poll = function (manual) {
-    var btn = document.getElementById("refreshBtn");
-    if (manual) { btn.disabled = true; btn.textContent = "Checking..."; }
-    return loadAll().then(function (res) {
-      var json = res.data;
-      var ratingsChanged = !SG.state.data || json.signature !== SG.state.data.signature;
-      var apChanged = (res.ap && res.ap.signature) !== SG.state.apSig;
-      var bcsChanged = (res.bcs && res.bcs.signature) !== SG.state.bcsSig;
-      var tvChanged = (res.tv && res.tv.signature) !== SG.state.tvSig;
-      SG.state.espn = res.espn;
-      SG.prepareLogos(res.logos);
-      SG.state.ap = res.ap;
-      SG.state.apSig = res.ap && res.ap.signature;
-      SG.state.bcs = res.bcs;
-      SG.state.bcsSig = res.bcs && res.bcs.signature;
-      SG.syncRankLabels();
-      SG.state.tv = res.tv;
-      SG.state.tvSig = res.tv && res.tv.signature;
-      var resumeChanged = JSON.stringify(res.resume) !== JSON.stringify(SG.state.resume);
-      SG.state.resume = res.resume || null;
-      if (ratingsChanged) {
-        var changed = !!SG.state.data;
-        SG.state.data = json;
-        SG.state.confSort = null;
-        SG.buildMapping();
-        SG.populateConfFilter();
-        SG.fillTeamSelects();
-        SG.renderTeams();
-        SG.renderConferences();
-        SG.renderMatchup();
-        SG.refreshModules();
-        SG.renderStatus(changed);
-      } else {
-        SG.buildMapping();
-        if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
-        if (apChanged || bcsChanged || tvChanged || resumeChanged) SG.refreshModules();
-        if (manual) {
-          SG.renderStatus(false);
-          document.getElementById("dataStatus").textContent += " - no changes";
-        }
-      }
-    }).catch(function (err) {
-      document.getElementById("dataStatus").textContent =
-        "Could not load ratings data (" + err.message + "). Serve the folder over HTTP.";
-    }).then(function () {
-      if (manual) { btn.disabled = false; btn.textContent = "Check for updates"; }
-    });
-  };
 
   SG.populateConfFilter = function () {
     if (!SG.state.data) return;
@@ -1072,8 +1016,6 @@
       SG.renderMatchup();
       SG.renderStatus(false);
       SG.refreshModules();
-      setInterval(function () { SG.poll(false); }, SG.POLL_MS);
-      document.addEventListener("visibilitychange", function () { if (!document.hidden) SG.poll(false); });
     }).catch(function (err) {
       document.getElementById("dataStatus").textContent =
         "Could not load ratings data (" + err.message + "). Serve the folder over HTTP.";
@@ -1082,8 +1024,6 @@
     SG.$$(".tab").forEach(function (t) {
       t.addEventListener("click", function () { SG.switchTab(t.dataset.tab); });
     });
-
-    document.getElementById("refreshBtn").addEventListener("click", function () { SG.poll(true); });
 
     document.getElementById("teamSearch").addEventListener("input", function (e) {
       SG.state.teamSearch = e.target.value;
@@ -1142,4 +1082,6 @@
   } else {
     init();
   }
+}
+
 })();
