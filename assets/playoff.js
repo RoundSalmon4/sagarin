@@ -786,6 +786,7 @@
       try {
         view.sim[view.format] = computeSim();
         renderSim(view.sim[view.format]);
+        render();
       } finally {
         view.simBusy = false;
         if (btn) { btn.disabled = false; btn.textContent = label; }

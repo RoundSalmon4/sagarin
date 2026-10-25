@@ -96,7 +96,10 @@
       var originalRender = SG.state.modules.playoff.render;
       SG.state.modules.playoff.render = function () {
         originalRender.call(this);
-        if (view.sim && view.sim.debugRuns) {
+        var currentFormat = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
+        var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+        if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
+          view.sim = playoffView.sim[currentFormat];
           onSimDataReady();
         }
       };
@@ -656,7 +659,7 @@
       try {
         var simResult = playoffModule.computeSim();
         SG.debug.sim = prevDebug;
-        playoffView.sim = simResult;
+        playoffView.sim[playoffView.format] = simResult;
         view.sim = simResult;
         playoffModule.render();
         onSimDataReady();
