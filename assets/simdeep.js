@@ -877,7 +877,7 @@
         if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
         else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";
         else bidClass = "bid-atlarge";
-        return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
+        return '<div class="simdeep-field-team"><span class="simdeep-seed">' + (i + 1) + '</span><span class="simdeep-team-name simdeep-team-link" data-team="' + SG.esc(f.team) + '">' + f.team + '</span><span class="simdeep-bid ' + bidClass + '">' + f.bid + '</span></div>';
       }).join("");
 
       var championHtml = run.champion ? '<div class="simdeep-champion">Champion: <strong>' + run.champion + '</strong></div>' : '';
@@ -975,6 +975,14 @@
             btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
           });
         });
+
+        // Team distribution click handler
+        container.querySelectorAll(".simdeep-team-link").forEach(function (link) {
+          link.addEventListener("click", function () {
+            var teamName = this.getAttribute("data-team");
+            showTeamDistribution(teamName, runs, totalSims);
+          });
+        });
       });
     }
   }
@@ -992,6 +1000,178 @@
     }).join("");
 
     return '<div class="simdeep-detail-header">Field teams for this outcome</div>' + rows;
+  }
+
+  // Team distribution modal
+  function showTeamDistribution(teamName, runs, totalSims) {
+    // Calculate distributions
+    var dist = calculateTeamDistribution(teamName, runs);
+
+    var modal = document.getElementById("simdeepTeamModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "simdeepTeamModal";
+      modal.className = "simdeep-modal";
+      document.body.appendChild(modal);
+      // Close on overlay click
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) closeTeamModal();
+      });
+      // Close on Escape
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeTeamModal();
+      });
+    }
+
+    modal.innerHTML = buildTeamDistributionHtml(teamName, dist, runs.length, totalSims);
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+
+    // Close button handler
+    modal.querySelector("[data-action='close-team-modal']").addEventListener("click", closeTeamModal);
+  }
+
+  function closeTeamModal() {
+    var modal = document.getElementById("simdeepTeamModal");
+    if (modal) {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+  }
+
+  function calculateTeamDistribution(teamName, runs) {
+    var seedCounts = {};
+    var roundCounts = { champion: 0, runnerup: 0, final4: 0, elite8: 0, round16: 0, madefield: 0, missed: 0 };
+    var bidCounts = { p4: 0, g6: 0, atlarge: 0, none: 0 };
+    var championCount = 0;
+    var totalRuns = runs.length;
+    var sumSeed = 0;
+    var seedAppearances = 0;
+
+    runs.forEach(function (run) {
+      var entry = run.field.find(function (f) { return f.team === teamName; });
+      if (entry) {
+        seedAppearances++;
+        sumSeed += entry.seed || 0;
+        var seed = entry.seed;
+        seedCounts[seed] = (seedCounts[seed] || 0) + 1;
+
+        var bid = entry.bid || "";
+        if (bid.indexOf("P4 champ") !== -1) bidCounts.p4++;
+        else if (bid.indexOf("G6 bid") !== -1) bidCounts.g6++;
+        else if (bid) bidCounts.atlarge++;
+        else bidCounts.none++;
+
+        if (run.champion === teamName) {
+          championCount++;
+          roundCounts.champion++;
+        } else {
+          var reached = roundReachedForTeam(run, teamName);
+          roundCounts[reached] = (roundCounts[reached] || 0) + 1;
+        }
+      } else {
+        roundCounts.missed++;
+      }
+    });
+
+    return {
+      teamName: teamName,
+      totalRuns: totalRuns,
+      fieldPct: totalRuns > 0 ? (seedAppearances / totalRuns * 100).toFixed(1) : 0,
+      avgSeed: seedAppearances > 0 ? (sumSeed / seedAppearances).toFixed(1) : "—",
+      championPct: totalRuns > 0 ? (championCount / totalRuns * 100).toFixed(2) : 0,
+      championCount: championCount,
+      seedCounts: seedCounts,
+      roundCounts: roundCounts,
+      bidCounts: bidCounts,
+      seedAppearances: seedAppearances
+    };
+  }
+
+  function buildTeamDistributionHtml(teamName, dist, matchingRuns, totalSims) {
+    var seedHtml = "";
+    for (var s = 1; s <= 24; s++) {
+      var count = dist.seedCounts[s] || 0;
+      var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
+      var barWidth = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100) : 0;
+      if (count > 0) {
+        seedHtml += '<div class="simdeep-dist-row">' +
+          '<span class="simdeep-dist-label">Seed ' + s + '</span>' +
+          '<div class="simdeep-dist-bar-wrap">' +
+            '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
+            '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
+          '</div>' +
+        '</div>';
+      }
+    }
+
+    var roundOrder = [
+      { key: "champion", label: "Champion" },
+      { key: "runnerup", label: "Runner-up" },
+      { key: "final4", label: "Final 4" },
+      { key: "elite8", label: "Elite 8" },
+      { key: "round16", label: "Round of 16/32" },
+      { key: "madefield", label: "Made field only" },
+      { key: "missed", label: "Missed field" }
+    ];
+
+    var roundHtml = roundOrder.map(function (r) {
+      var count = dist.roundCounts[r.key] || 0;
+      var pct = dist.totalRuns > 0 ? (count / dist.totalRuns * 100).toFixed(1) : 0;
+      var barWidth = dist.totalRuns > 0 ? (count / dist.totalRuns * 100) : 0;
+      return '<div class="simdeep-dist-row">' +
+        '<span class="simdeep-dist-label">' + r.label + '</span>' +
+        '<div class="simdeep-dist-bar-wrap">' +
+          '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
+          '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    var bidHtml = [
+      { key: "p4", label: "P4 Champion" },
+      { key: "g6", label: "G6 Bid" },
+      { key: "atlarge", label: "At-large" },
+      { key: "none", label: "No bid" }
+    ].map(function (b) {
+      var count = dist.bidCounts[b.key] || 0;
+      var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
+      var barWidth = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100) : 0;
+      return '<div class="simdeep-dist-row">' +
+        '<span class="simdeep-dist-label">' + b.label + '</span>' +
+        '<div class="simdeep-dist-bar-wrap">' +
+          '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
+          '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    return '<div class="simdeep-modal-content">' +
+      '<div class="simdeep-modal-header">' +
+        '<h3>' + SG.esc(teamName) + ' &mdash; Outcome Distribution</h3>' +
+        '<button type="button" class="simdeep-modal-close" data-action="close-team-modal" aria-label="Close">&times;</button>' +
+      '</div>' +
+      '<div class="simdeep-modal-body">' +
+        '<div class="simdeep-dist-summary">' +
+          '<div class="simdeep-stat"><span class="simdeep-stat-label">Field rate</span><span class="simdeep-stat-value">' + dist.fieldPct + '%</span></div>' +
+          '<div class="simdeep-stat"><span class="simdeep-stat-label">Avg seed</span><span class="simdeep-stat-value">' + dist.avgSeed + '</span></div>' +
+          '<div class="simdeep-stat"><span class="simdeep-stat-label">Champion</span><span class="simdeep-stat-value">' + dist.championPct + '% (' + dist.championCount + ')</span></div>' +
+          '<div class="simdeep-stat"><span class="simdeep-stat-label">Runs analyzed</span><span class="simdeep-stat-value">' + matchingRuns.toLocaleString() + ' / ' + totalSims.toLocaleString() + '</span></div>' +
+        '</div>' +
+        '<div class="simdeep-dist-section">' +
+          '<h4>Seed Distribution</h4>' +
+          '<div class="simdeep-dist-grid">' + seedHtml + '</div>' +
+        '</div>' +
+        '<div class="simdeep-dist-section">' +
+          '<h4>Round Reached</h4>' +
+          '<div class="simdeep-dist-grid">' + roundHtml + '</div>' +
+        '</div>' +
+        '<div class="simdeep-dist-section">' +
+          '<h4>Bid Type</h4>' +
+          '<div class="simdeep-dist-grid">' + bidHtml + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   var SIMS = 10000;

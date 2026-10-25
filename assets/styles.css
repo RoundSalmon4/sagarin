@@ -627,3 +627,108 @@ input[type="search"] { min-width: 240px; }
   color: var(--muted);
   line-height: 1.4;
 }
+
+/* Team distribution modal */
+.simdeep-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+.simdeep-modal.open { display: flex; }
+
+.simdeep-modal-content {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.simdeep-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+.simdeep-modal-header h3 { margin: 0; font-size: 1.1rem; }
+.simdeep-modal-close {
+  background: none; border: none; font-size: 1.5rem; cursor: pointer;
+  color: var(--muted); line-height: 1; padding: 0;
+}
+.simdeep-modal-close:hover { color: var(--bad); }
+
+.simdeep-modal-body { padding: 1rem 1.25rem; }
+
+.simdeep-dist-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+
+.simdeep-dist-section {
+  margin-bottom: 1.5rem;
+}
+.simdeep-dist-section h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.simdeep-dist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.simdeep-dist-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+.simdeep-dist-label {
+  font-weight: 500;
+  color: var(--ink);
+}
+.simdeep-dist-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 22px;
+}
+.simdeep-dist-bar {
+  height: 100%;
+  min-width: 0;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.2s;
+}
+.simdeep-dist-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+.simdeep-team-link {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.simdeep-team-link:hover { color: var(--accent); }
