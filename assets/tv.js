@@ -319,60 +319,18 @@
       (byDay[day] = byDay[day] || []).push(g);
     });
 
-    var dayOrder = ["Saturday", "Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday", "Unknown"];
     var html = "";
 
-    dayOrder.forEach(function (day) {
-      var games = byDay[day];
-      if (!games || !games.length) return;
-
-      if (day === "Saturday") {
-        // Saturday: group by kickoff windows as before
-        var byWin = {};
-        games.forEach(function (g) {
-          var w = windowOf(g.date);
-          (byWin[w] = byWin[w] || []).push(g);
-        });
-        WINDOWS.forEach(function (w) {
-          var all = byWin[w.key] || [];
-          if (!all.length) return;
-          var arr = all.slice().sort(function (a, b) {
-            return score(b, curCtx).value - score(a, curCtx).value;
-          }).slice(0, PER_WINDOW);
-          if (watchSort) {
-            arr.sort(function (a, b) {
-              if (a.date !== b.date) return a.date < b.date ? -1 : 1;
-              return score(b, curCtx).value - score(a, curCtx).value;
-            });
-          }
-          var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
-          html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
-            ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
-          html += arr.map(function (g) {
-            var s = score(g, curCtx);
-            var away = teamName(g.awayId, g.awayName);
-            var home = teamName(g.homeId, g.homeName);
-            return '<div class="watch-card">' +
-              '<div class="watch-head"><span class="watch-score">' + s.value + "</span>" +
-              '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
-              (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
-              '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
-              ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
-              '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
-              (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
-          }).join("");
-          html += "</div></div>";
-        });
-      } else {
-        // Collect non-Saturday games into a single "Other days" section
-        var otherGames = (byDay["Other days"] = byDay["Other days"] || []).concat(games);
+    // 1. Non-Saturday games section (all non-Saturday games)
+    var nonSaturdayGames = [];
+    ["Friday", "Thursday", "Wednesday", "Tuesday", "Monday", "Sunday", "Unknown"].forEach(function (day) {
+      if (byDay[day] && byDay[day].length) {
+        nonSaturdayGames.push.apply(nonSaturdayGames, byDay[day]);
       }
     });
 
-    // Render "Other days" section if any non-Saturday games exist
-    var otherGames = byDay["Other days"] || [];
-    if (otherGames.length) {
-      var arr = otherGames.slice().sort(function (a, b) {
+    if (nonSaturdayGames.length) {
+      var arr = nonSaturdayGames.slice().sort(function (a, b) {
         return score(b, curCtx).value - score(a, curCtx).value;
       });
       if (watchSort) {
@@ -381,7 +339,7 @@
           return score(b, curCtx).value - score(a, curCtx).value;
         });
       }
-      html += '<div class="watch-window"><h4 class="watch-window-title">Other days</h4><div class="watch-grid">';
+      html += '<div class="watch-window"><h4 class="watch-window-title">Non-Saturday games</h4><div class="watch-grid">';
       html += arr.map(function (g) {
         var s = score(g, curCtx);
         var away = teamName(g.awayId, g.awayName);
@@ -396,6 +354,46 @@
           (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
       }).join("");
       html += "</div></div>";
+    }
+
+    // 2. Saturday games grouped by kickoff windows
+    var saturdayGames = byDay["Saturday"] || [];
+    if (saturdayGames.length) {
+      var byWin = {};
+      saturdayGames.forEach(function (g) {
+        var w = windowOf(g.date);
+        (byWin[w] = byWin[w] || []).push(g);
+      });
+      WINDOWS.forEach(function (w) {
+        var all = byWin[w.key] || [];
+        if (!all.length) return;
+        var arr = all.slice().sort(function (a, b) {
+          return score(b, curCtx).value - score(a, curCtx).value;
+        }).slice(0, PER_WINDOW);
+        if (watchSort) {
+          arr.sort(function (a, b) {
+            if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+            return score(b, curCtx).value - score(a, curCtx).value;
+          });
+        }
+        var ref = all.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0].date;
+        html += '<div class="watch-window"><h4 class="watch-window-title">' + SG.esc(w.label) +
+          ' <span class="dim">' + SG.esc(windowRange(w, ref)) + "</span></h4><div class=\"watch-grid\">";
+        html += arr.map(function (g) {
+          var s = score(g, curCtx);
+          var away = teamName(g.awayId, g.awayName);
+          var home = teamName(g.homeId, g.homeName);
+          return '<div class="watch-card">' +
+            '<div class="watch-head"><span class="watch-score">' + s.value + "</span>" +
+            '<span class="watch-tier">' + SG.esc(s.tier) + "</span>" +
+            (s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : "") + "</div>" +
+            '<div class="watch-match">' + SG.teamLogo(away) + SG.esc(away) + SG.apBadge(away) +
+            ' <span class="dim">' + (g.neutral ? "vs" : "at") + '</span> ' + SG.teamLogo(home) + SG.esc(home) + SG.apBadge(home) + "</div>" +
+            '<div class="watch-meta">' + SG.esc(fmtWhen(g.date)) + (g.tv ? " - " + SG.esc(g.tv) : "") +
+            (g.details ? " - " + SG.esc(g.details) : "") + "</div></div>";
+        }).join("");
+        html += "</div></div>";
+      });
     }
 
     box.innerHTML = html;
