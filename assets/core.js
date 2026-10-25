@@ -16,6 +16,7 @@
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ALIAS = window.TeamAlias || {};
+SG.DIVISIONS = window.TeamDivisions || {};
 
   SG.state = {
     data: null,

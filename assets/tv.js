@@ -59,7 +59,7 @@
   // at-large bid (bubble), using the same resume ranking the field uses so the
   // two stay consistent. Recomputed once per render so scoring stays cheap.
   function context() {
-    var ctx = { field: {}, bubble: {} };
+    var ctx = { field: {}, bubble: {}, divisionStandings: {} };
     if (!SG.state.data) return ctx;
     var ranked = null;
     if (SG.playoffField) {
@@ -75,6 +75,12 @@
     for (var i = 0; i < ranked.length && n < 10; i++) {
       if (!ctx.field[ranked[i].team]) { ctx.bubble[ranked[i].team] = true; n++; }
     }
+
+    // Add division standings from playoff module
+    if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.divisionStandings) {
+      ctx.divisionStandings = SG.state.modules.playoff.divisionStandings(METHOD);
+    }
+
     return ctx;
   }
 
@@ -84,14 +90,17 @@
 
   // 0-100 watch score. Weights and shapes are set from published work rather
   // than taste:
-  //   - closeness 0.40. The market line is the sharpest single predictor of the
+  //   - closeness 0.38. The market line is the sharpest single predictor of the
   //     margin (Simple ACR 2022: closing line Brier .1871 vs Sagarin .1940), so
   //     when a line is posted we use it as-is, and when we only have Sagarin we
   //     shrink the signal toward a coin flip because it is the noisier estimate.
-  //   - playoff stakes 0.30, from the projected field and the bubble.
-  //   - team quality 0.22, combined Sagarin rating.
-  //   - rivalry 0.08. Rivalry nudges outcomes only slightly (favorites win about
+  //   - playoff stakes 0.25, from the projected field and the bubble.
+  //   - team quality 0.15, combined Sagarin rating.
+  //   - rivalry 0.12. Rivalry nudges outcomes only slightly (favorites win about
   //     3.6 points less often, Cox et al. 2026) and the market mostly prices it.
+  //   - division race 0.08. Games that affect who reaches the conference
+  //     championship game (same division matchups with CCG implications).
+  // For non-division-implication games, weights renormalize to 100%.
   function score(g, ctx) {
     var a = sag(g.awayId);
     var b = sag(g.homeId);
@@ -134,7 +143,60 @@
 
     var rival = isRivalry(na, nb) ? 1 : 0;
 
-    var value = Math.round(100 * (0.40 * closeness + 0.22 * quality + 0.30 * stakes + 0.08 * rival));
+    // Division race implications (only for same-division matchups)
+    var divRace = 0;
+    if (a && b && a.conference === b.conference) {
+      var divMap = window.TeamDivisions || {};
+      var divA = divMap[na] || "None";
+      var divB = divMap[nb] || "None";
+      if (divA !== "None" && divA === divB) {
+        var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
+        if (dStandings) {
+          var teamA = dStandings.teams.find(function(t) { return t.team === na; });
+          var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
+          if (teamA || teamB) {
+            // Both division leaders playing each other
+            if (dStandings.leader === na && dStandings.leader === nb) divRace = 0.9;
+            // Division leader vs top contender
+            else if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
+                     (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) divRace = 0.8;
+            // Both in top 2
+            else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) divRace = 0.75;
+            // Clinching/elimination scenarios
+            else if ((teamA && teamA.cwp > 0.7 && teamA.cwp < 1) || (teamB && teamB.cwp > 0.7 && teamB.cwp < 1)) divRace = 0.85;
+            // Both in division race
+            else if (teamA && teamB && teamA.cwp > 0.4 && teamB.cwp > 0.4) divRace = 0.6;
+            // Same division, some implications
+            else divRace = 0.3;
+          }
+        }
+      }
+    }
+
+    var inA = !!ctx.field[na], inB = !!ctx.field[nb];
+    var bubA = !!ctx.bubble[na], bubB = !!ctx.bubble[nb];
+    var stakes;
+    if (inA && inB) stakes = 0.9;
+    else if ((inA && bubB) || (inB && bubA)) stakes = 0.75;
+    else if (bubA && bubB) stakes = 0.55;
+    else if (inA || inB) stakes = 0.4;
+    else if (bubA || bubB) stakes = 0.25;
+    else stakes = 0.05;
+    if (a && b && SG.mergeConf(a.conference) === SG.mergeConf(b.conference) && stakes > 0.3) {
+      stakes = Math.min(1, stakes + 0.1);
+    }
+
+    var rival = isRivalry(na, nb) ? 1 : 0;
+
+    // Weights: CCG games get division race component; others renormalize
+    var hasDivRace = divRace > 0;
+    var value;
+    if (hasDivRace) {
+      value = Math.round(100 * (0.38 * closeness + 0.25 * stakes + 0.15 * quality + 0.12 * rival + 0.08 * divRace));
+    } else {
+      // Renormalize: 38+25+15+12 = 92 -> divide by 0.92
+      value = Math.round(100 * (0.38 * closeness + 0.25 * stakes + 0.15 * quality + 0.12 * rival) / 0.92);
+    }
 
     var apA = a ? SG.apRank(na) : null;
     var apB = b ? SG.apRank(nb) : null;
