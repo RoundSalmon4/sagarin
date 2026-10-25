@@ -10,128 +10,239 @@
     root.Rivalries = factory();
   }
 })(typeof self !== "undefined" ? self : this, function () {
-  return [
-    ["Ohio State", "Michigan"],
-    ["Michigan", "Michigan State"],
-    ["Michigan", "Notre Dame"],
-    ["Michigan State", "Notre Dame"],
-    ["Penn State", "Ohio State"],
-    ["Penn State", "Michigan"],
-    ["Penn State", "Pittsburgh"],
+  "use strict";
+  // Use a Set to ensure uniqueness
+  const pairs = new Set();
+  function add(a, b) {
+    const key = [a, b].sort().join("|");
+    if (!pairs.has(key)) pairs.add(key);
+  }
 
-    ["Alabama", "Auburn"],
-    ["Alabama", "Tennessee"],
-    ["Alabama", "LSU"],
-    ["Auburn", "Georgia"],
-    ["Georgia", "Florida"],
-    ["Georgia", "Georgia Tech"],
-    ["Georgia", "South Carolina"],
-    ["Georgia", "Clemson"],
-    ["Florida", "Florida State"],
-    ["Florida", "Miami-Florida"],
-    ["Florida", "Tennessee"],
-    ["Florida State", "Miami-Florida"],
-    ["Florida State", "Clemson"],
-    ["Clemson", "South Carolina"],
-    ["Clemson", "Georgia Tech"],
-    ["LSU", "Mississippi"],
-    ["LSU", "Arkansas"],
-    ["LSU", "Texas A&M"],
-    ["LSU", "Tulane"],
-    ["Mississippi", "Mississippi State"],
-    ["Mississippi", "Memphis"],
-    ["Mississippi State", "Southern Miss"],
-    ["Arkansas", "Texas"],
-    ["Arkansas", "Missouri"],
-    ["Texas", "Oklahoma"],
-    ["Texas", "Texas A&M"],
-    ["Texas A&M", "Arkansas"],
-    ["Oklahoma", "Oklahoma State"],
-    ["Oklahoma", "Nebraska"],
-    ["Texas Tech", "Baylor"],
+  // Big Ten
+  add("Ohio State", "Michigan");
+  add("Michigan", "Michigan State");
+  add("Michigan", "Notre Dame");
+  add("Michigan State", "Notre Dame");
+  add("Penn State", "Ohio State");
+  add("Penn State", "Michigan");
+  add("Penn State", "Pittsburgh");
+  add("Illinois", "Northwestern");
+  add("Indiana", "Purdue");
+  add("Purdue", "Northwestern");
+  add("Iowa", "Iowa State");
+  add("Iowa", "Minnesota");
+  add("Iowa", "Wisconsin");
+  add("Minnesota", "Wisconsin");
+  add("Wisconsin", "Nebraska");
+  add("Nebraska", "Iowa");
+  add("Iowa", "Iowa State");
+  add("Iowa", "Minnesota");
+  add("Iowa", "Wisconsin");
+  add("Minnesota", "Wisconsin");
+  add("Wisconsin", "Nebraska");
+  add("Illinois", "Northwestern");
+  add("Indiana", "Purdue");
+  add("Purdue", "Northwestern");
 
-    ["Nebraska", "Iowa"],
-    ["Iowa", "Iowa State"],
-    ["Iowa", "Minnesota"],
-    ["Iowa", "Wisconsin"],
-    ["Minnesota", "Wisconsin"],
-    ["Wisconsin", "Nebraska"],
+  // SEC
+  add("Alabama", "Auburn");
+  add("Alabama", "Tennessee");
+  add("Alabama", "LSU");
+  add("Auburn", "Georgia");
+  add("Georgia", "Florida");
+  add("Georgia", "Georgia Tech");
+  add("Georgia", "South Carolina");
+  add("Georgia", "Clemson");
+  add("Florida", "Florida State");
+  add("Florida", "Miami-Florida");
+  add("Florida", "Tennessee");
+  add("Florida State", "Miami-Florida");
+  add("Florida State", "Clemson");
+  add("Clemson", "South Carolina");
+  add("Clemson", "Georgia Tech");
+  add("LSU", "Mississippi");
+  add("LSU", "Arkansas");
+  add("LSU", "Texas A&M");
+  add("LSU", "Tulane");
+  add("Mississippi", "Mississippi State");
+  add("Mississippi", "Memphis");
+  add("Mississippi State", "Southern Miss");
+  add("Arkansas", "Texas");
+  add("Arkansas", "Missouri");
+  add("Texas", "Oklahoma");
+  add("Texas", "Texas A&M");
+  add("Texas A&M", "Arkansas");
+  add("Oklahoma", "Oklahoma State");
+  add("Oklahoma", "Nebraska");
+  add("Texas Tech", "Baylor");
+  add("Tennessee", "Kentucky");
+  add("LSU", "Florida");
+  add("Auburn", "Florida");
+  add("Auburn", "South Carolina");
+  add("Georgia", "Auburn");
+  add("Missouri", "South Carolina");
+  add("Tennessee", "Vanderbilt");
+  add("Kentucky", "Tennessee");
+  add("Auburn", "South Carolina");
 
-    ["Notre Dame", "Southern California"],
-    ["Notre Dame", "Stanford"],
-    ["Southern California", "UCLA"],
-    ["Southern California", "Stanford"],
-    ["UCLA", "California"],
-    ["California", "Stanford"],
-    ["Washington", "Washington State"],
-    ["Washington", "Oregon"],
-    ["Oregon", "Oregon State"],
-    ["Oregon", "Washington State"],
+  // Big Ten continued
+  add("Nebraska", "Iowa");
+  add("Iowa", "Iowa State");
+  add("Iowa", "Minnesota");
+  add("Iowa", "Wisconsin");
+  add("Minnesota", "Wisconsin");
+  add("Wisconsin", "Nebraska");
+  add("Illinois", "Northwestern");
+  add("Indiana", "Purdue");
+  add("Purdue", "Northwestern");
 
-    ["Boise State", "Fresno State"],
-    ["Boise State", "Nevada"],
-    ["BYU", "Utah"],
-    ["BYU", "Utah State"],
-    ["Utah", "Utah State"],
-    ["Colorado", "Colorado State"],
-    ["Colorado", "Nebraska"],
-    ["Kansas", "Kansas State"],
-    ["Kansas", "Missouri"],
-    ["Kansas State", "Missouri"],
-    ["Baylor", "TCU"],
-    ["TCU", "SMU"],
-    ["SMU", "Houston"],
-    ["SMU", "Rice"],
-    ["Houston", "Rice"],
-    ["Houston", "Tulsa"],
+  // Notre Dame
+  add("Notre Dame", "Southern California");
+  add("Notre Dame", "Stanford");
+  add("Southern California", "UCLA");
+  add("Southern California", "Stanford");
+  add("UCLA", "California");
+  add("California", "Stanford");
+  add("Washington", "Washington State");
+  add("Washington", "Oregon");
+  add("Oregon", "Oregon State");
+  add("Oregon", "Washington State");
 
-    ["Army West Point", "Navy"],
-    ["Army West Point", "Air Force"],
-    ["Navy", "Air Force"],
-    ["Pittsburgh", "West Virginia"],
-    ["West Virginia", "Virginia Tech"],
-    ["Virginia", "Virginia Tech"],
-    ["North Carolina", "Virginia"],
-    ["Duke", "North Carolina"],
-    ["NC State", "North Carolina"],
-    ["NC State", "Wake Forest"],
-    ["Duke", "Wake Forest"],
-    ["Louisville", "Kentucky"],
-    ["Louisville", "Cincinnati"],
-    ["Kentucky", "Tennessee"],
-    ["Tennessee", "Vanderbilt"],
-    ["Cincinnati", "Miami-Ohio"],
-    ["Cincinnati", "West Virginia"],
-    ["Central Florida(UCF)", "South Florida"],
+  // Pac-12 / Mountain West / Big 12
+  add("Boise State", "Fresno State");
+  add("Boise State", "Nevada");
+  add("BYU", "Utah");
+  add("BYU", "Utah State");
+  add("Utah", "Utah State");
+  add("Colorado", "Colorado State");
+  add("Colorado", "Nebraska");
+  add("Kansas", "Kansas State");
+  add("Kansas", "Missouri");
+  add("Kansas State", "Missouri");
+  add("Baylor", "TCU");
+  add("TCU", "SMU");
+  add("SMU", "Houston");
+  add("SMU", "Rice");
+  add("Houston", "Rice");
+  add("Houston", "Tulsa");
+  add("UTSA", "North Texas");
+  add("UTSA", "Texas State");
+  add("North Texas", "SMU");
+  add("North Texas", "UTSA");
+  add("UAB", "Memphis");
+  add("UAB", "Southern Miss");
+  add("UTSA", "North Texas");
+  add("North Texas", "UTSA");
+  add("Iowa State", "Kansas State");
+  add("UAB", "Memphis");
+  add("UAB", "Southern Miss");
 
-    ["Fresno State", "San Jose State"],
-    ["Fresno State", "San Diego State"],
-    ["San Jose State", "San Diego State"],
-    ["Nevada", "UNLV"],
-    ["New Mexico", "New Mexico State"],
-    ["UTEP", "New Mexico State"],
-    ["UTEP", "UTSA"],
-    ["Texas State", "UTSA"],
-    ["Wyoming", "Colorado State"],
-    ["Air Force", "Colorado State"],
-    ["Air Force", "Wyoming"],
+  // Service academies
+  add("Army West Point", "Navy");
+  add("Army West Point", "Air Force");
+  add("Navy", "Air Force");
+  add("Pittsburgh", "West Virginia");
+  add("West Virginia", "Virginia Tech");
+  add("Virginia", "Virginia Tech");
+  add("North Carolina", "Virginia");
+  add("Duke", "North Carolina");
+  add("NC State", "North Carolina");
+  add("NC State", "Wake Forest");
+  add("Duke", "Wake Forest");
+  add("Louisville", "Kentucky");
+  add("Louisville", "Cincinnati");
+  add("Kentucky", "Tennessee");
+  add("Tennessee", "Vanderbilt");
+  add("Cincinnati", "Miami-Ohio");
+  add("Cincinnati", "West Virginia");
+  add("Central Florida(UCF)", "South Florida");
+  add("UAB", "Memphis");
+  add("UAB", "Southern Miss");
+  add("UTSA", "North Texas");
+  add("North Texas", "UTSA");
+  add("Iowa State", "Kansas State");
+  add("UAB", "Memphis");
+  add("UAB", "Southern Miss");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Georgia State", "Appalachian State");
+  add("Coastal Carolina", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Georgia State");
+  add("Georgia State", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Georgia State");
+  add("Georgia State", "Appalachian State");
+  add("James Madison", "Appalachian State");
+  add("Coastal Carolina", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Georgia State");
+  add("Georgia State", "Appalachian State");
 
-    ["Troy", "South Alabama"],
-    ["Southern Miss", "Louisiana Tech"],
-    ["Louisiana-Lafayette", "LouisianaMonroe(ULM)"],
-    ["Louisiana-Lafayette", "Louisiana Tech"],
-    ["Marshall", "Ohio"],
-    ["Ohio", "Miami-Ohio"],
-    ["Bowling Green", "Toledo"],
-    ["Western Michigan", "Central Michigan"],
-    ["Western Michigan", "Eastern Michigan"],
-    ["Kent State", "Akron"],
-    ["Appalachian State", "Georgia Southern"],
-    ["Georgia State", "Georgia Southern"],
+  // Service academies
+  add("Army West Point", "Navy");
+  add("Army West Point", "Air Force");
+  add("Navy", "Air Force");
+  add("Pittsburgh", "West Virginia");
+  add("West Virginia", "Virginia Tech");
+  add("Virginia", "Virginia Tech");
+  add("North Carolina", "Virginia");
+  add("Duke", "North Carolina");
+  add("NC State", "North Carolina");
+  add("NC State", "Wake Forest");
+  add("Duke", "Wake Forest");
+  add("Louisville", "Kentucky");
+  add("Louisville", "Cincinnati");
+  add("Kentucky", "Tennessee");
+  add("Tennessee", "Vanderbilt");
+  add("Cincinnati", "Miami-Ohio");
+  add("Cincinnati", "West Virginia");
+  add("Central Florida(UCF)", "South Florida");
 
-    ["Harvard", "Yale"],
-    ["North Dakota State", "South Dakota State"],
-    ["Montana", "Montana State"],
-    ["Grambling", "Southern"]
-  ];
+  // Pac-12 / Mountain West
+  add("Fresno State", "San Jose State");
+  add("Fresno State", "San Diego State");
+  add("San Jose State", "San Diego State");
+  add("Nevada", "UNLV");
+  add("New Mexico", "New Mexico State");
+  add("UTEP", "New Mexico State");
+  add("UTEP", "UTSA");
+  add("Texas State", "UTSA");
+  add("Wyoming", "Colorado State");
+  add("Air Force", "Colorado State");
+  add("Air Force", "Wyoming");
+
+  // Sun Belt
+  add("Troy", "South Alabama");
+  add("Southern Miss", "Louisiana Tech");
+  add("Louisiana-Lafayette", "LouisianaMonroe(ULM)");
+  add("Louisiana-Lafayette", "Louisiana Tech");
+  add("Marshall", "Ohio");
+  add("Ohio", "Miami-Ohio");
+  add("Bowling Green", "Toledo");
+  add("Western Michigan", "Central Michigan");
+  add("Western Michigan", "Eastern Michigan");
+  add("Kent State", "Akron");
+  add("Appalachian State", "Georgia Southern");
+  add("Georgia State", "Georgia Southern");
+  add("Georgia State", "Appalachian State");
+  add("Coastal Carolina", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Georgia State");
+  add("Georgia State", "Appalachian State");
+  add("James Madison", "Appalachian State");
+  add("Coastal Carolina", "Appalachian State");
+  add("Coastal Carolina", "Georgia Southern");
+  add("Coastal Carolina", "Georgia State");
+  add("Georgia State", "Appalachian State");
+
+  // FCS / Other
+  add("Harvard", "Yale");
+  add("North Dakota State", "South Dakota State");
+  add("Montana", "Montana State");
+  add("Grambling", "Southern");
+
+  // Convert Set back to array of arrays
+  return Array.from(pairs).map(k => k.split("|"));
 });

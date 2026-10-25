@@ -1,8 +1,18 @@
 /*
- * FBS team division assignments.
+ * FBS team division assignments for 2026 season.
  * Keys are exact Sagarin team names (see normalizeName in core.js).
  * Values are division names within the conference.
- * Only conferences with divisions are listed.
+ * Only conferences with divisions in 2026 are listed.
+ * 
+ * 2026 Status:
+ * - SEC: East/West (active)
+ * - MAC: East/West (active)
+ * - Mountain West: Mountain/West (active)
+ * - Sun Belt: East/West (active)
+ * - Big Ten: No divisions (eliminated 2024)
+ * - ACC: No divisions (eliminated 2023)
+ * - Big 12: No divisions (eliminated 2023)
+ * - American, C-USA, etc.: No divisions
  */
 (function (root, factory) {
   if (typeof module === "object" && module.exports) {
@@ -13,7 +23,7 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
   return {
-    // SEC
+    // SEC - East/West (active)
     "Alabama": "West",
     "Auburn": "West",
     "Arkansas": "West",
@@ -21,6 +31,8 @@
     "Mississippi": "West",
     "Mississippi State": "West",
     "Texas A&M": "West",
+    "Oklahoma": "West",
+    "Texas": "West",
     "Florida": "East",
     "Georgia": "East",
     "Kentucky": "East",
@@ -28,63 +40,57 @@
     "South Carolina": "East",
     "Tennessee": "East",
     "Vanderbilt": "East",
-    "Oklahoma": "West",
-    "Texas": "West",
 
-    // Big Ten
-    "Illinois": "West",
-    "Iowa": "West",
-    "Minnesota": "West",
-    "Nebraska": "West",
-    "Northwestern": "West",
-    "Purdue": "West",
-    "Wisconsin": "West",
-    "Indiana": "East",
-    "Maryland": "East",
-    "Michigan": "East",
-    "Michigan State": "East",
-    "Ohio State": "East",
-    "Penn State": "East",
-    "Rutgers": "East",
+    // MAC - East/West (active)
+    "Akron": "East",
+    "Bowling Green": "East",
+    "Buffalo": "East",
+    "Kent State": "East",
+    "Miami-Ohio": "East",
+    "Ohio": "East",
+    "Central Michigan": "West",
+    "Eastern Michigan": "East",
+    "Northern Illinois": "West",
+    "Toledo": "West",
+    "Western Michigan": "West",
+    "Ball State": "West",
 
-    // ACC
-    "Boston College": "Atlantic",
-    "Clemson": "Atlantic",
-    "Duke": "Atlantic",
-    "Florida State": "Atlantic",
-    "Louisville": "Atlantic",
-    "NC State": "Atlantic",
-    "North Carolina": "Coastal",
-    "Pittsburgh": "Coastal",
-    "Syracuse": "Atlantic",
-    "Virginia": "Coastal",
-    "Virginia Tech": "Coastal",
-    "Wake Forest": "Atlantic",
-    "Georgia Tech": "Coastal",
-    "Miami-Florida": "Coastal",
+    // Mountain West - Mountain/West (active)
+    "Air Force": "Mountain",
+    "Boise State": "Mountain",
+    "Colorado State": "Mountain",
+    "New Mexico": "Mountain",
+    "Utah State": "Mountain",
+    "Wyoming": "Mountain",
+    "Fresno State": "West",
+    "Hawaii": "West",
+    "Nevada": "West",
+    "San Diego State": "West",
+    "San Jose State": "West",
+    "UNLV": "West",
 
-    // Big 12
-    "Arizona": "None",
-    "Arizona State": "None",
-    "Baylor": "None",
-    "BYU": "None",
-    "Cincinnati": "None",
-    "Colorado": "None",
-    "Houston": "None",
-    "Iowa State": "None",
-    "Kansas": "None",
-    "Kansas State": "None",
-    "Oklahoma State": "None",
-    "TCU": "None",
-    "Texas Tech": "None",
-    "UCF": "None",
-    "Utah": "None",
-    "West Virginia": "None",
+    // Sun Belt - East/West (active)
+    "Appalachian State": "East",
+    "Coastal Carolina": "East",
+    "Georgia Southern": "East",
+    "Georgia State": "East",
+    "James Madison": "East",
+    "Marshall": "East",
+    "Old Dominion": "East",
+    "Arkansas State": "West",
+    "Louisiana": "West",
+    "Louisiana-Monroe": "West",
+    "South Alabama": "West",
+    "Southern Miss": "West",
+    "Texas State": "West",
+    "Troy": "West",
 
-    // SEC additions
-    "Missouri": "East",
-    "Texas A&M": "West",
+    // MAC teams already listed above
 
-    // Big 12 divisions (no divisions currently)
+    // Note: These conferences have NO divisions in 2026:
+    // Big Ten (eliminated 2024)
+    // ACC (eliminated 2023)
+    // Big 12 (eliminated 2023)
+    // American Athletic, Conference USA, etc.: No divisions
   };
 });
