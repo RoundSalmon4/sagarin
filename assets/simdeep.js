@@ -40,6 +40,7 @@
         SG.state.modules.playoff.view.format = this.value;
       }
       updateFilterRowStates();
+      populateRoundReachedSelect();
     });
     document.getElementById("simdeepLimit").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
@@ -47,6 +48,8 @@
     document.getElementById("simdeepLogic").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
     });
+
+    populateRoundReachedSelect();
 
     // Remove filter row (event delegation)
     document.getElementById("simdeepFilterRows").addEventListener("click", function (e) {
@@ -214,12 +217,6 @@
           '<div class="simdeep-param-body">' +
             '<select class="simdeep-round-reached" aria-label="Round reached" title="Filter by furthest round reached">' +
               '<option value="">Any</option>' +
-              '<option value="champion">Champion</option>' +
-              '<option value="runnerup">Runner-up</option>' +
-              '<option value="final4">Final 4</option>' +
-              '<option value="elite8">Elite 8</option>' +
-              '<option value="round16">Round of 16/32</option>' +
-              '<option value="madefield">Made field</option>' +
             '</select>' +
           '</div>' +
         '</div>' +
@@ -448,6 +445,47 @@
       select.appendChild(opt);
     });
     select.value = current;
+  }
+
+  function populateRoundReachedSelect() {
+    var format = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
+    var selects = document.querySelectorAll(".simdeep-round-reached");
+    var is12 = format === "12";
+
+    var options12 = [
+      { value: "champion", label: "Champion" },
+      { value: "runnerup", label: "Runner-up" },
+      { value: "final4", label: "Final 4" },
+      { value: "elite8", label: "Elite 8" },
+      { value: "round16", label: "Round of 16" },
+      { value: "madefield", label: "Made field only" },
+      { value: "missed", label: "Missed field" }
+    ];
+
+    var options24 = [
+      { value: "champion", label: "Champion" },
+      { value: "runnerup", label: "Runner-up" },
+      { value: "final4", label: "Final 4" },
+      { value: "elite8", label: "Elite 8" },
+      { value: "round16", label: "Round of 16" },
+      { value: "round32", label: "Round of 32" },
+      { value: "madefield", label: "Made field only" },
+      { value: "missed", label: "Missed field" }
+    ];
+
+    var options = is12 ? options12 : options24;
+
+    selects.forEach(function (select) {
+      var current = select.value;
+      select.innerHTML = '<option value="">Any</option>';
+      options.forEach(function (o) {
+        var opt = document.createElement("option");
+        opt.value = o.value;
+        opt.textContent = o.label;
+        select.appendChild(opt);
+      });
+      select.value = current;
+    });
   }
 
   function computeDataRanges(teamName) {
@@ -758,12 +796,13 @@
     }
     // Round reached filter
     if (filter.roundReached) {
+      var format = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.format : "12";
       var targetTeam = filter.team || filter.champion;
       if (targetTeam) {
-        var reached = roundReachedForTeam(run, targetTeam);
+        var reached = roundReachedForTeam(run, targetTeam, format);
         if (!roundReachedMatch(reached, filter.roundReached)) return false;
       } else {
-        var hasRoundMatch = run.field.some(function (f) { return roundReachedMatch(roundReachedForTeam(run, f.team), filter.roundReached); });
+        var hasRoundMatch = run.field.some(function (f) { return roundReachedMatch(roundReachedForTeam(run, f.team, format), filter.roundReached); });
         if (!hasRoundMatch) return false;
       }
     }
@@ -796,21 +835,19 @@
     return false;
   }
 
-  function roundReachedForTeam(run, team) {
+  function roundReachedForTeam(run, team, format) {
     // Determine furthest round reached based on field position and champion
     var entry = run.field.find(function (f) { return f.team === team; });
     if (!entry) return "missed";
     if (run.champion === team) return "champion";
-    // For 12-team: seeds 1-4 get bye to quarters (round of 8), seeds 5-12 play round of 12
-    // For 24-team: more complex
-    var format = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.format : "12";
     var seed = entry.seed || 99;
     if (format === "12") {
       if (seed <= 4) return "elite8";  // quarters
       if (seed <= 12) return "round16"; // first round
     } else {
+      // 24-team: seeds 1-8 get bye to round of 16, seeds 9-24 play round of 32
       if (seed <= 8) return "elite8";
-      if (seed <= 24) return "round16";
+      if (seed <= 24) return "round32";
     }
     return "madefield";
   }
@@ -820,7 +857,8 @@
     if (target === "runnerup") return reached === "champion"; // can't determine runner-up easily
     if (target === "final4") return ["champion", "runnerup", "final4", "elite8"].indexOf(reached) !== -1;
     if (target === "elite8") return ["champion", "runnerup", "final4", "elite8"].indexOf(reached) !== -1;
-    if (target === "round16") return ["champion", "runnerup", "final4", "elite8", "round16"].indexOf(reached) !== -1;
+    if (target === "round16") return ["champion", "runnerup", "final4", "elite8", "round16", "round32"].indexOf(reached) !== -1;
+    if (target === "round32") return ["champion", "runnerup", "final4", "elite8", "round16", "round32"].indexOf(reached) !== -1;
     if (target === "madefield") return reached !== "missed";
     return false;
   }
@@ -1086,7 +1124,8 @@
           championCount++;
           roundCounts.champion++;
         } else {
-          var reached = roundReachedForTeam(run, teamName);
+          var format = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.format : "12";
+          var reached = roundReachedForTeam(run, teamName, format);
           roundCounts[reached] = (roundCounts[reached] || 0) + 1;
         }
       } else {
@@ -1130,16 +1169,32 @@
       '</div>';
     }
 
-    // Round reached - compact cards
-    var roundOrder = [
+    var format = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.format : "12";
+    var is12 = format === "12";
+
+    // Round reached - compact cards (format-specific)
+    var roundOrder12 = [
       { key: "champion", label: "Champion", color: "var(--good)" },
       { key: "runnerup", label: "Runner-up", color: "var(--accent)" },
       { key: "final4", label: "Final 4", color: "var(--accent)" },
       { key: "elite8", label: "Elite 8", color: "var(--accent)" },
-      { key: "round16", label: "Round 16/32", color: "var(--warn)" },
-      { key: "madefield", label: "Made field", color: "var(--muted)" },
+      { key: "round16", label: "Round of 16", color: "var(--warn)" },
+      { key: "madefield", label: "Made field only", color: "var(--muted)" },
       { key: "missed", label: "Missed field", color: "var(--bad)" }
     ];
+
+    var roundOrder24 = [
+      { key: "champion", label: "Champion", color: "var(--good)" },
+      { key: "runnerup", label: "Runner-up", color: "var(--accent)" },
+      { key: "final4", label: "Final 4", color: "var(--accent)" },
+      { key: "elite8", label: "Elite 8", color: "var(--accent)" },
+      { key: "round16", label: "Round of 16", color: "var(--warn)" },
+      { key: "round32", label: "Round of 32", color: "var(--warn)" },
+      { key: "madefield", label: "Made field only", color: "var(--muted)" },
+      { key: "missed", label: "Missed field", color: "var(--bad)" }
+    ];
+
+    var roundOrder = is12 ? roundOrder12 : roundOrder24;
 
     var roundHtml = roundOrder.map(function (r) {
       var count = dist.roundCounts[r.key] || 0;
