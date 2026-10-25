@@ -1,6 +1,6 @@
 {
   "source": "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football",
-  "fetched_at": "2026-10-23T14:05:10.822Z",
+  "fetched_at": "2026-10-25T15:36:16.608Z",
   "season": 2026,
   "teams": [
     {
@@ -11584,1041 +11584,1041 @@
       "id": "401867955",
       "date": "2026-10-23T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2169",
       "awayId": "2428",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 12,
+      "awayScore": 31
     },
     {
       "id": "401858271",
       "date": "2026-10-23T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "258",
       "awayId": "150",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 16,
+      "awayScore": 19
     },
     {
       "id": "401861965",
       "date": "2026-10-23T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "41",
       "awayId": "113",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 16
     },
     {
       "id": "401870841",
       "date": "2026-10-23T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "219",
       "awayId": "43",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 21
     },
     {
       "id": "401862808",
       "date": "2026-10-24T00:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "202",
       "awayId": "349",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 38
     },
     {
       "id": "401864525",
       "date": "2026-10-24T01:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2751",
       "awayId": "2005",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 14
     },
     {
       "id": "401858272",
       "date": "2026-10-24T02:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "24",
       "awayId": "152",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 31,
+      "awayScore": 28
     },
     {
       "id": "401856728",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2",
       "awayId": "99",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 17,
+      "awayScore": 38
     },
     {
       "id": "401856840",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2132",
       "awayId": "2641",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 37,
+      "awayScore": 24
     },
     {
       "id": "401856841",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2628",
       "awayId": "277",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 20,
+      "awayScore": 24
     },
     {
       "id": "401858270",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2567",
       "awayId": "25",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 59,
+      "awayScore": 20
     },
     {
       "id": "401858274",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2390",
       "awayId": "221",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 52,
+      "awayScore": 23
     },
     {
       "id": "401858496",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "130",
       "awayId": "84",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 6,
+      "awayScore": 13
     },
     {
       "id": "401858498",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "77",
       "awayId": "164",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 42,
+      "awayScore": 14
     },
     {
       "id": "401862809",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2226",
       "awayId": "242",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 51,
+      "awayScore": 49
     },
     {
       "id": "401866450",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2649",
       "awayId": "2711",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 45,
+      "awayScore": 38
     },
     {
       "id": "401866670",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "227",
       "awayId": "399",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 38
     },
     {
       "id": "401866674",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2771",
       "awayId": "160",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 17
     },
     {
       "id": "401867808",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "225",
       "awayId": "172",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 31
     },
     {
       "id": "401867902",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2115",
       "awayId": "2441",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 42,
+      "awayScore": 20
     },
     {
       "id": "401867913",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2341",
       "awayId": "284",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 14,
+      "awayScore": 18
     },
     {
       "id": "401867931",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2184",
       "awayId": "2681",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 52,
+      "awayScore": 21
     },
     {
       "id": "401868230",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2168",
       "awayId": "301",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 37,
+      "awayScore": 32
     },
     {
       "id": "401868266",
       "date": "2026-10-24T16:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2368",
       "awayId": "2900",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 13,
+      "awayScore": 35
     },
     {
       "id": "401856834",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2305",
       "awayId": "239",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 25,
+      "awayScore": 24
     },
     {
       "id": "401866446",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2309",
       "awayId": "2006",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 20
     },
     {
       "id": "401866476",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2117",
       "awayId": "193",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 28
     },
     {
       "id": "401866671",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "311",
       "awayId": "2097",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 6,
+      "awayScore": 35
     },
     {
       "id": "401867994",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "107",
       "awayId": "2083",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 34,
+      "awayScore": 3
     },
     {
       "id": "401868013",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2230",
       "awayId": "322",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 17,
+      "awayScore": 31
     },
     {
       "id": "401868214",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2181",
       "awayId": "2086",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 33
     },
     {
       "id": "401868278",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2674",
       "awayId": "2506",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 7
     },
     {
       "id": "401868944",
       "date": "2026-10-24T17:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2065",
       "awayId": "2296",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 21
     },
     {
       "id": "401867822",
       "date": "2026-10-24T17:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "171",
       "awayId": "159",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 18,
+      "awayScore": 38
     },
     {
       "id": "401867975",
       "date": "2026-10-24T17:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2569",
       "awayId": "2450",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 22,
+      "awayScore": 7
     },
     {
       "id": "401868348",
       "date": "2026-10-24T17:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2678",
       "awayId": "2193",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 0,
+      "awayScore": 38
     },
     {
       "id": "401866672",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2803",
       "awayId": "2619",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 17,
+      "awayScore": 27
     },
     {
       "id": "401866673",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2261",
       "awayId": "2405",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 13,
+      "awayScore": 49
     },
     {
       "id": "401867879",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "233",
       "awayId": "155",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 26,
+      "awayScore": 23
     },
     {
       "id": "401867892",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "79",
       "awayId": "2460",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 20,
+      "awayScore": 17
     },
     {
       "id": "401867921",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2523",
       "awayId": "2385",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 14
     },
     {
       "id": "401868003",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "257",
       "awayId": "2142",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 13,
+      "awayScore": 6
     },
     {
       "id": "401868238",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2698",
       "awayId": "2627",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 6,
+      "awayScore": 49
     },
     {
       "id": "401868271",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2413",
       "awayId": "56",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 31
     },
     {
       "id": "401868377",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "231",
       "awayId": "2535",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 6,
+      "awayScore": 13
     },
     {
       "id": "401868392",
       "date": "2026-10-24T18:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2643",
       "awayId": "2635",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 13,
+      "awayScore": 28
     },
     {
       "id": "401868341",
       "date": "2026-10-24T18:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2717",
       "awayId": "236",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 18,
+      "awayScore": 41
     },
     {
       "id": "401858495",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "356",
       "awayId": "2483",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 10
     },
     {
       "id": "401867689",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2815",
       "awayId": "2130",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 44,
+      "awayScore": 9
     },
     {
       "id": "401867842",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "108",
       "awayId": "163",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 7
     },
     {
       "id": "401867850",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2287",
       "awayId": "282",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 17,
+      "awayScore": 10
     },
     {
       "id": "401867871",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2571",
       "awayId": "93",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 42,
+      "awayScore": 9
     },
     {
       "id": "401867962",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2415",
       "awayId": "47",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 20,
+      "awayScore": 26
     },
     {
       "id": "401868121",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "147",
       "awayId": "2692",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 33
     },
     {
       "id": "401868146",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2198",
       "awayId": "110242",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 16,
+      "awayScore": 13
     },
     {
       "id": "401868182",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2197",
       "awayId": "2546",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 10,
+      "awayScore": 20
     },
     {
       "id": "401868937",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "50",
       "awayId": "2029",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 31
     },
     {
       "id": "401868972",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2640",
       "awayId": "2582",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 21
     },
     {
       "id": "401869133",
       "date": "2026-10-24T19:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2466",
       "awayId": "2447",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 31
     },
     {
       "id": "401856727",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "333",
       "awayId": "245",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 31,
+      "awayScore": 20
     },
     {
       "id": "401856730",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "344",
       "awayId": "201",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 15,
+      "awayScore": 23
     },
     {
       "id": "401856731",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2579",
       "awayId": "2633",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 24
     },
     {
       "id": "401856835",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2116",
       "awayId": "252",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 39,
+      "awayScore": 31
     },
     {
       "id": "401858273",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "59",
       "awayId": "103",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 49
     },
     {
       "id": "401858497",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "135",
       "awayId": "2294",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 13,
+      "awayScore": 10
     },
     {
       "id": "401858499",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "26",
       "awayId": "127",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 10
     },
     {
       "id": "401862810",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2426",
       "awayId": "249",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 39,
+      "awayScore": 49
     },
     {
       "id": "401864526",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2459",
       "awayId": "62",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 56
     },
     {
       "id": "401866447",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2050",
       "awayId": "16",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 34,
+      "awayScore": 17
     },
     {
       "id": "401866448",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2084",
       "awayId": "189",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 31,
+      "awayScore": 24
     },
     {
       "id": "401868019",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2729",
       "awayId": "46",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 28
     },
     {
       "id": "401868035",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "222",
       "awayId": "2329",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 18
     },
     {
       "id": "401868174",
       "date": "2026-10-24T19:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2634",
       "awayId": "2127",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 7,
+      "awayScore": 20
     },
     {
       "id": "401856839",
       "date": "2026-10-24T19:45Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "9",
       "awayId": "2306",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 17
     },
     {
       "id": "401866449",
       "date": "2026-10-24T20:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "195",
       "awayId": "2199",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 20
     },
     {
       "id": "401868201",
       "date": "2026-10-24T20:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2710",
       "awayId": "2630",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 55,
+      "awayScore": 24
     },
     {
       "id": "401869145",
       "date": "2026-10-24T20:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2320",
       "awayId": "2277",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 10
     },
     {
       "id": "401871094",
       "date": "2026-10-24T20:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2653",
       "awayId": "2433",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 14,
+      "awayScore": 21
     },
     {
       "id": "401864528",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2440",
       "awayId": "23",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 28,
+      "awayScore": 13
     },
     {
       "id": "401868080",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "13",
       "awayId": "3101",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 26,
+      "awayScore": 43
     },
     {
       "id": "401868097",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "70",
       "awayId": "253",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 31,
+      "awayScore": 28
     },
     {
       "id": "401868135",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2110",
       "awayId": "292",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 27,
+      "awayScore": 30
     },
     {
       "id": "401869138",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2916",
       "awayId": "2377",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 6
     },
     {
       "id": "401869967",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2572",
       "awayId": "309",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 35,
+      "awayScore": 31
     },
     {
       "id": "401871093",
       "date": "2026-10-24T21:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2348",
       "awayId": "295",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 26,
+      "awayScore": 0
     },
     {
       "id": "401860907",
       "date": "2026-10-24T22:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "265",
       "awayId": "68",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 10,
+      "awayScore": 31
     },
     {
       "id": "401868106",
       "date": "2026-10-24T22:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "304",
       "awayId": "2502",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 8
     },
     {
       "id": "401868311",
       "date": "2026-10-24T22:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2617",
       "awayId": "2545",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 45,
+      "awayScore": 24
     },
     {
       "id": "401860905",
       "date": "2026-10-24T22:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "36",
       "awayId": "21",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 56,
+      "awayScore": 49
     },
     {
       "id": "401856836",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "197",
       "awayId": "38",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 57,
+      "awayScore": 24
     },
     {
       "id": "401858276",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "228",
       "awayId": "259",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 16,
+      "awayScore": 20
     },
     {
       "id": "401868067",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2453",
       "awayId": "2046",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 27
     },
     {
       "id": "401868132",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "302",
       "awayId": "2458",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 33,
+      "awayScore": 6
     },
     {
       "id": "401868969",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2837",
       "awayId": "2504",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 19,
+      "awayScore": 30
     },
     {
       "id": "401869935",
       "date": "2026-10-24T23:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2032",
       "awayId": "2247",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 38,
+      "awayScore": 32
     },
     {
       "id": "401856729",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "96",
       "awayId": "238",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 34,
+      "awayScore": 17
     },
     {
       "id": "401856732",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "251",
       "awayId": "145",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 34,
+      "awayScore": 27
     },
     {
       "id": "401856838",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "12",
       "awayId": "66",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 39,
+      "awayScore": 3
     },
     {
       "id": "401858275",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "153",
       "awayId": "183",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 30,
+      "awayScore": 31
     },
     {
       "id": "401858500",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "275",
       "awayId": "30",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 24,
+      "awayScore": 7
     },
     {
       "id": "401860906",
       "date": "2026-10-24T23:30Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "326",
       "awayId": "328",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 20,
+      "awayScore": 17
     },
     {
       "id": "401862811",
       "date": "2026-10-25T00:00Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "2655",
       "awayId": "2636",
-      "homeScore": null,
-      "awayScore": null
-    },
-    {
-      "id": "401864527",
-      "date": "2026-10-25T02:00Z",
-      "neutral": false,
-      "completed": false,
-      "homeId": "167",
-      "awayId": "2449",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 19,
+      "awayScore": 42
     },
     {
       "id": "401856837",
       "date": "2026-10-25T02:15Z",
       "neutral": false,
-      "completed": false,
+      "completed": true,
       "homeId": "254",
       "awayId": "248",
-      "homeScore": null,
-      "awayScore": null
+      "homeScore": 21,
+      "awayScore": 13
+    },
+    {
+      "id": "401864527",
+      "date": "2026-10-25T02:20Z",
+      "neutral": false,
+      "completed": true,
+      "homeId": "167",
+      "awayId": "2449",
+      "homeScore": 21,
+      "awayScore": 16
     },
     {
       "id": "401871071",
@@ -12727,26 +12727,6 @@
       "completed": false,
       "homeId": "16",
       "awayId": "2309",
-      "homeScore": null,
-      "awayScore": null
-    },
-    {
-      "id": "401858505",
-      "date": "2026-10-31T04:00Z",
-      "neutral": false,
-      "completed": false,
-      "homeId": "2483",
-      "awayId": "77",
-      "homeScore": null,
-      "awayScore": null
-    },
-    {
-      "id": "401858506",
-      "date": "2026-10-31T04:00Z",
-      "neutral": false,
-      "completed": false,
-      "homeId": "213",
-      "awayId": "2509",
       "homeScore": null,
       "awayScore": null
     },
@@ -13411,6 +13391,16 @@
       "awayScore": null
     },
     {
+      "id": "401858505",
+      "date": "2026-10-31T19:30Z",
+      "neutral": false,
+      "completed": false,
+      "homeId": "2483",
+      "awayId": "77",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
       "id": "401860910",
       "date": "2026-10-31T19:30Z",
       "neutral": false,
@@ -13567,6 +13557,16 @@
       "completed": false,
       "homeId": "201",
       "awayId": "2579",
+      "homeScore": null,
+      "awayScore": null
+    },
+    {
+      "id": "401858506",
+      "date": "2026-10-31T20:15Z",
+      "neutral": false,
+      "completed": false,
+      "homeId": "213",
+      "awayId": "2509",
       "homeScore": null,
       "awayScore": null
     },
@@ -16302,7 +16302,7 @@
     },
     {
       "id": "401864537",
-      "date": "2026-11-15T04:59Z",
+      "date": "2026-11-15T04:00Z",
       "neutral": false,
       "completed": false,
       "homeId": "62",
@@ -18333,11 +18333,11 @@
   ],
   "stats": {
     "2": {
-      "oy": 394.2,
-      "pp": 26.83,
-      "gp": 6,
-      "dy": 371,
-      "pa": 21.833
+      "oy": 376.6,
+      "pp": 25.43,
+      "gp": 7,
+      "dy": 396.857,
+      "pa": 24.143
     },
     "5": {
       "oy": 339,
@@ -18361,114 +18361,114 @@
       "pa": 26.714
     },
     "9": {
-      "oy": 420.3,
-      "pp": 31.33,
-      "gp": 6,
-      "dy": 373.167,
-      "pa": 32
+      "oy": 411.6,
+      "pp": 30.86,
+      "gp": 7,
+      "dy": 359.571,
+      "pa": 29.857
     },
     "12": {
-      "oy": 456.5,
-      "pp": 35.67,
-      "gp": 6,
-      "dy": 330.5,
-      "pa": 19
+      "oy": 459.4,
+      "pp": 36.14,
+      "gp": 7,
+      "dy": 314.857,
+      "pa": 16.714
     },
     "13": {
-      "oy": 405.4,
-      "pp": 28.13,
-      "gp": 8,
-      "dy": 418.25,
-      "pa": 30
+      "oy": 402.9,
+      "pp": 27.89,
+      "gp": 9,
+      "dy": 414.778,
+      "pa": 31.444
     },
     "16": {
-      "oy": 302.7,
-      "pp": 15,
-      "gp": 7,
-      "dy": 365,
-      "pa": 32.714
+      "oy": 298.1,
+      "pp": 15.25,
+      "gp": 8,
+      "dy": 371.5,
+      "pa": 32.875
     },
     "21": {
-      "oy": 292.9,
-      "pp": 23.29,
-      "gp": 7,
-      "dy": 449,
-      "pa": 33.286
+      "oy": 326.9,
+      "pp": 26.5,
+      "gp": 8,
+      "dy": 461.5,
+      "pa": 36.125
     },
     "23": {
-      "oy": 384.7,
-      "pp": 21.43,
-      "gp": 7,
-      "dy": 387.857,
-      "pa": 21.714
+      "oy": 362.1,
+      "pp": 20.38,
+      "gp": 8,
+      "dy": 379.875,
+      "pa": 22.5
     },
     "24": {
-      "oy": 342.9,
-      "pp": 18.29,
-      "gp": 7,
-      "dy": 452,
-      "pa": 36.571
+      "oy": 359.6,
+      "pp": 19.88,
+      "gp": 8,
+      "dy": 443.125,
+      "pa": 35.5
     },
     "25": {
-      "oy": 378.4,
-      "pp": 23.86,
-      "gp": 7,
-      "dy": 386.143,
-      "pa": 27.714
+      "oy": 369.3,
+      "pp": 23.38,
+      "gp": 8,
+      "dy": 399.375,
+      "pa": 31.625
     },
     "26": {
-      "oy": 445.8,
-      "pp": 35.5,
-      "gp": 6,
-      "dy": 292.333,
-      "pa": 16.167
+      "oy": 445.4,
+      "pp": 34.43,
+      "gp": 7,
+      "dy": 272.857,
+      "pa": 15.286
     },
     "30": {
-      "oy": 462.4,
-      "pp": 36.43,
-      "gp": 7,
-      "dy": 350,
-      "pa": 25.143
+      "oy": 434.8,
+      "pp": 32.75,
+      "gp": 8,
+      "dy": 331.25,
+      "pa": 25
     },
     "36": {
-      "oy": 445.3,
-      "pp": 35.67,
-      "gp": 6,
-      "dy": 530.333,
-      "pa": 43.167
+      "oy": 460.1,
+      "pp": 38.57,
+      "gp": 7,
+      "dy": 535.286,
+      "pa": 44
     },
     "38": {
-      "oy": 394.2,
-      "pp": 19.5,
-      "gp": 6,
-      "dy": 357.167,
-      "pa": 25.667
+      "oy": 394.9,
+      "pp": 20.14,
+      "gp": 7,
+      "dy": 391.571,
+      "pa": 30.143
     },
     "41": {
-      "oy": 449.2,
-      "pp": 35.67,
-      "gp": 6,
-      "dy": 407.167,
-      "pa": 25.167
+      "oy": 447.6,
+      "pp": 35.57,
+      "gp": 7,
+      "dy": 392.286,
+      "pa": 23.857
     },
     "43": {
-      "oy": 457.8,
-      "pp": 31,
-      "gp": 5,
-      "dy": 305.6,
-      "pa": 27.6
+      "oy": 441.3,
+      "pp": 29.33,
+      "gp": 6,
+      "dy": 302.833,
+      "pa": 27
     },
     "46": {
-      "oy": 312.3,
-      "pp": 19,
-      "gp": 6,
-      "dy": 411.333,
-      "pa": 25.833
+      "oy": 327.1,
+      "pp": 20.29,
+      "gp": 7,
+      "dy": 402.857,
+      "pa": 26
     },
     "47": {
-      "oy": 270.9,
-      "pp": 19.57,
-      "gp": 7,
+      "oy": 267.8,
+      "pp": 20.38,
+      "gp": 8,
       "dy": 376.857,
       "pa": 31.286
     },
@@ -18480,9 +18480,9 @@
       "pa": 28.429
     },
     "50": {
-      "oy": 266.1,
-      "pp": 18.86,
-      "gp": 7,
+      "oy": 282.1,
+      "pp": 20,
+      "gp": 8,
       "dy": 446,
       "pa": 34
     },
@@ -18501,9 +18501,9 @@
       "pa": 22.714
     },
     "56": {
-      "oy": 378.9,
-      "pp": 22.14,
-      "gp": 7,
+      "oy": 385,
+      "pp": 23.25,
+      "gp": 8,
       "dy": 443.714,
       "pa": 43.857
     },
@@ -18522,11 +18522,11 @@
       "pa": 15.143
     },
     "59": {
-      "oy": 381.8,
-      "pp": 26.67,
-      "gp": 6,
-      "dy": 392.167,
-      "pa": 27.167
+      "oy": 378.7,
+      "pp": 26.71,
+      "gp": 7,
+      "dy": 407.571,
+      "pa": 30.286
     },
     "61": {
       "oy": 469.9,
@@ -18536,53 +18536,53 @@
       "pa": 15.857
     },
     "62": {
-      "oy": 345.6,
-      "pp": 15.71,
-      "gp": 7,
-      "dy": 382.857,
-      "pa": 25
+      "oy": 365.4,
+      "pp": 20.75,
+      "gp": 8,
+      "dy": 368.25,
+      "pa": 24.5
     },
     "66": {
-      "oy": 359.7,
-      "pp": 29.67,
-      "gp": 6,
-      "dy": 352.333,
-      "pa": 21.667
+      "oy": 339.9,
+      "pp": 25.86,
+      "gp": 7,
+      "dy": 370.143,
+      "pa": 24.143
     },
     "68": {
-      "oy": 450.5,
-      "pp": 35,
-      "gp": 6,
-      "dy": 368.167,
-      "pa": 22.333
+      "oy": 444.3,
+      "pp": 34.43,
+      "gp": 7,
+      "dy": 350.429,
+      "pa": 20.571
     },
     "70": {
-      "oy": 411.3,
-      "pp": 29.71,
-      "gp": 7,
-      "dy": 456.857,
-      "pa": 39.286
+      "oy": 407.1,
+      "pp": 29.88,
+      "gp": 8,
+      "dy": 456,
+      "pa": 37.875
     },
     "77": {
-      "oy": 424.5,
-      "pp": 33.5,
-      "gp": 6,
-      "dy": 368,
-      "pa": 17
+      "oy": 435.6,
+      "pp": 34.71,
+      "gp": 7,
+      "dy": 364.571,
+      "pa": 16.571
     },
     "79": {
-      "oy": 351.9,
-      "pp": 22.88,
-      "gp": 8,
-      "dy": 364.5,
-      "pa": 27.5
+      "oy": 346.4,
+      "pp": 22.56,
+      "gp": 9,
+      "dy": 363.444,
+      "pa": 26.333
     },
     "84": {
-      "oy": 449.3,
-      "pp": 36.57,
-      "gp": 7,
-      "dy": 270.571,
-      "pa": 12.857
+      "oy": 419.6,
+      "pp": 33.63,
+      "gp": 8,
+      "dy": 264.75,
+      "pa": 12
     },
     "87": {
       "oy": 445.1,
@@ -18592,18 +18592,18 @@
       "pa": 13.429
     },
     "93": {
-      "oy": 280.7,
-      "pp": 15.57,
-      "gp": 7,
-      "dy": 432.571,
-      "pa": 41.714
+      "oy": 276.8,
+      "pp": 14.75,
+      "gp": 8,
+      "dy": 432.75,
+      "pa": 41.75
     },
     "96": {
-      "oy": 387.9,
-      "pp": 32.71,
-      "gp": 7,
-      "dy": 377,
-      "pa": 25.857
+      "oy": 386.4,
+      "pp": 32.88,
+      "gp": 8,
+      "dy": 362.625,
+      "pa": 24.75
     },
     "97": {
       "oy": 484.6,
@@ -18620,39 +18620,39 @@
       "pa": 30.571
     },
     "99": {
-      "oy": 504,
-      "pp": 40.43,
-      "gp": 7,
-      "dy": 256.429,
-      "pa": 15.857
+      "oy": 510,
+      "pp": 40.13,
+      "gp": 8,
+      "dy": 258.25,
+      "pa": 16
     },
     "103": {
-      "oy": 355,
-      "pp": 20.33,
-      "gp": 6,
-      "dy": 328.833,
-      "pa": 23
+      "oy": 375.7,
+      "pp": 24.43,
+      "gp": 7,
+      "dy": 333.286,
+      "pa": 23.571
     },
     "107": {
-      "oy": 323,
-      "pp": 20.14,
-      "gp": 7,
-      "dy": 411.286,
-      "pa": 32.429
+      "oy": 330.4,
+      "pp": 21.88,
+      "gp": 8,
+      "dy": 390.625,
+      "pa": 28.75
     },
     "108": {
-      "oy": 373.8,
-      "pp": 27.2,
-      "gp": 5,
-      "dy": 296.8,
-      "pa": 14
+      "oy": 376.7,
+      "pp": 28.5,
+      "gp": 6,
+      "dy": 283.833,
+      "pa": 12.833
     },
     "113": {
-      "oy": 339.1,
-      "pp": 28,
-      "gp": 7,
-      "dy": 307.857,
-      "pa": 19.143
+      "oy": 334.6,
+      "pp": 26.5,
+      "gp": 8,
+      "dy": 324.125,
+      "pa": 21.125
     },
     "119": {
       "oy": 359.8,
@@ -18669,25 +18669,25 @@
       "pa": 33.286
     },
     "127": {
-      "oy": 310.7,
-      "pp": 21.29,
-      "gp": 7,
-      "dy": 342.571,
-      "pa": 25.429
+      "oy": 291.4,
+      "pp": 19.88,
+      "gp": 8,
+      "dy": 355.125,
+      "pa": 25.75
     },
     "130": {
-      "oy": 313.3,
-      "pp": 22.67,
-      "gp": 6,
-      "dy": 256.5,
-      "pa": 16.167
+      "oy": 300.6,
+      "pp": 20.29,
+      "gp": 7,
+      "dy": 250.143,
+      "pa": 15.714
     },
     "135": {
-      "oy": 341.3,
-      "pp": 28.83,
-      "gp": 6,
-      "dy": 288.833,
-      "pa": 21.833
+      "oy": 322.4,
+      "pp": 26.57,
+      "gp": 7,
+      "dy": 288.714,
+      "pa": 20.143
     },
     "142": {
       "oy": 429.6,
@@ -18697,18 +18697,18 @@
       "pa": 19.571
     },
     "145": {
-      "oy": 444.5,
-      "pp": 37.5,
-      "gp": 6,
-      "dy": 390,
-      "pa": 23.833
+      "oy": 432.9,
+      "pp": 36,
+      "gp": 7,
+      "dy": 394.143,
+      "pa": 25.286
     },
     "147": {
-      "oy": 437.3,
-      "pp": 39.71,
-      "gp": 7,
-      "dy": 351.571,
-      "pa": 18.571
+      "oy": 446.4,
+      "pp": 39.5,
+      "gp": 8,
+      "dy": 353.125,
+      "pa": 20.375
     },
     "149": {
       "oy": 469.5,
@@ -18718,10 +18718,10 @@
       "pa": 28
     },
     "150": {
-      "oy": 442.7,
-      "pp": 31.67,
-      "gp": 6,
-      "dy": 292.667,
+      "oy": 426.1,
+      "pp": 29.86,
+      "gp": 7,
+      "dy": 301.286,
       "pa": 16
     },
     "151": {
@@ -18732,18 +18732,18 @@
       "pa": 26.286
     },
     "152": {
-      "oy": 426.3,
-      "pp": 33,
-      "gp": 6,
-      "dy": 363.833,
-      "pa": 27.667
+      "oy": 419.9,
+      "pp": 32.29,
+      "gp": 7,
+      "dy": 380,
+      "pa": 28.143
     },
     "153": {
-      "oy": 329.8,
-      "pp": 23.5,
-      "gp": 6,
-      "dy": 359,
-      "pa": 19.167
+      "oy": 335.9,
+      "pp": 24.43,
+      "gp": 7,
+      "dy": 372.714,
+      "pa": 20.857
     },
     "154": {
       "oy": 445.9,
@@ -18753,11 +18753,11 @@
       "pa": 19.429
     },
     "155": {
-      "oy": 436.5,
-      "pp": 36.63,
-      "gp": 8,
-      "dy": 304.375,
-      "pa": 25.125
+      "oy": 428.3,
+      "pp": 35.11,
+      "gp": 9,
+      "dy": 306.556,
+      "pa": 25.222
     },
     "158": {
       "oy": 430.3,
@@ -18767,32 +18767,32 @@
       "pa": 15.429
     },
     "159": {
-      "oy": 307.4,
-      "pp": 19.2,
-      "gp": 5,
-      "dy": 404.8,
-      "pa": 22.8
+      "oy": 326,
+      "pp": 22.33,
+      "gp": 6,
+      "dy": 396.5,
+      "pa": 22
     },
     "160": {
-      "oy": 288.9,
-      "pp": 19.63,
-      "gp": 8,
-      "dy": 429,
-      "pa": 34.375
+      "oy": 295.9,
+      "pp": 19.33,
+      "gp": 9,
+      "dy": 425.111,
+      "pa": 33.222
     },
     "163": {
-      "oy": 344.4,
-      "pp": 23,
-      "gp": 5,
-      "dy": 337.4,
-      "pa": 10.2
+      "oy": 323.5,
+      "pp": 20.33,
+      "gp": 6,
+      "dy": 346.333,
+      "pa": 14.333
     },
     "164": {
-      "oy": 403.3,
-      "pp": 31.17,
-      "gp": 6,
-      "dy": 402.5,
-      "pa": 31.833
+      "oy": 394.9,
+      "pp": 28.71,
+      "gp": 7,
+      "dy": 416.714,
+      "pa": 33.286
     },
     "166": {
       "oy": 371.9,
@@ -18802,46 +18802,46 @@
       "pa": 25.429
     },
     "167": {
-      "oy": 378,
-      "pp": 39.67,
-      "gp": 6,
-      "dy": 262.667,
-      "pa": 10.5
+      "oy": 363.9,
+      "pp": 37,
+      "gp": 7,
+      "dy": 261,
+      "pa": 11.286
     },
     "171": {
-      "oy": 420.4,
-      "pp": 27.2,
-      "gp": 5,
-      "dy": 369.4,
-      "pa": 28.2
+      "oy": 409.5,
+      "pp": 25.67,
+      "gp": 6,
+      "dy": 377.667,
+      "pa": 29.833
     },
     "172": {
-      "oy": 401.4,
-      "pp": 31.4,
-      "gp": 5,
-      "dy": 368.8,
-      "pa": 27.6
+      "oy": 402,
+      "pp": 31.33,
+      "gp": 6,
+      "dy": 384.5,
+      "pa": 29.333
     },
     "183": {
-      "oy": 449.8,
-      "pp": 31.67,
-      "gp": 6,
-      "dy": 330.333,
-      "pa": 25.667
+      "oy": 450.6,
+      "pp": 31.57,
+      "gp": 7,
+      "dy": 336.286,
+      "pa": 26.286
     },
     "189": {
-      "oy": 280.1,
-      "pp": 18,
-      "gp": 7,
-      "dy": 383.857,
-      "pa": 29.571
+      "oy": 287.8,
+      "pp": 18.75,
+      "gp": 8,
+      "dy": 383.125,
+      "pa": 29.75
     },
     "193": {
-      "oy": 357.9,
-      "pp": 26.86,
-      "gp": 7,
-      "dy": 376.143,
-      "pa": 25.571
+      "oy": 358.1,
+      "pp": 27,
+      "gp": 8,
+      "dy": 364.75,
+      "pa": 25.75
     },
     "194": {
       "oy": 476.3,
@@ -18851,32 +18851,32 @@
       "pa": 13.429
     },
     "195": {
-      "oy": 371.4,
-      "pp": 30.43,
-      "gp": 7,
-      "dy": 337.143,
-      "pa": 22.143
+      "oy": 369.5,
+      "pp": 29.63,
+      "gp": 8,
+      "dy": 333.375,
+      "pa": 21.875
     },
     "197": {
-      "oy": 517.7,
-      "pp": 37.17,
-      "gp": 6,
-      "dy": 358.167,
-      "pa": 23.667
+      "oy": 529.1,
+      "pp": 40,
+      "gp": 7,
+      "dy": 364,
+      "pa": 23.714
     },
     "201": {
-      "oy": 311.5,
-      "pp": 21.33,
-      "gp": 6,
-      "dy": 260.667,
-      "pa": 18.167
+      "oy": 333.7,
+      "pp": 21.57,
+      "gp": 7,
+      "dy": 273.714,
+      "pa": 17.714
     },
     "202": {
-      "oy": 364,
-      "pp": 29,
-      "gp": 7,
-      "dy": 408.571,
-      "pa": 22.429
+      "oy": 369.8,
+      "pp": 29.75,
+      "gp": 8,
+      "dy": 405.5,
+      "pa": 24.375
     },
     "204": {
       "oy": 527,
@@ -18900,60 +18900,60 @@
       "pa": 28
     },
     "219": {
-      "oy": 342.4,
-      "pp": 17.6,
-      "gp": 5,
-      "dy": 252.4,
-      "pa": 17.8
+      "oy": 333.5,
+      "pp": 18.67,
+      "gp": 6,
+      "dy": 270.167,
+      "pa": 18.333
     },
     "221": {
-      "oy": 450.1,
-      "pp": 32.86,
-      "gp": 7,
-      "dy": 306.286,
-      "pa": 16.429
+      "oy": 444.3,
+      "pp": 31.63,
+      "gp": 8,
+      "dy": 331.25,
+      "pa": 20.875
     },
     "222": {
-      "oy": 368,
-      "pp": 25.14,
-      "gp": 7,
-      "dy": 395.714,
-      "pa": 29.857
+      "oy": 364.1,
+      "pp": 25,
+      "gp": 8,
+      "dy": 392.75,
+      "pa": 28.375
     },
     "225": {
-      "oy": 334.6,
-      "pp": 15,
-      "gp": 5,
-      "dy": 346,
-      "pa": 13.2
+      "oy": 356,
+      "pp": 18.83,
+      "gp": 6,
+      "dy": 355.833,
+      "pa": 16.167
     },
     "227": {
-      "oy": 336.1,
-      "pp": 25,
-      "gp": 7,
-      "dy": 363.857,
-      "pa": 23.714
+      "oy": 336,
+      "pp": 24.5,
+      "gp": 8,
+      "dy": 374.625,
+      "pa": 25.5
     },
     "228": {
-      "oy": 340.7,
-      "pp": 22.33,
-      "gp": 6,
-      "dy": 330.833,
-      "pa": 21.5
+      "oy": 333.1,
+      "pp": 21.43,
+      "gp": 7,
+      "dy": 317,
+      "pa": 21.286
     },
     "231": {
-      "oy": 312.4,
-      "pp": 16.43,
-      "gp": 7,
-      "dy": 363.286,
-      "pa": 22.429
+      "oy": 312.5,
+      "pp": 15.13,
+      "gp": 8,
+      "dy": 355.875,
+      "pa": 21.25
     },
     "233": {
-      "oy": 420.5,
-      "pp": 39.13,
-      "gp": 8,
-      "dy": 372.25,
-      "pa": 24.375
+      "oy": 409.8,
+      "pp": 37.67,
+      "gp": 9,
+      "dy": 371.222,
+      "pa": 24.222
     },
     "235": {
       "oy": 508.3,
@@ -18963,81 +18963,81 @@
       "pa": 23.75
     },
     "236": {
-      "oy": 274.1,
-      "pp": 20,
-      "gp": 7,
-      "dy": 259.429,
-      "pa": 12.571
+      "oy": 289.6,
+      "pp": 22.63,
+      "gp": 8,
+      "dy": 272,
+      "pa": 13.25
     },
     "238": {
-      "oy": 354.3,
-      "pp": 23.57,
-      "gp": 7,
-      "dy": 365.571,
-      "pa": 29.714
+      "oy": 342.8,
+      "pp": 22.75,
+      "gp": 8,
+      "dy": 366.875,
+      "pa": 30.25
     },
     "239": {
-      "oy": 436.2,
-      "pp": 30,
-      "gp": 6,
-      "dy": 326.667,
-      "pa": 14.667
+      "oy": 425,
+      "pp": 29.14,
+      "gp": 7,
+      "dy": 340.143,
+      "pa": 16.143
     },
     "242": {
-      "oy": 318.7,
-      "pp": 17,
-      "gp": 7,
-      "dy": 372.429,
-      "pa": 29
+      "oy": 354.9,
+      "pp": 21,
+      "gp": 8,
+      "dy": 383.5,
+      "pa": 31.75
     },
     "245": {
-      "oy": 356.9,
-      "pp": 29.43,
-      "gp": 7,
-      "dy": 305.857,
-      "pa": 17.143
+      "oy": 347,
+      "pp": 28.25,
+      "gp": 8,
+      "dy": 315,
+      "pa": 18.875
     },
     "248": {
-      "oy": 485.1,
-      "pp": 39.29,
-      "gp": 7,
-      "dy": 347.571,
+      "oy": 470.5,
+      "pp": 36,
+      "gp": 8,
+      "dy": 357.875,
       "pa": 21
     },
     "249": {
-      "oy": 533.8,
-      "pp": 42.17,
-      "gp": 6,
-      "dy": 355.833,
-      "pa": 29.167
+      "oy": 525.7,
+      "pp": 43.14,
+      "gp": 7,
+      "dy": 380.571,
+      "pa": 30.571
     },
     "251": {
-      "oy": 362.3,
-      "pp": 30.17,
-      "gp": 6,
-      "dy": 272.5,
-      "pa": 17.833
+      "oy": 370.4,
+      "pp": 30.71,
+      "gp": 7,
+      "dy": 285.429,
+      "pa": 19.143
     },
     "252": {
-      "oy": 421.2,
-      "pp": 33.5,
-      "gp": 6,
-      "dy": 274.667,
-      "pa": 15.167
+      "oy": 414.3,
+      "pp": 33.14,
+      "gp": 7,
+      "dy": 301.571,
+      "pa": 18.571
     },
     "253": {
-      "oy": 455.1,
-      "pp": 32.29,
-      "gp": 7,
-      "dy": 480.571,
-      "pa": 33.429
+      "oy": 454.5,
+      "pp": 31.75,
+      "gp": 8,
+      "dy": 467.75,
+      "pa": 33.125
     },
     "254": {
-      "oy": 486.5,
-      "pp": 40.17,
-      "gp": 6,
-      "dy": 303.167,
-      "pa": 14.833
+      "oy": 478.4,
+      "pp": 37.43,
+      "gp": 7,
+      "dy": 312.429,
+      "pa": 14.571
     },
     "256": {
       "oy": 456.3,
@@ -19047,25 +19047,25 @@
       "pa": 18.25
     },
     "257": {
-      "oy": 326.4,
-      "pp": 22,
-      "gp": 7,
-      "dy": 328.143,
-      "pa": 27
+      "oy": 317.1,
+      "pp": 20.88,
+      "gp": 8,
+      "dy": 326.625,
+      "pa": 24.375
     },
     "258": {
-      "oy": 362,
-      "pp": 30,
-      "gp": 7,
-      "dy": 326.571,
-      "pa": 19.714
+      "oy": 360.9,
+      "pp": 28.25,
+      "gp": 8,
+      "dy": 326.625,
+      "pa": 19.625
     },
     "259": {
-      "oy": 449.7,
-      "pp": 37.14,
-      "gp": 7,
-      "dy": 314.714,
-      "pa": 21.143
+      "oy": 422.8,
+      "pp": 35,
+      "gp": 8,
+      "dy": 311.375,
+      "pa": 20.5
     },
     "264": {
       "oy": 386.7,
@@ -19075,18 +19075,18 @@
       "pa": 22.714
     },
     "265": {
-      "oy": 307.6,
-      "pp": 20.14,
-      "gp": 7,
-      "dy": 383.857,
-      "pa": 27.143
+      "oy": 299.6,
+      "pp": 18.88,
+      "gp": 8,
+      "dy": 386.75,
+      "pa": 27.625
     },
     "275": {
-      "oy": 351.8,
-      "pp": 27.5,
-      "gp": 6,
-      "dy": 286.667,
-      "pa": 16.667
+      "oy": 330.1,
+      "pp": 27,
+      "gp": 7,
+      "dy": 280.143,
+      "pa": 15.286
     },
     "276": {
       "oy": 395.3,
@@ -19096,11 +19096,11 @@
       "pa": 30.714
     },
     "277": {
-      "oy": 497.1,
-      "pp": 37.57,
-      "gp": 7,
-      "dy": 483.857,
-      "pa": 34
+      "oy": 468.1,
+      "pp": 35.88,
+      "gp": 8,
+      "dy": 483.875,
+      "pa": 32.25
     },
     "278": {
       "oy": 351.1,
@@ -19110,16 +19110,16 @@
       "pa": 20.857
     },
     "282": {
-      "oy": 382.6,
-      "pp": 27.71,
-      "gp": 7,
+      "oy": 379.6,
+      "pp": 25.5,
+      "gp": 8,
       "dy": 454.286,
       "pa": 37.286
     },
     "284": {
-      "oy": 296.4,
-      "pp": 16.86,
-      "gp": 7,
+      "oy": 300,
+      "pp": 17,
+      "gp": 8,
       "dy": 356.286,
       "pa": 23
     },
@@ -19131,53 +19131,53 @@
       "pa": 23
     },
     "295": {
-      "oy": 266.9,
-      "pp": 17.71,
-      "gp": 7,
-      "dy": 335.857,
-      "pa": 26.857
+      "oy": 251.1,
+      "pp": 15.5,
+      "gp": 8,
+      "dy": 348.625,
+      "pa": 26.75
     },
     "301": {
-      "oy": 406.4,
-      "pp": 28.57,
-      "gp": 7,
-      "dy": 435.143,
-      "pa": 37.286
+      "oy": 422,
+      "pp": 29,
+      "gp": 8,
+      "dy": 430.375,
+      "pa": 37.25
     },
     "302": {
-      "oy": 444.1,
-      "pp": 31.86,
-      "gp": 7,
-      "dy": 454.286,
-      "pa": 34.571
+      "oy": 441.6,
+      "pp": 32,
+      "gp": 8,
+      "dy": 442.25,
+      "pa": 31
     },
     "304": {
-      "oy": 419.1,
-      "pp": 32.71,
-      "gp": 7,
-      "dy": 376.143,
-      "pa": 22.571
+      "oy": 427.8,
+      "pp": 33.38,
+      "gp": 8,
+      "dy": 363.625,
+      "pa": 20.75
     },
     "309": {
-      "oy": 377.9,
-      "pp": 30,
-      "gp": 7,
-      "dy": 298.286,
-      "pa": 19.286
+      "oy": 382.8,
+      "pp": 30.13,
+      "gp": 8,
+      "dy": 317.25,
+      "pa": 21.25
     },
     "311": {
-      "oy": 281.9,
-      "pp": 14.43,
-      "gp": 7,
-      "dy": 388.571,
-      "pa": 28.857
+      "oy": 281,
+      "pp": 13.38,
+      "gp": 8,
+      "dy": 410.25,
+      "pa": 29.625
     },
     "322": {
-      "oy": 321.2,
-      "pp": 22.5,
-      "gp": 6,
-      "dy": 438.167,
-      "pa": 31.667
+      "oy": 321.3,
+      "pp": 23.71,
+      "gp": 7,
+      "dy": 432.286,
+      "pa": 29.571
     },
     "324": {
       "oy": 382.4,
@@ -19187,18 +19187,18 @@
       "pa": 25.857
     },
     "326": {
-      "oy": 562.3,
-      "pp": 40,
-      "gp": 6,
-      "dy": 424.333,
-      "pa": 32.167
+      "oy": 517.7,
+      "pp": 37.14,
+      "gp": 7,
+      "dy": 404.429,
+      "pa": 30
     },
     "328": {
-      "oy": 310,
-      "pp": 14.5,
-      "gp": 6,
-      "dy": 359.667,
-      "pa": 23.5
+      "oy": 306.4,
+      "pp": 14.86,
+      "gp": 7,
+      "dy": 344,
+      "pa": 23
     },
     "331": {
       "oy": 407.1,
@@ -19208,46 +19208,46 @@
       "pa": 38.125
     },
     "333": {
-      "oy": 416.6,
-      "pp": 39.29,
-      "gp": 7,
-      "dy": 337.857,
-      "pa": 21.429
+      "oy": 411.9,
+      "pp": 38.25,
+      "gp": 8,
+      "dy": 330.375,
+      "pa": 21.25
     },
     "338": {
       "oy": 359.4,
       "pp": 20,
       "gp": 7,
-      "dy": 376.333,
-      "pa": 23.5
+      "dy": 380,
+      "pa": 25
     },
     "344": {
-      "oy": 454.3,
-      "pp": 32.5,
-      "gp": 6,
-      "dy": 379.5,
-      "pa": 28.5
+      "oy": 439.7,
+      "pp": 30,
+      "gp": 7,
+      "dy": 392,
+      "pa": 27.714
     },
     "349": {
-      "oy": 426.7,
-      "pp": 34.83,
-      "gp": 6,
-      "dy": 368,
-      "pa": 20
+      "oy": 420.6,
+      "pp": 35.29,
+      "gp": 7,
+      "dy": 374,
+      "pa": 22.143
     },
     "356": {
-      "oy": 405.5,
-      "pp": 31.83,
-      "gp": 6,
-      "dy": 375.167,
-      "pa": 27.833
+      "oy": 392.4,
+      "pp": 30.29,
+      "gp": 7,
+      "dy": 382.429,
+      "pa": 25.286
     },
     "399": {
-      "oy": 338.3,
-      "pp": 25.14,
-      "gp": 7,
-      "dy": 308.143,
-      "pa": 18.857
+      "oy": 352.3,
+      "pp": 26.75,
+      "gp": 8,
+      "dy": 311.5,
+      "pa": 19.125
     },
     "2000": {
       "oy": 331.4,
@@ -19257,18 +19257,18 @@
       "pa": 25.25
     },
     "2005": {
-      "oy": 408,
-      "pp": 30.83,
-      "gp": 6,
-      "dy": 295.667,
-      "pa": 19.667
+      "oy": 405,
+      "pp": 28.43,
+      "gp": 7,
+      "dy": 296.429,
+      "pa": 20.857
     },
     "2006": {
-      "oy": 339.6,
-      "pp": 18.86,
-      "gp": 7,
-      "dy": 417.714,
-      "pa": 32.429
+      "oy": 349.9,
+      "pp": 19,
+      "gp": 8,
+      "dy": 412.5,
+      "pa": 32.75
     },
     "2010": {
       "oy": 485.3,
@@ -19299,123 +19299,123 @@
       "pa": 23.143
     },
     "2029": {
-      "oy": 395,
-      "pp": 32.83,
-      "gp": 6,
+      "oy": 388.7,
+      "pp": 32.57,
+      "gp": 7,
       "dy": 453,
       "pa": 31.333
     },
     "2032": {
-      "oy": 366,
-      "pp": 27.43,
-      "gp": 7,
-      "dy": 379.857,
-      "pa": 26.571
+      "oy": 378.9,
+      "pp": 28.75,
+      "gp": 8,
+      "dy": 386,
+      "pa": 27.25
     },
     "2046": {
-      "oy": 395.5,
-      "pp": 34.75,
-      "gp": 8,
+      "oy": 387.1,
+      "pp": 33.89,
+      "gp": 9,
       "dy": 337.875,
       "pa": 18.375
     },
     "2050": {
-      "oy": 326.1,
-      "pp": 20.29,
-      "gp": 7,
-      "dy": 445.286,
-      "pa": 37.857
+      "oy": 337.5,
+      "pp": 22,
+      "gp": 8,
+      "dy": 422.875,
+      "pa": 35.25
     },
     "2065": {
-      "oy": 331.9,
-      "pp": 28.43,
-      "gp": 7,
+      "oy": 325.5,
+      "pp": 27.88,
+      "gp": 8,
       "dy": 364,
       "pa": 29.143
     },
     "2083": {
-      "oy": 228.1,
-      "pp": 10.29,
-      "gp": 7,
-      "dy": 404.429,
-      "pa": 25
+      "oy": 230.4,
+      "pp": 9.38,
+      "gp": 8,
+      "dy": 401.625,
+      "pa": 26.125
     },
     "2084": {
-      "oy": 323.4,
-      "pp": 21.43,
-      "gp": 7,
-      "dy": 382.143,
-      "pa": 25.571
+      "oy": 330.3,
+      "pp": 22.63,
+      "gp": 8,
+      "dy": 377,
+      "pa": 25.375
     },
     "2086": {
-      "oy": 364.3,
-      "pp": 33.29,
-      "gp": 7,
+      "oy": 367.9,
+      "pp": 33.25,
+      "gp": 8,
       "dy": 345.714,
       "pa": 21.571
     },
     "2097": {
-      "oy": 455,
-      "pp": 32.57,
-      "gp": 7,
-      "dy": 401.286,
-      "pa": 27.571
+      "oy": 468.4,
+      "pp": 32.88,
+      "gp": 8,
+      "dy": 385.5,
+      "pa": 24.875
     },
     "2110": {
-      "oy": 379.4,
-      "pp": 24.86,
-      "gp": 7,
+      "oy": 383.5,
+      "pp": 25.13,
+      "gp": 8,
       "dy": 362.857,
       "pa": 30.857
     },
     "2115": {
-      "oy": 352.5,
-      "pp": 33.17,
-      "gp": 6,
+      "oy": 357.1,
+      "pp": 34.43,
+      "gp": 7,
       "dy": 431.333,
       "pa": 37.5
     },
     "2116": {
-      "oy": 354.8,
-      "pp": 31.67,
-      "gp": 6,
-      "dy": 355.167,
-      "pa": 21.667
+      "oy": 370.3,
+      "pp": 32.71,
+      "gp": 7,
+      "dy": 357.714,
+      "pa": 23
     },
     "2117": {
-      "oy": 292.4,
-      "pp": 16.57,
-      "gp": 7,
-      "dy": 358.571,
-      "pa": 25.571
+      "oy": 291.5,
+      "pp": 17.88,
+      "gp": 8,
+      "dy": 358.75,
+      "pa": 25.875
     },
     "2127": {
-      "oy": 251.6,
-      "pp": 23.86,
-      "gp": 7,
-      "dy": 338.429,
-      "pa": 22.714
+      "oy": 254.8,
+      "pp": 23.38,
+      "gp": 8,
+      "dy": 314.375,
+      "pa": 20.75
     },
     "2130": {
-      "oy": 326.3,
-      "pp": 26.57,
-      "gp": 7,
+      "oy": 327,
+      "pp": 24.38,
+      "gp": 8,
       "dy": 469.8,
       "pa": 43
     },
     "2132": {
-      "oy": 460,
-      "pp": 35.17,
-      "gp": 6,
-      "dy": 434.333,
-      "pa": 26.833
+      "oy": 455.3,
+      "pp": 35.43,
+      "gp": 7,
+      "dy": 429.429,
+      "pa": 26.429
     },
     "2142": {
-      "oy": 336.1,
-      "pp": 21.57,
-      "gp": 7,
-      "dy": 300.714,
-      "pa": 16
+      "oy": 333.6,
+      "pp": 19.63,
+      "gp": 8,
+      "dy": 294.625,
+      "pa": 15.625
     },
     "2166": {
       "oy": 350.4,
@@ -19425,60 +19425,60 @@
       "pa": 37.5
     },
     "2168": {
-      "oy": 366.8,
-      "pp": 31.17,
-      "gp": 6,
-      "dy": 337.833,
-      "pa": 18
+      "oy": 371.1,
+      "pp": 32,
+      "gp": 7,
+      "dy": 365.429,
+      "pa": 20
     },
     "2169": {
-      "oy": 387.6,
-      "pp": 23.43,
-      "gp": 7,
-      "dy": 338.143,
-      "pa": 25.286
+      "oy": 371.3,
+      "pp": 22,
+      "gp": 8,
+      "dy": 349.25,
+      "pa": 26
     },
     "2181": {
-      "oy": 429,
-      "pp": 25,
-      "gp": 7,
+      "oy": 414.4,
+      "pp": 24.5,
+      "gp": 8,
       "dy": 396.143,
       "pa": 34.429
     },
     "2184": {
-      "oy": 273.8,
-      "pp": 16.83,
-      "gp": 6,
+      "oy": 295.4,
+      "pp": 21.86,
+      "gp": 7,
       "dy": 353,
       "pa": 29.333
     },
     "2193": {
-      "oy": 406,
-      "pp": 32.71,
-      "gp": 7,
-      "dy": 354.714,
-      "pa": 25
+      "oy": 415.5,
+      "pp": 33.38,
+      "gp": 8,
+      "dy": 328.25,
+      "pa": 21.875
     },
     "2197": {
-      "oy": 255,
-      "pp": 17.71,
-      "gp": 7,
-      "dy": 439,
-      "pa": 33.286
+      "oy": 253.3,
+      "pp": 16.75,
+      "gp": 8,
+      "dy": 428.875,
+      "pa": 31.625
     },
     "2198": {
-      "oy": 351.7,
-      "pp": 18.57,
-      "gp": 7,
-      "dy": 381.714,
-      "pa": 31
+      "oy": 340.4,
+      "pp": 18.25,
+      "gp": 8,
+      "dy": 362.125,
+      "pa": 28.75
     },
     "2199": {
-      "oy": 320,
-      "pp": 21.5,
-      "gp": 8,
-      "dy": 379.25,
-      "pa": 25.875
+      "oy": 318.6,
+      "pp": 21.33,
+      "gp": 9,
+      "dy": 376.667,
+      "pa": 25.667
     },
     "2210": {
       "oy": 355.6,
@@ -19488,11 +19488,11 @@
       "pa": 19.5
     },
     "2226": {
-      "oy": 422.7,
-      "pp": 35,
-      "gp": 6,
-      "dy": 416.5,
-      "pa": 31.5
+      "oy": 428.1,
+      "pp": 37.29,
+      "gp": 7,
+      "dy": 443.857,
+      "pa": 34
     },
     "2229": {
       "oy": 377.6,
@@ -19502,11 +19502,11 @@
       "pa": 16.286
     },
     "2230": {
-      "oy": 277.1,
-      "pp": 15.75,
-      "gp": 8,
-      "dy": 395.375,
-      "pa": 31.375
+      "oy": 290.4,
+      "pp": 15.89,
+      "gp": 9,
+      "dy": 387.222,
+      "pa": 31.333
     },
     "2241": {
       "oy": 336.3,
@@ -19516,114 +19516,114 @@
       "pa": 22.5
     },
     "2247": {
-      "oy": 452.7,
-      "pp": 36.5,
-      "gp": 6,
-      "dy": 336.667,
-      "pa": 24
+      "oy": 449.3,
+      "pp": 35.86,
+      "gp": 7,
+      "dy": 355.571,
+      "pa": 26
     },
     "2261": {
-      "oy": 300.1,
-      "pp": 17.57,
-      "gp": 7,
+      "oy": 293.8,
+      "pp": 17,
+      "gp": 8,
       "dy": 420.286,
       "pa": 34.429
     },
     "2277": {
-      "oy": 341,
-      "pp": 31.57,
-      "gp": 7,
-      "dy": 404.571,
-      "pa": 25.429
+      "oy": 322.8,
+      "pp": 28.88,
+      "gp": 8,
+      "dy": 410.75,
+      "pa": 26.625
     },
     "2287": {
-      "oy": 412.4,
-      "pp": 37.71,
-      "gp": 7,
+      "oy": 396.5,
+      "pp": 35.13,
+      "gp": 8,
       "dy": 286.571,
       "pa": 17.143
     },
     "2294": {
-      "oy": 403.2,
-      "pp": 31,
-      "gp": 6,
-      "dy": 293.333,
-      "pa": 14.5
+      "oy": 386.7,
+      "pp": 28,
+      "gp": 7,
+      "dy": 281.286,
+      "pa": 14.286
     },
     "2296": {
-      "oy": 450.9,
-      "pp": 37.71,
-      "gp": 7,
+      "oy": 425,
+      "pp": 35.63,
+      "gp": 8,
       "dy": 317.571,
       "pa": 21.714
     },
     "2305": {
-      "oy": 449.5,
-      "pp": 32,
-      "gp": 6,
-      "dy": 348.667,
+      "oy": 445.4,
+      "pp": 31,
+      "gp": 7,
+      "dy": 350,
       "pa": 24
     },
     "2306": {
-      "oy": 464.7,
-      "pp": 35.5,
-      "gp": 6,
-      "dy": 296.333,
-      "pa": 20
+      "oy": 438,
+      "pp": 32.86,
+      "gp": 7,
+      "dy": 305.286,
+      "pa": 21.143
     },
     "2309": {
-      "oy": 273.1,
-      "pp": 12,
-      "gp": 7,
-      "dy": 363.714,
-      "pa": 32
+      "oy": 286,
+      "pp": 14.88,
+      "gp": 8,
+      "dy": 371,
+      "pa": 30.5
     },
     "2320": {
-      "oy": 361,
-      "pp": 30.14,
-      "gp": 7,
-      "dy": 346.143,
-      "pa": 24.286
+      "oy": 372.6,
+      "pp": 30.75,
+      "gp": 8,
+      "dy": 327.25,
+      "pa": 22.5
     },
     "2329": {
-      "oy": 392,
-      "pp": 34.29,
-      "gp": 7,
-      "dy": 332.143,
-      "pa": 17
+      "oy": 389.5,
+      "pp": 32.25,
+      "gp": 8,
+      "dy": 332.75,
+      "pa": 17.875
     },
     "2335": {
       "oy": 413.9,
       "pp": 31.57,
       "gp": 7,
-      "dy": 291.667,
-      "pa": 15.333
+      "dy": 292.429,
+      "pa": 14
     },
     "2341": {
-      "oy": 255.5,
-      "pp": 14.63,
-      "gp": 8,
+      "oy": 247.3,
+      "pp": 14.56,
+      "gp": 9,
       "dy": 380.5,
       "pa": 26.875
     },
     "2348": {
-      "oy": 392.8,
-      "pp": 33.33,
-      "gp": 6,
-      "dy": 353.833,
-      "pa": 24.5
+      "oy": 399.3,
+      "pp": 32.29,
+      "gp": 7,
+      "dy": 323.429,
+      "pa": 21
     },
     "2368": {
-      "oy": 357,
-      "pp": 26,
-      "gp": 7,
+      "oy": 344.8,
+      "pp": 24.38,
+      "gp": 8,
       "dy": 335.286,
       "pa": 19.571
     },
     "2377": {
-      "oy": 383.7,
-      "pp": 25.43,
-      "gp": 7,
+      "oy": 371.1,
+      "pp": 23,
+      "gp": 8,
       "dy": 456.143,
       "pa": 28.571
     },
@@ -19635,18 +19635,18 @@
       "pa": 17.125
     },
     "2385": {
-      "oy": 290.6,
-      "pp": 21.57,
-      "gp": 7,
+      "oy": 302.4,
+      "pp": 20.63,
+      "gp": 8,
       "dy": 466.714,
       "pa": 43.714
     },
     "2390": {
-      "oy": 559.5,
-      "pp": 48.5,
-      "gp": 6,
-      "dy": 281.833,
-      "pa": 14
+      "oy": 551.9,
+      "pp": 49,
+      "gp": 7,
+      "dy": 299.143,
+      "pa": 15.286
     },
     "2393": {
       "oy": 339.6,
@@ -19663,39 +19663,39 @@
       "pa": 34.125
     },
     "2405": {
-      "oy": 407.4,
-      "pp": 28.71,
-      "gp": 7,
+      "oy": 427.1,
+      "pp": 31.25,
+      "gp": 8,
       "dy": 370.143,
       "pa": 31.429
     },
     "2413": {
-      "oy": 354.7,
-      "pp": 26.57,
-      "gp": 7,
+      "oy": 365.1,
+      "pp": 28,
+      "gp": 8,
       "dy": 473.429,
       "pa": 45
     },
     "2415": {
-      "oy": 363.7,
-      "pp": 28.86,
-      "gp": 7,
+      "oy": 355,
+      "pp": 27.75,
+      "gp": 8,
       "dy": 431.286,
       "pa": 27.143
     },
     "2426": {
-      "oy": 414,
-      "pp": 28.17,
-      "gp": 6,
-      "dy": 346.5,
-      "pa": 25.833
+      "oy": 430.4,
+      "pp": 29.71,
+      "gp": 7,
+      "dy": 365.143,
+      "pa": 29.143
     },
     "2428": {
-      "oy": 320,
-      "pp": 23,
-      "gp": 7,
-      "dy": 373,
-      "pa": 30.143
+      "oy": 333.4,
+      "pp": 24,
+      "gp": 8,
+      "dy": 358.5,
+      "pa": 27.875
     },
     "2429": {
       "oy": 310.9,
@@ -19705,11 +19705,11 @@
       "pa": 40.571
     },
     "2433": {
-      "oy": 342.5,
-      "pp": 20,
-      "gp": 6,
-      "dy": 483.167,
-      "pa": 41.167
+      "oy": 328.3,
+      "pp": 20.14,
+      "gp": 7,
+      "dy": 442.714,
+      "pa": 37.286
     },
     "2439": {
       "oy": 370.6,
@@ -19719,23 +19719,23 @@
       "pa": 23.714
     },
     "2440": {
-      "oy": 364.7,
-      "pp": 26,
-      "gp": 6,
-      "dy": 339.667,
-      "pa": 23.5
+      "oy": 358.9,
+      "pp": 26.29,
+      "gp": 7,
+      "dy": 320.286,
+      "pa": 22
     },
     "2441": {
-      "oy": 280.3,
-      "pp": 14.57,
-      "gp": 7,
+      "oy": 283.5,
+      "pp": 15.25,
+      "gp": 8,
       "dy": 353.714,
       "pa": 27.143
     },
     "2447": {
-      "oy": 288.1,
-      "pp": 14,
-      "gp": 7,
+      "oy": 297.1,
+      "pp": 16.13,
+      "gp": 8,
       "dy": 443.714,
       "pa": 41.286
     },
@@ -19747,46 +19747,46 @@
       "pa": 29.5
     },
     "2449": {
-      "oy": 362,
-      "pp": 29.43,
-      "gp": 7,
-      "dy": 246,
-      "pa": 11.286
+      "oy": 348.1,
+      "pp": 27.75,
+      "gp": 8,
+      "dy": 250.125,
+      "pa": 12.5
     },
     "2450": {
-      "oy": 415.6,
-      "pp": 35.29,
-      "gp": 7,
-      "dy": 292.571,
-      "pa": 23.429
+      "oy": 398.5,
+      "pp": 31.75,
+      "gp": 8,
+      "dy": 296.125,
+      "pa": 23.25
     },
     "2453": {
-      "oy": 335.1,
-      "pp": 24.29,
-      "gp": 7,
+      "oy": 340.9,
+      "pp": 23.88,
+      "gp": 8,
       "dy": 345.571,
       "pa": 22.571
     },
     "2458": {
-      "oy": 389,
-      "pp": 23.63,
-      "gp": 8,
-      "dy": 391.75,
-      "pa": 25.5
+      "oy": 385.6,
+      "pp": 21.67,
+      "gp": 9,
+      "dy": 395.333,
+      "pa": 26.333
     },
     "2459": {
-      "oy": 307.7,
-      "pp": 14.17,
-      "gp": 6,
-      "dy": 415.5,
-      "pa": 35.667
+      "oy": 301.7,
+      "pp": 15.14,
+      "gp": 7,
+      "dy": 428.143,
+      "pa": 38.571
     },
     "2460": {
-      "oy": 313.2,
-      "pp": 25.67,
-      "gp": 6,
-      "dy": 415.5,
-      "pa": 29.333
+      "oy": 319.1,
+      "pp": 24.43,
+      "gp": 7,
+      "dy": 399.429,
+      "pa": 28
     },
     "2464": {
       "oy": 397.5,
@@ -19796,39 +19796,39 @@
       "pa": 30.125
     },
     "2466": {
-      "oy": 321,
-      "pp": 19,
-      "gp": 7,
+      "oy": 338.8,
+      "pp": 20,
+      "gp": 8,
       "dy": 439.714,
       "pa": 46.714
     },
     "2483": {
-      "oy": 422.7,
-      "pp": 37,
-      "gp": 6,
-      "dy": 327.333,
-      "pa": 20.667
+      "oy": 423.1,
+      "pp": 33.14,
+      "gp": 7,
+      "dy": 325.429,
+      "pa": 20.714
     },
     "2502": {
-      "oy": 326.7,
-      "pp": 23.71,
-      "gp": 7,
-      "dy": 523.286,
-      "pa": 44
+      "oy": 320.4,
+      "pp": 21.75,
+      "gp": 8,
+      "dy": 518.875,
+      "pa": 43.25
     },
     "2504": {
-      "oy": 329.4,
-      "pp": 24.75,
-      "gp": 8,
+      "oy": 332.2,
+      "pp": 25.33,
+      "gp": 9,
       "dy": 407.625,
       "pa": 30.75
     },
     "2506": {
-      "oy": 422.9,
-      "pp": 30.14,
-      "gp": 7,
-      "dy": 475,
-      "pa": 40.571
+      "oy": 414.6,
+      "pp": 27.25,
+      "gp": 8,
+      "dy": 462.75,
+      "pa": 38.5
     },
     "2509": {
       "oy": 409.1,
@@ -19838,9 +19838,9 @@
       "pa": 32.286
     },
     "2523": {
-      "oy": 325.1,
-      "pp": 24.29,
-      "gp": 7,
+      "oy": 324.8,
+      "pp": 24.75,
+      "gp": 8,
       "dy": 354,
       "pa": 25.286
     },
@@ -19859,81 +19859,81 @@
       "pa": 25.286
     },
     "2535": {
-      "oy": 290.6,
-      "pp": 18.57,
-      "gp": 7,
-      "dy": 341,
-      "pa": 25.571
+      "oy": 292.3,
+      "pp": 17.88,
+      "gp": 8,
+      "dy": 337.5,
+      "pa": 23.125
     },
     "2545": {
-      "oy": 341.4,
-      "pp": 28.43,
-      "gp": 7,
-      "dy": 397.286,
-      "pa": 28.286
+      "oy": 339,
+      "pp": 27.88,
+      "gp": 8,
+      "dy": 401.625,
+      "pa": 30.375
     },
     "2546": {
-      "oy": 330.3,
-      "pp": 25,
-      "gp": 7,
-      "dy": 353.857,
-      "pa": 25.571
+      "oy": 333.8,
+      "pp": 24.38,
+      "gp": 8,
+      "dy": 339.75,
+      "pa": 23.625
     },
     "2567": {
-      "oy": 466.7,
-      "pp": 32.67,
-      "gp": 6,
-      "dy": 303,
-      "pa": 21.333
-    },
-    "2569": {
-      "oy": 461.1,
-      "pp": 43.57,
-      "gp": 7,
-      "dy": 241.571,
-      "pa": 19.143
-    },
-    "2571": {
-      "oy": 478.3,
+      "oy": 470.3,
       "pp": 36.43,
       "gp": 7,
-      "dy": 301.857,
-      "pa": 16.714
+      "dy": 303.286,
+      "pa": 21.143
+    },
+    "2569": {
+      "oy": 443.6,
+      "pp": 40.88,
+      "gp": 8,
+      "dy": 246.25,
+      "pa": 17.625
+    },
+    "2571": {
+      "oy": 472.8,
+      "pp": 37.13,
+      "gp": 8,
+      "dy": 295.25,
+      "pa": 15.75
     },
     "2572": {
-      "oy": 394.5,
-      "pp": 24.17,
-      "gp": 6,
-      "dy": 447.167,
-      "pa": 32.667
+      "oy": 402.4,
+      "pp": 25.71,
+      "gp": 7,
+      "dy": 442.857,
+      "pa": 32.429
     },
     "2579": {
-      "oy": 474.7,
-      "pp": 37.67,
-      "gp": 6,
-      "dy": 340.833,
-      "pa": 25.5
+      "oy": 456,
+      "pp": 36.14,
+      "gp": 7,
+      "dy": 337.857,
+      "pa": 25.286
     },
     "2582": {
-      "oy": 341.6,
-      "pp": 23.14,
-      "gp": 7,
+      "oy": 338,
+      "pp": 22.88,
+      "gp": 8,
       "dy": 405.571,
       "pa": 34.714
     },
     "2617": {
-      "oy": 489.4,
-      "pp": 40.86,
-      "gp": 7,
-      "dy": 334.714,
-      "pa": 13
+      "oy": 482.3,
+      "pp": 41.38,
+      "gp": 8,
+      "dy": 333.125,
+      "pa": 14.375
     },
     "2619": {
-      "oy": 419.7,
-      "pp": 33.71,
-      "gp": 7,
-      "dy": 412.286,
-      "pa": 32.286
+      "oy": 406.3,
+      "pp": 32.88,
+      "gp": 8,
+      "dy": 407.25,
+      "pa": 30.375
     },
     "2623": {
       "oy": 367.6,
@@ -19943,53 +19943,53 @@
       "pa": 34.857
     },
     "2627": {
-      "oy": 509.3,
-      "pp": 40.86,
-      "gp": 7,
-      "dy": 420.714,
-      "pa": 25
+      "oy": 506,
+      "pp": 41.88,
+      "gp": 8,
+      "dy": 406.5,
+      "pa": 22.625
     },
     "2628": {
-      "oy": 392.3,
-      "pp": 24,
-      "gp": 6,
-      "dy": 264.167,
-      "pa": 12.167
+      "oy": 405.4,
+      "pp": 23.43,
+      "gp": 7,
+      "dy": 264.286,
+      "pa": 13.857
     },
     "2630": {
-      "oy": 329.7,
-      "pp": 23.57,
-      "gp": 7,
-      "dy": 382.714,
-      "pa": 29.857
-    },
-    "2633": {
-      "oy": 405.1,
-      "pp": 33.43,
-      "gp": 7,
-      "dy": 280.429,
-      "pa": 14.714
-    },
-    "2634": {
-      "oy": 310.4,
-      "pp": 19,
-      "gp": 7,
-      "dy": 437.429,
+      "oy": 334.3,
+      "pp": 23.63,
+      "gp": 8,
+      "dy": 401.375,
       "pa": 33
     },
+    "2633": {
+      "oy": 394.5,
+      "pp": 32.25,
+      "gp": 8,
+      "dy": 288.375,
+      "pa": 16.25
+    },
+    "2634": {
+      "oy": 289.9,
+      "pp": 17.5,
+      "gp": 8,
+      "dy": 417.375,
+      "pa": 31.375
+    },
     "2635": {
-      "oy": 382.1,
-      "pp": 34,
-      "gp": 7,
-      "dy": 336.143,
-      "pa": 22.714
+      "oy": 382.8,
+      "pp": 33.25,
+      "gp": 8,
+      "dy": 317.875,
+      "pa": 21.5
     },
     "2636": {
-      "oy": 411.1,
-      "pp": 32.29,
-      "gp": 7,
-      "dy": 400,
-      "pa": 27
+      "oy": 409.3,
+      "pp": 33.5,
+      "gp": 8,
+      "dy": 391.5,
+      "pa": 26
     },
     "2638": {
       "oy": 286.3,
@@ -19999,109 +19999,109 @@
       "pa": 37.286
     },
     "2640": {
-      "oy": 354.2,
-      "pp": 25,
-      "gp": 6,
+      "oy": 340.7,
+      "pp": 24.86,
+      "gp": 7,
       "dy": 436.333,
       "pa": 46.667
     },
     "2641": {
-      "oy": 422.3,
-      "pp": 37.83,
-      "gp": 6,
-      "dy": 363.833,
-      "pa": 17.667
+      "oy": 419.1,
+      "pp": 35.86,
+      "gp": 7,
+      "dy": 372.857,
+      "pa": 20.429
     },
     "2643": {
-      "oy": 310.6,
-      "pp": 19.29,
-      "gp": 7,
-      "dy": 365.286,
-      "pa": 34.571
+      "oy": 295.5,
+      "pp": 18.5,
+      "gp": 8,
+      "dy": 368,
+      "pa": 33.75
     },
     "2649": {
-      "oy": 458.4,
-      "pp": 36.29,
-      "gp": 7,
-      "dy": 322,
-      "pa": 23.571
+      "oy": 475.5,
+      "pp": 37.38,
+      "gp": 8,
+      "dy": 325.625,
+      "pa": 25.375
     },
     "2653": {
-      "oy": 402.7,
-      "pp": 24.33,
-      "gp": 6,
-      "dy": 350.167,
-      "pa": 25.5
+      "oy": 373.7,
+      "pp": 22.86,
+      "gp": 7,
+      "dy": 334.857,
+      "pa": 24.857
     },
     "2655": {
       "oy": 332,
-      "pp": 20.5,
-      "gp": 6,
-      "dy": 419.667,
-      "pa": 21.667
+      "pp": 20.29,
+      "gp": 7,
+      "dy": 416.286,
+      "pa": 24.571
     },
     "2674": {
-      "oy": 300.6,
-      "pp": 27.43,
-      "gp": 7,
-      "dy": 359.571,
-      "pa": 23.714
+      "oy": 310.1,
+      "pp": 27,
+      "gp": 8,
+      "dy": 359.25,
+      "pa": 21.625
     },
     "2678": {
-      "oy": 198,
-      "pp": 9.14,
-      "gp": 7,
-      "dy": 503.714,
-      "pa": 41.714
+      "oy": 191.1,
+      "pp": 8,
+      "gp": 8,
+      "dy": 501,
+      "pa": 41.25
     },
     "2681": {
-      "oy": 255.7,
-      "pp": 12,
-      "gp": 7,
+      "oy": 265.3,
+      "pp": 13.13,
+      "gp": 8,
       "dy": 388.714,
       "pa": 36.857
     },
     "2692": {
-      "oy": 434.9,
-      "pp": 36.25,
-      "gp": 8,
-      "dy": 455,
-      "pa": 34.125
+      "oy": 427,
+      "pp": 35.89,
+      "gp": 9,
+      "dy": 461.111,
+      "pa": 34.556
     },
     "2698": {
-      "oy": 324.1,
-      "pp": 17.57,
-      "gp": 7,
-      "dy": 358.571,
-      "pa": 31.286
+      "oy": 322,
+      "pp": 16.13,
+      "gp": 8,
+      "dy": 374.125,
+      "pa": 33.5
     },
     "2710": {
-      "oy": 446.7,
-      "pp": 31.57,
-      "gp": 7,
-      "dy": 305.714,
-      "pa": 25.286
+      "oy": 457.4,
+      "pp": 34.5,
+      "gp": 8,
+      "dy": 313.25,
+      "pa": 25.125
     },
     "2711": {
-      "oy": 322.3,
-      "pp": 25,
-      "gp": 7,
-      "dy": 336.286,
-      "pa": 16.857
+      "oy": 325.9,
+      "pp": 26.63,
+      "gp": 8,
+      "dy": 368.625,
+      "pa": 20.375
     },
     "2717": {
-      "oy": 418.6,
-      "pp": 31.57,
-      "gp": 7,
-      "dy": 448.714,
-      "pa": 31.429
+      "oy": 411.3,
+      "pp": 29.88,
+      "gp": 8,
+      "dy": 442.375,
+      "pa": 32.625
     },
     "2729": {
-      "oy": 283.9,
-      "pp": 20.29,
-      "gp": 7,
-      "dy": 473.429,
-      "pa": 37.143
+      "oy": 292.4,
+      "pp": 21.13,
+      "gp": 8,
+      "dy": 466.25,
+      "pa": 36
     },
     "2747": {
       "oy": 316.5,
@@ -20111,11 +20111,11 @@
       "pa": 23.125
     },
     "2751": {
-      "oy": 331.6,
-      "pp": 18.29,
-      "gp": 7,
-      "dy": 366.429,
-      "pa": 20.857
+      "oy": 327.8,
+      "pp": 19.5,
+      "gp": 8,
+      "dy": 369,
+      "pa": 20
     },
     "2754": {
       "oy": 470.3,
@@ -20132,61 +20132,61 @@
       "pa": 39.286
     },
     "2771": {
-      "oy": 333.1,
-      "pp": 17,
-      "gp": 7,
-      "dy": 356.429,
-      "pa": 30.429
+      "oy": 340.8,
+      "pp": 17.88,
+      "gp": 8,
+      "dy": 355.875,
+      "pa": 28.75
     },
     "2803": {
-      "oy": 308.3,
-      "pp": 20,
-      "gp": 7,
-      "dy": 384.714,
-      "pa": 22
+      "oy": 316.3,
+      "pp": 19.63,
+      "gp": 8,
+      "dy": 375.625,
+      "pa": 22.625
     },
     "2815": {
-      "oy": 305.3,
-      "pp": 19.33,
-      "gp": 6,
+      "oy": 340.1,
+      "pp": 22.86,
+      "gp": 7,
       "dy": 393.5,
       "pa": 30.167
     },
     "2837": {
-      "oy": 347.7,
-      "pp": 18.29,
-      "gp": 7,
+      "oy": 351.5,
+      "pp": 18.38,
+      "gp": 8,
       "dy": 352.571,
       "pa": 30
     },
     "2900": {
-      "oy": 444.3,
-      "pp": 37.14,
-      "gp": 7,
+      "oy": 442.4,
+      "pp": 36.88,
+      "gp": 8,
       "dy": 420.714,
       "pa": 29.143
     },
     "2916": {
-      "oy": 447.1,
-      "pp": 35.14,
-      "gp": 7,
+      "oy": 455.4,
+      "pp": 35.5,
+      "gp": 8,
       "dy": 382.857,
       "pa": 31.429
     },
     "3101": {
-      "oy": 338.3,
-      "pp": 14.86,
-      "gp": 7,
-      "dy": 444,
-      "pa": 42.857
+      "oy": 344.4,
+      "pp": 18.38,
+      "gp": 8,
+      "dy": 436.375,
+      "pa": 40.75
     },
     "110242": {
-      "oy": 350.3,
-      "pp": 26,
-      "gp": 6,
-      "dy": 350.2,
-      "pa": 27
+      "oy": 332.4,
+      "pp": 24.14,
+      "gp": 7,
+      "dy": 335.333,
+      "pa": 25.167
     }
   },
-  "signature": "7b36dd54"
+  "signature": "c103e68d"
 }
