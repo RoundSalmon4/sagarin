@@ -975,22 +975,6 @@
             btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
           });
         });
-
-        // Team distribution click handler for new cards
-        container.querySelectorAll(".simdeep-team-link").forEach(function (link) {
-          link.addEventListener("click", function () {
-            var teamName = this.getAttribute("data-team");
-            showTeamDistribution(teamName, runs, totalSims);
-          });
-        });
-
-        // Team distribution click handler
-        container.querySelectorAll(".simdeep-team-link").forEach(function (link) {
-          link.addEventListener("click", function () {
-            var teamName = this.getAttribute("data-team");
-            showTeamDistribution(teamName, runs, totalSims);
-          });
-        });
       });
     }
   }
