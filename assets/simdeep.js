@@ -1092,60 +1092,63 @@
   }
 
   function buildTeamDistributionHtml(teamName, dist, matchingRuns, totalSims) {
+    // Seed distribution - show all seeds 1-24 as horizontal bar chart
+    var maxSeedCount = 0;
+    for (var s = 1; s <= 24; s++) {
+      var c = dist.seedCounts[s] || 0;
+      if (c > maxSeedCount) maxSeedCount = c;
+    }
     var seedHtml = "";
     for (var s = 1; s <= 24; s++) {
       var count = dist.seedCounts[s] || 0;
       var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
-      var barWidth = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100) : 0;
-      if (count > 0) {
-        seedHtml += '<div class="simdeep-dist-row">' +
-          '<span class="simdeep-dist-label">Seed ' + s + '</span>' +
-          '<div class="simdeep-dist-bar-wrap">' +
-            '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
-            '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
-          '</div>' +
-        '</div>';
-      }
+      var barWidth = maxSeedCount > 0 ? (count / maxSeedCount * 100) : 0;
+      var showZero = count === 0;
+      seedHtml += '<div class="simdeep-seed-bar' + (showZero ? ' simdeep-seed-zero' : '') + '">' +
+        '<span class="simdeep-seed-label">Seed ' + s + '</span>' +
+        '<div class="simdeep-seed-bar-track">' +
+          '<div class="simdeep-seed-bar-fill" style="width:' + barWidth + '%"></div>' +
+        '</div>' +
+        '<span class="simdeep-seed-value">' + count + ' (' + pct + '%)</span>' +
+      '</div>';
     }
 
+    // Round reached - compact cards
     var roundOrder = [
-      { key: "champion", label: "Champion" },
-      { key: "runnerup", label: "Runner-up" },
-      { key: "final4", label: "Final 4" },
-      { key: "elite8", label: "Elite 8" },
-      { key: "round16", label: "Round of 16/32" },
-      { key: "madefield", label: "Made field only" },
-      { key: "missed", label: "Missed field" }
+      { key: "champion", label: "Champion", color: "var(--good)" },
+      { key: "runnerup", label: "Runner-up", color: "var(--accent)" },
+      { key: "final4", label: "Final 4", color: "var(--accent)" },
+      { key: "elite8", label: "Elite 8", color: "var(--accent)" },
+      { key: "round16", label: "Round 16/32", color: "var(--warn)" },
+      { key: "madefield", label: "Made field", color: "var(--muted)" },
+      { key: "missed", label: "Missed field", color: "var(--bad)" }
     ];
 
     var roundHtml = roundOrder.map(function (r) {
       var count = dist.roundCounts[r.key] || 0;
       var pct = dist.totalRuns > 0 ? (count / dist.totalRuns * 100).toFixed(1) : 0;
-      var barWidth = dist.totalRuns > 0 ? (count / dist.totalRuns * 100) : 0;
-      return '<div class="simdeep-dist-row">' +
-        '<span class="simdeep-dist-label">' + r.label + '</span>' +
-        '<div class="simdeep-dist-bar-wrap">' +
-          '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
-          '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
-        '</div>' +
+      return '<div class="simdeep-round-card" style="--card-color: ' + r.color + '">' +
+        '<span class="simdeep-round-label">' + r.label + '</span>' +
+        '<span class="simdeep-round-count">' + count + '</span>' +
+        '<span class="simdeep-round-pct">(' + pct + '%)</span>' +
       '</div>';
     }).join("");
 
-    var bidHtml = [
-      { key: "p4", label: "P4 Champion" },
-      { key: "g6", label: "G6 Bid" },
-      { key: "atlarge", label: "At-large" },
-      { key: "none", label: "No bid" }
-    ].map(function (b) {
+    // Bid type - compact cards
+    var bidOrder = [
+      { key: "p4", label: "P4 Champion", color: "var(--good)" },
+      { key: "g6", label: "G6 Bid", color: "var(--accent)" },
+      { key: "atlarge", label: "At-large", color: "var(--warn)" },
+      { key: "none", label: "No bid", color: "var(--bad)" }
+    ];
+
+    var bidHtml = bidOrder.map(function (b) {
       var count = dist.bidCounts[b.key] || 0;
       var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
-      var barWidth = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100) : 0;
-      return '<div class="simdeep-dist-row">' +
-        '<span class="simdeep-dist-label">' + b.label + '</span>' +
-        '<div class="simdeep-dist-bar-wrap">' +
-          '<div class="simdeep-dist-bar" style="width:' + barWidth + '%"></div>' +
-          '<span class="simdeep-dist-value">' + count + ' (' + pct + '%)</span>' +
-        '</div>' +
+      return '<div class="simdeep-bid-card" style="--card-color: ' + b.color + '">' +
+        '<span class="simdeep-bid-label">' + b.label + '</span>' +
+        '<span class="simdeep-bid-count">' + count + '</span>' +
+        '<span class="simdeep-bid-pct">(' + pct + '%)</span>' +
       '</div>';
     }).join("");
 
@@ -1162,16 +1165,16 @@
           '<div class="simdeep-stat"><span class="simdeep-stat-label">Runs analyzed</span><span class="simdeep-stat-value">' + matchingRuns.toLocaleString() + ' / ' + totalSims.toLocaleString() + '</span></div>' +
         '</div>' +
         '<div class="simdeep-dist-section">' +
-          '<h4>Seed Distribution</h4>' +
-          '<div class="simdeep-dist-grid">' + seedHtml + '</div>' +
+          '<h4>Seed Distribution (all ' + dist.seedAppearances + ' field appearances)</h4>' +
+          '<div class="simdeep-seed-chart">' + seedHtml + '</div>' +
         '</div>' +
         '<div class="simdeep-dist-section">' +
           '<h4>Round Reached</h4>' +
-          '<div class="simdeep-dist-grid">' + roundHtml + '</div>' +
+          '<div class="simdeep-round-grid">' + roundHtml + '</div>' +
         '</div>' +
         '<div class="simdeep-dist-section">' +
           '<h4>Bid Type</h4>' +
-          '<div class="simdeep-dist-grid">' + bidHtml + '</div>' +
+          '<div class="simdeep-bid-grid">' + bidHtml + '</div>' +
         '</div>' +
       '</div>' +
     '</div>';
