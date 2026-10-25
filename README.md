@@ -344,8 +344,8 @@ The site exposes console commands for debugging when URL parameters are set:
 ### `?debug=playoff`
 Logs the playoff projection details: format, method, CFP availability, conference champions, field seeds with bid types, base records (completed games), projected records, and CFP ranks.
 
-### `?debug=sim`
-Enables full simulation run capture. After clicking "Run simulation" on the Playoff Predictor tab, the complete results of all 10,000 runs are stored in memory. Then query them from the console:
+### Simulation queries
+Simulation runs are kept in memory on every run, so no URL parameter is needed. After clicking "Run simulation" on the Playoff Predictor tab, or running the Sim Deep Dive (both share the same run for a format), query them from the console:
 
 ```js
 // All runs where a team made the field
@@ -369,9 +369,9 @@ Each query returns an array of run objects with:
 - `field`: array of {seed, team, bid} for all 12 teams
 - `champion`: champion team name
 - `confChamps`: array of {conf, champ} for conference title games
-- `records`: full record object for every team in that run
+- `records`: record object for each team in that run's field
 
-**Important**: You must load the site with `?debug=sim` URL parameter, then click "Run simulation" on the Playoff Predictor tab before the query commands will work.
+**Important**: start a simulation on the Playoff Predictor or the Sim Deep Dive tab before the query commands will work.
 
 To refresh the data by hand:
 

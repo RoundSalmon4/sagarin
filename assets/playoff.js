@@ -741,9 +741,9 @@
     var ctx = simContext(method);
     var fieldCount = {}, champCount = {};
 
-    // Debug: store full run data when debug mode enabled
+    // Keep the run data on every simulation so the Sim Deep Dive tab can reuse
+    // this run instead of simulating the same format again.
     var debugRuns = [];
-    var debugEnabled = SG.debug && SG.debug.sim;
 
     for (var i = 0; i < SIMS; i++) {
       var regRec = cloneRecords(ctx.base);
@@ -762,15 +762,19 @@
       var c = r.champion.team.team;
       champCount[c] = (champCount[c] || 0) + 1;
 
-      if (debugEnabled) {
-        // Build field composition for this run
-        var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
-        var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
-        debugRuns.push({ run: i, field: fieldTeams, champion: c, confChamps: confChamps, records: regRec });
+      // Build field composition for this run. Records are kept only for the
+      // teams in the field, which is all the deep dive reads and keeps 10,000
+      // runs from holding a record for every FBS team.
+      var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
+      var fieldRecords = {};
+      for (var fi = 0; fi < fieldTeams.length; fi++) {
+        var ft = fieldTeams[fi].team;
+        fieldRecords[ft] = regRec[ft] || { cw: 0, cl: 0, ow: 0, ol: 0 };
       }
+      var confChamps = ccgs ? Object.keys(ccgs).map(function (c) { return { conf: c, champ: ccgs[c].winner.team }; }) : [];
+      debugRuns.push({ run: i, field: fieldTeams, champion: c, confChamps: confChamps, records: fieldRecords });
     }
-    var result = { n: SIMS, field: fieldCount, champ: champCount };
-    if (debugEnabled) result.debugRuns = debugRuns;
+    var result = { n: SIMS, field: fieldCount, champ: champCount, debugRuns: debugRuns };
     return result;
   }
 
@@ -852,8 +856,8 @@
 // Debug query function for simulation runs (exposed on SG.debug.simQuery)
 SG.debug = SG.debug || {};
 SG.debug.simQuery = function (filters) {
-  if (!SG.debug.sim || !view.sim[view.format] || !view.sim[view.format].debugRuns) {
-    console.warn("No simulation debug data available. Run simulation with ?debug=sim first.");
+  if (!view.sim[view.format] || !view.sim[view.format].debugRuns) {
+    console.warn("No simulation debug data available. Run a simulation first.");
     return [];
   }
   var runs = view.sim[view.format].debugRuns;
@@ -887,7 +891,8 @@ SG.debug.simQuery = function (filters) {
       });
       if (!match) return false;
     }
-    // Filter by team records
+    // Filter by team records. Records are stored only for the teams in the
+    // field, so this matches their record on runs where they made the field.
     if (filters.teamRecord) {
       var team = filters.teamRecord.team;
       var rec = run.records[team];

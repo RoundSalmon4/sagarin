@@ -6,6 +6,30 @@
   var view = { sim: null };
   var filterRowCount = 0;
 
+  // The Playoff Predictor keeps one simulation per format. Both tabs read that
+  // same object so a run started in either tab can be reused in the other.
+  function playoffSimFor(format) {
+    var pv = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+    return pv && pv.sim ? pv.sim[format] : null;
+  }
+
+  function currentFormat() {
+    var sel = document.getElementById("simdeepFormat");
+    return sel ? sel.value : "12";
+  }
+
+  // Adopt the playoff simulation for the selected format. Returns true when it
+  // brings in a different simulation than the one already loaded.
+  function adoptPlayoffSim() {
+    var sim = playoffSimFor(currentFormat());
+    if (sim && sim.debugRuns && view.sim !== sim) {
+      view.sim = sim;
+      onSimDataReady();
+      return true;
+    }
+    return false;
+  }
+
   // Build team -> conference map for sync logic
   var teamToConf = {};
   function buildTeamToConf() {
@@ -40,17 +64,16 @@
         SG.state.modules.playoff.view.format = this.value;
       }
       // Pick up the playoff sim for the new format
-      var currentFormat = this.value;
-      var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
-      if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
-        view.sim = playoffView.sim[currentFormat];
-        onSimDataReady();
-      } else {
-        view.sim = null;
-      }
+      view.sim = null;
+      adoptPlayoffSim();
       updateFilterRowStates();
       populateRoundReachedSelect();
-      if (view.sim && view.sim.debugRuns) applyFilters();
+      if (view.sim && view.sim.debugRuns) {
+        applyFilters();
+      } else {
+        document.getElementById("simdeepResults").innerHTML = "";
+        document.getElementById("simdeepNote").textContent = "No simulation for the " + this.value + "-team format yet. Run one here or on the Playoff Predictor tab.";
+      }
     });
     document.getElementById("simdeepLimit").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();
@@ -91,31 +114,37 @@
 
     updateFilterRowStates();
 
+    // Team link click opens the distribution modal. Delegate once here so
+    // repeated renders do not stack handlers.
+    document.getElementById("simdeepResults").addEventListener("click", function (e) {
+      var link = e.target.closest(".simdeep-team-link");
+      if (!link) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var teamName = link.getAttribute("data-team");
+      if (teamName) showTeamDistribution(teamName, view.allSimRuns || [], view.sim ? view.sim.n : 0);
+    }, true);
+
     // Listen for simulation completion on playoff tab
     if (window.SG && SG.state.modules && SG.state.modules.playoff) {
       var originalRender = SG.state.modules.playoff.render;
       SG.state.modules.playoff.render = function () {
         originalRender.call(this);
-        var currentFormat = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
-        var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
-        if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
-          view.sim = playoffView.sim[currentFormat];
-          onSimDataReady();
-        }
+        if (adoptPlayoffSim()) applyFilters();
       };
     }
 
-    // Check if playoff already has sim data for current format
-    var currentFormat = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
-    var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
-    if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
-      view.sim = playoffView.sim[currentFormat];
-      onSimDataReady();
+    // Use a simulation the playoff tab already ran, if there is one.
+    if (adoptPlayoffSim()) {
+      applyFilters();
+    } else if (!view.sim) {
+      document.getElementById("simdeepNote").textContent = "Run a simulation here or on the Playoff Predictor tab, then filter the results below.";
     }
   }
 
   function onSimDataReady() {
-    document.getElementById("simdeepNote").textContent = "Simulation data ready. Add filters to explore results (not to create events) and click Run deep dive.";
+    var runs = view.sim && view.sim.n ? view.sim.n.toLocaleString() : "10,000";
+    document.getElementById("simdeepNote").textContent = "Using the shared " + runs + "-run simulation for the " + currentFormat() + "-team format. Add filters to explore results (not to create events) and click Run deep dive.";
   }
 
   function addFilterRow() {
@@ -695,6 +724,7 @@
 
     // Store unfiltered runs for distribution modals (before filtering)
     view.unfilteredRuns = view.sim.debugRuns;
+    view.allSimRuns = view.unfilteredRuns;
     var totalSims = view.sim.n;
 
     var rows = document.querySelectorAll(".simdeep-filter-row");
@@ -771,9 +801,6 @@
 
     renderResults(filtered, view.sim.n);
   }
-
-  // Expose unfiltered runs for distribution modals
-  view.allSimRuns = view.unfilteredRuns;
 
   function matchesFilter(run, filter) {
     if (filter.team) {
@@ -1005,17 +1032,6 @@
         btn.textContent = details.classList.contains("open") ? "Hide details" : "Show details";
       });
     });
-
-    // Team distribution click handler - event delegation (capture phase)
-    container.addEventListener("click", function (e) {
-      var link = e.target.closest(".simdeep-team-link");
-      if (link) {
-        e.preventDefault();
-        e.stopPropagation();
-        var teamName = link.getAttribute("data-team");
-        if (teamName) showTeamDistribution(teamName, view.allSimRuns || [], view.sim ? view.sim.n : 0);
-      }
-    }, true);
 
     var loadMoreBtn = document.getElementById("simdeepLoadMore");
     if (loadMoreBtn) {
@@ -1433,7 +1449,14 @@
 
   var SIMS = 10000;
 
-  SG.state.modules.simdeep = { init: init, render: function () { if (!SG.state.data) return; if (view.sim && view.sim.debugRuns) onSimDataReady(); } };
+  SG.state.modules.simdeep = {
+    init: init,
+    render: function () {
+      if (!SG.state.data) return;
+      adoptPlayoffSim();
+      if (view.sim && view.sim.debugRuns) applyFilters();
+    }
+  };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
