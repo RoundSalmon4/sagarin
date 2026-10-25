@@ -39,8 +39,15 @@
       if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view) {
         SG.state.modules.playoff.view.format = this.value;
       }
-      // Clear local sim so it picks up the playoff sim for the new format
-      view.sim = null;
+      // Pick up the playoff sim for the new format
+      var currentFormat = this.value;
+      var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+      if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
+        view.sim = playoffView.sim[currentFormat];
+        onSimDataReady();
+      } else {
+        view.sim = null;
+      }
       updateFilterRowStates();
       populateRoundReachedSelect();
       if (view.sim && view.sim.debugRuns) applyFilters();
@@ -95,9 +102,11 @@
       };
     }
 
-    // Check if playoff already has sim data
-    if (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view.sim && SG.state.modules.playoff.view.sim.debugRuns) {
-      view.sim = SG.state.modules.playoff.view.sim;
+    // Check if playoff already has sim data for current format
+    var currentFormat = document.getElementById("simdeepFormat") ? document.getElementById("simdeepFormat").value : "12";
+    var playoffView = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+    if (playoffView && playoffView.sim && playoffView.sim[currentFormat] && playoffView.sim[currentFormat].debugRuns) {
+      view.sim = playoffView.sim[currentFormat];
       onSimDataReady();
     }
   }
