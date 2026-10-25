@@ -179,6 +179,50 @@
             '<input type="text" class="simdeep-champion-search" placeholder="Team name" autocomplete="off" aria-label="Champion team">' +
           '</div>' +
         '</div>' +
+        '<div class="simdeep-param-group" data-param="seed">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn" data-param="seed" aria-label="Seed range filter" title="Filter by seed range">Seed</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<select class="simdeep-seed-range" aria-label="Seed range" title="Filter by seed range">' +
+              '<option value="">Any</option>' +
+              '<option value="1-4">1-4 (Top 4 / Bye)</option>' +
+              '<option value="5-8">5-8</option>' +
+              '<option value="9-12">9-12</option>' +
+              '<option value="13-16">13-16</option>' +
+              '<option value="17-24">17-24</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="bidType">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn" data-param="bidType" aria-label="Bid type filter" title="Filter by bid type">Bid type</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<select class="simdeep-bid-type" aria-label="Bid type" title="Filter by bid type">' +
+              '<option value="">Any</option>' +
+              '<option value="p4">P4 champion</option>' +
+              '<option value="g6">G6 bid</option>' +
+              '<option value="atlarge">At-large</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div class="simdeep-param-group" data-param="roundReached">' +
+          '<div class="simdeep-param-header">' +
+            '<button type="button" class="simdeep-param-btn" data-param="roundReached" aria-label="Round reached filter" title="Filter by furthest round reached">Round</button>' +
+          '</div>' +
+          '<div class="simdeep-param-body">' +
+            '<select class="simdeep-round-reached" aria-label="Round reached" title="Filter by furthest round reached">' +
+              '<option value="">Any</option>' +
+              '<option value="champion">Champion</option>' +
+              '<option value="runnerup">Runner-up</option>' +
+              '<option value="final4">Final 4</option>' +
+              '<option value="elite8">Elite 8</option>' +
+              '<option value="round16">Round of 16/32</option>' +
+              '<option value="madefield">Made field</option>' +
+            '</select>' +
+          '</div>' +
+        '</div>' +
       '</div>';
 
     // Set up combo box for team search (like schedule tab)
@@ -337,6 +381,15 @@
       } else if (param === "champion") {
         var search = group.querySelector(".simdeep-champion-search");
         if (search) { search.value = ""; }
+      } else if (param === "seed") {
+        var sel = group.querySelector(".simdeep-seed-range");
+        if (sel) { sel.value = ""; }
+      } else if (param === "bidType") {
+        var sel = group.querySelector(".simdeep-bid-type");
+        if (sel) { sel.value = ""; }
+      } else if (param === "roundReached") {
+        var sel = group.querySelector(".simdeep-round-reached");
+        if (sel) { sel.value = ""; }
       }
     }
 
@@ -593,10 +646,16 @@
       var overallBtn = row.querySelector('.simdeep-param-btn[data-param="overall"]');
       var confBtn = row.querySelector('.simdeep-param-btn[data-param="conf"]');
       var championBtn = row.querySelector('.simdeep-param-btn[data-param="champion"]');
+      var seedBtn = row.querySelector('.simdeep-param-btn[data-param="seed"]');
+      var bidTypeBtn = row.querySelector('.simdeep-param-btn[data-param="bidType"]');
+      var roundReachedBtn = row.querySelector('.simdeep-param-btn[data-param="roundReached"]');
 
       var team = (teamBtn && teamBtn.classList.contains('active')) ? row.querySelector(".simdeep-team-search").value.trim() || null : null;
       var confChamp = (confChampBtn && confChampBtn.classList.contains('active')) ? row.querySelector(".simdeep-conf-champ").value || null : null;
       var champion = (championBtn && championBtn.classList.contains('active')) ? (row.querySelector(".simdeep-champion-search").value.trim() || null) : null;
+      var seed = (seedBtn && seedBtn.classList.contains('active')) ? row.querySelector(".simdeep-seed-range").value || null : null;
+      var bidType = (bidTypeBtn && bidTypeBtn.classList.contains('active')) ? row.querySelector(".simdeep-bid-type").value || null : null;
+      var roundReached = (roundReachedBtn && roundReachedBtn.classList.contains('active')) ? row.querySelector(".simdeep-round-reached").value || null : null;
       var owOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ow").value || "=") : "=";
       var olOp = (overallBtn && overallBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-ol").value || "=") : "=";
       var cwOp = (confBtn && confBtn.classList.contains('active')) ? (row.querySelector(".simdeep-op-cw").value || "=") : "=";
@@ -607,7 +666,7 @@
       var cl = (confBtn && confBtn.classList.contains('active')) ? parseInt(row.querySelector(".simdeep-cl").value) || null : null;
 
       // Skip empty rows (no active params with values)
-      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null && !champion) return;
+      if (!team && !confChamp && ow === null && ol === null && cw === null && cl === null && !champion && !seed && !bidType && !roundReached) return;
 
       // Conflict check: team must belong to selected conf champ
       if (team && confChamp && teamToConf[team] !== confChamp) {
@@ -615,7 +674,7 @@
         return;
       }
 
-      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, champion: champion });
+      allFilters.push({ team: team, confChamp: confChamp, ow: ow, ol: ol, cw: cw, cl: cl, owOp: owOp, olOp: olOp, cwOp: cwOp, clOp: clOp, champion: champion, seed: seed, bidType: bidType, roundReached: roundReached });
     });
 
     var runs = view.sim.debugRuns;
@@ -671,6 +730,43 @@
     if (filter.champion) {
       if (run.champion !== filter.champion) return false;
     }
+    // Seed range filter
+    if (filter.seed) {
+      var seedParts = filter.seed.split("-");
+      var minSeed = parseInt(seedParts[0], 10);
+      var maxSeed = parseInt(seedParts[1], 10);
+      var targetTeam = filter.team || filter.champion;
+      if (targetTeam) {
+        var teamEntry = run.field.find(function (f) { return f.team === targetTeam; });
+        if (!teamEntry || teamEntry.seed < minSeed || teamEntry.seed > maxSeed) return false;
+      } else {
+        // No specific team: require at least one team in field matches seed range
+        var hasSeedMatch = run.field.some(function (f) { return f.seed >= minSeed && f.seed <= maxSeed; });
+        if (!hasSeedMatch) return false;
+      }
+    }
+    // Bid type filter
+    if (filter.bidType) {
+      var targetTeam = filter.team || filter.champion;
+      if (targetTeam) {
+        var teamEntry = run.field.find(function (f) { return f.team === targetTeam; });
+        if (!teamEntry || !bidTypeMatch(teamEntry.bid, filter.bidType)) return false;
+      } else {
+        var hasBidMatch = run.field.some(function (f) { return bidTypeMatch(f.bid, filter.bidType); });
+        if (!hasBidMatch) return false;
+      }
+    }
+    // Round reached filter
+    if (filter.roundReached) {
+      var targetTeam = filter.team || filter.champion;
+      if (targetTeam) {
+        var reached = roundReachedForTeam(run, targetTeam);
+        if (!roundReachedMatch(reached, filter.roundReached)) return false;
+      } else {
+        var hasRoundMatch = run.field.some(function (f) { return roundReachedMatch(roundReachedForTeam(run, f.team), filter.roundReached); });
+        if (!hasRoundMatch) return false;
+      }
+    }
     if (filter.team && (filter.ow !== null || filter.ol !== null || filter.cw !== null || filter.cl !== null)) {
       var rec = run.records[filter.team];
       if (!rec) return false;
@@ -690,6 +786,43 @@
       case "<=": return a <= b;
       case "=": default: return a === b;
     }
+  }
+
+  function bidTypeMatch(bid, type) {
+    if (!bid) return false;
+    if (type === "p4") return bid.indexOf("P4 champ") !== -1;
+    if (type === "g6") return bid.indexOf("G6 bid") !== -1;
+    if (type === "atlarge") return bid.indexOf("P4 champ") === -1 && bid.indexOf("G6 bid") === -1;
+    return false;
+  }
+
+  function roundReachedForTeam(run, team) {
+    // Determine furthest round reached based on field position and champion
+    var entry = run.field.find(function (f) { return f.team === team; });
+    if (!entry) return "missed";
+    if (run.champion === team) return "champion";
+    // For 12-team: seeds 1-4 get bye to quarters (round of 8), seeds 5-12 play round of 12
+    // For 24-team: more complex
+    var format = (SG.state.modules.playoff && SG.state.modules.playoff.view) ? SG.state.modules.playoff.view.format : "12";
+    var seed = entry.seed || 99;
+    if (format === "12") {
+      if (seed <= 4) return "elite8";  // quarters
+      if (seed <= 12) return "round16"; // first round
+    } else {
+      if (seed <= 8) return "elite8";
+      if (seed <= 24) return "round16";
+    }
+    return "madefield";
+  }
+
+  function roundReachedMatch(reached, target) {
+    if (target === "champion") return reached === "champion";
+    if (target === "runnerup") return reached === "champion"; // can't determine runner-up easily
+    if (target === "final4") return ["champion", "runnerup", "final4", "elite8"].indexOf(reached) !== -1;
+    if (target === "elite8") return ["champion", "runnerup", "final4", "elite8"].indexOf(reached) !== -1;
+    if (target === "round16") return ["champion", "runnerup", "final4", "elite8", "round16"].indexOf(reached) !== -1;
+    if (target === "madefield") return reached !== "missed";
+    return false;
   }
 
   function renderResults(runs, totalSims) {
