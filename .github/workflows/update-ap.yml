@@ -4,12 +4,12 @@ on:
   schedule:
     # The AP and Coaches polls are released Sunday afternoons at 2 p.m. Eastern
     # during the season (the preseason and final polls are the exceptions).
-    # 20:00 UTC covers both EDT and EST. Monday is a safety net for a slow week.
+    # 19:00 UTC covers both EDT and EST. Monday is a safety net for a slow week.
     # The CFP rankings start on Tuesday nights in November, so Wednesday morning
     # picks those up. After the polls are written the BCS-style rating is rebuilt
     # from them and the six live computer rankings. The script is idempotent, it
     # only writes when ranks change.
-    - cron: "0 20 * * 0"
+    - cron: "0 19 * * 0"
     - cron: "0 13 * * 1"
     - cron: "0 3 * * 3"
   workflow_dispatch:
