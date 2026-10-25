@@ -912,6 +912,19 @@ input[type="search"] { min-width: 240px; }
 .simdeep-seed-bar.simdeep-seed-zero {
   opacity: 0.5;
 }
+.simdeep-seed-clickable {
+  cursor: pointer;
+}
+.simdeep-seed-clickable:hover {
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+.simdeep-seed-clickable .simdeep-seed-bar-fill {
+  background: var(--good);
+}
+.simdeep-seed-clickable:hover .simdeep-seed-bar-fill {
+  background: var(--accent);
+}
 .simdeep-seed-label {
   font-weight: 500;
   color: var(--ink);

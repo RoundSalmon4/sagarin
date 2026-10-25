@@ -1091,6 +1091,16 @@
 
     // Close button handler
     modal.querySelector("[data-action='close-team-modal']").addEventListener("click", closeTeamModal);
+
+    // Seed bar click handler - filter outcomes by team + seed
+    modal.querySelectorAll(".simdeep-seed-clickable").forEach(function (bar) {
+      bar.addEventListener("click", function () {
+        var seed = parseInt(this.getAttribute("data-seed"), 10);
+        var team = this.getAttribute("data-team");
+        closeTeamModal();
+        applyTeamSeedFilter(team, seed);
+      });
+    });
   }
 
   function closeTeamModal() {
@@ -1099,6 +1109,47 @@
       modal.classList.remove("open");
       document.body.style.overflow = "";
     }
+  }
+
+  function applyTeamSeedFilter(teamName, seed) {
+    // Find or create a filter row
+    var rows = document.querySelectorAll(".simdeep-filter-row");
+    var row = rows[0];
+    if (!row) {
+      // No rows exist, add one
+      document.getElementById("simdeepAddFilter").click();
+      row = document.querySelector(".simdeep-filter-row");
+    }
+
+    // Activate and set team filter
+    var teamBtn = row.querySelector('.simdeep-param-btn[data-param="team"]');
+    var teamGroup = row.querySelector('.simdeep-param-group[data-param="team"]');
+    var teamInput = row.querySelector(".simdeep-team-search");
+    if (teamBtn && !teamBtn.classList.contains("active")) {
+      teamBtn.classList.add("active");
+      teamGroup.classList.add("active");
+    }
+    if (teamInput) {
+      teamInput.value = teamName;
+      teamInput.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // Activate and set seed filter
+    var seedBtn = row.querySelector('.simdeep-param-btn[data-param="seed"]');
+    var seedGroup = row.querySelector('.simdeep-param-group[data-param="seed"]');
+    var seedSelect = row.querySelector(".simdeep-seed-range");
+    var seedMap = { 1: "1-4", 2: "1-4", 3: "1-4", 4: "1-4", 5: "5-8", 6: "5-8", 7: "5-8", 8: "5-8", 9: "9-12", 10: "9-12", 11: "9-12", 12: "9-12", 13: "13-16", 14: "13-16", 15: "13-16", 16: "13-16", 17: "17-24", 18: "17-24", 19: "17-24", 20: "17-24", 21: "17-24", 22: "17-24", 23: "17-24", 24: "17-24" };
+    if (seedBtn && !seedBtn.classList.contains("active")) {
+      seedBtn.classList.add("active");
+      seedGroup.classList.add("active");
+    }
+    if (seedSelect) {
+      seedSelect.value = seedMap[seed] || "";
+      seedSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    // Apply filters
+    if (view.sim && view.sim.debugRuns) applyFilters();
   }
 
   function calculateTeamDistribution(teamName, runs) {
@@ -1164,7 +1215,8 @@
       var pct = dist.seedAppearances > 0 ? (count / dist.seedAppearances * 100).toFixed(1) : 0;
       var barWidth = maxSeedCount > 0 ? (count / maxSeedCount * 100) : 0;
       var showZero = count === 0;
-      seedHtml += '<div class="simdeep-seed-bar' + (showZero ? ' simdeep-seed-zero' : '') + '">' +
+      var clickable = count > 0 ? ' simdeep-seed-clickable' : '';
+      seedHtml += '<div class="simdeep-seed-bar' + (showZero ? ' simdeep-seed-zero' : '') + clickable + '" data-seed="' + s + '" data-team="' + teamName + '">' +
         '<span class="simdeep-seed-label">Seed ' + s + '</span>' +
         '<div class="simdeep-seed-bar-track">' +
           '<div class="simdeep-seed-bar-fill" style="width:' + barWidth + '%"></div>' +
