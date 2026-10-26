@@ -2,7 +2,7 @@ name: Run playoff simulation
 
 on:
   schedule:
-    - cron: "0 10 * * 6"  # Every Saturday 10:00 UTC (after Sunday data refresh)
+    - cron: "0 11 * * 0"  # Sunday 11:00 UTC (after Sunday 09:00 update-data)
   workflow_dispatch:
 
 jobs:
