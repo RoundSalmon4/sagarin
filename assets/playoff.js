@@ -668,7 +668,8 @@
       " points for every point the schedule sits above the FBS average, plus " +
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something. " +
       "The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added. " +
-      "The projected field table shows the selected rating for each team.";
+      "The projected field table shows the selected rating for each team. " +
+      "Note: the bracket projection is deterministic (predicted results), while the bubble table shows stochastic simulation shares (10,000 random runs), so a team with a high bubble share may not appear in the deterministic field.";
     renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
