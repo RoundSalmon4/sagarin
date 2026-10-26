@@ -992,6 +992,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
       var resumeChanged = JSON.stringify(res.resume) !== JSON.stringify(SG.state.resume);
+      var sim12Changed = JSON.stringify(res.sim12) !== JSON.stringify(SG.state.sim12);
+      var sim24Changed = JSON.stringify(res.sim24) !== JSON.stringify(SG.state.sim24);
       SG.state.resume = res.resume || null;
       SG.state.sim12 = res.sim12 || null;
       SG.state.sim24 = res.sim24 || null;
@@ -1010,7 +1012,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       } else {
         SG.buildMapping();
         if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
-        if (apChanged || bcsChanged || tvChanged || resumeChanged) SG.refreshModules();
+        if (apChanged || bcsChanged || tvChanged || resumeChanged || sim12Changed || sim24Changed) SG.refreshModules();
         if (manual) {
           SG.renderStatus(false);
           document.getElementById("dataStatus").textContent += " - no changes";
