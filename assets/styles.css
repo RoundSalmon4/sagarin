@@ -224,6 +224,7 @@ input[type="search"] { min-width: 240px; }
 }
 
 .data-table tbody td.left { text-align: left; }
+.data-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
 .data-table tbody tr:nth-child(even) { background: var(--surface-2); }
 .data-table tbody tr:hover { background: var(--row-hover); }
 

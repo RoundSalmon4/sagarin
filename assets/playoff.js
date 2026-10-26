@@ -736,7 +736,7 @@
       var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
       var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-      return '<tr><td class="num">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
+      return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
     }).join("");
     box.innerHTML = header + '<tbody>' + rows + '</tbody>';
     } catch (e) { console.error("Bubble render error:", e); }
