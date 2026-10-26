@@ -729,7 +729,10 @@
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
     var header = '<thead><tr><th class="left">#</th><th class="left">Team</th><th>Chance</th><th>Runs</th><th class="left">Conf</th><th>' + SG.esc(methodLabel) + '</th><th class="left">Now</th></tr></thead>';
-    var rows = bubble.map(function(r, idx) {
+    var DEFAULT_SHOW = 5;
+    var initial = bubble.slice(0, DEFAULT_SHOW);
+    var remaining = bubble.slice(DEFAULT_SHOW);
+    var rows = initial.map(function(r, idx) {
       var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
       var conf = team ? team.conference : "";
       var rating = team ? (team[view.method] || team.rating || "") : "";
@@ -738,7 +741,34 @@
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
       return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
     }).join("");
-    box.innerHTML = header + '<tbody>' + rows + '</tbody>';
+    var moreHtml = '';
+    if (remaining.length > 0) {
+      moreHtml = '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show ' + remaining.length + ' more</button></div>' +
+        '<tbody class="bubble-more" id="bubble-more-' + fmt + '" style="display:none;">' +
+        remaining.map(function(r, idx) {
+          var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
+          var conf = team ? team.conference : "";
+          var rating = team ? (team[view.method] || team.rating || "") : "";
+          var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
+          var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
+          var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
+          return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
+        }).join("") + '</tbody>';
+    }
+    box.innerHTML = header + '<tbody>' + rows + '</tbody>' + moreHtml;
+    // Attach expand handler
+    var btn = box.querySelector('.bubble-more-btn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('data-expanded') === 'true';
+        var moreBody = document.getElementById(btn.getAttribute('data-target'));
+        if (moreBody) {
+          moreBody.style.display = expanded ? 'none' : '';
+          btn.textContent = expanded ? 'Show ' + remaining.length + ' more' : 'Show fewer';
+          btn.setAttribute('data-expanded', expanded ? 'false' : 'true');
+        }
+      });
+    }
     } catch (e) { console.error("Bubble render error:", e); }
   }
 
