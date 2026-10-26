@@ -706,7 +706,7 @@
     try {
     var box = document.getElementById("bubbleTable");
     if (!box) return;
-    var fmt = view.format || 12;
+    var fmt = Number(view.format || 12);
     // Use server-loaded simulation data (from run-sim.yml workflow), not local simulation
     var sim = (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
