@@ -55,7 +55,7 @@
     return !!RIVALRY[[SG.normalizeName(a), SG.normalizeName(b)].sort().join("|")];
   }
 
-  // Teams in the projected 12-team field, plus the next ten in line for an
+  // Teams in the projected 12-team field, plus the next 20 in line for an
   // at-large bid (bubble), using the same resume ranking the field uses so the
   // two stay consistent. Recomputed once per render so scoring stays cheap.
   function context() {
