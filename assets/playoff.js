@@ -743,7 +743,7 @@
     }).join("");
     var moreHtml = '';
     if (remaining.length > 0) {
-      moreHtml = '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show ' + remaining.length + ' more</button></div>' +
+      moreHtml = '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>' +
         '<tbody class="bubble-more" id="bubble-more-' + fmt + '" style="display:none;">' +
         remaining.map(function(r, idx) {
           var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
@@ -764,7 +764,7 @@
         var moreBody = document.getElementById(btn.getAttribute('data-target'));
         if (moreBody) {
           moreBody.style.display = expanded ? 'none' : '';
-          btn.textContent = expanded ? 'Show ' + remaining.length + ' more' : 'Show fewer';
+          btn.textContent = expanded ? 'Show more' : 'Show fewer';
           btn.setAttribute('data-expanded', expanded ? 'false' : 'true');
         }
       });
