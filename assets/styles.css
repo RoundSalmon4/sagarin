@@ -286,7 +286,7 @@ input[type="search"] { min-width: 240px; }
 }
 .sim-more-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.bubble-more-wrap { margin-top: 0.5rem; text-align: center; }
+.bubble-more-wrap { margin-top: 0.5rem; text-align: left; }
 .bubble-more-btn {
   border: 1px solid var(--line);
   background: var(--surface-2);
