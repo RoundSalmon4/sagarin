@@ -392,7 +392,7 @@
       return (g.neutral ? '<span class="dim">N </span>' : "") + SG.esc(s);
     } },
     { key: "line", label: "Line", cls: "left", type: "str", cell: function (g) { return g.details || (g.spread !== null && g.spread !== undefined ? SG.esc(String(g.spread)) : '<span class="dim">-</span>'); } },
-    { key: "watch", label: "Watch", value: function (g) { return score(g, curCtx).value; }, cell: watchCell }
+    { key: "watch", label: "Watch", cls: "watch-col", value: function (g) { return score(g, curCtx).value; }, cell: watchCell }
   ];
 
   function localTime(iso) {
