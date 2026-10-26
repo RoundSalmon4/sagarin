@@ -703,6 +703,7 @@
   }
 
   function renderBubble() {
+    try {
     var box = document.getElementById("bubbleTable");
     if (!box) return;
     var storedSim = SG.state.sim || null;
@@ -723,6 +724,7 @@
       return '<tr><td>' + SG.esc(r.name) + '</td><td>' + pctStr + '</td><td>' + r.c.toLocaleString() + '</td></tr>';
     }).join("") + '</tbody>';
     box.innerHTML = thead + tbody;
+    } catch (e) { console.error("Bubble render error:", e); }
   }
 
   // ---- full-season simulation ----
@@ -856,7 +858,7 @@
     simContext: simContext,
     ccgOutcomes: ccgOutcomes,
     fieldFromRecords: fieldFromRecords,
-    divisionStandings: SG.state.modules.playoff.divisionStandings,
+    divisionStandings: divisionStandingsFunc,
     runOnce: runOnce,
 };
 
@@ -878,7 +880,8 @@
   };
 
   // Division standings for the TV watch-score (same-division CCG/division-race implications)
-  SG.state.modules.playoff.divisionStandings = function (method) {
+  // Division standings for the TV watch-score (same-division CCG/division-race implications)
+  function divisionStandingsFunc(method) {
     method = method || view.method;
     var reg = projectedRecords(method);
     var divMap = (typeof window !== "undefined" && window.TeamDivisions) ? window.TeamDivisions : {};
@@ -914,6 +917,7 @@
     });
     return out;
   };
+  SG.state.modules.playoff.divisionStandings = divisionStandingsFunc;
 
 
 // Debug query function for simulation runs (exposed on SG.debug.simQuery)
