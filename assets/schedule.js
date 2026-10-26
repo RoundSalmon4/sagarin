@@ -347,10 +347,7 @@
     });
     SG.fillBody(table, columns, SG.sortRows(rows, columns, confSort));
 
-    note.textContent =
-      "Projected with " + SG.methodLabel(method) + ". Played games use the real result and the rest are predicted. " +
-      "The projected conference title game is folded into the projected conference and overall records. " +
-      "Only FBS teams are shown because there is not enough data to project FCS conferences.";
+    note.textContent = "Projected with " + SG.methodLabel(method) + ". Played games use real results; remaining are predicted. The projected conference title game is included in records. Only FBS teams shown.";
 
     summary.innerHTML =
       chip("Conference", conf) +

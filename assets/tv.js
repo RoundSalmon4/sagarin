@@ -568,11 +568,7 @@
     });
     SG.fillBody(table, COLUMNS, sorted);
     document.getElementById("tvCount").textContent = list.length + " games";
-    document.getElementById("tvNote").textContent =
-      "Upcoming week's games from ESPN. Sort by watchability or kickoff, narrow by group, conference or team, " +
-      "and pick a time zone. Games to watch shows the best few in each kickoff window so the picks do not all " +
-      "land in one slot. Watch score blends how close the game projects (market line when posted), combined " +
-      "team rating, what the game could do to the projected playoff field, and whether it is a rivalry.";
+    document.getElementById("tvNote").textContent = "Upcoming ESPN games. Sort by watchability or kickoff, filter by group, conference or team, pick a time zone. Games to watch picks the best games per window. Watch score = close game + team rating + playoff impact + rivalry.";
     renderWatch(list);
   }
 

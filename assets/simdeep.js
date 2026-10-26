@@ -138,13 +138,13 @@
     if (adoptPlayoffSim()) {
       applyFilters();
     } else if (!view.sim) {
-      document.getElementById("simdeepNote").textContent = "Run a simulation here or on the Playoff Predictor tab, then filter the results below.";
+      document.getElementById("simdeepNote").textContent = "Run a simulation first, then filter results.";
     }
   }
 
   function onSimDataReady() {
     var runs = view.sim && view.sim.n ? view.sim.n.toLocaleString() : "10,000";
-    document.getElementById("simdeepNote").textContent = "Using the shared " + runs + "-run simulation for the " + currentFormat() + "-team format. Add filters to explore results (not to create events) and click Run deep dive.";
+    document.getElementById("simdeepNote").textContent = "Using the shared " + runs + "-run simulation. Add filters and click Run deep dive.";
   }
 
   function addFilterRow() {

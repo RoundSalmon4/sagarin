@@ -560,12 +560,9 @@ SG.DIVISIONS = window.TeamDivisions || {};
         "and keeps the middle four. "
       : "";
     document.getElementById("matchupNote").textContent =
-      "Conference standings and the last five come from the ESPN schedule data. Played games use the real result, " +
-      "so the conference records and the last five are the actual results so far this season. The overall record " +
-      "is the one printed on the Sagarin page. Standings show the selected team with the teams around it; click the " +
-      "ellipsis to open the full conference. Total offense and total defense are yards per game from the ESPN " +
-      "statistics, points per game is scoring, and the number in brackets is the national rank of every rated team. " +
-      bcsNote + "The " + SG.methodLabel(method) + " rating is the column used above.";
+      "Conference standings and last five from ESPN schedule data (real results). Overall record from Sagarin. " +
+      "Offense/defense = yards per game; points per game = scoring; bracket = national rank. " +
+      bcsNote + SG.methodLabel(method) + " rating shown above.";
   };
 
   // Conference name for a team, with the Sun Belt east and west halves merged.

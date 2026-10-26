@@ -55,9 +55,9 @@
   ];
 
   var NOTES = {
-    regular: "Sagarin's Predictions_with_Totals_and_Moneylines. The five margin columns are the predicted favorite margin from each rating method. An @ marks the home team. MONEY is the moneyline to 100, home/away are projected scores, TOTAL is the projected total, HMARG is the home margin, and the last pair are the home/away adjusted win% and moneyline.",
-    experimental: "EXPERIMENTAL predictions: the regular numbers adjusted for each team's tendencies at home and away. Same columns as the regular block.",
-    eigenvector: "EIGENVECTOR analysis: a separate rating built from a team-vs-team matrix. Spread is the projected margin, Odds the moneyline to 100, Pct% the model confidence."
+    regular: "Predicted margins from each Sagarin rating. @ = home team. Columns: favorite, underdog, site, rating margins, MONEY (moneyline), projected scores (home/away), TOTAL, home margin, adjusted win% and moneyline.",
+    experimental: "Same predictions adjusted for home/away tendencies.",
+    eigenvector: "Separate rating from team-vs-team matrix. Columns: spread, odds (moneyline to 100), model confidence (Pct%)."
   };
 
   function register() {
