@@ -706,24 +706,27 @@
     try {
     var box = document.getElementById("bubbleTable");
     if (!box) return;
-    var storedSim = SG.state.sim || null;
-    var sim = storedSim || (view.sim ? view.sim[view.format] : null);
+    var fmt = view.format || 12;
+    var sim = (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
-      box.querySelector("tbody").innerHTML = '<tr><td colspan="4">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr>';
-      box.querySelector("thead").innerHTML = '<tr><th>Team</th><th>Chance to make field</th><th>Conference</th></tr>';
+      box.innerHTML = '<thead><tr><th>#</th><th>Team</th><th>Chance</th><th>Runs</th><th>Conf</th><th>Rating</th><th>Now</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
       return;
     }
-    var counts = sim.field;
-    var sorted = Object.keys(counts).map(function(name) { return { name: name, c: counts[name], pct: counts[name] / sim.n }; })
+    var fieldTeams = Object.keys(sim.field || {});
+    var all = Object.keys(sim.field || {}).map(function(name) { return { name: name, c: sim.field[name], pct: sim.field[name] / (sim.n || 10000) }; });
+    var bubble = all.filter(function(r) { return fieldTeams.indexOf(r.name) === -1; })
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
-    var max = sorted.length ? Math.max.apply(null, sorted.map(function(r) { return r.c; })) : 1;
-    var thead = '<thead><tr><th>Team</th><th>Chance to make field</th><th>Runs in field</th></tr></thead>';
-    var tbody = '<tbody>' + sorted.map(function(r) {
-      var pctStr = (r.pct * 100).toFixed(1) + "%";
-      return '<tr><td>' + SG.esc(r.name) + '</td><td>' + pctStr + '</td><td>' + r.c.toLocaleString() + '</td></tr>';
-    }).join("") + '</tbody>';
-    box.innerHTML = thead + tbody;
+    var header = '<thead><tr><th>#</th><th>Team</th><th>Chance</th><th>Runs</th><th>Conf</th><th>Rating</th><th>Now</th></tr></thead>';
+    var rows = bubble.map(function(r, idx) {
+      var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
+      var conf = team ? team.conference : "";
+      var rating = team ? (team[view.method] || team.rating || "") : "";
+      var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
+      var now = SG.rec(nowW, nowL) + (team && SG.espnConfW(team) ? " (" + SG.rec(SG.espnConfW(team), SG.espnConfL(team)) + ")" : "");
+      return '<tr><td>' + (idx + 1) + '</td><td>' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td>' + (r.pct * 100).toFixed(1) + '%</td><td>' + r.c.toLocaleString() + '</td><td>' + SG.esc(conf) + '</td><td>' + SG.esc(String(rating)) + '</td><td>' + SG.esc(now) + '</td></tr>';
+    }).join("");
+    box.innerHTML = header + '<tbody>' + rows + '</tbody>';
     } catch (e) { console.error("Bubble render error:", e); }
   }
 
