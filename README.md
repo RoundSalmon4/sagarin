@@ -40,10 +40,11 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   best few games per window so the picks are not all in one slot. Games below a 35 watch
   score are not shown; each section shows at most 3 games.
 
-  Watch score formula: **38% closeness** (market line when posted, otherwise Sagarin margin),
-  **25% playoff stakes**, **15% team quality**, **12% rivalry**, **8% division race** (only for
-  same-division matchups, using projected division standings from the playoff module).
-  Non-division games renormalize weights (92% → 100%).
+  Watch score formula: **35% closeness** (market line when posted, otherwise Sagarin margin),
+  **25% playoff stakes**, **15% team quality**, **10% rivalry**, **10% conference championship
+  implications** (CCG game, division clincher, elimination game, or cross-division CCG matchup),
+  and **5% division race** (same-division matchups with division title implications). Non-CCG,
+  non-division games renormalize weights (divide by 0.85).
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest); in the 12-team field the top two play a projected title

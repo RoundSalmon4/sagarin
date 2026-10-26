@@ -177,25 +177,16 @@
           stakes = Math.min(1, stakes + 0.3);
         }
       }
-    } else if ((inA && bubB) || (inB && bubA)) {
-      // One lock, one bubble - already 0.75
-    } else if (bubA && bubB) {
-      // Both bubble - already 0.55
-    } else if ((inA && bubB) || (inB && bubA)) {
-      // One lock, one bubble - already 0.75
-    } else if (inA || inB) {
-      // One in field - 0.4
-    } else if (bubA || bubB) {
-      // One bubble - 0.25
     }
+    // Top-4 seed bonus applied above; stakes set accordingly
 
     // Conference championship implications (CCG games + division race with CCG implications)
     var ccgImplications = 0;
     if (a && b) {
       var sameConf = a.conference === b.conference;
       var divMap = window.TeamDivisions || {};
-      var divA = (window.TeamDivisions || {})[na] || "None";
-      var divB = (window.TeamDivisions || {})[nb] || "None";
+      var divA = divMap[na] || "None";
+      var divB = divMap[nb] || "None";
       var sameDiv = divA !== "None" && divA === divB;
 
       if (sameConf) {
@@ -207,10 +198,8 @@
             var teamA = dStandings.teams.find(function(t) { return t.team === na; });
             var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
             if (teamA && teamB) {
-              // Both division leaders - CCG matchup
-              if (dStandings.leader === na && dStandings.leader === nb) ccgImplications = 1.0;
               // Division leader vs top contender
-              else if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
+              if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
                        (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) ccgImplications = 0.8;
               // Both in top 2
               else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) ccgImplications = 0.7;
@@ -220,7 +209,7 @@
               else if (teamA && teamB && teamA.cwp > 0.4 && teamB.cwp > 0.4) ccgImplications = 0.6;
               else ccgImplications = 0.3;
             }
-          } else if (!sameDiv) {
+          } else {
             // Different divisions - could meet in CCG
             var dStandingsA = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
             var dStandingsB = ctx.divisionStandings && ctx.divisionStandings[b.conference] ? ctx.divisionStandings[b.conference][divB] : null;
@@ -251,10 +240,8 @@
           var teamA = dStandings.teams.find(function(t) { return t.team === na; });
           var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
           if (teamA || teamB) {
-            // Both division leaders playing each other
-            if (dStandings.leader === na && dStandings.leader === nb) divRace = 0.9;
-            // Division leader vs top contender
-            else if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
+            // Division leader vs top contender (same division, impossible for both to be leader)
+            if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
                      (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) divRace = 0.8;
             // Both in top 2
             else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) divRace = 0.75;
