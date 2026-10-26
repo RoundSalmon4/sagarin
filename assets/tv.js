@@ -392,7 +392,7 @@
       return (g.neutral ? '<span class="dim">N </span>' : "") + SG.esc(s);
     } },
     { key: "line", label: "Line", cls: "left", type: "str", cell: function (g) { return g.details || (g.spread !== null && g.spread !== undefined ? SG.esc(String(g.spread)) : '<span class="dim">-</span>'); } },
-    { key: "watchReason", label: "", cls: "left", type: "str", cell: function (g) { var s = score(g, curCtx); return s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : '<span class="dim">-</span>'; } },
+    { key: "watchReason", label: "Why", cls: "left", type: "str", value: function (g) { return score(g, curCtx).reason || ""; }, cell: function (g) { var s = score(g, curCtx); return s.reason ? '<span class="watch-tag">' + SG.esc(s.reason) + "</span>" : '<span class="dim">-</span>'; } },
     { key: "watch", label: "Watch", cls: "watch-col", value: function (g) { return score(g, curCtx).value; }, cell: function (g) { var s = score(g, curCtx); return '<span class="watch-score">' + s.value + "</span>"; } }
   ];
 
