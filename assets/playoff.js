@@ -743,8 +743,7 @@
     }).join("");
     var moreHtml = '';
     if (remaining.length > 0) {
-      moreHtml = '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>' +
-        '<tbody class="bubble-more" id="bubble-more-' + fmt + '" style="display:none;">' +
+      moreHtml = '<tbody class="bubble-more" id="bubble-more-' + fmt + '" style="display:none;">' +
         remaining.map(function(r, idx) {
           var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
           var conf = team ? team.conference : "";
@@ -753,7 +752,8 @@
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
           return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
-        }).join("") + '</tbody>';
+        }).join("") + '</tbody>' +
+        '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>';
     }
     box.innerHTML = header + '<tbody>' + rows + '</tbody>' + moreHtml;
     // Attach expand handler
