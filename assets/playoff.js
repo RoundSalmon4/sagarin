@@ -728,7 +728,7 @@
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
-    var header = '<thead><tr><th class="left">#</th><th class="left">Team</th><th>Chance</th><th>Runs</th><th class="left">Conf</th><th>' + SG.esc(methodLabel) + '</th><th class="left">Now</th></tr></thead>';
+    var header = '<thead><tr><th class="left">#</th><th class="left">Team</th><th class="left">Conf</th><th class="left">Now</th><th class="left proj-col">Chance</th><th class="rating-col">' + SG.esc(methodLabel) + '</th><th class="left bid-col">Runs</th></tr></thead>';
     var DEFAULT_SHOW = 5;
     var initial = bubble.slice(0, DEFAULT_SHOW);
     var remaining = bubble.slice(DEFAULT_SHOW);
@@ -739,7 +739,7 @@
       var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
       var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-      return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
+      return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="num proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="num rating-col">' + SG.esc(String(rating)) + '</td><td class="num bid-col">' + r.c.toLocaleString() + '</td></tr>';
     }).join("");
     var moreHtml = '';
     if (remaining.length > 0) {
@@ -751,7 +751,7 @@
           var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-          return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="num">' + (r.pct * 100).toFixed(1) + '%</td><td class="num">' + r.c.toLocaleString() + '</td><td class="left">' + SG.esc(conf) + '</td><td class="num">' + SG.esc(String(rating)) + '</td><td class="left">' + SG.esc(now) + '</td></tr>';
+          return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="num proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="num rating-col">' + SG.esc(String(rating)) + '</td><td class="num bid-col">' + r.c.toLocaleString() + '</td></tr>';
         }).join("") + '</tbody>' +
         '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>';
     }
