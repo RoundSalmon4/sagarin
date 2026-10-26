@@ -205,23 +205,26 @@
       <details class="legend">
         <summary>What the watch score and tags mean</summary>
         <p>The watch score runs 0 to 100 and higher is better. It blends how close the game
-        projects (38%, from the betting line when one is posted and otherwise the Sagarin
+        projects (35%, from the betting line when one is posted and otherwise the Sagarin
         margin), what the result could do to the projected playoff field (25%), the
-        two teams' combined rating (15%), whether it is a rivalry (12%), and for same-division
-        matchups, division race implications (8%). For non-division games the weights renormalize
-        to 100%. The word beside each score is a band: <strong>Must watch</strong> is 75 and up,
-        <strong>Worth watching</strong> is 55 to 74, <strong>On the radar</strong> is 35 to 54 and
-        <strong>Background</strong> is under 35.</p>
+        two teams' combined rating (15%), whether it is a rivalry (10%), and for games with
+        conference championship implications (CCG games, division clinchers, elimination games)
+        an additional 10% for CCG implications, and for same-division matchups an additional
+        5% for division race implications. For games without CCG/division implications the
+        weights renormalize to 100% (divide by 0.85). The word beside each score is a band:
+        <strong>Must watch</strong> is 75 and up, <strong>Worth watching</strong> is 55 to 74,
+        <strong>On the radar</strong> is 35 to 54 and <strong>Background</strong> is under 35.</p>
         <p>The tag says why a game stands out. Tags are checked in order and the first one
         that fits is shown: <strong>Rivalry, playoff stakes</strong> (both teams are in the
         projected field and it is a rivalry), <strong>Playoff clash</strong> (both teams in
         the projected field), <strong>Rivalry</strong> (a long-standing rivalry game),
-        <strong>Division race</strong> (same-division game with CCG implications),
-        <strong>Elimination watch</strong> (a projected field team in a close game),
-        <strong>Bubble watch</strong> (two teams just outside the field, the next ten in
-        line for an at-large bid), <strong>Toss-up</strong> (a near coin-flip projected
-        margin), <strong>Ranked matchup</strong> (two ranked teams) and <strong>Quality
-        teams</strong> (a high combined rating).</p>
+        <strong>Conference championship implications</strong> (CCG game, division clincher,
+        elimination game, or head-to-head for division lead), <strong>Division race</strong>
+        (same-division game with division title implications), <strong>Elimination watch</strong>
+        (a projected field team in a close game), <strong>Bubble watch</strong> (two teams
+        just outside the field, the next ten in line for an at-large bid), <strong>Toss-up</strong>
+        (a near coin-flip projected margin), <strong>Ranked matchup</strong> (two ranked teams)
+        and <strong>Quality teams</strong> (a high combined rating).</p>
       </details>
       <h3 class="section-title">Games to watch</h3>
       <div id="tvWatch" class="watch-board"></div>

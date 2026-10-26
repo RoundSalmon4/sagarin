@@ -90,17 +90,18 @@
 
   // 0-100 watch score. Weights and shapes are set from published work rather
   // than taste:
-  //   - closeness 0.38. The market line is the sharpest single predictor of the
+  //   - closeness 0.35. The market line is the sharpest single predictor of the
   //     margin (Simple ACR 2022: closing line Brier .1871 vs Sagarin .1940), so
   //     when a line is posted we use it as-is, and when we only have Sagarin we
   //     shrink the signal toward a coin flip because it is the noisier estimate.
   //   - playoff stakes 0.25, from the projected field and the bubble.
+  //   - conference championship implications 0.10. Games that affect who reaches
+  //     the conference championship (CCG games, division clinchers, elimination games).
   //   - team quality 0.15, combined Sagarin rating.
-  //   - rivalry 0.12. Rivalry nudges outcomes only slightly (favorites win about
+  //   - rivalry 0.10. Rivalry nudges outcomes only slightly (favorites win about
   //     3.6 points less often, Cox et al. 2026) and the market mostly prices it.
-  //   - division race 0.08. Games that affect who reaches the conference
-  //     championship game (same division matchups with CCG implications).
-  // For non-division-implication games, weights renormalize to 100%.
+  //   - division race 0.05. Games that affect who wins the division (same division).
+  // For non-CCG-implication games, weights renormalize to 100% (divide by 0.85).
   function score(g, ctx) {
     var a = sag(g.awayId);
     var b = sag(g.homeId);
@@ -130,15 +131,111 @@
 
     var inA = !!ctx.field[na], inB = !!ctx.field[nb];
     var bubA = !!ctx.bubble[na], bubB = !!ctx.bubble[nb];
-    var stakes;
-    if (inA && inB) stakes = 0.9;
-    else if ((inA && bubB) || (inB && bubA)) stakes = 0.75;
-    else if (bubA && bubB) stakes = 0.55;
-    else if (inA || inB) stakes = 0.4;
-    else if (bubA || bubB) stakes = 0.25;
-    else stakes = 0.05;
-    if (a && b && SG.mergeConf(a.conference) === SG.mergeConf(b.conference) && stakes > 0.3) {
-      stakes = Math.min(1, stakes + 0.1);
+
+    // --- Playoff stakes (refined) ---
+    // Base stakes from field/bubble status
+    var baseStakes;
+    if (inA && inB) {
+      // Both in field - check if outcome affects playoff picture
+      var aBubble = bubA, bBubble = bubB;
+      // If both locks (in field but not bubble), stakes depend on top-4 implications
+      if (!bubA && !bubB) {
+        stakes = 0.3; // Both locks - minimal field impact
+      } else if (bubA && bubB) {
+        stakes = 0.55; // Both bubble - winner likely gets in
+      } else {
+        stakes = 0.75; // One lock, one bubble
+      }
+    } else if ((inA && bubB) || (inB && bubA)) {
+      stakes = 0.75;
+    } else if (bubA && bubB) {
+      stakes = 0.55;
+    } else if (inA || inB) {
+      stakes = 0.4;
+    } else if (bubA || bubB) {
+      stakes = 0.25;
+    } else {
+      stakes = 0.05;
+    }
+
+    // Top-4 seed bonus: if either team has non-trivial top-4 chance and game affects seeding
+    if (a && b && inA && inB && !bubA && !bubB) {
+      // Both locks - check top-4 implications from sim data
+      var sim = SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view && SG.state.modules.playoff.view.sim ? SG.state.modules.playoff.view.sim : null;
+      if (sim && sim.debugRuns) {
+        var teamA = na, teamB = nb;
+        var top4A = 0, top4B = 0;
+        sim.debugRuns.forEach(function(run) {
+          var entryA = run.field.find(function(f) { return f.team === na; });
+          var entryB = run.field.find(function(f) { return f.team === nb; });
+          if (entryA && entryA.seed <= 4) top4A++;
+          if (entryB && entryB.seed <= 4) top4B++;
+        });
+        top4A = top4A / 10000;
+        top4B = top4B / 10000;
+        if ((top4A > 0.1 || top4B > 0.1)) {
+          // Non-trivial top-4 chance - game could affect top-4 seeding
+          stakes = Math.min(1, stakes + 0.3);
+        }
+      }
+    } else if ((inA && bubB) || (inB && bubA)) {
+      // One lock, one bubble - already 0.75
+    } else if (bubA && bubB) {
+      // Both bubble - already 0.55
+    } else if ((inA && bubB) || (inB && bubA)) {
+      // One lock, one bubble - already 0.75
+    } else if (inA || inB) {
+      // One in field - 0.4
+    } else if (bubA || bubB) {
+      // One bubble - 0.25
+    }
+
+    // Conference championship implications (CCG games + division race with CCG implications)
+    var ccgImplications = 0;
+    if (a && b) {
+      var sameConf = a.conference === b.conference;
+      var divMap = window.TeamDivisions || {};
+      var divA = (window.TeamDivisions || {})[na] || "None";
+      var divB = (window.TeamDivisions || {})[nb] || "None";
+      var sameDiv = divA !== "None" && divA === divB;
+
+      if (sameConf) {
+        // Same conference - check CCG implications
+        if (sameDiv) {
+          // Same division - division race already handled, but CCG implications too
+          var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
+          if (dStandings) {
+            var teamA = dStandings.teams.find(function(t) { return t.team === na; });
+            var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
+            if (teamA && teamB) {
+              // Both division leaders - CCG matchup
+              if (dStandings.leader === na && dStandings.leader === nb) ccgImplications = 1.0;
+              // Division leader vs top contender
+              else if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
+                       (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) ccgImplications = 0.8;
+              // Both in top 2
+              else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) ccgImplications = 0.7;
+              // Clinching/elimination
+              else if ((teamA && teamA.cwp > 0.7 && teamA.cwp < 1) || (teamB && teamB.cwp > 0.7 && teamB.cwp < 1)) ccgImplications = 0.85;
+              // Both in race
+              else if (teamA && teamB && teamA.cwp > 0.4 && teamB.cwp > 0.4) ccgImplications = 0.6;
+              else ccgImplications = 0.3;
+            }
+          } else if (!sameDiv) {
+            // Different divisions - could meet in CCG
+            var dStandingsA = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
+            var dStandingsB = ctx.divisionStandings && ctx.divisionStandings[b.conference] ? ctx.divisionStandings[b.conference][divB] : null;
+            if (dStandingsA && dStandingsB && dStandingsA.leader === na && dStandingsB.leader === nb) {
+              ccgImplications = 0.8; // Potential CCG matchup
+            } else if ((dStandingsA && dStandingsA.leader === na && dStandingsB.contenders.some(function(c) { return c.team === nb; })) ||
+                       (dStandingsB && dStandingsB.leader === nb && dStandingsA.contenders.some(function(c) { return c.team === na; }))) {
+              ccgImplications = 0.7; // Leader vs contender from other division
+            } else {
+              ccgImplications = 0.3; // Some CCG implications
+            }
+          }
+        }
+      }
     }
 
     var rival = isRivalry(na, nb) ? 1 : 0;
@@ -173,41 +270,32 @@
       }
     }
 
-    var inA = !!ctx.field[na], inB = !!ctx.field[nb];
-    var bubA = !!ctx.bubble[na], bubB = !!ctx.bubble[nb];
-    var stakes;
-    if (inA && inB) stakes = 0.9;
-    else if ((inA && bubB) || (inB && bubA)) stakes = 0.75;
-    else if (bubA && bubB) stakes = 0.55;
-    else if (inA || inB) stakes = 0.4;
-    else if (bubA || bubB) stakes = 0.25;
-    else stakes = 0.05;
-    if (a && b && SG.mergeConf(a.conference) === SG.mergeConf(b.conference) && stakes > 0.3) {
-      stakes = Math.min(1, stakes + 0.1);
-    }
-
-    var rival = isRivalry(na, nb) ? 1 : 0;
-
-    // Weights: CCG games get division race component; others renormalize
+    // Weights: CCG-implication games get CCG component; others renormalize
+    var hasCCG = ccgImplications > 0;
     var hasDivRace = divRace > 0;
     var value;
-    if (hasDivRace) {
-      value = Math.round(100 * (0.38 * closeness + 0.25 * stakes + 0.15 * quality + 0.12 * rival + 0.08 * divRace));
+    if (hasDivRace || ccgImplications > 0) {
+      // CCG + Division race + Closeness + Stakes + Quality + Rivalry = 10+5+38+25+15+10 = 100
+      var divRaceWeight = divRace > 0 ? 0.05 : 0;
+      var ccgWeight = ccgImplications > 0 ? 0.10 : 0;
+      value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival + 0.10 * ccgImplications + 0.05 * divRace));
     } else {
-      // Renormalize: 38+25+15+12 = 92 -> divide by 0.92
-      value = Math.round(100 * (0.38 * closeness + 0.25 * stakes + 0.15 * quality + 0.12 * rival) / 0.92);
+      // No CCG/division implications: renormalize 35+25+15+10 = 85 -> divide by 0.85
+      value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival) / 0.85);
     }
 
     var apA = a ? SG.apRank(na) : null;
     var apB = b ? SG.apRank(nb) : null;
     var reason;
-    if (inA && inB && rival) reason = "Rivalry, playoff stakes";
+    if (ccgImplications > 0 && rival) reason = "Rivalry, CCG implications";
+    else if (ccgImplications > 0) reason = "Conference championship implications";
+    else if (inA && inB && rival) reason = "Rivalry, playoff stakes";
     else if (inA && inB) reason = "Playoff clash";
     else if (rival) reason = "Rivalry";
     else if ((inA || inB) && closeness > 0.5) reason = "Elimination watch";
     else if (bubA && bubB) reason = "Bubble watch";
     else if (closeness > 0.6) reason = "Toss-up";
-    else if (apA && apB) reason = "Ranked matchup";
+    else if (a && b && SG.apRank(na) && SG.apRank(nb)) reason = "Ranked matchup";
     else if (quality > 0.8) reason = "Quality teams";
     else reason = "";
     return { value: value, reason: reason, tier: tier(value) };
