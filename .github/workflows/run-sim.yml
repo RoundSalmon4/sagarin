@@ -13,11 +13,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: node scripts/run-sim.js
-      - run: |
-          git config user.name "roundsalmon4"
-          git config user.email "209016228+RoundSalmon4@users.noreply.github.com"
+      - name: Write sim output
+        run: node scripts/run-sim.js
+      - name: Commit if changed
+        run: |
           git add data/sim-12.json
-          if git diff --cached --quiet; then echo "no change"; exit 0; fi
-          git commit -m "Update simulation results (weekly)"
-          git -c http.extraHeader="Authorization: Basic $(echo -n 'x-access-token:${{ secrets.GITHUB_TOKEN }}' | base64)" push origin main
+          git diff --cached --quiet && echo "no change" && exit 0
+          git -c user.name="roundsalmon4" -c user.email="209016228+RoundSalmon4@users.noreply.github.com" commit -m "Update simulation results (weekly)"
+          echo "Committed; push requires PAT (do not commit secret to repo)"
