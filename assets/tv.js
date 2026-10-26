@@ -103,6 +103,7 @@
   //   - division race 0.05. Games that affect who wins the division (same division).
   // For non-CCG-implication games, weights renormalize to 100% (divide by 0.85).
   function score(g, ctx) {
+    try {
     var a = sag(g.awayId);
     var b = sag(g.homeId);
     var na = a ? a.team : (g.awayName || "");
@@ -299,6 +300,10 @@
     else if (quality > 0.8) reason = "Quality teams";
     else reason = "";
     return { value: value, reason: reason, tier: tier(value) };
+    } catch (e) {
+      console.error("Score calculation error:", e);
+      return { value: 0, reason: "Error", tier: tier(0) };
+    }
   }
 
   function inScope(g) {
