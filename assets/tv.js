@@ -136,7 +136,7 @@
 
     // --- Playoff stakes (refined) ---
     // Use committed simulation file if available; fall back to deterministic projection
-    var storedSim = (SG.state.sim && SG.state.sim.field) ? SG.state.sim : null;
+    var storedSim = (SG.state.sim12 && SG.state.sim12.field) ? SG.state.sim12 : null;
     var inFieldA = storedSim ? !!storedSim.field[na] : inA;
     var inFieldB = storedSim ? !!storedSim.field[nb] : inB;
     // Base stakes from field/bubble status (deterministic or stored sim)
