@@ -323,13 +323,57 @@ function computeSim(format, method, ratings, espnGames, espnIdToSag, resume, hom
   return { n: SIMS, field: fieldCount, champ: champCount };
 }
 
+// Team aliases (same as assets/team-alias.js) - normalized Sagarin name -> normalized ESPN name
+const TeamAlias = {
+  "miami florida": "miami",
+  "miami ohio": "miami oh",
+  "fla international": "florida international",
+  "central florida ucf": "ucf",
+  "louisianamonroe ulm": "ul monroe",
+  "louisiana lafayette": "louisiana",
+  "miss valley state": "mississippi valley state",
+  "se missouri state": "southeast missouri state",
+  "army west point": "army",
+  "connecticut": "uconn",
+  "mississippi": "ole miss",
+  "southern california": "usc",
+  "appalachian state": "app state",
+  "sam houston state": "sam houston",
+  "monmouth nj": "monmouth",
+  "albany ny": "ualbany",
+  "tennessee martin": "ut martin",
+  "sc state": "south carolina state",
+  "cal poly slo": "cal poly",
+  "mcneese state": "mcneese",
+  "st thomas mn": "st thomas",
+  "ark pine bluff": "arkansas pine bluff",
+  "liu post": "long island university",
+  "stonehill college": "stonehill",
+  "grambling state": "grambling",
+  "nc central": "north carolina central",
+  "nc at": "north carolina at",
+  "southern u": "southern",
+  "nicholls state": "nicholls",
+  "presbyterian college": "presbyterian"
+};
+
+function normalizeName(s) {
+  return String(s)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.'&]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
 function main() {
   try {
     const ratings = JSON.parse(fs.readFileSync('data/ratings.json', 'utf8'));
     const espn = JSON.parse(fs.readFileSync('data/espn-games.json', 'utf8'));
     const resume = JSON.parse(fs.readFileSync('data/resume-weights.json', 'utf8'));
 
-    // Build ESPN id -> Sagarin team mapping (same as core.js)
+    // Build ESPN id -> Sagarin team mapping (same as core.js, WITH aliases)
     const teams = ratings.teams;
     const espnTeams = espn.teams || [];
     const espnGames = espn.games || [];
@@ -337,15 +381,16 @@ function main() {
     var idx = {};
     espnTeams.forEach(function (t) {
       [t.location, t.name, t.displayName].forEach(function (v) {
-        var k = (v || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.'&]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+        var k = normalizeName(v || "");
         if (k && !idx[k]) idx[k] = t;
       });
     });
 
     var espnIdToSag = {};
     teams.forEach(function (st) {
-      var k = st.team.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[.'&]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
-      var et = idx[k];
+      var k = normalizeName(st.team);
+      var alias = TeamAlias[k];
+      var et = idx[k] || (alias ? idx[alias] : null);
       if (et) espnIdToSag[et.id] = st;
     });
 
