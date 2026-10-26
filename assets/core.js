@@ -958,9 +958,11 @@ SG.DIVISIONS = window.TeamDivisions || {};
       loadJson(SG.TV_URL).catch(function () { return null; }),
       loadJson(SG.RESUME_URL).catch(function () { return null; }),
       loadJson(SG.SIM12_URL).catch(function () { return null; }),
-      loadJson(SG.SIM24_URL).catch(function () { return null; })
+      loadJson(SG.SIM24_URL).catch(function () { return null; }),
+      loadJson("data/sim-12-" + (document.getElementById("playoffMethod") ? document.getElementById("playoffMethod").value : "predictor") + ".json").catch(function () { return null; }),
+      loadJson("data/sim-24-" + (document.getElementById("playoffMethod") ? document.getElementById("playoffMethod").value : "predictor") + ".json").catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6], sim12: res[7], sim24: res[8] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6], sim12: res[7], sim24: res[8], sim12Method: res[9], sim24Method: res[10] };
     });
   }
 
@@ -997,6 +999,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.resume = res.resume || null;
       SG.state.sim12 = res.sim12 || null;
       SG.state.sim24 = res.sim24 || null;
+      SG.state.sim12Method = res.sim12Method || null;
+      SG.state.sim24Method = res.sim24Method || null;
       if (ratingsChanged) {
         var changed = !!SG.state.data;
         SG.state.data = json;
@@ -1075,6 +1079,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.resume = res.resume || null;
       SG.state.sim12 = res.sim12 || null;
       SG.state.sim24 = res.sim24 || null;
+      SG.state.sim12Method = res.sim12Method || null;
+      SG.state.sim24Method = res.sim24Method || null;
       SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();

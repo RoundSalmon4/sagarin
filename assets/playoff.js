@@ -707,10 +707,10 @@
     var box = document.getElementById("bubbleTable");
     if (!box) return;
     var fmt = Number(view.format || 12);
-    // Use server-loaded simulation data (from run-sim.yml workflow)
-    var sim = (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
+    var fmtMethodSim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
+    var sim = fmtMethodSim || (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
-      box.innerHTML = '<thead><tr><th class="left">#</th><th class="left">Team</th><th class="left">Conference</th><th class="left">Now</th><th class="left proj-col">Chance</th><th class="rating-col" style="color: var(--accent);">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
+      box.innerHTML = '<thead><tr><th class="left" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
       return;
     }
     // Field teams = the CURRENT PROJECTED FIELD (12 or 24 teams from view.field.seeds)
@@ -728,7 +728,7 @@
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
-    var header = '<thead><tr><th class="left">#</th><th class="left">Team</th><th class="left">Conference</th><th class="left">Now</th><th class="left proj-col">Chance</th><th class="rating-col" style="color: var(--accent);">' + SG.esc(methodLabel) + '</th><th class="left bid-col">Runs</th></tr></thead>';
+    var header = '<thead><tr><th class="left" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
     var DEFAULT_SHOW = 5;
     var initial = bubble.slice(0, DEFAULT_SHOW);
     var remaining = bubble.slice(DEFAULT_SHOW);

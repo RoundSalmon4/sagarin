@@ -397,19 +397,27 @@ function main() {
     // Home edges per method
     var homeEdges = ratings.meta && ratings.meta.homeAdvantage ? ratings.meta.homeAdvantage : {};
 
-    // Run for predictor method only (default on site)
-    const method = "predictor";
-    if (!homeEdges[method]) {
-      console.error(`No home edge for method: ${method}`);
-      process.exit(1);
-    }
-
+    const methods = ["rating", "predictor", "goldenMean", "recent", "strongRecent"];
     [12, 24].forEach(function (format) {
-      console.log(`Running simulation: ${format}-team, ${method}...`);
-      const result = computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdges[method]);
-      const outFile = format === 12 ? 'data/sim-12.json' : 'data/sim-24.json';
-      fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
-      console.log(`Wrote ${outFile} with field chances for ${Object.keys(result.field).length} teams`);
+      methods.forEach(function (method) {
+        if (!homeEdges[method]) {
+          console.log(`Skipping method: ${method} (no home edge)`);
+          return;
+        }
+        console.log(`Running simulation: ${format}-team, ${method}...`);
+        const result = computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdges[method]);
+        const outFile = `data/sim-${format}-${method}.json`;
+        fs.writeFileSync(outFile, JSON.stringify(result, null, 2));
+        console.log(`Wrote ${outFile} with field chances for ${Object.keys(result.field).length} teams`);
+      });
+    });
+
+    // Also write predictor-only copies for backward compatibility (watchability / core loader)
+    [12, 24].forEach(function (format) {
+      const method = "predictor";
+      const fileName = format === 12 ? 'data/sim-12.json' : 'data/sim-24.json';
+      fs.renameSync(`data/sim-${format}-${method}.json`, fileName);
+      console.log(`Renamed predictor result to ${fileName}`);
     });
 
   } catch (e) {
