@@ -707,6 +707,7 @@
     var box = document.getElementById("bubbleTable");
     if (!box) return;
     var fmt = view.format || 12;
+    // Use server-loaded simulation data (from run-sim.yml workflow), not local simulation
     var sim = (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
       box.innerHTML = '<thead><tr><th>#</th><th>Team</th><th>Chance</th><th>Runs</th><th>Conf</th><th>Rating</th><th>Now</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
