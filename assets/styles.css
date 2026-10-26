@@ -415,7 +415,7 @@ input[type="search"] { min-width: 240px; }
 .watch-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.7rem 0.8rem; box-shadow: var(--shadow); }
 .watch-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
 .watch-score { display: inline-block; min-width: 2.1rem; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--accent-ink); background: var(--accent); border-radius: 6px; padding: 0.05rem 0.4rem; }
-.watch-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); }
+.watch-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.3px; color: var(--muted); overflow-wrap: break-word; word-break: break-word; }
 .watch-tier { font-size: 0.7rem; font-weight: 700; color: var(--accent); }
 .watch-match { font-weight: 600; font-size: 0.9rem; }
 .watch-meta { color: var(--muted); font-size: 0.78rem; margin-top: 0.25rem; }
