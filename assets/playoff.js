@@ -894,9 +894,10 @@
           if (fmt === 12) SG.state.sim12Method = data; else SG.state.sim24Method = data;
         });
       }
-      loadSim("data/sim-12-" + view.method + ".json", 12);
-      loadSim("data/sim-24-" + view.method + ".json", 24);
-      render();
+      Promise.all([
+        loadSim("data/sim-12-" + view.method + ".json", 12),
+        loadSim("data/sim-24-" + view.method + ".json", 24)
+      ]).then(function () { render(); });
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
     render();
