@@ -713,9 +713,18 @@
       box.innerHTML = '<thead><tr><th>#</th><th>Team</th><th>Chance</th><th>Runs</th><th>Conf</th><th>Rating</th><th>Now</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
       return;
     }
-    var fieldTeams = Object.keys(sim.field || {});
+    // Field teams = the CURRENT PROJECTED FIELD (12 or 24 teams from view.field.seeds)
+    // NOT all teams in sim.field (which includes bubble teams with non-zero chances)
+    var projectedFieldTeams = {};
+    if (view.field && view.field.seeds) {
+      for (var i = 1; i < view.field.seeds.length; i++) {
+        projectedFieldTeams[view.field.seeds[i].team] = true;
+      }
+    }
+    // All teams with simulation chances (from server-loaded sim data)
     var all = Object.keys(sim.field || {}).map(function(name) { return { name: name, c: sim.field[name], pct: sim.field[name] / (sim.n || 10000) }; });
-    var bubble = all.filter(function(r) { return fieldTeams.indexOf(r.name) === -1; })
+    // Bubble = teams with chances that are NOT in the projected field
+    var bubble = all.filter(function(r) { return !projectedFieldTeams[r.name]; })
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
     var header = '<thead><tr><th>#</th><th>Team</th><th>Chance</th><th>Runs</th><th>Conf</th><th>Rating</th><th>Now</th></tr></thead>';
