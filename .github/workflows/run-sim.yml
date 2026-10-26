@@ -1,5 +1,8 @@
 name: Run playoff simulation
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "0 11 * * 0"  # Sunday 11:00 UTC (after Sunday 09:00 update-data)
@@ -15,9 +18,9 @@ jobs:
           node-version: "20"
       - name: Write sim output
         run: node scripts/run-sim.js
-      - name: Commit if changed
+      - name: Commit and push when changed
         run: |
           git add data/sim-12.json
-          git diff --cached --quiet && echo "no change" && exit 0
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git -c user.name="roundsalmon4" -c user.email="209016228+RoundSalmon4@users.noreply.github.com" commit -m "Update simulation results (weekly)"
-          echo "Committed; push requires PAT (do not commit secret to repo)"
+          git push
