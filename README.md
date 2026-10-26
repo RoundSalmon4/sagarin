@@ -33,12 +33,17 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   sort by kickoff or by watchability. A "Games to watch" board ranks the best matchups on
   projected closeness (market line when posted, otherwise the Sagarin margin), combined team
   rating, what the game could do to the projected playoff field, and a curated rivalry list,
-  then labels each game from Background through Must watch. The board is split into the four
-  usual kickoff windows (early afternoon, afternoon, evening, late night, judged in the
-  selected time zone, local by default), showing the best few per window so the picks are not
-  all in one slot. The picks are
-  the same either way, but with the sort set to kickoff they are listed in kickoff order
-  rather than by watch score.
+  then labels each game from Background through Must watch. The board is split into five
+  sections: **Non-Saturday games** (all Friday/Thursday/Wednesday/Tuesday/Monday/Sunday games
+  combined), then the four usual Saturday kickoff windows (early afternoon, afternoon, evening,
+  late night, judged in the selected time zone, local by default). Each section shows the
+  best few games per window so the picks are not all in one slot. Games below a 35 watch
+  score are not shown; each section shows at most 3 games.
+
+  Watch score formula: **38% closeness** (market line when posted, otherwise Sagarin margin),
+  **25% playoff stakes**, **15% team quality**, **12% rivalry**, **8% division race** (only for
+  same-division matchups, using projected division standings from the playoff module).
+  Non-division games renormalize weights (92% → 100%).
 - **Playoff Predictor tab** - a projected CFP field built from the ratings. Conference
   champions come from projected final conference records (real results for games played,
   predicted winners for the rest); in the 12-team field the top two play a projected title
@@ -60,6 +65,20 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   projected title games 10,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
+
+  **Simulation data is shared with the Sim Deep Dive tab**: running a simulation in either
+  tab makes the results available in the other tab for the same format (12-team or 24-team).
+  Running the simulation in either tab stores the run in a shared per-format object, so you
+  never need to re-run the same format on the other tab.
+
+- **Sim Deep Dive tab** - analyze the Monte Carlo simulation results with filters. Each filter
+  row represents an AND condition; rows combine with AND/OR logic. Filters include team,
+  conference champion, overall/conf record, in field, champion, and the new division/CCG
+  race parameters. Results are grouped by unique outcome and sorted by frequency. Team names
+  in outcome cards link to a distribution modal showing seed distribution, round reached,
+  and bid type distributions across all runs. Clicking a seed/round/bid in the modal applies
+  that filter to the main view.
+
 - **Head to Head tab** - choose an away team and a home team and a rating method. The page
   puts the projection and the comparison in a left column and the polls in a right column,
   with the last five and the standings under the comparison on the left. The projection gives
@@ -282,9 +301,11 @@ these sources:
 - **The Internet Archive Wayback Machine** - used to backfill older weekly snapshots.
 
 None of this is a redistribution of Sagarin, ESPN or AP content for its own sake; it is a
-reading tool over numbers that are already public. The team-name aliases and the rivalry
-list are hand-built for this project. If you own any of the material above and want a
-change, open an issue.
+reading tool over numbers that are already public. The team-name aliases, the rivalry
+list (updated with ~22 missing FBS rivalries including SEC, Big Ten, Big 12, Sun Belt,
+and AAC matchups), and the division data (updated for 2026: Big Ten/ACC divisions removed,
+SEC/MAC/Mountain West/Sun Belt active) are hand-built for this project. If you own any of
+the material above and want a change, open an issue.
 
 ## Layout
 
@@ -293,6 +314,7 @@ index.html                the page
 assets/parser.js          shared Sagarin parser, works in node and the browser
 assets/team-alias.js      Sagarin to ESPN team name aliases, shared with the scripts
 assets/rivalries.js       curated rivalry pairs for the games-to-watch score
+assets/divisions.js       FBS team division assignments (2026: SEC/MAC/MW/Sun Belt)
 assets/core.js            state, theme, table engine, teams/conferences/matchup
 assets/predictions.js     Predictions_with_Totals_and_Moneylines views
 assets/schedule.js        schedule predictor, reads the ESPN data file
