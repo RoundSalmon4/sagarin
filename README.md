@@ -239,7 +239,7 @@ for the committee rankings once they start. It writes `data/ap-poll.json` with a
 The CFP poll drives the site from the moment it appears (the AP badge, column, sort and TV
 scope all switch to CFP); before that the AP poll does. It runs from its own Action
 (`.github/workflows/update-ap.yml`). The AP and Coaches polls come out Sunday afternoons at
-2 p.m. Eastern during the season, so the Action runs Sunday at 20:00 UTC, which covers both
+2 p.m. Eastern during the season, so the Action runs Sunday at 19:00 UTC, which covers both
 EDT and EST, with a Monday safety run. The CFP rankings start on Tuesday nights in November,
 so a Wednesday morning run picks those up.
 
@@ -261,11 +261,10 @@ only a what-if, not an official ranking.
 
 Timing note: the live file returned `Last-Modified: Sun, 18 Oct 2026 14:21:24 GMT` (and a
 matching Apache ETag), and Sagarin has posted on Sundays for years. The Action runs at
-17:00 UTC on Sunday to sit after that.
+09:00 UTC on Sunday to sit after that.
 
 The page loads the data files and polls them every ten minutes. When a signature changes
-it rebuilds in place, so a tab left open picks up new numbers on its own. There is also a
-"Check for updates" button.
+it rebuilds in place, so a tab left open picks up new numbers on its own.
 
 ## Sources and attribution
 
