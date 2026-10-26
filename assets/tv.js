@@ -72,7 +72,7 @@
         .sort(function (x, y) { return y[METHOD] - x[METHOD]; });
     }
     var n = 0;
-    for (var i = 0; i < ranked.length && n < 10; i++) {
+    for (var i = 0; i < ranked.length && n < 20; i++) {
       if (!ctx.field[ranked[i].team]) { ctx.bubble[ranked[i].team] = true; n++; }
     }
 
@@ -135,9 +135,12 @@
     var stakes = 0;
 
     // --- Playoff stakes (refined) ---
-    // Base stakes from field/bubble status
-    if (inA && inB) {
-      // Both in field - check if outcome affects playoff picture
+    // Use committed simulation file if available; fall back to deterministic projection
+    var storedSim = (SG.state.sim && SG.state.sim.field) ? SG.state.sim : null;
+    var inFieldA = storedSim ? !!storedSim.field[na] : inA;
+    var inFieldB = storedSim ? !!storedSim.field[nb] : inB;
+    // Base stakes from field/bubble status (deterministic or stored sim)
+    if (inFieldA && inFieldB) {
       if (!bubA && !bubB) {
         stakes = 0.3; // Both locks - minimal field impact
       } else if (bubA && bubB) {
@@ -145,11 +148,11 @@
       } else {
         stakes = 0.75; // One lock, one bubble
       }
-    } else if ((inA && bubB) || (inB && bubA)) {
+    } else if ((inFieldA && bubB) || (inFieldB && bubA)) {
       stakes = 0.75;
     } else if (bubA && bubB) {
       stakes = 0.55;
-    } else if (inA || inB) {
+    } else if (inFieldA || inFieldB) {
       stakes = 0.4;
     } else if (bubA || bubB) {
       stakes = 0.25;
@@ -158,9 +161,9 @@
     }
 
     // Top-4 seed bonus: if either team has non-trivial top-4 chance and game affects seeding
-    if (a && b && inA && inB && !bubA && !bubB) {
-      // Both locks - check top-4 implications from sim data
-      var sim = SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view && SG.state.modules.playoff.view.sim ? SG.state.modules.playoff.view.sim : null;
+    if (a && b && inFieldA && inFieldB && !bubA && !bubB) {
+      // Both locks - check top-4 implications from sim data (only if sim has run)
+      var sim = (SG.state.modules && SG.state.modules.playoff && SG.state.modules.playoff.view && SG.state.modules.playoff.view.sim) ? SG.state.modules.playoff.view.sim : null;
       if (sim && sim.debugRuns) {
         var teamA = na, teamB = nb;
         var top4A = 0, top4B = 0;
@@ -275,8 +278,8 @@
     var reason;
     if (ccgImplications > 0 && rival) reason = "Rivalry, CCG implications";
     else if (ccgImplications > 0) reason = "Conference championship implications";
-    else if (inA && inB && rival) reason = "Rivalry, playoff stakes";
-    else if (inA && inB) reason = "Playoff clash";
+    else if (inFieldA && inFieldB && rival) reason = "Rivalry, playoff stakes";
+    else if (inFieldA && inFieldB) reason = "Playoff clash";
     else if (rival) reason = "Rivalry";
     else if ((inA || inB) && closeness > 0.5) reason = "Elimination watch";
     else if (bubA && bubB) reason = "Bubble watch";

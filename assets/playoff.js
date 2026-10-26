@@ -643,6 +643,7 @@
     view.field = field;
     renderField(field);
     renderCcg(Number(view.format) === 12 ? ccgMatchups(view.method) : null, view.bracketMode === "results");
+    renderBubble();
 
     if (view.bracketMode === "results") {
       var result = runOnce(field.seeds, view.format, view.method, false);
@@ -699,6 +700,29 @@
         }
       });
     });
+  }
+
+  function renderBubble() {
+    var box = document.getElementById("bubbleTable");
+    if (!box) return;
+    var storedSim = SG.state.sim || null;
+    var sim = storedSim || (view.sim ? view.sim[view.format] : null);
+    if (!sim || !sim.field) {
+      box.querySelector("tbody").innerHTML = '<tr><td colspan="4">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr>';
+      box.querySelector("thead").innerHTML = '<tr><th>Team</th><th>Chance to make field</th><th>Conference</th></tr>';
+      return;
+    }
+    var counts = sim.field;
+    var sorted = Object.keys(counts).map(function(name) { return { name: name, c: counts[name], pct: counts[name] / sim.n }; })
+      .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
+      .slice(0, 20);
+    var max = sorted.length ? Math.max.apply(null, sorted.map(function(r) { return r.c; })) : 1;
+    var thead = '<thead><tr><th>Team</th><th>Chance to make field</th><th>Runs in field</th></tr></thead>';
+    var tbody = '<tbody>' + sorted.map(function(r) {
+      var pctStr = (r.pct * 100).toFixed(1) + "%";
+      return '<tr><td>' + SG.esc(r.name) + '</td><td>' + pctStr + '</td><td>' + r.c.toLocaleString() + '</td></tr>';
+    }).join("") + '</tbody>';
+    box.innerHTML = thead + tbody;
   }
 
   // ---- full-season simulation ----
@@ -832,6 +856,7 @@
     simContext: simContext,
     ccgOutcomes: ccgOutcomes,
     fieldFromRecords: fieldFromRecords,
+    divisionStandings: SG.state.modules.playoff.divisionStandings,
     runOnce: runOnce,
 };
 
@@ -850,6 +875,44 @@
     var fin = cloneRecords(reg);
     foldCcg(fin, ccgs);
     return { reg: reg, final: fin, ccgs: ccgs, order: conferenceOrder(method, reg) };
+  };
+
+  // Division standings for the TV watch-score (same-division CCG/division-race implications)
+  SG.state.modules.playoff.divisionStandings = function (method) {
+    method = method || view.method;
+    var reg = projectedRecords(method);
+    var divMap = (typeof window !== "undefined" && window.TeamDivisions) ? window.TeamDivisions : {};
+    var out = {};
+    // Group by conference, then division, computing cwp from projected records
+    var confDiv = {};
+    fbs().forEach(function (t) {
+      var conf = mergeConf(t.conference);
+      var div = divMap[t.team] || "None";
+      if (!confDiv[conf]) confDiv[conf] = {};
+      if (!confDiv[conf][div]) confDiv[conf][div] = [];
+      confDiv[conf][div].push(t);
+    });
+    Object.keys(confDiv).forEach(function (conf) {
+      var confDivObj = confDiv[conf];
+      out[conf] = {};
+      Object.keys(confDivObj).forEach(function (div) {
+        if (div === "None") return;
+        var teams = confDivObj[div];
+        var standings = teams.map(function (t) {
+          var r = reg[t.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
+          var cwp = (r.cw + r.cl) ? r.cw / (r.cw + r.cl) : 0;
+          return { team: t.team, cwp: cwp, cw: r.cw, cl: r.cl };
+        }).sort(function (a, b) { return b.cwp - a.cwp || b.cw - a.cw; });
+        var leader = standings[0] ? standings[0].team : null;
+        var contenders = standings.slice(1, 3).map(function (s) { return s.team; });
+        out[conf][div] = {
+          leader: leader,
+          contenders: contenders,
+          teams: standings
+        };
+      });
+    });
+    return out;
   };
 
 

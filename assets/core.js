@@ -13,6 +13,7 @@
   SG.BCS_URL = "data/bcs.json";
   SG.TV_URL = "data/tv-games.json";
   SG.RESUME_URL = "data/resume-weights.json";
+  SG.SIM_URL = "data/sim-12.json";
   SG.POLL_MS = 10 * 60 * 1000;
   SG.SIGMA = 15.5;
   SG.ALIAS = window.TeamAlias || {};
@@ -954,9 +955,10 @@ SG.DIVISIONS = window.TeamDivisions || {};
       loadJson(SG.AP_URL).catch(function () { return null; }),
       loadJson(SG.BCS_URL).catch(function () { return null; }),
       loadJson(SG.TV_URL).catch(function () { return null; }),
-      loadJson(SG.RESUME_URL).catch(function () { return null; })
+      loadJson(SG.RESUME_URL).catch(function () { return null; }),
+      loadJson(SG.SIM_URL).catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6], sim: res[7] };
     });
   }
 
@@ -989,6 +991,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.tvSig = res.tv && res.tv.signature;
       var resumeChanged = JSON.stringify(res.resume) !== JSON.stringify(SG.state.resume);
       SG.state.resume = res.resume || null;
+      SG.state.sim = res.sim || null;
       if (ratingsChanged) {
         var changed = !!SG.state.data;
         SG.state.data = json;
@@ -1065,6 +1068,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
       SG.state.resume = res.resume || null;
+      SG.state.sim = res.sim || null;
       SG.buildMapping();
       SG.populateConfFilter();
       SG.fillTeamSelects();
