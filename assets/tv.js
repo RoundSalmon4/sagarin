@@ -132,14 +132,12 @@
 
     var inA = !!ctx.field[na], inB = !!ctx.field[nb];
     var bubA = !!ctx.bubble[na], bubB = !!ctx.bubble[nb];
+    var stakes = 0;
 
     // --- Playoff stakes (refined) ---
     // Base stakes from field/bubble status
-    var baseStakes;
     if (inA && inB) {
       // Both in field - check if outcome affects playoff picture
-      var aBubble = bubA, bBubble = bubB;
-      // If both locks (in field but not bubble), stakes depend on top-4 implications
       if (!bubA && !bubB) {
         stakes = 0.3; // Both locks - minimal field impact
       } else if (bubA && bubB) {
