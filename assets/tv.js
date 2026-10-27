@@ -477,15 +477,15 @@
       var arr = nonSaturdayGames.slice().sort(function (a, b) {
         return score(b, curCtx).value - score(a, curCtx).value;
       });
+      // Minimum score threshold of 35
+      arr = arr.filter(function (g) { return score(g, curCtx).value >= 35; });
+      arr = arr.slice(0, PER_WINDOW);
       if (watchSort) {
         arr.sort(function (a, b) {
           if (a.date !== b.date) return a.date < b.date ? -1 : 1;
           return score(b, curCtx).value - score(a, curCtx).value;
         });
       }
-      // Minimum score threshold of 35
-      arr = arr.filter(function (g) { return score(g, curCtx).value >= 35; });
-      arr = arr.slice(0, PER_WINDOW);
       html += '<div class="watch-window"><h4 class="watch-window-title">Non-Saturday games</h4><div class="watch-grid">';
       html += arr.map(function (g) {
         var s = score(g, curCtx);
