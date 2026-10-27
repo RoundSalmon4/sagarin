@@ -373,6 +373,7 @@ function main() {
     const espn = JSON.parse(fs.readFileSync('data/espn-games.json', 'utf8'));
     const resume = JSON.parse(fs.readFileSync('data/resume-weights.json', 'utf8'));
     const bcs = JSON.parse(fs.readFileSync('data/bcs.json', 'utf8')) || null;
+    const fpi = JSON.parse(fs.readFileSync('data/fpi.json', 'utf8')) || null;
 
     // Build ESPN id -> Sagarin team mapping (same as core.js, WITH aliases)
     const teams = ratings.teams;
@@ -410,6 +411,9 @@ function main() {
         // Attach BCS reference for predictor/sim use (strict-Sagarin data excluded from Teams/Conferences)
         if (bcs && bcs.ranks) {
           result.bcs = { source: bcs.source, fetched_at: bcs.fetched_at, signature: bcs.signature, top3: bcs.ranks.slice(0,3).map(function(r){ return { rank: r.rank, team: r.team, score: r.score }; }) };
+        }
+        if (fpi && fpi.ranks) {
+          result.fpi = { source: fpi.source, fetched_at: fpi.fetched_at, signature: fpi.signature, top3: fpi.ranks.slice(0,3).map(function(r){ return { rank: r.rank, team: r.team, score: r.score }; }) };
         }
         const outFile = `data/sim-${format}-${method}.json`;
         fs.writeFileSync(outFile, JSON.stringify(result, null, 2));

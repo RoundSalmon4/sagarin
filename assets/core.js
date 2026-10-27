@@ -11,6 +11,7 @@
   SG.LOGOS_URL = "data/logos.json";
   SG.AP_URL = "data/ap-poll.json";
   SG.BCS_URL = "data/bcs.json";
+  SG.FPI_URL = "data/fpi.json";
   SG.TV_URL = "data/tv-games.json";
   SG.RESUME_URL = "data/resume-weights.json";
   SG.SIM12_URL = "data/sim-12.json";
@@ -27,6 +28,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
     ap: null,
     bcs: null,
     bcsSig: null,
+    fpi: null,
+    fpiSig: null,
     tv: null,
     resume: null,
     sagToEspn: null,
@@ -191,6 +194,12 @@ SG.DIVISIONS = window.TeamDivisions || {};
   SG.bcsOf = function (name) {
     var bcs = SG.state.bcs;
     return bcs && bcs.teams && bcs.teams[name] ? bcs.teams[name] : null;
+  };
+
+  // ESPN FPI reference for predictor/sim/head-to-head (not strict-Sagarin data)
+  SG.fpiOf = function (name) {
+    var fpi = SG.state.fpi;
+    return fpi && fpi.byTeam && fpi.byTeam[name] ? fpi.byTeam[name] : null;
   };
 
   SG.apBadge = function (name) {
@@ -945,6 +954,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       loadJson(SG.LOGOS_URL).catch(function () { return null; }),
       loadJson(SG.AP_URL).catch(function () { return null; }),
       loadJson(SG.BCS_URL).catch(function () { return null; }),
+      loadJson(SG.FPI_URL).catch(function () { return null; }),
       loadJson(SG.TV_URL).catch(function () { return null; }),
       loadJson(SG.RESUME_URL).catch(function () { return null; }),
       loadJson(SG.SIM12_URL).catch(function () { return null; }),
@@ -952,7 +962,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       loadJson("data/sim-12-" + (document.getElementById("playoffMethod") ? document.getElementById("playoffMethod").value : "predictor") + ".json").catch(function () { return null; }),
       loadJson("data/sim-24-" + (document.getElementById("playoffMethod") ? document.getElementById("playoffMethod").value : "predictor") + ".json").catch(function () { return null; })
     ]).then(function (res) {
-      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], tv: res[5], resume: res[6], sim12: res[7], sim24: res[8], sim12Method: res[9], sim24Method: res[10] };
+      return { data: res[0], espn: res[1], logos: res[2], ap: res[3], bcs: res[4], fpi: res[5], tv: res[6], resume: res[7], sim12: res[8], sim24: res[9], sim12Method: res[10], sim24Method: res[11] };
     });
   }
 
@@ -973,6 +983,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       var ratingsChanged = !SG.state.data || json.signature !== SG.state.data.signature;
       var apChanged = (res.ap && res.ap.signature) !== SG.state.apSig;
       var bcsChanged = (res.bcs && res.bcs.signature) !== SG.state.bcsSig;
+      var fpiChanged = (res.fpi && res.fpi.signature) !== SG.state.fpiSig;
       var tvChanged = (res.tv && res.tv.signature) !== SG.state.tvSig;
       SG.state.espn = res.espn;
       SG.prepareLogos(res.logos);
@@ -980,6 +991,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.apSig = res.ap && res.ap.signature;
       SG.state.bcs = res.bcs;
       SG.state.bcsSig = res.bcs && res.bcs.signature;
+      SG.state.fpi = res.fpi;
+      SG.state.fpiSig = res.fpi && res.fpi.signature;
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
@@ -1005,8 +1018,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
         SG.renderStatus(changed);
       } else {
         SG.buildMapping();
-        if (apChanged || bcsChanged) { SG.renderTeams(); SG.renderMatchup(); }
-        if (apChanged || bcsChanged || tvChanged || resumeChanged || sim12Changed || sim24Changed) SG.refreshModules();
+        if (apChanged || bcsChanged || fpiChanged) { SG.renderTeams(); SG.renderMatchup(); }
+        if (apChanged || bcsChanged || fpiChanged || tvChanged || resumeChanged || sim12Changed || sim24Changed) SG.refreshModules();
         if (manual) {
           SG.renderStatus(false);
           document.getElementById("dataStatus").textContent += " - no changes";
@@ -1063,6 +1076,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       SG.state.apSig = res.ap && res.ap.signature;
       SG.state.bcs = res.bcs;
       SG.state.bcsSig = res.bcs && res.bcs.signature;
+      SG.state.fpi = res.fpi;
+      SG.state.fpiSig = res.fpi && res.fpi.signature;
       SG.syncRankLabels();
       SG.state.tv = res.tv;
       SG.state.tvSig = res.tv && res.tv.signature;
