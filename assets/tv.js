@@ -5,7 +5,7 @@
   "use strict";
   var SG = window.SG;
 
-  var scope = "ap";        // all | ap | conf | team
+  var scope = SG.rankLabel() === "CFP" ? "cfp" : "ap";        // all | ap | conf | team (switches to cfp when CFP is active)
   var group = "";          // "" | P4 | G6 | IND
   var conf = "";
   var search = "";
@@ -298,7 +298,7 @@
     var a = sag(g.awayId), b = sag(g.homeId);
     if (group && (a ? SG.confGroup(a) : "") !== group && (b ? SG.confGroup(b) : "") !== group) return false;
     if (scope === "all") return true;
-    if (scope === "ap") return !!(a && SG.apRank(a.team)) || !!(b && SG.apRank(b.team));
+    if (scope === "ap" || scope === "cfp") return !!(a && SG.apRank(a.team)) || !!(b && SG.apRank(b.team));
     if (scope === "conf") {
       if (!conf) return true;
       return (a && SG.mergeConf(a.conference) === conf) || (b && SG.mergeConf(b.conference) === conf);
