@@ -8,7 +8,7 @@
  * - SEC: East/West (active)
  * - MAC: East/West (active)
  * - Sun Belt: East/West (active)
- * - Mountain West: No divisions (eliminated 2026)
+ * - Mountain West: Mountain/West (active)
  * - Big Ten: No divisions (eliminated 2024)
  * - ACC: No divisions (eliminated 2023)
  * - Big 12: No divisions (eliminated 2023)
@@ -55,6 +55,18 @@
     "Western Michigan": "West",
     "Ball State": "West",
 
+    // Mountain West - Mountain/West (2026)
+    "Air Force": "Mountain",
+    "New Mexico": "Mountain",
+    "Wyoming": "Mountain",
+    "Hawaii": "West",
+    "Nevada": "West",
+    "UNLV": "West",
+    "North Dakota State": "West",
+    "San Jose State": "West",
+    "UTEP": "West",
+    "Northern Illinois": "West",
+
     // Sun Belt - East/West (active)
     "Appalachian State": "East",
     "Coastal Carolina": "East",
@@ -72,7 +84,6 @@
     "Troy": "West"
 
     // Note: These conferences have NO divisions in 2026:
-    // Mountain West (eliminated 2026)
     // Big Ten (eliminated 2024)
     // ACC (eliminated 2023)
     // Big 12 (eliminated 2023)
