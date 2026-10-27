@@ -399,7 +399,7 @@ function main() {
     // Home edges per method
     var homeEdges = ratings.meta && ratings.meta.homeAdvantage ? ratings.meta.homeAdvantage : {};
 
-    const methods = ["rating", "predictor", "goldenMean", "recent", "strongRecent"];
+    const methods = ["rating", "predictor", "goldenMean", "recent", "strongRecent", "fpi"];
     [12, 24].forEach(function (format) {
       methods.forEach(function (method) {
         if (!homeEdges[method]) {
