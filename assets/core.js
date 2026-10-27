@@ -119,7 +119,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
       predictor: "PREDICTOR",
       goldenMean: "GOLDEN_MEAN",
       recent: "RECENT",
-      strongRecent: "STRONG_RECENT"
+      strongRecent: "STRONG_RECENT",
+      fpi: "ESPN FPI"
     }[m];
   };
 

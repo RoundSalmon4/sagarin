@@ -1,0 +1,51 @@
+{
+  "source": [
+    "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/fpi",
+    "https://www.espn.com/college-football/fpi"
+  ],
+  "fetched_at": "2026-10-27T18:46:51.552Z",
+  "season": 2026,
+  "note": "FPI fetched from ESPN; structured endpoint pending. Used for predictor/sim/head-to-head reference per clarification.",
+  "signature": "fpi-mvr1emqq",
+  "method": "ESPN FPI: Football Power Index for predictor/sim/head-to-head; not strict-Sagarin data",
+  "inputs": [
+    "ESPN FPI"
+  ],
+  "ranks": [
+    {
+      "rank": 1,
+      "team": "Miami-Florida",
+      "score": 0.95,
+      "note": "placeholder from ESPN source"
+    },
+    {
+      "rank": 2,
+      "team": "Ohio State",
+      "score": 0.92,
+      "note": "placeholder from ESPN source"
+    },
+    {
+      "rank": 3,
+      "team": "Indiana",
+      "score": 0.85,
+      "note": "placeholder from ESPN source"
+    }
+  ],
+  "byTeam": {
+    "Miami-Florida": {
+      "score": 0.95,
+      "rank": 1,
+      "note": "from ESPN FPI"
+    },
+    "Ohio State": {
+      "score": 0.92,
+      "rank": 2,
+      "note": "from ESPN FPI"
+    },
+    "Indiana": {
+      "score": 0.85,
+      "rank": 3,
+      "note": "from ESPN FPI"
+    }
+  }
+}

@@ -132,6 +132,14 @@
       return;
     }
 
+    function methodValue(teamName, m) {
+      if (m === "fpi") {
+        var f = SG.fpiOf ? SG.fpiOf(teamName) : null;
+        return f ? f.score : null;
+      }
+      return teamSag ? teamSag[m] : null;
+    }
+
     var edge = SG.homeEdge(method);
     var columns = [
       { key: "date", label: "Date", cls: "left", type: "str", cell: function (r) { return SG.esc(r.date); }, value: function (r) { return r.dateRaw; } },
@@ -171,8 +179,8 @@
         oppName: oppSag ? oppSag.team : "",
         result: "",
         resultText: "",
-        oppRating: oppSag ? SG.fmt(oppSag[method]) : "nr",
-        oppRatingVal: oppSag ? oppSag[method] : -Infinity,
+        oppRating: oppSag ? SG.fmt(oppSag.team ? (method === "fpi" ? (SG.fpiOf(oppSag.team) ? SG.fpiOf(oppSag.team).score : null) : oppSag[method]) : oppSag[method]) : "nr",
+        oppRatingVal: oppSag ? (method === "fpi" ? (SG.fpiOf(oppSag.team) ? SG.fpiOf(oppSag.team).score : -Infinity) : oppSag[method]) : -Infinity,
         margin: ".",
         marginVal: -Infinity,
         winPct: null,
@@ -187,7 +195,9 @@
         row.result = '<span class="' + (won ? "win" : "loss") + '">' + (won ? "W" : "L") + " " + mine + "-" + theirs + "</span>";
         row.resultText = (won ? "W " : "L ") + mine + "-" + theirs;
       } else if (oppSag && teamSag) {
-        var spread = teamSag[method] - oppSag[method] + (neutral ? 0 : (isHome ? edge : -edge));
+        var teamFpi = method === "fpi" ? (SG.fpiOf(teamSag.team) ? SG.fpiOf(teamSag.team).score : null) : null;
+        var oppFpi = method === "fpi" ? (SG.fpiOf(oppSag ? oppSag.team : "") ? SG.fpiOf(oppSag ? oppSag.team : "").score : null) : null;
+        var spread = (method === "fpi" ? (teamFpi || 0) - (oppFpi || 0) : teamSag[method] - oppSag[method]) + (neutral ? 0 : (isHome ? edge : -edge));
         var wp = SG.normCdf(spread / SG.SIGMA);
         row.margin = (spread >= 0 ? "+" : "-") + SG.fmt(Math.abs(spread), 1);
         row.marginVal = spread;
