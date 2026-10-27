@@ -1,0 +1,26 @@
+name: Fetch ESPN FPI
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: "0 10 * * *"  # Daily 10:00 UTC
+  workflow_dispatch:
+
+jobs:
+  fpi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Fetch ESPN FPI
+        run: node scripts/fetch-fpi.js
+      - name: Commit and push when changed
+        run: |
+          git add data/fpi.json
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git -c user.name="roundsalmon4" -c user.email="209016228+RoundSalmon4@users.noreply.github.com" commit -m "Update ESPN FPI (daily)"
+          git -c http.extraHeader="Authorization: Basic $b64" push origin main
