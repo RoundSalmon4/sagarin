@@ -337,11 +337,6 @@ SG.DIVISIONS = window.TeamDivisions || {};
     { key: "goldenMean", label: "GOLDEN_MEAN" },
     { key: "recent", label: "RECENT" },
     { key: "strongRecent", label: "STRONG_RECENT" },
-    { key: "bcs", label: "BCS", type: "num", value: function (t) { var b = SG.bcsOf(t.team); return b ? b.score : -1; },
-      cell: function (t) {
-        var b = SG.bcsOf(t.team);
-        return b ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
-      } },
     { key: "sched", label: "Schedule" },
     { key: "schedRank", label: "Sched Rk" },
     { key: "vs10", label: "vs Top 10", type: "num", value: function (t) { return t.vs10w; }, cell: function (t) { return SG.rec(t.vs10w, t.vs10l); } },
@@ -380,10 +375,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       if (!q) return true;
       return t.team.toLowerCase().indexOf(q) !== -1 || t.conference.toLowerCase().indexOf(q) !== -1;
     });
-    // The BCS column only belongs once the CFP rankings are the poll in use.
-    var cols = SG.rankLabel() === "CFP"
-      ? TEAM_COLUMNS
-      : TEAM_COLUMNS.filter(function (c) { return c.key !== "bcs"; });
+    var cols = TEAM_COLUMNS;
     var sorted = SG.sortRows(filtered, cols, SG.state.teamSort);
     SG.buildHead(table, cols, SG.state.teamSort, function (key) {
       SG.toggleSort(SG.state.teamSort, key, cols);
@@ -822,7 +814,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
     var out = "";
     if (polls.cfp) out += pollTable(polls.cfp, "CFP Rankings");
     else if (polls.ap) out += pollTable(polls.ap, "AP Top 25");
-    if (polls.usa) out += pollTable(polls.usa, "Coaches Poll");
+    if (polls.cfp && polls.ap) out += pollTable(polls.ap, "AP Top 25");
+    else if (polls.usa) out += pollTable(polls.usa, "Coaches Poll");
     return out;
   }
 
