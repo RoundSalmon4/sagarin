@@ -65,12 +65,7 @@ if (!game) {
     // But they're in PAC-12 which has no divisions in 2026
     let ccgImplications = 0;
     let divRace = 0;
-    
-    const margin = Math.abs((b.predictor + 3.8) - a.predictor);
-    const closeness = 1 / (1 + Math.pow(margin / 10, 2));
-    const avg = (a.predictor + b.predictor) / 2;
-    const quality = Math.max(0, Math.min(1, (avg - 55) / 40));
-    
+
     const value = Math.round(100 * (0.35 * (1 / (1 + Math.pow(margin / 10, 2))) + 0.25 * 0.05 + 0.15 * quality + 0.10 * 0 + 0.05 * 0));
     console.log('Watchability score:', value);
     console.log('Margin:', margin.toFixed(1));
