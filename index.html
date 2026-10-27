@@ -293,6 +293,7 @@
             <option value="goldenMean">GOLDEN_MEAN</option>
             <option value="recent">RECENT</option>
             <option value="strongRecent">STRONG_RECENT</option>
+            <option value="fpi">ESPN FPI</option>
           </select>
         </label>
         <div class="matchup-controls">
@@ -341,6 +342,14 @@
         <select id="simdeepFormat" aria-label="Playoff format" style="margin-right: 0.5rem; width: auto; min-width: 120px;">
           <option value="12">12 team (current)</option>
           <option value="24">24 team (proposed 2027)</option>
+        </select>
+        <select id="simdeepMethod" aria-label="Rating method" style="margin-right: 0.5rem; width: auto; min-width: 160px;">
+          <option value="rating">Overall RATING</option>
+          <option value="predictor" selected>PREDICTOR (Pure Points)</option>
+          <option value="goldenMean">GOLDEN_MEAN</option>
+          <option value="recent">RECENT</option>
+          <option value="strongRecent">STRONG_RECENT</option>
+          <option value="fpi">ESPN FPI</option>
         </select>
         <button id="simdeepAddFilter" type="button" class="btn" style="margin-right: 0.5rem;">+ Add filter</button>
         <label class="inline-label" style="margin-left: auto;">Show

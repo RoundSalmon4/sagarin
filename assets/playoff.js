@@ -52,7 +52,9 @@
       if (g.completed && g.homeScore !== null && g.awayScore !== null) {
         hWin = g.homeScore > g.awayScore;
       } else if (h && a) {
-        hWin = (h[method] - a[method] + (g.neutral ? 0 : edge)) >= 0;
+        var hScore = getTeamMethodScore(h, method);
+        var aScore = getTeamMethodScore(a, method);
+        hWin = (hScore - aScore + (g.neutral ? 0 : edge)) >= 0;
       } else if (h) {
         hWin = true;
       } else if (a) {
@@ -132,8 +134,12 @@
 
   function getTeamMethodScore(teamNameOrObj, method) {
     if (method === "fpi") {
-      var f = SG.fpiOf && SG.fpiOf(typeof teamNameOrObj === "string" ? teamNameOrObj : teamNameOrObj.team);
-      return f ? f.score : 0;
+      var teamName = typeof teamNameOrObj === "string" ? teamNameOrObj : teamNameOrObj.team;
+      var f = SG.fpiOf && SG.fpiOf(teamName);
+      if (f) return f.score;
+      // Fallback to Sagarin predictor if FPI not available
+      var t = SG.teamByName && SG.teamByName(teamName);
+      return t ? t.predictor : 0;
     }
     return typeof teamNameOrObj === "string" ? null : (teamNameOrObj[method] || 0);
   }
@@ -316,7 +322,8 @@
 
   function play(a, b, homeSeed, method, stochastic) {
     var edge = SG.homeEdge(method);
-    var ra = getTeamMethodScore(a, method), rb = getTeamMethodScore(b, method);
+    // a and b are { seed, team } wrapper objects; pass the inner team object
+    var ra = getTeamMethodScore(a.team, method), rb = getTeamMethodScore(b.team, method);
     var spread = homeSeed === null ? ra - rb : (a.seed === homeSeed ? ra + edge - rb : ra - rb - edge);
     var p = SG.normCdf(spread / SG.SIGMA);
     var winner = (stochastic ? Math.random() : 0.5) < p ? a : b;
@@ -498,6 +505,14 @@
       var projCW = r && r.cw ? r.cw : 0, projCL = r && r.cl ? r.cl : 0;
       var projOW = r ? r.ow : 0, projOL = r ? r.ol : 0;
       var proj = SG.rec(projOW, projOL) + (projCW > 0 || projCL > 0 ? " (" + SG.rec(projCW, projCL) + ")" : "");
+      // Helper to get rating value for display, handling FPI
+      var ratingVal;
+      if (view.method === "fpi") {
+        var f = SG.fpiOf && SG.fpiOf(t.team);
+        ratingVal = f ? f.score : (t.predictor || 0);
+      } else {
+        ratingVal = t[view.method] || 0;
+      }
       rows.push({
         seed: i,
         team: t.team,
@@ -506,7 +521,7 @@
         nowV: recSortVal(nowW, nowL),
         proj: proj,
         projV: recSortVal(projOW, projOL),
-        rating: t[view.method],
+        rating: ratingVal,
         bid: field.bid[t.team] || "At-large"
       });
     }
@@ -738,13 +753,24 @@
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
     var header = '<thead><tr><th class="left" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
+    // Helper to get rating value for a team, handling FPI fallback
+    function getRatingForTeam(team, method) {
+      if (!team) return "";
+      if (method === "fpi") {
+        var f = SG.fpiOf && SG.fpiOf(team.team);
+        if (f) return f.score;
+        return team.predictor || "";
+      }
+      return team[method] || team.rating || "";
+    }
+
     var DEFAULT_SHOW = 5;
     var initial = bubble.slice(0, DEFAULT_SHOW);
     var remaining = bubble.slice(DEFAULT_SHOW);
     var rows = initial.map(function(r, idx) {
       var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
       var conf = team ? team.conference : "";
-      var rating = team ? (team[view.method] || team.rating || "") : "";
+      var rating = getRatingForTeam(team, view.method);
       var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
       var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
@@ -756,7 +782,7 @@
         remaining.map(function(r, idx) {
           var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
           var conf = team ? team.conference : "";
-          var rating = team ? ((view.method === "fpi" && SG.fpiOf) ? (SG.fpiOf(team.team) ? SG.fpiOf(team.team).score : "") : (team[view.method] || team.rating || "")) : "";
+          var rating = getRatingForTeam(team, view.method);
           var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");

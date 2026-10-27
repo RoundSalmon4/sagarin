@@ -11,6 +11,7 @@ things specific to this repo.
 - Only implement what is explicitly requested. Do not add features, redesigns, or "improvements" beyond the scope of the prompt. If you see an opportunity for improvement, ask first.
 - Always ask to proceed before commit and push to remote.
 - Review all code changes for bugs before making a commit.
+- Do not assume the user is at fault unless you can provide evidence for the claim, otherwise assume you have not fixed the issue.
 
 ## Repository
 

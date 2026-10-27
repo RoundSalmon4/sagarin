@@ -126,7 +126,10 @@ SG.DIVISIONS = window.TeamDivisions || {};
 
   SG.homeEdge = function (method) {
     var h = SG.state.data && SG.state.data.meta.homeAdvantage;
-    return h ? h[method] : 0;
+    if (h && h[method]) return h[method];
+    // FPI default home edge (similar to predictor since both are predictive ratings)
+    if (method === "fpi") return 3.65;
+    return 0;
   };
 
   // -------------------------------------------------------------- categories
@@ -200,7 +203,13 @@ SG.DIVISIONS = window.TeamDivisions || {};
   // ESPN FPI reference for predictor/sim/head-to-head (not strict-Sagarin data)
   SG.fpiOf = function (name) {
     var fpi = SG.state.fpi;
-    return fpi && fpi.byTeam && fpi.byTeam[name] ? fpi.byTeam[name] : null;
+    if (!fpi || !fpi.byTeam) return null;
+    // byTeam now uses Sagarin names as keys, so exact match works
+    if (fpi.byTeam[name]) return fpi.byTeam[name];
+    // Fallback: try normalized name
+    var norm = SG.normalizeName(name);
+    if (fpi.byTeam[norm]) return fpi.byTeam[norm];
+    return null;
   };
 
   SG.apBadge = function (name) {
@@ -432,11 +441,15 @@ SG.DIVISIONS = window.TeamDivisions || {};
 
   // -------------------------------------------------------------- matchup
 
-  SG.fillTeamSelects = function () {
+  SG.fillTeamSelects = function (method) {
     if (!SG.state.data) return;
+    method = method || document.getElementById("methodSelect").value || "rating";
     var teams = SG.state.data.teams.slice().sort(function (a, b) { return a.team.localeCompare(b.team); });
     var html = teams.map(function (t) {
-      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(t.rating) + ")</option>";
+      var ratingVal = (method === "fpi")
+        ? (SG.fpiOf && SG.fpiOf(t.team) ? SG.fpiOf(t.team).score : t.predictor)
+        : t[method];
+      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(ratingVal) + ")</option>";
     }).join("");
     var a = document.getElementById("teamA");
     var b = document.getElementById("teamB");
@@ -455,7 +468,23 @@ SG.DIVISIONS = window.TeamDivisions || {};
     var method = document.getElementById("methodSelect").value;
     if (!away || !home) return;
     var edge = SG.homeEdge(method);
-    var diff = home[method] - away[method];
+    
+    // Get rating value for a team, handling FPI
+    function getRating(t, m) {
+      if (m === "fpi") {
+        var f = SG.fpiOf && SG.fpiOf(t.team);
+        if (f) return f.score;
+        return t.predictor;
+      }
+      var val = t[m];
+      return (val !== undefined && val !== null) ? val : 0;
+    }
+    
+    // Debug logging
+    console.log('[Head to Head] Method:', method, 'Away:', away.team, 'Home:', home.team);
+    console.log('[Head to Head] Away rating:', getRating(away, method), 'Home rating:', getRating(home, method));
+    
+    var diff = getRating(home, method) - getRating(away, method);
 
     // The two ways the same numbers can be read: with the home team at home,
     // and on a neutral field.
@@ -473,7 +502,8 @@ SG.DIVISIONS = window.TeamDivisions || {};
         predictor: "predictorRank",
         goldenMean: "goldenMeanRank",
         recent: "recentRank",
-        strongRecent: "strongRecentRank"
+        strongRecent: "strongRecentRank",
+        fpi: null
       };
       function statCell(t, key) {
         var s = st[t.team];
@@ -484,7 +514,9 @@ SG.DIVISIONS = window.TeamDivisions || {};
         { label: "Record", cell: function (t) { return SG.esc(SG.recWithConf(t)); } },
         { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
-          return SG.fmt(t[method]) + ' <span class="dim">(' + (t[rankField[method]] || "-") + ")</span>";
+          var val = getRating(t, method);
+          var rank = rankField[method] ? t[rankField[method]] : "-";
+          return SG.fmt(val) + ' <span class="dim">(' + rank + ")</span>";
         } },
         { label: "Schedule", cell: function (t) {
           return SG.fmt(t.sched) + ' <span class="dim">(' + (t.schedRank || "-") + ")</span>";
@@ -1155,7 +1187,10 @@ SG.DIVISIONS = window.TeamDivisions || {};
     }
     document.getElementById("teamA").addEventListener("change", SG.renderMatchup);
     document.getElementById("teamB").addEventListener("change", SG.renderMatchup);
-    document.getElementById("methodSelect").addEventListener("change", SG.renderMatchup);
+    document.getElementById("methodSelect").addEventListener("change", function () {
+    SG.fillTeamSelects(this.value);
+    SG.renderMatchup();
+  });
   }
 
   if (document.readyState === "loading") {

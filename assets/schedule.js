@@ -135,7 +135,10 @@
     function methodValue(teamName, m) {
       if (m === "fpi") {
         var f = SG.fpiOf ? SG.fpiOf(teamName) : null;
-        return f ? f.score : null;
+        if (f) return f.score;
+        // Fallback to Sagarin predictor if FPI not available
+        var t = SG.teamByName(teamName);
+        return t ? t.predictor : null;
       }
       return teamSag ? teamSag[m] : null;
     }
@@ -179,8 +182,8 @@
         oppName: oppSag ? oppSag.team : "",
         result: "",
         resultText: "",
-        oppRating: oppSag ? SG.fmt(oppSag.team ? (method === "fpi" ? (SG.fpiOf(oppSag.team) ? SG.fpiOf(oppSag.team).score : null) : oppSag[method]) : oppSag[method]) : "nr",
-        oppRatingVal: oppSag ? (method === "fpi" ? (SG.fpiOf(oppSag.team) ? SG.fpiOf(oppSag.team).score : -Infinity) : oppSag[method]) : -Infinity,
+        oppRating: oppSag ? SG.fmt(methodValue(oppSag.team, method)) : "nr",
+        oppRatingVal: oppSag ? methodValue(oppSag.team, method) : -Infinity,
         margin: ".",
         marginVal: -Infinity,
         winPct: null,
@@ -195,20 +198,24 @@
         row.result = '<span class="' + (won ? "win" : "loss") + '">' + (won ? "W" : "L") + " " + mine + "-" + theirs + "</span>";
         row.resultText = (won ? "W " : "L ") + mine + "-" + theirs;
       } else if (oppSag && teamSag) {
-        var teamFpi = method === "fpi" ? (SG.fpiOf(teamSag.team) ? SG.fpiOf(teamSag.team).score : null) : null;
-        var oppFpi = method === "fpi" ? (SG.fpiOf(oppSag ? oppSag.team : "") ? SG.fpiOf(oppSag ? oppSag.team : "").score : null) : null;
-        var spread = (method === "fpi" ? (teamFpi || 0) - (oppFpi || 0) : teamSag[method] - oppSag[method]) + (neutral ? 0 : (isHome ? edge : -edge));
-        var wp = SG.normCdf(spread / SG.SIGMA);
-        row.margin = (spread >= 0 ? "+" : "-") + SG.fmt(Math.abs(spread), 1);
-        row.marginVal = spread;
-        row.winPct = wp;
-        row.pickText = wp >= 0.5 ? name : (oppSag ? oppSag.team : row.opp);
-        row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(row.pickText) + "</span>";
-        remaining++;
-        if (wp >= 0.5) projWins++;
-        if (isConfGame) {
-          if (wp >= 0.5) projConfWins++;
-          else projConfLosses++;
+        var teamVal = methodValue(name, method);
+        var oppVal = methodValue(oppSag.team, method);
+        if (teamVal === null || oppVal === null) {
+          row.pick = '<span class="dim">no rating</span>';
+        } else {
+          var spread = (teamVal - oppVal) + (neutral ? 0 : (isHome ? edge : -edge));
+          var wp = SG.normCdf(spread / SG.SIGMA);
+          row.margin = (spread >= 0 ? "+" : "-") + SG.fmt(Math.abs(spread), 1);
+          row.marginVal = spread;
+          row.winPct = wp;
+          row.pickText = wp >= 0.5 ? name : (oppSag ? oppSag.team : row.opp);
+          row.pick = '<span class="' + (wp >= 0.5 ? "win" : "loss") + '">' + SG.esc(row.pickText) + "</span>";
+          remaining++;
+          if (wp >= 0.5) projWins++;
+          if (isConfGame) {
+            if (wp >= 0.5) projConfWins++;
+            else projConfLosses++;
+          }
         }
       } else {
         row.pick = '<span class="dim">no rating</span>';
@@ -292,6 +299,7 @@
     if (!SG.state.data) return;
     var conf = document.getElementById("schedConfPick").value;
     var method = document.getElementById("schedMethod").value;
+    console.log('[Schedule Conference] Rendering for:', conf, 'Method:', method);
     if (!conf) {
       note.textContent = "Pick a conference.";
       summary.innerHTML = "";
@@ -324,7 +332,23 @@
       { key: "title", label: "Title game", cls: "left", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
     ];
 
-    var rows = list.map(function (t, i) {
+    // Helper to get rating value for a team, handling FPI fallback
+    function getRatingForTeam(team, method) {
+      if (method === "fpi") {
+        var f = SG.fpiOf ? SG.fpiOf(team.team) : null;
+        if (f) return f.score;
+        return team.predictor;
+      }
+      return team[method];
+    }
+
+    // Build rows with final records (including CCG), then sort by tie-breaker:
+    // 1. Champion first (if CCG exists)
+    // 2. Runner-up second (if CCG exists)
+    // 3. Conference win percentage (descending)
+    // 4. Overall win percentage (descending)
+    // 5. Rating (descending)
+    var rows = list.map(function (t) {
       var fin = st.final[t.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
       var titleText = "", titleHtml = "";
       if (ccg && ccg.winner.team === t.team) { titleText = "Champion"; titleHtml = '<span class="win">Champion</span>'; }
@@ -337,19 +361,50 @@
       var projCW = fin.cw, projCL = fin.cl;
       var projOW = fin.ow, projOL = fin.ol;
       var overall = SG.esc(SG.rec(projOW, projOL) + (projCW > 0 || projCL > 0 ? " (" + SG.rec(projCW, projCL) + ")" : ""));
+      var ratingVal = getRatingForTeam(t, method);
       return {
-        pos: i + 1,
         team: t.team,
-        rating: SG.fmt(t[method]),
-        ratingVal: t[method],
+        rating: SG.fmt(ratingVal),
+        ratingVal: ratingVal,
         current: current,
         currentVal: recVal(curW, curL),
         overall: overall,
         overallVal: recVal(projOW, projOL),
         title: titleHtml,
-        titleText: titleText
+        titleText: titleText,
+        // Sort keys
+        isChampion: ccg && ccg.winner.team === t.team,
+        isRunnerUp: ccg && ccg.loser.team === t.team,
+        confW: projCW,
+        confL: projCL,
+        overallW: projOW,
+        overallL: projOL,
+        ratingVal: ratingVal
       };
     });
+
+    // Sort by tie-breaker protocol
+    rows.sort(function (a, b) {
+      // Champion always first
+      if (a.isChampion && !b.isChampion) return -1;
+      if (!a.isChampion && b.isChampion) return 1;
+      // Runner-up always second (after champion)
+      if (a.isRunnerUp && !b.isRunnerUp && !b.isChampion) return -1;
+      if (!a.isRunnerUp && b.isRunnerUp && !a.isChampion) return 1;
+      // Conference win percentage
+      var aConfPct = (a.confW + a.confL) ? a.confW / (a.confW + a.confL) : 0;
+      var bConfPct = (b.confW + b.confL) ? b.confW / (b.confW + b.confL) : 0;
+      if (bConfPct !== aConfPct) return bConfPct - aConfPct;
+      // Overall win percentage
+      var aOverallPct = (a.overallW + a.overallL) ? a.overallW / (a.overallW + a.overallL) : 0;
+      var bOverallPct = (b.overallW + b.overallL) ? b.overallW / (b.overallW + b.overallL) : 0;
+      if (bOverallPct !== aOverallPct) return bOverallPct - aOverallPct;
+      // Rating
+      return (b.ratingVal || 0) - (a.ratingVal || 0);
+    });
+
+    // Assign positions after sorting
+    rows.forEach(function (r, i) { r.pos = i + 1; });
 
     SG.buildHead(table, columns, confSort, function (key) {
       SG.toggleSort(confSort, key, columns);
@@ -454,6 +509,8 @@
     });
     document.getElementById("schedConfPick").addEventListener("change", renderConference);
     document.getElementById("schedMethod").addEventListener("change", function () {
+      var method = document.getElementById("schedMethod").value;
+      console.log('[Schedule] Method changed to:', method);
       if (schedMode === "conference") renderConference(); else load();
     });
     document.getElementById("schedReload").addEventListener("click", function () { if (currentName()) load(); });

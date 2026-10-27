@@ -3,14 +3,19 @@
   "use strict";
 
   var SG = window.SG;
-  var view = { sim: null };
+  var view = { sim: null, method: "predictor" };
   var filterRowCount = 0;
 
   // The Playoff Predictor keeps one simulation per format. Both tabs read that
   // same object so a run started in either tab can be reused in the other.
-  function playoffSimFor(format) {
+  function playoffSimFor(format, method) {
     var pv = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
-    return pv && pv.sim ? pv.sim[format] : null;
+    if (!pv || !pv.sim) return null;
+    // Prefer method-specific sim, fall back to shared sim
+    if (method === "predictor") return pv.sim[format];
+    if (format === 12) return SG.state.sim12Method;
+    if (format === 24) return SG.state.sim24Method;
+    return pv.sim[format];
   }
 
   function currentFormat() {
@@ -18,14 +23,36 @@
     return sel ? sel.value : "12";
   }
 
-  // Adopt the playoff simulation for the selected format. Returns true when it
+  function currentMethod() {
+    var sel = document.getElementById("simdeepMethod");
+    return sel ? sel.value : "predictor";
+  }
+
+  // Load method-specific simulation data from JSON files
+  function loadMethodSim(format, method) {
+    var url = "data/sim-" + format + "-" + method + ".json";
+    return fetch(url).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+  }
+
+  // Adopt the simulation for the selected format and method. Returns true when it
   // brings in a different simulation than the one already loaded.
   function adoptPlayoffSim() {
-    var sim = playoffSimFor(currentFormat());
+    var fmt = currentFormat();
+    var mth = currentMethod();
+    var sim = playoffSimFor(fmt, mth);
     if (sim && sim.debugRuns && view.sim !== sim) {
       view.sim = sim;
       onSimDataReady();
       return true;
+    }
+    // If no method-specific sim, try to load it
+    if (!sim && mth !== "predictor") {
+      loadMethodSim(fmt, mth).then(function (data) {
+        if (data && data.debugRuns) {
+          view.sim = data;
+          onSimDataReady();
+        }
+      });
     }
     return false;
   }
@@ -65,6 +92,7 @@
       }
       // Pick up the playoff sim for the new format
       view.sim = null;
+      view.method = currentMethod();
       adoptPlayoffSim();
       updateFilterRowStates();
       populateRoundReachedSelect();
@@ -73,6 +101,17 @@
       } else {
         document.getElementById("simdeepResults").innerHTML = "";
         document.getElementById("simdeepNote").textContent = "No simulation for the " + this.value + "-team format yet. Run one here or on the Playoff Predictor tab.";
+      }
+    });
+    document.getElementById("simdeepMethod").addEventListener("change", function () {
+      view.method = this.value;
+      view.sim = null;
+      adoptPlayoffSim();
+      if (view.sim && view.sim.debugRuns) {
+        applyFilters();
+      } else {
+        document.getElementById("simdeepResults").innerHTML = "";
+        document.getElementById("simdeepNote").textContent = "No " + this.value + " simulation for the " + currentFormat() + "-team format yet. Run one on the Playoff Predictor tab.";
       }
     });
     document.getElementById("simdeepLimit").addEventListener("change", function () {
@@ -144,7 +183,9 @@
 
   function onSimDataReady() {
     var runs = view.sim && view.sim.n ? view.sim.n.toLocaleString() : "10,000";
-    document.getElementById("simdeepNote").textContent = "Using the shared " + runs + "-run simulation. Add filters and click Run deep dive.";
+    var mth = view.method || currentMethod();
+    var label = { rating: "Overall RATING", predictor: "PREDICTOR", goldenMean: "GOLDEN_MEAN", recent: "RECENT", strongRecent: "STRONG_RECENT", fpi: "ESPN FPI" }[mth] || mth;
+    document.getElementById("simdeepNote").textContent = "Using " + label + " " + runs + "-run simulation. Add filters and click Run deep dive.";
   }
 
   function addFilterRow() {
@@ -962,7 +1003,8 @@
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
-      var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
+      var fieldSize = currentFormat() === "24" ? 24 : 12;
+      var fieldHtml = run.field.slice(0, fieldSize).map(function (f, i) {
         var bidClass = "";
         var bidColor = "";
         var bidLabel = "";
@@ -1043,7 +1085,8 @@
         nextGroups.forEach(function (group, idx) {
           var run = group.run;
           var absoluteIdx = currentLimit + idx;
-          var fieldHtml = run.field.slice(0, 12).map(function (f, i) {
+          var fieldSize = currentFormat() === "24" ? 24 : 12;
+          var fieldHtml = run.field.slice(0, fieldSize).map(function (f, i) {
             var bidClass = "";
             if (f.bid.indexOf("P4 champ") !== -1) bidClass = "bid-p4";
             else if (f.bid.indexOf("G6 bid") !== -1) bidClass = "bid-g6";

@@ -1,12 +1,11 @@
 {
   "source": [
-    "https://site.web.api.espn.com/apis/site/v2/sports/football/college-football/fpi",
-    "https://www.espn.com/college-football/fpi"
+    "https://www.espn.com/college-football/fpi/_/view/fpi"
   ],
-  "fetched_at": "2026-10-27T19:09:28.921Z",
+  "fetched_at": "2026-10-27T20:27:06.104Z",
   "season": 2026,
-  "note": "FPI fetched from ESPN; structured endpoint pending. Used for predictor/sim/head-to-head reference per clarification.",
-  "signature": "fpi-mvr27q3e",
+  "note": "FPI parsed from ESPN FPI page tables. Used for predictor/sim/head-to-head reference.",
+  "signature": "fpi-mvr4zjlm",
   "method": "ESPN FPI: Football Power Index for predictor/sim/head-to-head; not strict-Sagarin data",
   "inputs": [
     "ESPN FPI"
@@ -14,38 +13,2114 @@
   "ranks": [
     {
       "rank": 1,
-      "team": "Miami-Florida",
-      "score": 0.95,
-      "note": "placeholder from ESPN source"
+      "team": "Ohio State Buckeyes",
+      "score": 28.2,
+      "record": "6-1",
+      "conference": "Big Ten"
     },
     {
       "rank": 2,
-      "team": "Ohio State",
-      "score": 0.92,
-      "note": "placeholder from ESPN source"
+      "team": "Notre Dame Fighting Irish",
+      "score": 27.7,
+      "record": "6-1",
+      "conference": "FBS Indep."
     },
     {
       "rank": 3,
-      "team": "Indiana",
-      "score": 0.85,
-      "note": "placeholder from ESPN source"
+      "team": "Miami Hurricanes",
+      "score": 27.5,
+      "record": "7-0",
+      "conference": "ACC"
+    },
+    {
+      "rank": 4,
+      "team": "Georgia Bulldogs",
+      "score": 26.5,
+      "record": "6-1",
+      "conference": "SEC"
+    },
+    {
+      "rank": 5,
+      "team": "Alabama Crimson Tide",
+      "score": 24.5,
+      "record": "6-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 6,
+      "team": "Indiana Hoosiers",
+      "score": 24.1,
+      "record": "7-1",
+      "conference": "Big Ten"
+    },
+    {
+      "rank": 7,
+      "team": "LSU Tigers",
+      "score": 24,
+      "record": "6-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 8,
+      "team": "Texas Longhorns",
+      "score": 24,
+      "record": "5-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 9,
+      "team": "Ole Miss Rebels",
+      "score": 18.9,
+      "record": "5-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 10,
+      "team": "Utah Utes",
+      "score": 17,
+      "record": "7-0",
+      "conference": "Big 12"
+    },
+    {
+      "rank": 11,
+      "team": "Oregon Ducks",
+      "score": 17,
+      "record": "4-3",
+      "conference": "Big Ten"
+    },
+    {
+      "rank": 12,
+      "team": "Tennessee Volunteers",
+      "score": 16.8,
+      "record": "6-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 13,
+      "team": "Nebraska Cornhuskers",
+      "score": 16.7,
+      "record": "5-2",
+      "conference": "Big Ten"
+    },
+    {
+      "rank": 14,
+      "team": "Texas Tech Red Raiders",
+      "score": 16.7,
+      "record": "6-1",
+      "conference": "Big 12"
+    },
+    {
+      "rank": 15,
+      "team": "BYU Cougars",
+      "score": 16.3,
+      "record": "6-1",
+      "conference": "Big 12"
+    },
+    {
+      "rank": 16,
+      "team": "Wake Forest Demon Deacons",
+      "score": 15.1,
+      "record": "6-1",
+      "conference": "ACC"
+    },
+    {
+      "rank": 17,
+      "team": "Florida Gators",
+      "score": 14.5,
+      "record": "5-2",
+      "conference": "SEC"
+    },
+    {
+      "rank": 18,
+      "team": "Houston Cougars",
+      "score": 14.4,
+      "record": "6-2",
+      "conference": "Big 12"
+    },
+    {
+      "rank": 19,
+      "team": "Oklahoma Sooners",
+      "score": 14.1,
+      "record": "4-3",
+      "conference": "SEC"
+    },
+    {
+      "rank": 20,
+      "team": "Northwestern Wildcats",
+      "score": 13.8,
+      "record": "6-1",
+      "conference": "Big Ten"
+    },
+    {
+      "rank": 21,
+      "team": "Louisville Cardinals",
+      "score": 13.6,
+      "record": "4-3",
+      "conference": "ACC"
+    },
+    {
+      "rank": 22,
+      "team": "Texas A & M Aggies",
+      "score": 13.4,
+      "record": "4-4",
+      "conference": "SEC"
+    },
+    {
+      "rank": 23,
+      "team": "Arizona Wildcats",
+      "score": 13.3,
+      "record": "6-1",
+      "conference": "Big 12"
+    },
+    {
+      "rank": 24,
+      "team": "Kentucky Wildcats",
+      "score": 13.1,
+      "record": "7-1",
+      "conference": "SEC"
+    },
+    {
+      "rank": 25,
+      "team": "USC Trojans",
+      "score": 12.7,
+      "record": "6-2",
+      "conference": "Big Ten"
     }
   ],
   "byTeam": {
-    "Miami-Florida": {
-      "score": 0.95,
-      "rank": 1,
-      "note": "from ESPN FPI"
-    },
     "Ohio State": {
-      "score": 0.92,
+      "score": 28.2,
+      "rank": 1,
+      "record": "6-1",
+      "teamId": "194",
+      "conference": "Big Ten"
+    },
+    "Notre Dame": {
+      "score": 27.7,
       "rank": 2,
-      "note": "from ESPN FPI"
+      "record": "6-1",
+      "teamId": "87",
+      "conference": "FBS Indep."
+    },
+    "Miami-Florida": {
+      "score": 27.5,
+      "rank": 3,
+      "record": "7-0",
+      "teamId": "2390",
+      "conference": "ACC"
+    },
+    "Georgia": {
+      "score": 26.5,
+      "rank": 4,
+      "record": "6-1",
+      "teamId": "61",
+      "conference": "SEC"
+    },
+    "Alabama": {
+      "score": 24.5,
+      "rank": 5,
+      "record": "6-2",
+      "teamId": "333",
+      "conference": "SEC"
     },
     "Indiana": {
-      "score": 0.85,
+      "score": 24.1,
+      "rank": 6,
+      "record": "7-1",
+      "teamId": "84",
+      "conference": "Big Ten"
+    },
+    "LSU": {
+      "score": 24,
+      "rank": 7,
+      "record": "6-2",
+      "teamId": "99",
+      "conference": "SEC"
+    },
+    "Texas": {
+      "score": 24,
+      "rank": 8,
+      "record": "5-2",
+      "teamId": "251",
+      "conference": "SEC"
+    },
+    "Mississippi": {
+      "score": 18.9,
+      "rank": 9,
+      "record": "5-2",
+      "teamId": "145",
+      "conference": "SEC"
+    },
+    "Utah": {
+      "score": 17,
+      "rank": 10,
+      "record": "7-0",
+      "teamId": "254",
+      "conference": "Big 12"
+    },
+    "Oregon": {
+      "score": 17,
+      "rank": 11,
+      "record": "4-3",
+      "teamId": "2483",
+      "conference": "Big Ten"
+    },
+    "Tennessee": {
+      "score": 16.8,
+      "rank": 12,
+      "record": "6-2",
+      "teamId": "2633",
+      "conference": "SEC"
+    },
+    "Nebraska": {
+      "score": 16.7,
+      "rank": 13,
+      "record": "5-2",
+      "teamId": "158",
+      "conference": "Big Ten"
+    },
+    "Texas Tech": {
+      "score": 16.7,
+      "rank": 14,
+      "record": "6-1",
+      "teamId": "2641",
+      "conference": "Big 12"
+    },
+    "BYU": {
+      "score": 16.3,
+      "rank": 15,
+      "record": "6-1",
+      "teamId": "252",
+      "conference": "Big 12"
+    },
+    "Wake Forest": {
+      "score": 15.1,
+      "rank": 16,
+      "record": "6-1",
+      "teamId": "154",
+      "conference": "ACC"
+    },
+    "Florida": {
+      "score": 14.5,
+      "rank": 17,
+      "record": "5-2",
+      "teamId": "57",
+      "conference": "SEC"
+    },
+    "Houston": {
+      "score": 14.4,
+      "rank": 18,
+      "record": "6-2",
+      "teamId": "248",
+      "conference": "Big 12"
+    },
+    "Oklahoma": {
+      "score": 14.1,
+      "rank": 19,
+      "record": "4-3",
+      "teamId": "201",
+      "conference": "SEC"
+    },
+    "Northwestern": {
+      "score": 13.8,
+      "rank": 20,
+      "record": "6-1",
+      "teamId": "77",
+      "conference": "Big Ten"
+    },
+    "Louisville": {
+      "score": 13.6,
+      "rank": 21,
+      "record": "4-3",
+      "teamId": "97",
+      "conference": "ACC"
+    },
+    "Texas A&M": {
+      "score": 13.4,
+      "rank": 22,
+      "record": "4-4",
+      "teamId": "245",
+      "conference": "SEC"
+    },
+    "Arizona": {
+      "score": 13.3,
+      "rank": 23,
+      "record": "6-1",
+      "teamId": "12",
+      "conference": "Big 12"
+    },
+    "Kentucky": {
+      "score": 13.1,
+      "rank": 24,
+      "record": "7-1",
+      "teamId": "96",
+      "conference": "SEC"
+    },
+    "Southern California": {
+      "score": 12.7,
+      "rank": 25,
+      "record": "6-2",
+      "teamId": "30",
+      "conference": "Big Ten"
+    },
+    "South Carolina": {
+      "score": 12.4,
+      "rank": 26,
+      "record": "4-3",
+      "teamId": "2579",
+      "conference": "SEC"
+    },
+    "SMU": {
+      "score": 12.3,
+      "rank": 27,
+      "record": "6-1",
+      "teamId": "2567",
+      "conference": "ACC"
+    },
+    "Missouri": {
+      "score": 12.2,
+      "rank": 28,
+      "record": "5-2",
+      "teamId": "142",
+      "conference": "SEC"
+    },
+    "Auburn": {
+      "score": 12.1,
+      "rank": 29,
+      "record": "4-3",
+      "teamId": "2",
+      "conference": "SEC"
+    },
+    "Penn State": {
+      "score": 11.9,
+      "rank": 30,
+      "record": "3-4",
+      "teamId": "213",
+      "conference": "Big Ten"
+    },
+    "UCLA": {
+      "score": 11.7,
+      "rank": 31,
+      "record": "7-0",
+      "teamId": "26",
+      "conference": "Big Ten"
+    },
+    "Boise State": {
+      "score": 11.3,
+      "rank": 32,
+      "record": "6-1",
+      "teamId": "68",
+      "conference": "Pac-12"
+    },
+    "Oklahoma State": {
+      "score": 11.2,
+      "rank": 33,
+      "record": "5-2",
+      "teamId": "197",
+      "conference": "Big 12"
+    },
+    "Michigan": {
+      "score": 11.1,
+      "rank": 34,
+      "record": "4-3",
+      "teamId": "130",
+      "conference": "Big Ten"
+    },
+    "Iowa": {
+      "score": 11.1,
+      "rank": 35,
+      "record": "5-2",
+      "teamId": "2294",
+      "conference": "Big Ten"
+    },
+    "Wisconsin": {
+      "score": 10.7,
+      "rank": 36,
+      "record": "5-2",
+      "teamId": "275",
+      "conference": "Big Ten"
+    },
+    "Florida State": {
+      "score": 10.1,
+      "rank": 37,
+      "record": "3-4",
+      "teamId": "52",
+      "conference": "ACC"
+    },
+    "Baylor": {
+      "score": 9.1,
+      "rank": 38,
+      "record": "4-3",
+      "teamId": "239",
+      "conference": "Big 12"
+    },
+    "Pittsburgh": {
+      "score": 8.6,
+      "rank": 39,
+      "record": "5-3",
+      "teamId": "221",
+      "conference": "ACC"
+    },
+    "Mississippi State": {
+      "score": 8.5,
+      "rank": 40,
+      "record": "4-3",
+      "teamId": "344",
+      "conference": "SEC"
+    },
+    "New Mexico": {
+      "score": 7.9,
+      "rank": 41,
+      "record": "6-1",
+      "teamId": "167",
+      "conference": "Mountain West"
+    },
+    "Duke": {
+      "score": 7.6,
+      "rank": 42,
+      "record": "5-2",
+      "teamId": "150",
+      "conference": "ACC"
+    },
+    "North Carolina": {
+      "score": 7.4,
+      "rank": 43,
+      "record": "4-3",
+      "teamId": "153",
+      "conference": "ACC"
+    },
+    "TCU": {
+      "score": 7.3,
+      "rank": 44,
+      "record": "3-4",
+      "teamId": "2628",
+      "conference": "Big 12"
+    },
+    "Central Florida(UCF)": {
+      "score": 6.6,
+      "rank": 45,
+      "record": "4-3",
+      "teamId": "2116",
+      "conference": "Big 12"
+    },
+    "Virginia Tech": {
+      "score": 6.6,
+      "rank": 46,
+      "record": "6-2",
+      "teamId": "259",
+      "conference": "ACC"
+    },
+    "Cincinnati": {
+      "score": 6.5,
+      "rank": 47,
+      "record": "5-2",
+      "teamId": "2132",
+      "conference": "Big 12"
+    },
+    "Illinois": {
+      "score": 6.4,
+      "rank": 48,
+      "record": "4-3",
+      "teamId": "356",
+      "conference": "Big Ten"
+    },
+    "Oregon State": {
+      "score": 6.1,
+      "rank": 49,
+      "record": "5-2",
+      "teamId": "204",
+      "conference": "Pac-12"
+    },
+    "Virginia": {
+      "score": 6,
+      "rank": 50,
+      "record": "4-4",
+      "teamId": "258",
+      "conference": "ACC"
+    },
+    "Clemson": {
+      "score": 5.8,
+      "rank": 51,
+      "record": "4-3",
+      "teamId": "228",
+      "conference": "ACC"
+    },
+    "Kansas State": {
+      "score": 5.7,
+      "rank": 52,
+      "record": "4-3",
+      "teamId": "2306",
+      "conference": "Big 12"
+    },
+    "James Madison": {
+      "score": 5.3,
+      "rank": 53,
+      "record": "7-1",
+      "teamId": "256",
+      "conference": "Sun Belt"
+    },
+    "Washington": {
+      "score": 4.5,
+      "rank": 54,
+      "record": "4-3",
+      "teamId": "264",
+      "conference": "Big Ten"
+    },
+    "Kansas": {
+      "score": 4.3,
+      "rank": 55,
+      "record": "3-4",
+      "teamId": "2305",
+      "conference": "Big 12"
+    },
+    "North Texas": {
+      "score": 2.7,
+      "rank": 56,
+      "record": "5-2",
+      "teamId": "249",
+      "conference": "American"
+    },
+    "Liberty": {
+      "score": 2.5,
+      "rank": 57,
+      "record": "6-1",
+      "teamId": "2335",
+      "conference": "CUSA"
+    },
+    "Purdue": {
+      "score": 2.2,
+      "rank": 58,
+      "record": "3-4",
+      "teamId": "2509",
+      "conference": "Big Ten"
+    },
+    "Arkansas": {
+      "score": 2,
+      "rank": 59,
+      "record": "3-4",
+      "teamId": "8",
+      "conference": "SEC"
+    },
+    "Memphis": {
+      "score": 1.9,
+      "rank": 60,
+      "record": "6-2",
+      "teamId": "235",
+      "conference": "American"
+    },
+    "West Virginia": {
+      "score": 1.9,
+      "rank": 61,
+      "record": "5-3",
+      "teamId": "277",
+      "conference": "Big 12"
+    },
+    "Syracuse": {
+      "score": 1.6,
+      "rank": 62,
+      "record": "3-4",
+      "teamId": "183",
+      "conference": "ACC"
+    },
+    "Iowa State": {
+      "score": 1.5,
+      "rank": 63,
+      "record": "3-4",
+      "teamId": "66",
+      "conference": "Big 12"
+    },
+    "Michigan State": {
+      "score": 1.2,
+      "rank": 64,
+      "record": "2-6",
+      "teamId": "127",
+      "conference": "Big Ten"
+    },
+    "Minnesota": {
+      "score": 0.7,
+      "rank": 65,
+      "record": "5-2",
+      "teamId": "135",
+      "conference": "Big Ten"
+    },
+    "Arizona State": {
+      "score": 0.6,
+      "rank": 66,
+      "record": "4-3",
+      "teamId": "9",
+      "conference": "Big 12"
+    },
+    "UTSA": {
+      "score": 0.5,
+      "rank": 67,
+      "record": "7-1",
+      "teamId": "2636",
+      "conference": "American"
+    },
+    "Vanderbilt": {
+      "score": 0.3,
+      "rank": 68,
+      "record": "3-5",
+      "teamId": "238",
+      "conference": "SEC"
+    },
+    "Boston College": {
+      "score": 0.2,
+      "rank": 69,
+      "record": "4-3",
+      "teamId": "103",
+      "conference": "ACC"
+    },
+    "NC State": {
+      "score": 0,
+      "rank": 70,
+      "record": "3-4",
+      "teamId": "152",
+      "conference": "ACC"
+    },
+    "North Dakota State": {
+      "score": -0.2,
+      "rank": 71,
+      "record": "6-2",
+      "teamId": "2449",
+      "conference": "Mountain West"
+    },
+    "Texas State": {
+      "score": -0.3,
+      "rank": 72,
+      "record": "4-3",
+      "teamId": "326",
+      "conference": "Pac-12"
+    },
+    "Army West Point": {
+      "score": -0.3,
+      "rank": 73,
+      "record": "5-2",
+      "teamId": "349",
+      "conference": "American"
+    },
+    "Fresno State": {
+      "score": -1,
+      "rank": 74,
+      "record": "4-3",
+      "teamId": "278",
+      "conference": "Pac-12"
+    },
+    "Colorado": {
+      "score": -1.9,
+      "rank": 75,
+      "record": "2-5",
+      "teamId": "38",
+      "conference": "Big 12"
+    },
+    "South Florida": {
+      "score": -2.1,
+      "rank": 76,
+      "record": "5-2",
+      "teamId": "58",
+      "conference": "American"
+    },
+    "Louisiana Tech": {
+      "score": -2.3,
+      "rank": 77,
+      "record": "5-2",
+      "teamId": "2348",
+      "conference": "Sun Belt"
+    },
+    "UNLV": {
+      "score": -2.5,
+      "rank": 78,
+      "record": "4-3",
+      "teamId": "2439",
+      "conference": "Mountain West"
+    },
+    "Toledo": {
+      "score": -2.5,
+      "rank": 79,
+      "record": "6-2",
+      "teamId": "2649",
+      "conference": "MAC"
+    },
+    "Georgia Tech": {
+      "score": -2.5,
+      "rank": 80,
+      "record": "2-5",
+      "teamId": "59",
+      "conference": "ACC"
+    },
+    "Western Michigan": {
+      "score": -3.1,
+      "rank": 81,
+      "record": "5-3",
+      "teamId": "2711",
+      "conference": "MAC"
+    },
+    "Louisiana-Lafayette": {
+      "score": -3.4,
+      "rank": 82,
+      "record": "5-3",
+      "teamId": "309",
+      "conference": "Sun Belt"
+    },
+    "Tulsa": {
+      "score": -3.7,
+      "rank": 83,
+      "record": "4-4",
+      "teamId": "202",
+      "conference": "American"
+    },
+    "Maryland": {
+      "score": -3.9,
+      "rank": 84,
+      "record": "2-5",
+      "teamId": "120",
+      "conference": "Big Ten"
+    },
+    "Tulane": {
+      "score": -4,
+      "rank": 85,
+      "record": "3-4",
+      "teamId": "2655",
+      "conference": "American"
+    },
+    "East Carolina": {
+      "score": -4.2,
+      "rank": 86,
+      "record": "3-4",
+      "teamId": "151",
+      "conference": "American"
+    },
+    "Rutgers": {
+      "score": -4.4,
+      "rank": 87,
+      "record": "2-5",
+      "teamId": "164",
+      "conference": "Big Ten"
+    },
+    "Air Force": {
+      "score": -4.8,
+      "rank": 88,
+      "record": "5-2",
+      "teamId": "2005",
+      "conference": "Mountain West"
+    },
+    "Connecticut": {
+      "score": -4.8,
+      "rank": 89,
+      "record": "4-3",
+      "teamId": "41",
+      "conference": "FBS Indep."
+    },
+    "Georgia Southern": {
+      "score": -4.9,
+      "rank": 90,
+      "record": "3-4",
+      "teamId": "290",
+      "conference": "Sun Belt"
+    },
+    "California": {
+      "score": -6,
+      "rank": 91,
+      "record": "3-5",
+      "teamId": "25",
+      "conference": "ACC"
+    },
+    "Navy": {
+      "score": -6.3,
+      "rank": 92,
+      "record": "2-5",
+      "teamId": "2426",
+      "conference": "American"
+    },
+    "Utah State": {
+      "score": -7.1,
+      "rank": 93,
+      "record": "2-5",
+      "teamId": "328",
+      "conference": "Pac-12"
+    },
+    "Nevada": {
+      "score": -7.5,
+      "rank": 94,
+      "record": "3-4",
+      "teamId": "2440",
+      "conference": "Mountain West"
+    },
+    "Georgia State": {
+      "score": -7.5,
+      "rank": 95,
+      "record": "4-3",
+      "teamId": "2247",
+      "conference": "Sun Belt"
+    },
+    "Appalachian State": {
+      "score": -7.5,
+      "rank": 96,
+      "record": "5-2",
+      "teamId": "2026",
+      "conference": "Sun Belt"
+    },
+    "Ohio": {
+      "score": -7.9,
+      "rank": 97,
+      "record": "6-2",
+      "teamId": "195",
+      "conference": "MAC"
+    },
+    "Arkansas State": {
+      "score": -8.7,
+      "rank": 98,
+      "record": "4-4",
+      "teamId": "2032",
+      "conference": "Sun Belt"
+    },
+    "South Alabama": {
+      "score": -8.8,
+      "rank": 99,
+      "record": "4-3",
+      "teamId": "6",
+      "conference": "Sun Belt"
+    },
+    "Jacksonville State": {
+      "score": -8.8,
+      "rank": 100,
+      "record": "5-2",
+      "teamId": "55",
+      "conference": "CUSA"
+    },
+    "Washington State": {
+      "score": -9.1,
+      "rank": 101,
+      "record": "1-7",
+      "teamId": "265",
+      "conference": "Pac-12"
+    },
+    "Temple": {
+      "score": -9.1,
+      "rank": 102,
+      "record": "2-5",
+      "teamId": "218",
+      "conference": "American"
+    },
+    "Hawai'i": {
+      "score": -9.3,
+      "rank": 103,
+      "record": "2-6",
+      "teamId": "62",
+      "conference": "Mountain West"
+    },
+    "Miami-Ohio": {
+      "score": -9.6,
+      "rank": 104,
+      "record": "5-3",
+      "teamId": "193",
+      "conference": "MAC"
+    },
+    "San Diego State": {
+      "score": -9.7,
+      "rank": 105,
+      "record": "3-5",
+      "teamId": "21",
+      "conference": "Pac-12"
+    },
+    "Stanford": {
+      "score": -10,
+      "rank": 106,
+      "record": "4-4",
+      "teamId": "24",
+      "conference": "ACC"
+    },
+    "Delaware": {
+      "score": -10.8,
+      "rank": 107,
+      "record": "3-4",
+      "teamId": "48",
+      "conference": "CUSA"
+    },
+    "Florida Atlantic": {
+      "score": -10.9,
+      "rank": 108,
+      "record": "5-2",
+      "teamId": "2226",
+      "conference": "American"
+    },
+    "Colorado State": {
+      "score": -10.9,
+      "rank": 109,
+      "record": "3-4",
+      "teamId": "36",
+      "conference": "Pac-12"
+    },
+    "Fla. International": {
+      "score": -11,
+      "rank": 110,
+      "record": "3-4",
+      "teamId": "2229",
+      "conference": "CUSA"
+    },
+    "Troy": {
+      "score": -11.2,
+      "rank": 111,
+      "record": "3-4",
+      "teamId": "2653",
+      "conference": "Sun Belt"
+    },
+    "Coastal Carolina": {
+      "score": -12.2,
+      "rank": 112,
+      "record": "2-5",
+      "teamId": "324",
+      "conference": "Sun Belt"
+    },
+    "Western Kentucky": {
+      "score": -12.3,
+      "rank": 113,
+      "record": "3-4",
+      "teamId": "98",
+      "conference": "CUSA"
+    },
+    "New Mexico State": {
+      "score": -12.8,
+      "rank": 114,
+      "record": "3-4",
+      "teamId": "166",
+      "conference": "CUSA"
+    },
+    "Buffalo": {
+      "score": -12.9,
+      "rank": 115,
+      "record": "5-3",
+      "teamId": "2084",
+      "conference": "MAC"
+    },
+    "Wyoming": {
+      "score": -13.2,
+      "rank": 116,
+      "record": "5-3",
+      "teamId": "2751",
+      "conference": "Mountain West"
+    },
+    "San Jose State": {
+      "score": -13.3,
+      "rank": 117,
+      "record": "4-4",
+      "teamId": "23",
+      "conference": "Mountain West"
+    },
+    "Southern Miss": {
+      "score": -13.6,
+      "rank": 118,
+      "record": "2-5",
+      "teamId": "2572",
+      "conference": "Sun Belt"
+    },
+    "UAB": {
+      "score": -13.7,
+      "rank": 119,
+      "record": "4-3",
+      "teamId": "5",
+      "conference": "American"
+    },
+    "Kennesaw State": {
+      "score": -14.2,
+      "rank": 120,
+      "record": "1-6",
+      "teamId": "338",
+      "conference": "CUSA"
+    },
+    "Central Michigan": {
+      "score": -14.3,
+      "rank": 121,
+      "record": "3-5",
+      "teamId": "2117",
+      "conference": "MAC"
+    },
+    "Rice": {
+      "score": -14.6,
+      "rank": 122,
+      "record": "1-7",
+      "teamId": "242",
+      "conference": "American"
+    },
+    "Marshall": {
+      "score": -15,
+      "rank": 123,
+      "record": "4-3",
+      "teamId": "276",
+      "conference": "Sun Belt"
+    },
+    "Massachusetts": {
+      "score": -15,
+      "rank": 124,
+      "record": "4-4",
+      "teamId": "113",
+      "conference": "MAC"
+    },
+    "Old Dominion": {
+      "score": -15.3,
+      "rank": 125,
+      "record": "2-6",
+      "teamId": "295",
+      "conference": "Sun Belt"
+    },
+    "Middle Tennessee": {
+      "score": -16,
+      "rank": 126,
+      "record": "4-3",
+      "teamId": "2393",
+      "conference": "CUSA"
+    },
+    "Eastern Michigan": {
+      "score": -16.3,
+      "rank": 127,
+      "record": "4-5",
+      "teamId": "2199",
+      "conference": "MAC"
+    },
+    "Missouri State": {
+      "score": -16.9,
+      "rank": 128,
+      "record": "2-5",
+      "teamId": "2623",
+      "conference": "CUSA"
+    },
+    "Sam Houston State": {
+      "score": -17.6,
+      "rank": 129,
+      "record": "1-6",
+      "teamId": "2534",
+      "conference": "CUSA"
+    },
+    "Bowling Green": {
+      "score": -17.9,
+      "rank": 130,
+      "record": "2-6",
+      "teamId": "189",
+      "conference": "MAC"
+    },
+    "Ball State": {
+      "score": -20.1,
+      "rank": 131,
+      "record": "3-5",
+      "teamId": "2050",
+      "conference": "MAC"
+    },
+    "Kent State": {
+      "score": -21,
+      "rank": 132,
+      "record": "3-5",
+      "teamId": "2309",
+      "conference": "MAC"
+    },
+    "Charlotte": {
+      "score": -22,
+      "rank": 133,
+      "record": "1-6",
+      "teamId": "2429",
+      "conference": "American"
+    },
+    "Northern Illinois": {
+      "score": -22.8,
+      "rank": 134,
+      "record": "0-7",
+      "teamId": "2459",
+      "conference": "Mountain West"
+    },
+    "Akron": {
+      "score": -23.2,
+      "rank": 135,
+      "record": "1-7",
+      "teamId": "2006",
+      "conference": "MAC"
+    },
+    "UTEP": {
+      "score": -24.2,
+      "rank": 136,
+      "record": "1-6",
+      "teamId": "2638",
+      "conference": "Mountain West"
+    },
+    "LouisianaMonroe(ULM)": {
+      "score": -25.3,
+      "rank": 137,
+      "record": "1-6",
+      "teamId": "2433",
+      "conference": "Sun Belt"
+    },
+    "Sacramento State": {
+      "score": -33.2,
+      "rank": 138,
+      "record": "1-7",
+      "teamId": "16",
+      "conference": "MAC"
+    }
+  },
+  "byEspnName": {
+    "Ohio State Buckeyes": {
+      "score": 28.2,
+      "rank": 1,
+      "record": "6-1",
+      "teamId": "194",
+      "conference": "Big Ten"
+    },
+    "Notre Dame Fighting Irish": {
+      "score": 27.7,
+      "rank": 2,
+      "record": "6-1",
+      "teamId": "87",
+      "conference": "FBS Indep."
+    },
+    "Miami Hurricanes": {
+      "score": 27.5,
       "rank": 3,
-      "note": "from ESPN FPI"
+      "record": "7-0",
+      "teamId": "2390",
+      "conference": "ACC"
+    },
+    "Georgia Bulldogs": {
+      "score": 26.5,
+      "rank": 4,
+      "record": "6-1",
+      "teamId": "61",
+      "conference": "SEC"
+    },
+    "Alabama Crimson Tide": {
+      "score": 24.5,
+      "rank": 5,
+      "record": "6-2",
+      "teamId": "333",
+      "conference": "SEC"
+    },
+    "Indiana Hoosiers": {
+      "score": 24.1,
+      "rank": 6,
+      "record": "7-1",
+      "teamId": "84",
+      "conference": "Big Ten"
+    },
+    "LSU Tigers": {
+      "score": 24,
+      "rank": 7,
+      "record": "6-2",
+      "teamId": "99",
+      "conference": "SEC"
+    },
+    "Texas Longhorns": {
+      "score": 24,
+      "rank": 8,
+      "record": "5-2",
+      "teamId": "251",
+      "conference": "SEC"
+    },
+    "Ole Miss Rebels": {
+      "score": 18.9,
+      "rank": 9,
+      "record": "5-2",
+      "teamId": "145",
+      "conference": "SEC"
+    },
+    "Utah Utes": {
+      "score": 17,
+      "rank": 10,
+      "record": "7-0",
+      "teamId": "254",
+      "conference": "Big 12"
+    },
+    "Oregon Ducks": {
+      "score": 17,
+      "rank": 11,
+      "record": "4-3",
+      "teamId": "2483",
+      "conference": "Big Ten"
+    },
+    "Tennessee Volunteers": {
+      "score": 16.8,
+      "rank": 12,
+      "record": "6-2",
+      "teamId": "2633",
+      "conference": "SEC"
+    },
+    "Nebraska Cornhuskers": {
+      "score": 16.7,
+      "rank": 13,
+      "record": "5-2",
+      "teamId": "158",
+      "conference": "Big Ten"
+    },
+    "Texas Tech Red Raiders": {
+      "score": 16.7,
+      "rank": 14,
+      "record": "6-1",
+      "teamId": "2641",
+      "conference": "Big 12"
+    },
+    "BYU Cougars": {
+      "score": 16.3,
+      "rank": 15,
+      "record": "6-1",
+      "teamId": "252",
+      "conference": "Big 12"
+    },
+    "Wake Forest Demon Deacons": {
+      "score": 15.1,
+      "rank": 16,
+      "record": "6-1",
+      "teamId": "154",
+      "conference": "ACC"
+    },
+    "Florida Gators": {
+      "score": 14.5,
+      "rank": 17,
+      "record": "5-2",
+      "teamId": "57",
+      "conference": "SEC"
+    },
+    "Houston Cougars": {
+      "score": 14.4,
+      "rank": 18,
+      "record": "6-2",
+      "teamId": "248",
+      "conference": "Big 12"
+    },
+    "Oklahoma Sooners": {
+      "score": 14.1,
+      "rank": 19,
+      "record": "4-3",
+      "teamId": "201",
+      "conference": "SEC"
+    },
+    "Northwestern Wildcats": {
+      "score": 13.8,
+      "rank": 20,
+      "record": "6-1",
+      "teamId": "77",
+      "conference": "Big Ten"
+    },
+    "Louisville Cardinals": {
+      "score": 13.6,
+      "rank": 21,
+      "record": "4-3",
+      "teamId": "97",
+      "conference": "ACC"
+    },
+    "Texas A & M Aggies": {
+      "score": 13.4,
+      "rank": 22,
+      "record": "4-4",
+      "teamId": "245",
+      "conference": "SEC"
+    },
+    "Arizona Wildcats": {
+      "score": 13.3,
+      "rank": 23,
+      "record": "6-1",
+      "teamId": "12",
+      "conference": "Big 12"
+    },
+    "Kentucky Wildcats": {
+      "score": 13.1,
+      "rank": 24,
+      "record": "7-1",
+      "teamId": "96",
+      "conference": "SEC"
+    },
+    "USC Trojans": {
+      "score": 12.7,
+      "rank": 25,
+      "record": "6-2",
+      "teamId": "30",
+      "conference": "Big Ten"
+    },
+    "South Carolina Gamecocks": {
+      "score": 12.4,
+      "rank": 26,
+      "record": "4-3",
+      "teamId": "2579",
+      "conference": "SEC"
+    },
+    "SMU Mustangs": {
+      "score": 12.3,
+      "rank": 27,
+      "record": "6-1",
+      "teamId": "2567",
+      "conference": "ACC"
+    },
+    "Missouri Tigers": {
+      "score": 12.2,
+      "rank": 28,
+      "record": "5-2",
+      "teamId": "142",
+      "conference": "SEC"
+    },
+    "Auburn Tigers": {
+      "score": 12.1,
+      "rank": 29,
+      "record": "4-3",
+      "teamId": "2",
+      "conference": "SEC"
+    },
+    "Penn State Nittany Lions": {
+      "score": 11.9,
+      "rank": 30,
+      "record": "3-4",
+      "teamId": "213",
+      "conference": "Big Ten"
+    },
+    "UCLA Bruins": {
+      "score": 11.7,
+      "rank": 31,
+      "record": "7-0",
+      "teamId": "26",
+      "conference": "Big Ten"
+    },
+    "Boise State Broncos": {
+      "score": 11.3,
+      "rank": 32,
+      "record": "6-1",
+      "teamId": "68",
+      "conference": "Pac-12"
+    },
+    "Oklahoma State Cowboys": {
+      "score": 11.2,
+      "rank": 33,
+      "record": "5-2",
+      "teamId": "197",
+      "conference": "Big 12"
+    },
+    "Michigan Wolverines": {
+      "score": 11.1,
+      "rank": 34,
+      "record": "4-3",
+      "teamId": "130",
+      "conference": "Big Ten"
+    },
+    "Iowa Hawkeyes": {
+      "score": 11.1,
+      "rank": 35,
+      "record": "5-2",
+      "teamId": "2294",
+      "conference": "Big Ten"
+    },
+    "Wisconsin Badgers": {
+      "score": 10.7,
+      "rank": 36,
+      "record": "5-2",
+      "teamId": "275",
+      "conference": "Big Ten"
+    },
+    "Florida State Seminoles": {
+      "score": 10.1,
+      "rank": 37,
+      "record": "3-4",
+      "teamId": "52",
+      "conference": "ACC"
+    },
+    "Baylor Bears": {
+      "score": 9.1,
+      "rank": 38,
+      "record": "4-3",
+      "teamId": "239",
+      "conference": "Big 12"
+    },
+    "Pittsburgh Panthers": {
+      "score": 8.6,
+      "rank": 39,
+      "record": "5-3",
+      "teamId": "221",
+      "conference": "ACC"
+    },
+    "Mississippi State Bulldogs": {
+      "score": 8.5,
+      "rank": 40,
+      "record": "4-3",
+      "teamId": "344",
+      "conference": "SEC"
+    },
+    "New Mexico Lobos": {
+      "score": 7.9,
+      "rank": 41,
+      "record": "6-1",
+      "teamId": "167",
+      "conference": "Mountain West"
+    },
+    "Duke Blue Devils": {
+      "score": 7.6,
+      "rank": 42,
+      "record": "5-2",
+      "teamId": "150",
+      "conference": "ACC"
+    },
+    "North Carolina Tar Heels": {
+      "score": 7.4,
+      "rank": 43,
+      "record": "4-3",
+      "teamId": "153",
+      "conference": "ACC"
+    },
+    "TCU Horned Frogs": {
+      "score": 7.3,
+      "rank": 44,
+      "record": "3-4",
+      "teamId": "2628",
+      "conference": "Big 12"
+    },
+    "UCF Knights": {
+      "score": 6.6,
+      "rank": 45,
+      "record": "4-3",
+      "teamId": "2116",
+      "conference": "Big 12"
+    },
+    "Virginia Tech Hokies": {
+      "score": 6.6,
+      "rank": 46,
+      "record": "6-2",
+      "teamId": "259",
+      "conference": "ACC"
+    },
+    "Cincinnati Bearcats": {
+      "score": 6.5,
+      "rank": 47,
+      "record": "5-2",
+      "teamId": "2132",
+      "conference": "Big 12"
+    },
+    "Illinois Fighting Illini": {
+      "score": 6.4,
+      "rank": 48,
+      "record": "4-3",
+      "teamId": "356",
+      "conference": "Big Ten"
+    },
+    "Oregon State Beavers": {
+      "score": 6.1,
+      "rank": 49,
+      "record": "5-2",
+      "teamId": "204",
+      "conference": "Pac-12"
+    },
+    "Virginia Cavaliers": {
+      "score": 6,
+      "rank": 50,
+      "record": "4-4",
+      "teamId": "258",
+      "conference": "ACC"
+    },
+    "Clemson Tigers": {
+      "score": 5.8,
+      "rank": 51,
+      "record": "4-3",
+      "teamId": "228",
+      "conference": "ACC"
+    },
+    "Kansas State Wildcats": {
+      "score": 5.7,
+      "rank": 52,
+      "record": "4-3",
+      "teamId": "2306",
+      "conference": "Big 12"
+    },
+    "James Madison Dukes": {
+      "score": 5.3,
+      "rank": 53,
+      "record": "7-1",
+      "teamId": "256",
+      "conference": "Sun Belt"
+    },
+    "Washington Huskies": {
+      "score": 4.5,
+      "rank": 54,
+      "record": "4-3",
+      "teamId": "264",
+      "conference": "Big Ten"
+    },
+    "Kansas Jayhawks": {
+      "score": 4.3,
+      "rank": 55,
+      "record": "3-4",
+      "teamId": "2305",
+      "conference": "Big 12"
+    },
+    "North Texas Mean Green": {
+      "score": 2.7,
+      "rank": 56,
+      "record": "5-2",
+      "teamId": "249",
+      "conference": "American"
+    },
+    "Liberty Flames": {
+      "score": 2.5,
+      "rank": 57,
+      "record": "6-1",
+      "teamId": "2335",
+      "conference": "CUSA"
+    },
+    "Purdue Boilermakers": {
+      "score": 2.2,
+      "rank": 58,
+      "record": "3-4",
+      "teamId": "2509",
+      "conference": "Big Ten"
+    },
+    "Arkansas Razorbacks": {
+      "score": 2,
+      "rank": 59,
+      "record": "3-4",
+      "teamId": "8",
+      "conference": "SEC"
+    },
+    "Memphis Tigers": {
+      "score": 1.9,
+      "rank": 60,
+      "record": "6-2",
+      "teamId": "235",
+      "conference": "American"
+    },
+    "West Virginia Mountaineers": {
+      "score": 1.9,
+      "rank": 61,
+      "record": "5-3",
+      "teamId": "277",
+      "conference": "Big 12"
+    },
+    "Syracuse Orange": {
+      "score": 1.6,
+      "rank": 62,
+      "record": "3-4",
+      "teamId": "183",
+      "conference": "ACC"
+    },
+    "Iowa State Cyclones": {
+      "score": 1.5,
+      "rank": 63,
+      "record": "3-4",
+      "teamId": "66",
+      "conference": "Big 12"
+    },
+    "Michigan State Spartans": {
+      "score": 1.2,
+      "rank": 64,
+      "record": "2-6",
+      "teamId": "127",
+      "conference": "Big Ten"
+    },
+    "Minnesota Golden Gophers": {
+      "score": 0.7,
+      "rank": 65,
+      "record": "5-2",
+      "teamId": "135",
+      "conference": "Big Ten"
+    },
+    "Arizona State Sun Devils": {
+      "score": 0.6,
+      "rank": 66,
+      "record": "4-3",
+      "teamId": "9",
+      "conference": "Big 12"
+    },
+    "UTSA Roadrunners": {
+      "score": 0.5,
+      "rank": 67,
+      "record": "7-1",
+      "teamId": "2636",
+      "conference": "American"
+    },
+    "Vanderbilt Commodores": {
+      "score": 0.3,
+      "rank": 68,
+      "record": "3-5",
+      "teamId": "238",
+      "conference": "SEC"
+    },
+    "Boston College Eagles": {
+      "score": 0.2,
+      "rank": 69,
+      "record": "4-3",
+      "teamId": "103",
+      "conference": "ACC"
+    },
+    "NC State Wolfpack": {
+      "score": 0,
+      "rank": 70,
+      "record": "3-4",
+      "teamId": "152",
+      "conference": "ACC"
+    },
+    "North Dakota State Bison": {
+      "score": -0.2,
+      "rank": 71,
+      "record": "6-2",
+      "teamId": "2449",
+      "conference": "Mountain West"
+    },
+    "Texas State Bobcats": {
+      "score": -0.3,
+      "rank": 72,
+      "record": "4-3",
+      "teamId": "326",
+      "conference": "Pac-12"
+    },
+    "Army Black Knights": {
+      "score": -0.3,
+      "rank": 73,
+      "record": "5-2",
+      "teamId": "349",
+      "conference": "American"
+    },
+    "Fresno State Bulldogs": {
+      "score": -1,
+      "rank": 74,
+      "record": "4-3",
+      "teamId": "278",
+      "conference": "Pac-12"
+    },
+    "Colorado Buffaloes": {
+      "score": -1.9,
+      "rank": 75,
+      "record": "2-5",
+      "teamId": "38",
+      "conference": "Big 12"
+    },
+    "South Florida Bulls": {
+      "score": -2.1,
+      "rank": 76,
+      "record": "5-2",
+      "teamId": "58",
+      "conference": "American"
+    },
+    "Louisiana Tech Bulldogs": {
+      "score": -2.3,
+      "rank": 77,
+      "record": "5-2",
+      "teamId": "2348",
+      "conference": "Sun Belt"
+    },
+    "UNLV Rebels": {
+      "score": -2.5,
+      "rank": 78,
+      "record": "4-3",
+      "teamId": "2439",
+      "conference": "Mountain West"
+    },
+    "Toledo Rockets": {
+      "score": -2.5,
+      "rank": 79,
+      "record": "6-2",
+      "teamId": "2649",
+      "conference": "MAC"
+    },
+    "Georgia Tech Yellow Jackets": {
+      "score": -2.5,
+      "rank": 80,
+      "record": "2-5",
+      "teamId": "59",
+      "conference": "ACC"
+    },
+    "Western Michigan Broncos": {
+      "score": -3.1,
+      "rank": 81,
+      "record": "5-3",
+      "teamId": "2711",
+      "conference": "MAC"
+    },
+    "Louisiana Ragin' Cajuns": {
+      "score": -3.4,
+      "rank": 82,
+      "record": "5-3",
+      "teamId": "309",
+      "conference": "Sun Belt"
+    },
+    "Tulsa Golden Hurricane": {
+      "score": -3.7,
+      "rank": 83,
+      "record": "4-4",
+      "teamId": "202",
+      "conference": "American"
+    },
+    "Maryland Terrapins": {
+      "score": -3.9,
+      "rank": 84,
+      "record": "2-5",
+      "teamId": "120",
+      "conference": "Big Ten"
+    },
+    "Tulane Green Wave": {
+      "score": -4,
+      "rank": 85,
+      "record": "3-4",
+      "teamId": "2655",
+      "conference": "American"
+    },
+    "East Carolina Pirates": {
+      "score": -4.2,
+      "rank": 86,
+      "record": "3-4",
+      "teamId": "151",
+      "conference": "American"
+    },
+    "Rutgers Scarlet Knights": {
+      "score": -4.4,
+      "rank": 87,
+      "record": "2-5",
+      "teamId": "164",
+      "conference": "Big Ten"
+    },
+    "Air Force Falcons": {
+      "score": -4.8,
+      "rank": 88,
+      "record": "5-2",
+      "teamId": "2005",
+      "conference": "Mountain West"
+    },
+    "UConn Huskies": {
+      "score": -4.8,
+      "rank": 89,
+      "record": "4-3",
+      "teamId": "41",
+      "conference": "FBS Indep."
+    },
+    "Georgia Southern Eagles": {
+      "score": -4.9,
+      "rank": 90,
+      "record": "3-4",
+      "teamId": "290",
+      "conference": "Sun Belt"
+    },
+    "California Golden Bears": {
+      "score": -6,
+      "rank": 91,
+      "record": "3-5",
+      "teamId": "25",
+      "conference": "ACC"
+    },
+    "Navy Midshipmen": {
+      "score": -6.3,
+      "rank": 92,
+      "record": "2-5",
+      "teamId": "2426",
+      "conference": "American"
+    },
+    "Utah State Aggies": {
+      "score": -7.1,
+      "rank": 93,
+      "record": "2-5",
+      "teamId": "328",
+      "conference": "Pac-12"
+    },
+    "Nevada Wolf Pack": {
+      "score": -7.5,
+      "rank": 94,
+      "record": "3-4",
+      "teamId": "2440",
+      "conference": "Mountain West"
+    },
+    "Georgia State Panthers": {
+      "score": -7.5,
+      "rank": 95,
+      "record": "4-3",
+      "teamId": "2247",
+      "conference": "Sun Belt"
+    },
+    "App State Mountaineers": {
+      "score": -7.5,
+      "rank": 96,
+      "record": "5-2",
+      "teamId": "2026",
+      "conference": "Sun Belt"
+    },
+    "Ohio Bobcats": {
+      "score": -7.9,
+      "rank": 97,
+      "record": "6-2",
+      "teamId": "195",
+      "conference": "MAC"
+    },
+    "Arkansas State Red Wolves": {
+      "score": -8.7,
+      "rank": 98,
+      "record": "4-4",
+      "teamId": "2032",
+      "conference": "Sun Belt"
+    },
+    "South Alabama Jaguars": {
+      "score": -8.8,
+      "rank": 99,
+      "record": "4-3",
+      "teamId": "6",
+      "conference": "Sun Belt"
+    },
+    "Jacksonville State Gamecocks": {
+      "score": -8.8,
+      "rank": 100,
+      "record": "5-2",
+      "teamId": "55",
+      "conference": "CUSA"
+    },
+    "Washington State Cougars": {
+      "score": -9.1,
+      "rank": 101,
+      "record": "1-7",
+      "teamId": "265",
+      "conference": "Pac-12"
+    },
+    "Temple Owls": {
+      "score": -9.1,
+      "rank": 102,
+      "record": "2-5",
+      "teamId": "218",
+      "conference": "American"
+    },
+    "Hawai'i Rainbow Warriors": {
+      "score": -9.3,
+      "rank": 103,
+      "record": "2-6",
+      "teamId": "62",
+      "conference": "Mountain West"
+    },
+    "Miami (OH) RedHawks": {
+      "score": -9.6,
+      "rank": 104,
+      "record": "5-3",
+      "teamId": "193",
+      "conference": "MAC"
+    },
+    "San Diego State Aztecs": {
+      "score": -9.7,
+      "rank": 105,
+      "record": "3-5",
+      "teamId": "21",
+      "conference": "Pac-12"
+    },
+    "Stanford Cardinal": {
+      "score": -10,
+      "rank": 106,
+      "record": "4-4",
+      "teamId": "24",
+      "conference": "ACC"
+    },
+    "Delaware Blue Hens": {
+      "score": -10.8,
+      "rank": 107,
+      "record": "3-4",
+      "teamId": "48",
+      "conference": "CUSA"
+    },
+    "Florida Atlantic Owls": {
+      "score": -10.9,
+      "rank": 108,
+      "record": "5-2",
+      "teamId": "2226",
+      "conference": "American"
+    },
+    "Colorado State Rams": {
+      "score": -10.9,
+      "rank": 109,
+      "record": "3-4",
+      "teamId": "36",
+      "conference": "Pac-12"
+    },
+    "Florida International Panthers": {
+      "score": -11,
+      "rank": 110,
+      "record": "3-4",
+      "teamId": "2229",
+      "conference": "CUSA"
+    },
+    "Troy Trojans": {
+      "score": -11.2,
+      "rank": 111,
+      "record": "3-4",
+      "teamId": "2653",
+      "conference": "Sun Belt"
+    },
+    "Coastal Carolina Chanticleers": {
+      "score": -12.2,
+      "rank": 112,
+      "record": "2-5",
+      "teamId": "324",
+      "conference": "Sun Belt"
+    },
+    "Western Kentucky Hilltoppers": {
+      "score": -12.3,
+      "rank": 113,
+      "record": "3-4",
+      "teamId": "98",
+      "conference": "CUSA"
+    },
+    "New Mexico State Aggies": {
+      "score": -12.8,
+      "rank": 114,
+      "record": "3-4",
+      "teamId": "166",
+      "conference": "CUSA"
+    },
+    "Buffalo Bulls": {
+      "score": -12.9,
+      "rank": 115,
+      "record": "5-3",
+      "teamId": "2084",
+      "conference": "MAC"
+    },
+    "Wyoming Cowboys": {
+      "score": -13.2,
+      "rank": 116,
+      "record": "5-3",
+      "teamId": "2751",
+      "conference": "Mountain West"
+    },
+    "San José State Spartans": {
+      "score": -13.3,
+      "rank": 117,
+      "record": "4-4",
+      "teamId": "23",
+      "conference": "Mountain West"
+    },
+    "Southern Miss Golden Eagles": {
+      "score": -13.6,
+      "rank": 118,
+      "record": "2-5",
+      "teamId": "2572",
+      "conference": "Sun Belt"
+    },
+    "UAB Blazers": {
+      "score": -13.7,
+      "rank": 119,
+      "record": "4-3",
+      "teamId": "5",
+      "conference": "American"
+    },
+    "Kennesaw State Owls": {
+      "score": -14.2,
+      "rank": 120,
+      "record": "1-6",
+      "teamId": "338",
+      "conference": "CUSA"
+    },
+    "Central Michigan Chippewas": {
+      "score": -14.3,
+      "rank": 121,
+      "record": "3-5",
+      "teamId": "2117",
+      "conference": "MAC"
+    },
+    "Rice Owls": {
+      "score": -14.6,
+      "rank": 122,
+      "record": "1-7",
+      "teamId": "242",
+      "conference": "American"
+    },
+    "Marshall Thundering Herd": {
+      "score": -15,
+      "rank": 123,
+      "record": "4-3",
+      "teamId": "276",
+      "conference": "Sun Belt"
+    },
+    "Massachusetts Minutemen": {
+      "score": -15,
+      "rank": 124,
+      "record": "4-4",
+      "teamId": "113",
+      "conference": "MAC"
+    },
+    "Old Dominion Monarchs": {
+      "score": -15.3,
+      "rank": 125,
+      "record": "2-6",
+      "teamId": "295",
+      "conference": "Sun Belt"
+    },
+    "Middle Tennessee Blue Raiders": {
+      "score": -16,
+      "rank": 126,
+      "record": "4-3",
+      "teamId": "2393",
+      "conference": "CUSA"
+    },
+    "Eastern Michigan Eagles": {
+      "score": -16.3,
+      "rank": 127,
+      "record": "4-5",
+      "teamId": "2199",
+      "conference": "MAC"
+    },
+    "Missouri State Bears": {
+      "score": -16.9,
+      "rank": 128,
+      "record": "2-5",
+      "teamId": "2623",
+      "conference": "CUSA"
+    },
+    "Sam Houston Bearkats": {
+      "score": -17.6,
+      "rank": 129,
+      "record": "1-6",
+      "teamId": "2534",
+      "conference": "CUSA"
+    },
+    "Bowling Green Falcons": {
+      "score": -17.9,
+      "rank": 130,
+      "record": "2-6",
+      "teamId": "189",
+      "conference": "MAC"
+    },
+    "Ball State Cardinals": {
+      "score": -20.1,
+      "rank": 131,
+      "record": "3-5",
+      "teamId": "2050",
+      "conference": "MAC"
+    },
+    "Kent State Golden Flashes": {
+      "score": -21,
+      "rank": 132,
+      "record": "3-5",
+      "teamId": "2309",
+      "conference": "MAC"
+    },
+    "Charlotte 49ers": {
+      "score": -22,
+      "rank": 133,
+      "record": "1-6",
+      "teamId": "2429",
+      "conference": "American"
+    },
+    "Northern Illinois Huskies": {
+      "score": -22.8,
+      "rank": 134,
+      "record": "0-7",
+      "teamId": "2459",
+      "conference": "Mountain West"
+    },
+    "Akron Zips": {
+      "score": -23.2,
+      "rank": 135,
+      "record": "1-7",
+      "teamId": "2006",
+      "conference": "MAC"
+    },
+    "UTEP Miners": {
+      "score": -24.2,
+      "rank": 136,
+      "record": "1-6",
+      "teamId": "2638",
+      "conference": "Mountain West"
+    },
+    "UL Monroe Warhawks": {
+      "score": -25.3,
+      "rank": 137,
+      "record": "1-6",
+      "teamId": "2433",
+      "conference": "Sun Belt"
+    },
+    "Sacramento State Hornets": {
+      "score": -33.2,
+      "rank": 138,
+      "record": "1-7",
+      "teamId": "16",
+      "conference": "MAC"
     }
   }
 }
