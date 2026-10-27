@@ -130,11 +130,19 @@
     return rec[team] || (rec[team] = { cw: 0, cl: 0, ow: 0, ol: 0 });
   }
 
+  function getTeamMethodScore(teamNameOrObj, method) {
+    if (method === "fpi") {
+      var f = SG.fpiOf && SG.fpiOf(typeof teamNameOrObj === "string" ? teamNameOrObj : teamNameOrObj.team);
+      return f ? f.score : 0;
+    }
+    return typeof teamNameOrObj === "string" ? null : (teamNameOrObj[method] || 0);
+  }
+
   function champScore(team, std, method) {
     var r = std[team.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
     var cwp = (r.cw + r.cl) ? r.cw / (r.cw + r.cl) : 0;
     var owp = (r.ow + r.ol) ? r.ow / (r.ow + r.ol) : 0;
-    return cwp * 1e6 + owp * 1e3 + (team[method] || 0);
+    return cwp * 1e6 + owp * 1e3 + (getTeamMethodScore(team, method) || 0);
   }
 
   // Conference title games that are played at a neutral site get no home edge.
@@ -162,7 +170,7 @@
   function ccgResult(conf, top, second, method) {
     var neutral = !!NEUTRAL_CCG[conf];
     var edge = neutral ? 0 : SG.homeEdge(method);
-    var spread = top[method] - second[method] + edge;
+    var spread = (getTeamMethodScore(top, method) - getTeamMethodScore(second, method)) + edge;
     var p = SG.normCdf(spread / SG.SIGMA);
     return { conf: conf, a: top, b: second, neutral: neutral, spread: spread, p: p, winner: p >= 0.5 ? top : second };
   }
@@ -308,7 +316,7 @@
 
   function play(a, b, homeSeed, method, stochastic) {
     var edge = SG.homeEdge(method);
-    var ra = a.team[method], rb = b.team[method];
+    var ra = getTeamMethodScore(a, method), rb = getTeamMethodScore(b, method);
     var spread = homeSeed === null ? ra - rb : (a.seed === homeSeed ? ra + edge - rb : ra - rb - edge);
     var p = SG.normCdf(spread / SG.SIGMA);
     var winner = (stochastic ? Math.random() : 0.5) < p ? a : b;
@@ -748,7 +756,7 @@
         remaining.map(function(r, idx) {
           var team = SG.state.espnIdToSag ? Object.values(SG.state.espnIdToSag).find(function(t){ return t.team === r.name; }) : null;
           var conf = team ? team.conference : "";
-          var rating = team ? (team[view.method] || team.rating || "") : "";
+          var rating = team ? ((view.method === "fpi" && SG.fpiOf) ? (SG.fpiOf(team.team) ? SG.fpiOf(team.team).score : "") : (team[view.method] || team.rating || "")) : "";
           var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
@@ -790,7 +798,7 @@
       if (g.completed && g.homeScore !== null && g.awayScore !== null) {
         applyResult(base, confOf, h, a, g.homeScore > g.awayScore);
       } else if (h && a) {
-        var p = SG.normCdf((h[method] - a[method] + (g.neutral ? 0 : edge)) / SG.SIGMA);
+        var p = SG.normCdf((getTeamMethodScore(h, method) - getTeamMethodScore(a, method) + (g.neutral ? 0 : edge)) / SG.SIGMA);
         games.push({ h: h.team, a: a.team, p: p, conf: confOf[h.team] === confOf[a.team] && confOf[h.team] !== "I-A IND." });
       } else if (h) {
         applyResult(base, confOf, h, null, true);
