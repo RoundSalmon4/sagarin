@@ -98,6 +98,7 @@
     "georgia state panthers": "georgia state",
     "georgia tech yellow jackets": "georgia tech",
     "hawaii rainbow warriors": "hawaii",
+    "hawaii": "hawaii rainbow warriors",
     "houston cougars": "houston",
     "illinois fighting illini": "illinois",
     "indiana hoosiers": "indiana",
