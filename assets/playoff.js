@@ -18,11 +18,12 @@
   var AT_LARGE_LOSS_PENALTY = 5;
   var AT_LARGE_SOS_WEIGHT = 0;
   var AT_LARGE_CHAMPION_BONUS = 0;
-  function loadResumeWeights() {
+  function loadResumeWeights(method) {
     var r = SG.state.resume || {};
-    if (typeof r.lossPenalty === "number") AT_LARGE_LOSS_PENALTY = r.lossPenalty;
-    if (typeof r.sosWeight === "number") AT_LARGE_SOS_WEIGHT = r.sosWeight;
-    if (typeof r.championBonus === "number") AT_LARGE_CHAMPION_BONUS = r.championBonus;
+    var weights = r.byMethod && r.byMethod[method] ? r.byMethod[method] : r;
+    if (typeof weights.lossPenalty === "number") AT_LARGE_LOSS_PENALTY = weights.lossPenalty;
+    if (typeof weights.sosWeight === "number") AT_LARGE_SOS_WEIGHT = weights.sosWeight;
+    if (typeof weights.championBonus === "number") AT_LARGE_CHAMPION_BONUS = weights.championBonus;
   }
 
   var view = { format: "12", method: "predictor", bracketMode: "seeds", field: null, sim: { "12": null, "24": null }, simBusy: false, fieldSort: { key: "seed", dir: 1 } };
@@ -231,7 +232,7 @@
     // SOS weight times the schedule edge over the FBS average, plus a bonus for
     // the projected conference champion. Drives the G6 spot, the at-large order
     // and the seeds when CFP rankings are not available.
-    loadResumeWeights();
+    loadResumeWeights(view.method);
     var avgSched = 0;
     for (var ai = 0; ai < teams.length; ai++) avgSched += teams[ai].sched || 0;
     avgSched = teams.length ? avgSched / teams.length : 0;

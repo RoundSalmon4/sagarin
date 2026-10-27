@@ -3,6 +3,14 @@
   "sosWeight": 0.4,
   "championBonus": 3.5,
   "method": "selection-fit",
+  "byMethod": {
+    "predictor": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
+    "rating": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
+    "goldenMean": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
+    "recent": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
+    "strongRecent": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
+    "fpi": { "lossPenalty": 5, "sosWeight": 1.2, "championBonus": 3.5 }
+  },
   "target": "CFP final top 25",
   "seasons": [
     "2014",
