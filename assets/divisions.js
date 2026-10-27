@@ -55,19 +55,17 @@
     "Western Michigan": "West",
     "Ball State": "West",
 
-    // Mountain West - Mountain/West (active)
+    // Mountain West - Mountain/West (2026)
     "Air Force": "Mountain",
-    "Boise State": "Mountain",
-    "Colorado State": "Mountain",
     "New Mexico": "Mountain",
-    "Utah State": "Mountain",
     "Wyoming": "Mountain",
-    "Fresno State": "West",
     "Hawaii": "West",
     "Nevada": "West",
-    "San Diego State": "West",
-    "San Jose State": "West",
     "UNLV": "West",
+    "North Dakota State": "West",
+    "San Jose State": "West",
+    "UTEP": "West",
+    "Northern Illinois": "West",
 
     // Sun Belt - East/West (active)
     "Appalachian State": "East",
