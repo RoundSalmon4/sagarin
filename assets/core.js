@@ -520,7 +520,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
         goldenMean: "goldenMeanRank",
         recent: "recentRank",
         strongRecent: "strongRecentRank",
-        fpi: null
+        fpi: "rank"  // FPI rank is stored as 'rank' in fpi.byTeam data
       };
       function statCell(t, key) {
         var s = st[t.team];
@@ -532,7 +532,13 @@ SG.DIVISIONS = window.TeamDivisions || {};
         { label: "Conference", cell: function (t) { return SG.esc(confOf(t)); } },
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
           var val = getRating(t, method);
-          var rank = rankField[method] ? t[rankField[method]] : "-";
+          var rank = "-";
+          if (method === "fpi") {
+            var fpiData = SG.state.fpi && SG.state.fpi.byTeam && SG.state.fpi.byTeam[t.team];
+            rank = fpiData ? fpiData.rank : "-";
+          } else if (rankField[method]) {
+            rank = t[rankField[method]] || "-";
+          }
           return SG.fmt(val) + ' <span class="dim">(' + rank + ")</span>";
         } },
         { label: "Schedule", cell: function (t) {
