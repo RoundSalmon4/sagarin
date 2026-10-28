@@ -485,10 +485,10 @@
     var table = document.getElementById("fieldTable");
     var columns = [
       { key: "seed", label: "#", cls: "left seed-col" },
-      { key: "team", label: "Team", cls: "left", type: "str",
+      { key: "team", label: "Team", cls: "left team-col", type: "str",
         cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
-      { key: "conf", label: "Conference", cls: "left", type: "str" },
-      { key: "now", label: "Now", cls: "left", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
+      { key: "conf", label: "Conference", cls: "left conf-col", type: "str" },
+      { key: "now", label: "Now", cls: "left now-col", cell: function (r) { return SG.esc(r.now); }, value: function (r) { return r.nowV; } },
       { key: "proj", label: "Projected", cls: "left proj-col", cell: function (r) { return SG.esc(r.proj); }, value: function (r) { return r.projV; } },
       { key: "rating", label: view.method === "rating" ? "RATING" : SG.methodLabel(view.method), strong: true, cls: "rating-col" },
       { key: "bid", label: "Bid", cls: "left bid-col", type: "str" }
@@ -746,7 +746,7 @@
     var fmtMethodSim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
     var sim = fmtMethodSim || (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
-      box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
+      box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
       return;
     }
     // Field teams = the CURRENT PROJECTED FIELD (12 or 24 teams from view.field.seeds)
@@ -764,7 +764,7 @@
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
-    var header = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
+    var header = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
     // Helper to get rating value for a team, handling FPI fallback
     function getRatingForTeam(team, method) {
       if (!team) return "";
@@ -786,7 +786,7 @@
       var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
       var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-      return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
+      return '<tr><td class="left seed-col">' + (idx + 1) + '</td><td class="left team-col">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left conf-col">' + SG.esc(conf) + '</td><td class="left now-col">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
     }).join("");
     var moreHtml = '';
     if (remaining.length > 0) {
@@ -798,7 +798,7 @@
           var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-          return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
+          return '<tr><td class="left seed-col">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left team-col">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left conf-col">' + SG.esc(conf) + '</td><td class="left now-col">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
         }).join("") + '</tbody>' +
         '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>';
     }
