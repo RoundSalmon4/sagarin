@@ -534,8 +534,15 @@
   }
 
   function ccgTeam(t, isWinner, method, showResults, pct) {
+    var ratingVal;
+    if (method === "fpi") {
+      var f = SG.fpiOf && SG.fpiOf(t.team);
+      ratingVal = f ? f.score : (t.predictor || 0);
+    } else {
+      ratingVal = t[method] || 0;
+    }
     return '<div class="ccg-team' + (showResults && isWinner ? " winner" : "") + '">' + SG.teamLogo(t.team) +
-      SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">' + SG.fmt(t[method]) +
+      SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">' + SG.fmt(ratingVal) +
       (showResults && pct !== null && pct !== undefined ? ' <span class="ccg-pct">' + (pct * 100).toFixed(0) + "%</span>" : "") +
       "</span></div>";
   }
