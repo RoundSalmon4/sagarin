@@ -682,18 +682,28 @@
         ? "Conference champions come from projected final conference records (completed games use the real result, the rest are predicted), then the top two play a projected title game: neutral-site games get no home edge and campus games go to the higher seed. The projected winner is credited with a conference and overall win and the loser with a loss, so the projected records include the title game. Tiebreak for the top two: conference record, then overall record, then rating."
         : "The 24-team field drops conference title games, so each champion is simply the team with the best projected conference record. Completed games use the real result, the rest are predicted. Tiebreak: conference record, then overall record, then rating.")
       : "ESPN games are not loaded, so conference champions fall back to the highest-rated team in each conference.";
+    var methodLabel = SG.methodLabel(view.method);
+    var isFpi = view.method === "fpi";
+    var sourceLabel = isFpi ? "ESPN FPI" : "Sagarin " + methodLabel;
+    var weightLabel = isFpi ? "FPI" : methodLabel;
+    var scheduleNote = isFpi 
+      ? " (FPI schedule weight scaled for FPI scale)"
+      : "";
+    var fitNote = isFpi 
+      ? " FPI weights are scaled for FPI's smaller scale."
+      : " The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added.";
+    
     document.getElementById("playoffNote").textContent =
-      "Model projection from Sagarin " + SG.methodLabel(view.method) + " ratings. " + standingsNote + " " +
+      "Model projection from " + sourceLabel + " ratings. " + standingsNote + " " +
       (Number(view.format) === 12
         ? "12-team (2026 rules): the ACC, Big 12, Big Ten and SEC champions, the highest Group of 6 team, and the best remaining resumes to fill 12 (Notre Dame gets a bid when it ranks in the top 12); the field seeds 1-12 on the resume score, the top four get byes and seeds 5-8 host seeds 9-12."
         : "24-team (proposed 2027): 19 at-large, the four Power 4 regular-season champions, and the highest Group of 6 team; the field seeds 1-24 on the resume score, with seeds 1-8 earning a bye and a home game and seeds 9-16 hosting the first round.") +
-      " The G6 spot, the at-large spots and the seeds all use a resume score: rating minus " +
+      " The G6 spot, the at-large spots and the seeds all use a resume score: " + weightLabel + " rating minus " +
       AT_LARGE_LOSS_PENALTY + " points per projected loss plus " + AT_LARGE_SOS_WEIGHT +
-      " points for every point the schedule sits above the FBS average, plus " +
-      AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something. " +
-      "The schedule weight and the champion bonus are fitted to the committee's picks and checked against a held-out season, so they move as more seasons are added. " +
-      "The projected field table shows the selected rating for each team. " +
-      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). A team with a high bubble share may still miss the deterministic field.";
+      " points for every point the schedule sits above the FBS average" + scheduleNote + ", plus " +
+      AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something." + fitNote +
+      " The projected field table shows the selected " + weightLabel + " rating for each team. " +
+      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field.";
     renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
