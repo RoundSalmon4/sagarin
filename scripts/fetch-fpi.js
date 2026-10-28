@@ -276,14 +276,26 @@ function decodeHtmlEntities(s) {
 
 function parseTable(html, tableIndex) {
   const tables = html.match(/<table[\s\S]*?<\/table>/g) || [];
-  if (tableIndex >= tables.length) return [];
-  const table = tables[tableIndex];
+  if (tables.length === 0) return [];
+  const table = tables[tableIndex] || tables[0];
   
-  const rowRegex = /<tr[^>]*data-idx="(\d+)"[\s\S]*?<\/tr>/g;
-  const rows = [];
+  // Try data-idx rows first (old structure)
+  let rowRegex = /<tr[^>]*data-idx="(\d+)"[\s\S]*?<\/tr>/g;
+  let rows = [];
   let match;
   while ((match = rowRegex.exec(table)) !== null) {
     rows.push({ idx: parseInt(match[1], 10), html: match[0] });
+  }
+  if (rows.length > 0) return rows;
+  
+  // Try any tr with td
+  rowRegex = /<tr[\s\S]*?<\/tr>/g;
+  let idx = 0;
+  while ((match = rowRegex.exec(table)) !== null) {
+    const tr = match[0];
+    if (/<td/i.test(tr)) {
+      rows.push({ idx: idx++, html: tr });
+    }
   }
   return rows;
 }
@@ -291,7 +303,13 @@ function parseTable(html, tableIndex) {
 function parseTeamRows(rows) {
   const teams = {};
   for (const row of rows) {
-    const nameMatch = row.html.match(/<a[^>]*class="AnchorLink[^"]*"[^>]*>([^<]+)<\/a>/);
+    let nameMatch = row.html.match(/<a[^>]*class="AnchorLink[^"]*"[^>]*>([^<]+)<\/a>/);
+    if (!nameMatch) {
+      nameMatch = row.html.match(/<a[^>]*href="[^"]*\/team\/[^"]*"[^>]*>([^<]+)<\/a>/);
+    }
+    if (!nameMatch) {
+      nameMatch = row.html.match(/<span[^>]*class="[^"]*TeamLink[^"]*"[^>]*>([^<]+)<\/span>/);
+    }
     let teamName = nameMatch ? nameMatch[1].trim() : null;
     teamName = teamName ? decodeHtmlEntities(teamName) : null;
     
@@ -299,10 +317,16 @@ function parseTeamRows(rows) {
     const teamId = idMatch ? idMatch[1] : null;
     
     const tds = row.html.match(/<td[^>]*>([\s\S]*?)<\/td>/g) || [];
-    let conference = tds[1] ? tds[1].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim() : null;
-    conference = conference ? decodeHtmlEntities(conference) : null;
+    let conference = null;
+    for (let i = 1; i < tds.length && i < 4; i++) {
+      const c = tds[i].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
+      if (c && /[A-Za-z]/.test(c) && !/^\d/.test(c) && c.length < 40) {
+        conference = decodeHtmlEntities(c);
+        break;
+      }
+    }
     
-    if (teamName) {
+    if (teamName && teamName.length > 2) {
       teams[row.idx] = { name: teamName, teamId: teamId, conference: conference };
     }
   }
@@ -314,12 +338,20 @@ function parseFpiRows(rows) {
   for (const row of rows) {
     const tds = row.html.match(/<td[^>]*>([\s\S]*?)<\/td>/g) || [];
     if (tds.length >= 2) {
-      const fpiScore = parseFloat(tds[1].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim());
-      const record = tds[0] ? tds[0].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim() : null;
-      const rank = parseInt(tds[2] ? tds[2].replace(/<[^>]+>/g, '').trim() : (row.idx + 1), 10);
-      
-      if (!isNaN(fpiScore)) {
-        fpiData[row.idx] = { score: fpiScore, record: record, rank: rank };
+      // Try to find numeric FPI score
+      for (let i = 1; i < tds.length; i++) {
+        const num = parseFloat(tds[i].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim());
+        if (!isNaN(num) && num > -50 && num < 50) {
+          const record = tds[0] ? tds[0].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim() : null;
+          let rank = null;
+          for (let j = 0; j < tds.length; j++) {
+            const r = parseInt(tds[j].replace(/<[^>]+>/g, '').trim(), 10);
+            if (!isNaN(r) && r > 0 && r <= 200) { rank = r; break; }
+          }
+          if (rank === null) rank = row.idx + 1;
+          fpiData[row.idx] = { score: num, record: record, rank: rank };
+          break;
+        }
       }
     }
   }
@@ -414,40 +446,83 @@ async function main() {
     if (firecrawlResult && firecrawlResult.markdown) {
       console.log('Parsing Firecrawl markdown...');
       rankings = await parseFromMarkdown(firecrawlResult.markdown);
+      console.log('Got ' + rankings.length + ' from firecrawl markdown');
     }
-    
-    // Fallback to HTML parsing
-    if (rankings.length === 0) {
-      console.log('Firecrawl unavailable or empty, trying direct HTML fetch...');
-      const html = await fetchText(ESPN_FPI_PAGE);
-      
-      console.log('Parsing team table (table 0)...');
-      const teamRows = parseTable(html, 0);
-      console.log('Found ' + teamRows.length + ' team rows');
-      
-      console.log('Parsing FPI table (table 1)...');
-      const fpiRows = parseTable(html, 1);
-      console.log('Found ' + fpiRows.length + ' FPI rows');
-      
+    if (firecrawlResult && firecrawlResult.html && rankings.length === 0) {
+      console.log('Parsing Firecrawl html...');
+      const tables = firecrawlResult.html.match(/<table[\s\S]*?<\/table>/g) || [];
+      console.log('Firecrawl html tables:', tables.length);
+      const teamRows = parseTable(firecrawlResult.html, 0);
+      const fpiRows = parseTable(firecrawlResult.html, 1);
       const teams = parseTeamRows(teamRows);
       const fpiData = parseFpiRows(fpiRows);
-      
       const tempRankings = [];
       for (const idx in teams) {
         const team = teams[idx];
         const fpi = fpiData[idx];
         if (fpi) {
-          tempRankings.push({
-            rank: fpi.rank,
-            team: team.name,
-            teamId: team.teamId,
-            conference: team.conference,
-            score: fpi.score,
-            record: fpi.record
-          });
+          tempRankings.push({ rank: fpi.rank, team: team.name, teamId: team.teamId, conference: team.conference, score: fpi.score, record: fpi.record });
         }
       }
       rankings = tempRankings;
+    }
+    
+    // Fallback to HTML parsing
+    if (rankings.length === 0) {
+      console.log('Firecrawl unavailable or empty, trying direct HTML fetch...');
+      try {
+        const html = await fetchText(ESPN_FPI_PAGE);
+        console.log('Got HTML length:', html.length);
+        
+        // Try all tables
+        const tables = html.match(/<table[\s\S]*?<\/table>/g) || [];
+        console.log('Found tables:', tables.length);
+        for (let t = 0; t < tables.length; t++) {
+          console.log('Table', t, 'length:', tables[t].length);
+        }
+        
+        console.log('Parsing team table (table 0)...');
+        const teamRows = parseTable(html, 0);
+        console.log('Found ' + teamRows.length + ' team rows');
+        
+        console.log('Parsing FPI table (table 1)...');
+        const fpiRows = parseTable(html, 1);
+        console.log('Found ' + fpiRows.length + ' FPI rows');
+        
+        const teams = parseTeamRows(teamRows);
+        const fpiData = parseFpiRows(fpiRows);
+        
+        const tempRankings = [];
+        for (const idx in teams) {
+          const team = teams[idx];
+          const fpi = fpiData[idx];
+          if (fpi) {
+            tempRankings.push({
+              rank: fpi.rank,
+              team: team.name,
+              teamId: team.teamId,
+              conference: team.conference,
+              score: fpi.score,
+              record: fpi.record
+            });
+          }
+        }
+        rankings = tempRankings;
+        
+        // If still empty, try to parse from JSON in page
+        if (rankings.length === 0) {
+          console.log('Trying to parse JSON data from page...');
+          const jsonMatches = html.match(/<script[^>]*>[\s\S]*?window\.__INITIAL_DATA__[\s\S]*?<\/script>/g);
+          if (jsonMatches) {
+            console.log('Found initial data script');
+          }
+          // Try to find fpi data in page source
+          const fpiMatches = html.match(/"fpi"[\s\S]{0,500}/g);
+          if (fpiMatches) console.log('Found fpi references:', fpiMatches.length);
+        }
+      } catch (e) {
+        console.log('HTML fetch failed:', e.message);
+      }
     }
     
     // Sort by rank
