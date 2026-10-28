@@ -704,7 +704,7 @@
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something." + fitNote +
       " The projected field table shows the selected " + weightLabel + " rating for each team. " +
       "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field. " +
-      "Disclaimer: This model uses predictive ratings (team strength) for field selection. Both FPI and Sagarin ratings overvalue talent and undervalue on-field performance — they will favor talented teams with weak resumes over accomplished teams with lesser talent. For a pure resume-based projection (wins, losses, schedule only), a different methodology would be required.";
+      "Disclaimer: These models use predictive ratings (team strength) for field selection. Predictive ratings overvalue talent and undervalue on-field performance. The schedule weight is an attempt to mitigate this but can only do so much, as the ratings are the foundation of the model. This is why a site focused on Sagarin ratings does not simply use the straight ratings for playoff prediction — the ratings measure team strength, not resume.";
     renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
