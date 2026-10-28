@@ -446,10 +446,15 @@ SG.DIVISIONS = window.TeamDivisions || {};
     method = method || document.getElementById("methodSelect").value || "rating";
     var teams = SG.state.data.teams.slice().sort(function (a, b) { return a.team.localeCompare(b.team); });
     var html = teams.map(function (t) {
-      var ratingVal = (method === "fpi")
-        ? (SG.fpiOf && SG.fpiOf(t.team) ? SG.fpiOf(t.team).score : t.predictor)
-        : t[method];
-      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + SG.fmt(ratingVal) + ")</option>";
+      var ratingVal;
+      if (method === "fpi") {
+        var f = SG.fpiOf && SG.fpiOf(t.team);
+        ratingVal = f ? f.score : null;
+      } else {
+        ratingVal = t[method];
+      }
+      var displayRating = (ratingVal !== null && ratingVal !== undefined) ? SG.fmt(ratingVal) : "N/A";
+      return '<option value="' + SG.esc(t.team) + '">' + SG.esc(t.team) + " (" + displayRating + ")</option>";
     }).join("");
     var a = document.getElementById("teamA");
     var b = document.getElementById("teamB");
@@ -469,12 +474,10 @@ SG.DIVISIONS = window.TeamDivisions || {};
     if (!away || !home) return;
     var edge = SG.homeEdge(method);
     
-    // Get rating value for a team, handling FPI
     function getRating(t, m) {
       if (m === "fpi") {
         var f = SG.fpiOf && SG.fpiOf(t.team);
-        if (f) return f.score;
-        return t.predictor;
+        return f ? f.score : null;
       }
       var val = t[m];
       return (val !== undefined && val !== null) ? val : 0;

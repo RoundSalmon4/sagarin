@@ -135,10 +135,7 @@
     function methodValue(teamName, m) {
       if (m === "fpi") {
         var f = SG.fpiOf ? SG.fpiOf(teamName) : null;
-        if (f) return f.score;
-        // Fallback to Sagarin predictor if FPI not available
-        var t = SG.teamByName(teamName);
-        return t ? t.predictor : null;
+        return f ? f.score : null;
       }
       return teamSag ? teamSag[m] : null;
     }
@@ -332,12 +329,10 @@
       { key: "title", label: "Title game", cls: "left", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
     ];
 
-    // Helper to get rating value for a team, handling FPI fallback
     function getRatingForTeam(team, method) {
       if (method === "fpi") {
         var f = SG.fpiOf ? SG.fpiOf(team.team) : null;
-        if (f) return f.score;
-        return team.predictor;
+        return f ? f.score : null;
       }
       return team[method];
     }

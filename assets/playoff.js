@@ -137,10 +137,7 @@
     if (method === "fpi") {
       var teamName = typeof teamNameOrObj === "string" ? teamNameOrObj : teamNameOrObj.team;
       var f = SG.fpiOf && SG.fpiOf(teamName);
-      if (f) return f.score;
-      // Fallback to Sagarin predictor if FPI not available
-      var t = SG.teamByName && SG.teamByName(teamName);
-      return t ? t.predictor : 0;
+      return f ? f.score : null;
     }
     return typeof teamNameOrObj === "string" ? null : (teamNameOrObj[method] || 0);
   }
@@ -510,9 +507,9 @@
       var ratingVal;
       if (view.method === "fpi") {
         var f = SG.fpiOf && SG.fpiOf(t.team);
-        ratingVal = f ? f.score : (t.predictor || 0);
+        ratingVal = f ? f.score : null;
       } else {
-        ratingVal = t[view.method] || 0;
+        ratingVal = t[view.method];
       }
       rows.push({
         seed: i,
@@ -537,7 +534,9 @@
     var ratingVal;
     if (method === "fpi") {
       var f = SG.fpiOf && SG.fpiOf(t.team);
-      ratingVal = f ? f.score : (t.predictor || 0);
+      if (!f) return '<div class="ccg-team' + (showResults && isWinner ? " winner" : "") + '">' + SG.teamLogo(t.team) +
+        SG.esc(t.team) + SG.apBadge(t.team) + '<span class="ccg-proj">N/A</span></div>';
+      ratingVal = f.score;
     } else {
       ratingVal = t[method] || 0;
     }
@@ -772,13 +771,11 @@
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
     var header = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
-    // Helper to get rating value for a team, handling FPI fallback
     function getRatingForTeam(team, method) {
       if (!team) return "";
       if (method === "fpi") {
         var f = SG.fpiOf && SG.fpiOf(team.team);
-        if (f) return f.score;
-        return team.predictor || "";
+        return f ? f.score : "";
       }
       return team[method] || team.rating || "";
     }
