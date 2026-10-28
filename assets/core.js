@@ -204,11 +204,25 @@ SG.DIVISIONS = window.TeamDivisions || {};
   SG.fpiOf = function (name) {
     var fpi = SG.state.fpi;
     if (!fpi || !fpi.byTeam) return null;
-    // byTeam now uses Sagarin names as keys, so exact match works
+    // byTeam uses Sagarin names as keys; byEspnName uses ESPN display names
     if (fpi.byTeam[name]) return fpi.byTeam[name];
-    // Fallback: try normalized name
+    if (fpi.byEspnName && fpi.byEspnName[name]) return fpi.byEspnName[name];
+    // Fallback: try normalized name against both
     var norm = SG.normalizeName(name);
     if (fpi.byTeam[norm]) return fpi.byTeam[norm];
+    if (fpi.byEspnName && fpi.byEspnName[norm]) return fpi.byEspnName[norm];
+    // Try FPI alias mapping (normalized FPI name -> Sagarin name)
+    var fpiAlias = window.FpiAlias || {};
+    var norm = SG.normalizeName(name);
+    var alias = fpiAlias && fpiAlias[norm];
+    if (alias && fpi.byTeam[alias]) return fpi.byTeam[alias];
+    // Fallback: search byEspnName keys by normalization
+    if (fpi.byEspnName) {
+      var keys = Object.keys(fpi.byEspnName);
+      for (var i = 0; i < keys.length; i++) {
+        if (SG.normalizeName(keys[i]) === norm) return fpi.byEspnName[keys[i]];
+      }
+    }
     return null;
   };
 
