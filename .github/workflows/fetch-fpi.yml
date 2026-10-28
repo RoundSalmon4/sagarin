@@ -17,9 +17,9 @@ jobs:
         with:
           node-version: "20"
       - name: Fetch ESPN FPI
-  env:
-    FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
-  run: node scripts/fetch-fpi.js
+      env:
+        FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+      run: node scripts/fetch-fpi.js
       - name: Commit and push when changed
         run: |
           git add data/fpi.json
