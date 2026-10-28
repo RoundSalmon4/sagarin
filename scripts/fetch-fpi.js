@@ -188,7 +188,7 @@ function decodeHtmlEntities(s) {
 }
 
 async function fetchWithFirecrawl(url) {
-  const apiKey = process.env.FIRECRAWL_API_KEY;
+  const apiKey = process.env.FIRECRAWL_API_KEY || process.env.FIRECRAWL_KEY || process.env.FIRECRAWL_TOKEN;
   if (!apiKey) {
     console.log('No FIRECRAWL_API_KEY found, skipping Firecrawl');
     return null;
