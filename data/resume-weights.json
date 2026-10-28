@@ -9,7 +9,7 @@
     "goldenMean": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
     "recent": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
     "strongRecent": { "lossPenalty": 5, "sosWeight": 0.4, "championBonus": 3.5 },
-    "fpi": { "lossPenalty": 5, "sosWeight": 1.2, "championBonus": 3.5 }
+    "fpi": { "lossPenalty": 1.7, "sosWeight": 1.2, "championBonus": 1.2 }
   },
   "target": "CFP final top 25",
   "seasons": [
