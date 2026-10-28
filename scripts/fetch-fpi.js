@@ -331,7 +331,10 @@ async function parseFromMarkdown(markdown) {
   const lines = markdown.split('\n');
   const rankings = [];
   
-  // Look for table rows in markdown
+  console.log('Markdown length:', markdown.length);
+  console.log('First 2000 chars of markdown:', markdown.substring(0, 2000));
+  
+  // Look for table rows in markdown - multiple formats
   for (const line of lines) {
     // Match markdown table rows like | 1 | Ohio State Buckeyes | Big Ten | 6-1 | 28.2 | 1 | ...
     const match = line.match(/^\|\s*(\d+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([\d.]+)\s*\|\s*(\d+)\s*\|/);
@@ -369,6 +372,34 @@ async function parseFromMarkdown(markdown) {
     }
   }
   
+  // Try to find any lines with FPI-like data (number | team | conf | record | score)
+  if (rankings.length < 50) {
+    for (const line of lines) {
+      // Look for lines with team names and numbers that look like FPI data
+      // Pattern: rank | team name | conference | record | score | rank
+      const parts = line.split(/\s*\|\s*/);
+      if (parts.length >= 6) {
+        const rank = parseInt(parts[0].replace(/[^\d]/g, ''), 10);
+        const team = parts[1].trim();
+        const conf = parts[2] ? parts[2].trim() : '';
+        const record = parts[3] ? parts[3].trim() : '';
+        const score = parseFloat(parts[4]);
+        const rank2 = parseInt(parts[5].replace(/[^\d]/g, ''), 10);
+        
+        if (!isNaN(rank) && !isNaN(score) && rank > 0 && rank <= 200 && rank === rank2) {
+          // Check if team name looks reasonable (not empty, not just numbers)
+          if (team && team.length > 2 && /[a-zA-Z]/.test(team)) {
+            // Avoid duplicates
+            if (!rankings.some(r => r.rank === rank)) {
+              rankings.push({ rank, team, conf, score, record });
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  console.log('Parsed ' + rankings.length + ' teams from markdown');
   return rankings;
 }
 
