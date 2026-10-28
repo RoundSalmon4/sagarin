@@ -786,7 +786,7 @@
       var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
       var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
       var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-      return '<tr><td class="left">' + (idx + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
+      return '<tr><td class="left">-</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
     }).join("");
     var moreHtml = '';
     if (remaining.length > 0) {
@@ -798,7 +798,7 @@
           var nowW = team ? SG.espnW(team) : 0, nowL = team ? SG.espnL(team) : 0;
           var nowCW = team ? SG.espnConfW(team) : 0, nowCL = team ? SG.espnConfL(team) : 0;
           var now = SG.rec(nowW, nowL) + (nowCW > 0 || nowCL > 0 ? " (" + SG.rec(nowCW, nowCL) + ")" : "");
-          return '<tr><td class="left">' + (idx + DEFAULT_SHOW + 1) + '</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
+          return '<tr><td class="left">-</td><td class="left">' + SG.teamLogo(r.name) + SG.esc(r.name) + SG.apBadge(r.name) + '</td><td class="left">' + SG.esc(conf) + '</td><td class="left">' + SG.esc(now) + '</td><td class="left proj-col">' + (r.pct * 100).toFixed(1) + '%</td><td class="rating-col">' + SG.esc(String(rating)) + '</td><td class="left bid-col">' + r.c.toLocaleString() + '</td></tr>';
         }).join("") + '</tbody>' +
         '<div class="bubble-more-wrap"><button type="button" class="bubble-more-btn" data-target="bubble-more-' + fmt + '" data-expanded="false">Show more</button></div>';
     }
