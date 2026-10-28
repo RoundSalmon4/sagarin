@@ -550,6 +550,10 @@ async function main() {
     
     // Sort by rank
     rankings.sort((a, b) => a.rank - b.rank);
+
+    // Re-rank by FPI score (highest to lowest) to avoid ties/errors in source data
+    rankings.sort((a, b) => b.score - a.score);
+    rankings.forEach((r, i) => { r.rank = i + 1; });
     
     console.log('Total rankings parsed: ' + rankings.length);
     
