@@ -703,7 +703,8 @@
       " points for every point the schedule sits above the FBS average" + scheduleNote + ", plus " +
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something." + fitNote +
       " The projected field table shows the selected " + weightLabel + " rating for each team. " +
-      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field.";
+      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field. " +
+      "Disclaimer: This model uses predictive ratings (team strength) for field selection. It will favor talented teams with weak resumes over accomplished teams with lesser talent. For a committee-style resume projection based solely on wins, losses, and schedule, see the Sagarin-based projections.";
     renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
