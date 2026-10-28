@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* Fetch ESPN FPI (Football Power Index) for the current season.
- * Parses the FPI table from the ESPN FPI page (two tables joined by data-idx).
+ * Tries Firecrawl API first, then falls back to direct HTML parsing.
  * Writes data/fpi.json. Intended for predictor/sim/head-to-head reference.
  */
 "use strict";
@@ -10,6 +10,7 @@ const path = require('path');
 
 const DEFAULT_OUT = path.join(__dirname, '..', 'data', 'fpi.json');
 const ESPN_FPI_PAGE = 'https://www.espn.com/college-football/fpi/_/view/fpi';
+const FIRECRAWL_API_URL = 'https://api.firecrawl.dev/v1/scrape';
 
 // FPI team name (ESPN display name) -> Sagarin team name mapping
 const FpiToSagarin = {
@@ -67,7 +68,6 @@ const FpiToSagarin = {
   "lsu tigers": "LSU",
   "liberty flames": "Liberty",
   "louisiana ragin cajuns": "Louisiana-Lafayette",
-  "texas a m aggies": "Texas A&M",
   "louisiana tech bulldogs": "Louisiana Tech",
   "louisville cardinals": "Louisville",
   "marshall thundering herd": "Marshall",
@@ -187,32 +187,91 @@ function decodeHtmlEntities(s) {
     .replace(new RegExp(ENT.APOS, 'g'), "'");
 }
 
+async function fetchWithFirecrawl(url) {
+  const apiKey = process.env.FIRECRAWL_API_KEY;
+  if (!apiKey) {
+    console.log('No FIRECRAWL_API_KEY found, skipping Firecrawl');
+    return null;
+  }
 
-async function fetchText(url, tries = 4) {
+  try {
+    console.log('Trying Firecrawl API...');
+    const res = await fetch(FIRECRAWL_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        url: url,
+        formats: ['markdown', 'html'],
+        onlyMainContent: true,
+        waitFor: 3000
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      console.log('Firecrawl API error:', res.status, err);
+      return null;
+    }
+
+    const data = await res.json();
+    if (!data.success || !data.data) {
+      console.log('Firecrawl returned no data');
+      return null;
+    }
+
+    console.log('Firecrawl API succeeded');
+    return {
+      html: data.data.html || '',
+      markdown: data.data.markdown || ''
+    };
+  } catch (e) {
+    console.log('Firecrawl fetch error:', e.message);
+    return null;
+  }
+}
+
+async function fetchText(url, tries = 3) {
+  const headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1'
+  };
+
   for (let i = 1; i <= tries; i++) {
     try {
-      const res = await fetch(url, { 
-        headers: { 
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Sec-Fetch-Dest': 'document',
-          'Sec-Fetch-Mode': 'navigate',
-          'Sec-Fetch-Site': 'none',
-          'Sec-Fetch-User': '?1',
-          'Upgrade-Insecure-Requests': '1'
-        } 
-      });
+      const res = await fetch(url, { headers });
       if (res.ok) return await res.text();
+      console.log(`Fetch attempt ${i} failed: HTTP ${res.status}`);
       throw new Error('HTTP ' + res.status);
     } catch (e) {
+      console.log(`Fetch attempt ${i} failed:`, e.message);
       if (i >= tries) throw e;
       await new Promise(r => setTimeout(r, i * 2000));
     }
   }
+}
+
+function decodeHtmlEntities(s) {
+  return String(s)
+    .replace(new RegExp(ENT.AMP, 'g'), ' & ')
+    .replace(new RegExp(ENT.LT, 'g'), '<')
+    .replace(new RegExp(ENT.GT, 'g'), '>')
+    .replace(new RegExp(ENT.QUOT, 'g'), '"')
+    .replace(new RegExp(ENT.APOS, 'g'), "'")
+    .replace(new RegExp(ENT.APOS2, 'g'), "'")
+    .replace(new RegExp(ENT.NBSP, 'g'), ' ')
+    .replace(new RegExp(ENT.APOS, 'g'), "'");
 }
 
 function parseTable(html, tableIndex) {
@@ -267,46 +326,109 @@ function parseFpiRows(rows) {
   return fpiData;
 }
 
-async function main() {
-  try {
-    console.log('Fetching ESPN FPI from ' + ESPN_FPI_PAGE);
-    const html = await fetchText(ESPN_FPI_PAGE);
-    
-    console.log('Parsing team table (table 0)...');
-    const teamRows = parseTable(html, 0);
-    console.log('Found ' + teamRows.length + ' team rows');
-    
-    console.log('Parsing FPI table (table 1)...');
-    const fpiRows = parseTable(html, 1);
-    console.log('Found ' + fpiRows.length + ' FPI rows');
-    
-    const teams = parseTeamRows(teamRows);
-    const fpiData = parseFpiRows(fpiRows);
-    
-    const rankings = [];
-    for (const idx in teams) {
-      const team = teams[idx];
-      const fpi = fpiData[idx];
-      if (fpi) {
-        rankings.push({
-          rank: fpi.rank,
-          team: team.name,
-          teamId: team.teamId,
-          conference: team.conference,
-          score: fpi.score,
-          record: fpi.record
-        });
+async function parseFromMarkdown(markdown) {
+  // Parse FPI data from Firecrawl markdown output
+  const lines = markdown.split('\n');
+  const rankings = [];
+  
+  // Look for table rows in markdown
+  for (const line of lines) {
+    // Match markdown table rows like | 1 | Ohio State Buckeyes | Big Ten | 6-1 | 28.2 | 1 | ...
+    const match = line.match(/^\|\s*(\d+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([\d.]+)\s*\|\s*(\d+)\s*\|/);
+    if (match) {
+      const rank = parseInt(match[1], 10);
+      const team = match[2].trim();
+      const conf = match[3].trim();
+      const record = match[4].trim();
+      const score = parseFloat(match[5]);
+      const rank2 = parseInt(match[6], 10);
+      
+      if (!isNaN(score) && rank === rank2) {
+        rankings.push({ rank, team, conf, score, record });
       }
     }
+  }
+  
+  // Also try alternative markdown table format
+  if (rankings.length === 0) {
+    for (const line of lines) {
+      // Match | 1 | Ohio State Buckeyes | Big Ten | 6-1 | 28.2 | 1 | ...
+      const parts = line.split('|').map(s => s.trim());
+      if (parts.length >= 6) {
+        const rank = parseInt(parts[1], 10);
+        const team = parts[2];
+        const conf = parts[3];
+        const record = parts[4];
+        const score = parseFloat(parts[5]);
+        const rank2 = parseInt(parts[6], 10);
+        
+        if (!isNaN(rank) && !isNaN(score) && rank === rank2) {
+          rankings.push({ rank, team, conf, score, record });
+        }
+      }
+    }
+  }
+  
+  return rankings;
+}
+
+async function main() {
+  try {
+    console.log('Fetching ESPN FPI...');
     
+    // Try Firecrawl first
+    let rankings = [];
+    const firecrawlResult = await fetchWithFirecrawl(ESPN_FPI_PAGE);
+    
+    if (firecrawlResult && firecrawlResult.markdown) {
+      console.log('Parsing Firecrawl markdown...');
+      rankings = await parseFromMarkdown(firecrawlResult.markdown);
+    }
+    
+    // Fallback to HTML parsing
+    if (rankings.length === 0) {
+      console.log('Firecrawl unavailable or empty, trying direct HTML fetch...');
+      const html = await fetchText(ESPN_FPI_PAGE);
+      
+      console.log('Parsing team table (table 0)...');
+      const teamRows = parseTable(html, 0);
+      console.log('Found ' + teamRows.length + ' team rows');
+      
+      console.log('Parsing FPI table (table 1)...');
+      const fpiRows = parseTable(html, 1);
+      console.log('Found ' + fpiRows.length + ' FPI rows');
+      
+      const teams = parseTeamRows(teamRows);
+      const fpiData = parseFpiRows(fpiRows);
+      
+      const tempRankings = [];
+      for (const idx in teams) {
+        const team = teams[idx];
+        const fpi = fpiData[idx];
+        if (fpi) {
+          tempRankings.push({
+            rank: fpi.rank,
+            team: team.name,
+            teamId: team.teamId,
+            conference: team.conference,
+            score: fpi.score,
+            record: fpi.record
+          });
+        }
+      }
+      rankings = tempRankings;
+    }
+    
+    // Sort by rank
     rankings.sort((a, b) => a.rank - b.rank);
     
-    console.log('Joined ' + rankings.length + ' teams with FPI scores');
+    console.log('Total rankings parsed: ' + rankings.length);
     
     if (rankings.length < 100) {
       throw new Error('Too few teams parsed (' + rankings.length + '), something went wrong');
     }
     
+    // Build byTeam lookup using Sagarin names as keys
     const byTeam = {};
     const byEspnName = {};
     rankings.forEach(r => {
@@ -320,7 +442,7 @@ async function main() {
       source: [ESPN_FPI_PAGE],
       fetched_at: new Date().toISOString(),
       season: 2026,
-      note: 'FPI parsed from ESPN FPI page tables. Used for predictor/sim/head-to-head reference.',
+      note: 'FPI parsed from ESPN FPI page. Used for predictor/sim/head-to-head reference.',
       signature: 'fpi-' + Date.now().toString(36),
       method: 'ESPN FPI: Football Power Index for predictor/sim/head-to-head; not strict-Sagarin data',
       inputs: ['ESPN FPI'],
@@ -333,6 +455,7 @@ async function main() {
     fs.writeFileSync(DEFAULT_OUT, JSON.stringify(out, null, 2) + '\n', 'utf8');
     console.log('Wrote ' + DEFAULT_OUT + ' with ' + rankings.length + ' teams, signature ' + out.signature);
     console.log('Top 5:', rankings.slice(0, 5).map(r => r.team + ' (' + r.score + ')').join(', '));
+    
   } catch (e) {
     console.error('FPI fetch error:', e.message, e.stack);
     process.exit(1);
