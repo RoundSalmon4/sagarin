@@ -115,7 +115,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
 
   SG.methodLabel = function (m) {
     return {
-      rating: "overall RATING",
+      rating: "Overall RATING",
       predictor: "PREDICTOR",
       goldenMean: "GOLDEN_MEAN",
       recent: "RECENT",

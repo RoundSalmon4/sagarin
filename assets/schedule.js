@@ -321,12 +321,12 @@
     var ccg = st.ccgs && st.ccgs[conf];
 
     var columns = [
-      { key: "pos", label: "#", cell: function (r) { return String(r.pos); }, value: function (r) { return r.pos; } },
-      { key: "team", label: "Team", cls: "left", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } },
+      { key: "pos", label: "#", cls: "seed-col", cell: function (r) { return String(r.pos); }, value: function (r) { return r.pos; } },
+      { key: "team", label: "Team", cls: "left team-col", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } },
       { key: "rating", label: "Rating", cell: function (r) { return SG.esc(r.rating); }, value: function (r) { return r.ratingVal; } },
-      { key: "current", label: "Current", cell: function (r) { return r.current; }, value: function (r) { return r.currentVal; } },
-      { key: "overall", label: "Projected", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
-      { key: "title", label: "Title game", cls: "left", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
+      { key: "current", label: "Current", cls: "now-col", cell: function (r) { return r.current; }, value: function (r) { return r.currentVal; } },
+      { key: "overall", label: "Overall", cls: "proj-col", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
+      { key: "title", label: "Title game", cls: "left bid-col", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
     ];
 
     function getRatingForTeam(team, method) {
