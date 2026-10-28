@@ -484,7 +484,7 @@
   function renderField(field) {
     var table = document.getElementById("fieldTable");
     var columns = [
-      { key: "seed", label: "#", cls: "left" },
+      { key: "seed", label: "#", cls: "left seed-col" },
       { key: "team", label: "Team", cls: "left", type: "str",
         cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); } },
       { key: "conf", label: "Conference", cls: "left", type: "str" },
@@ -746,7 +746,7 @@
     var fmtMethodSim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
     var sim = fmtMethodSim || (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
-      box.innerHTML = '<thead><tr><th class="left" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
+      box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
       return;
     }
     // Field teams = the CURRENT PROJECTED FIELD (12 or 24 teams from view.field.seeds)
@@ -764,7 +764,7 @@
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
       .slice(0, 20);
     var methodLabel = view.method === "rating" ? "RATING" : SG.methodLabel(view.method);
-    var header = '<thead><tr><th class="left" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
+    var header = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left" style="vertical-align: middle;">Team</th><th class="left" style="vertical-align: middle;">Conference</th><th class="left" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(methodLabel) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead>';
     // Helper to get rating value for a team, handling FPI fallback
     function getRatingForTeam(team, method) {
       if (!team) return "";
