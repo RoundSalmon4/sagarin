@@ -7,8 +7,6 @@ on:
   schedule:
     - cron: "0 10 * * *"  # Daily 10:00 UTC
   workflow_dispatch:
-  push:
-    branches: [main]
 
 jobs:
   fpi:
