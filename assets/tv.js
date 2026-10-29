@@ -332,7 +332,7 @@
     }
     var aTeam = allTeams.find(function(t) { return t.team === na; });
     var bTeam = allTeams.find(function(t) { return t.team === nb; });
-    if (!aTeam || !bTeam) return 0.3;
+    if (!aTeam || !bTeam) return 0;
 
     // Get current CCG probabilities
     var aCCG = getTeamCCGProb(na, conference, ctx);
@@ -341,7 +341,7 @@
     // Get Sagarin predictor ratings
     var ratingA = getSagarinPredictorRating(na, ctx);
     var ratingB = getSagarinPredictorRating(nb, conference, ctx);
-    if (!ratingA || !ratingB) return 0.3;
+    if (!ratingA || !ratingB) return 0;
 
     // Determine home/away - for same division, assume first team is home
     // For cross-division, assume neutral site (no home edge)
@@ -370,7 +370,12 @@
 
     // Use the maximum expected delta
     var delta = Math.max(Math.abs(deltaA), Math.abs(deltaB));
-    
+
+    // Dampen by conference games played: full weight after 4 conf games per team (8 total)
+    var confGamesPlayed = (aTeam.cw + aTeam.cl) + (bTeam.cw + bTeam.cl);
+    var dampener = Math.min(1, confGamesPlayed / 8);
+    delta = delta * dampener;
+
     // Scale: max delta of ~0.3 = full CCG weight (0.10)
     return Math.min(1.0, delta / 0.3);
   }
@@ -384,7 +389,7 @@
     }
     var aTeam = allTeams.find(function(t) { return t.team === na; });
     var bTeam = allTeams.find(function(t) { return t.team === nb; });
-    if (!aTeam || !bTeam) return 0.1;
+    if (!aTeam || !bTeam) return 0;
 
     var aCCG = getTeamCCGProb(na, conference, ctx);
     var bCCG = getTeamCCGProb(nb, conference, ctx);
@@ -392,7 +397,7 @@
     // Get Sagarin predictor ratings
     var ratingA = getSagarinPredictorRating(na, ctx);
     var ratingB = getSagarinPredictorRating(nb, conference, ctx);
-    if (!ratingA || !ratingB) return 0.1;
+    if (!ratingA || !ratingB) return 0;
 
     var diff = ratingA - ratingB;
     var wp = normCdf(diff / 15.5);
@@ -406,6 +411,12 @@
     var deltaB = bWinCCG - bCCG;
 
     var delta = Math.max(deltaA, deltaB);
+
+    // Dampen by conference games played: full weight after 4 conf games per team (8 total)
+    var confGamesPlayed = (aTeam.cw + aTeam.cl) + (bTeam.cw + bTeam.cl);
+    var dampener = Math.min(1, confGamesPlayed / 8);
+    delta = delta * dampener;
+
     return Math.min(1.0, delta / 0.3);
   }
 

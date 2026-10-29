@@ -1004,7 +1004,12 @@
       var confDivObj = confDiv[conf];
       out[conf] = {};
       Object.keys(confDivObj).forEach(function (div) {
-        if (div === "None") return;
+        var actualDiv = div;
+        if (div === "None") {
+          // Conferences without divisions (PAC-12, Big Ten, ACC, Big 12, etc.)
+          // Treat as a single "Conference" division for CCG probability purposes
+          actualDiv = "Conference";
+        }
         var teams = confDivObj[div];
         var standings = teams.map(function (t) {
           var r = reg[t.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
@@ -1013,7 +1018,7 @@
         }).sort(function (a, b) { return b.cwp - a.cwp || b.cw - a.cw; });
         var leader = standings[0] ? standings[0].team : null;
         var contenders = standings.slice(1, 3).map(function (s) { return s.team; });
-        out[conf][div] = {
+        out[conf][actualDiv] = {
           leader: leader,
           contenders: contenders,
           teams: standings
