@@ -123,6 +123,7 @@ const FpiToSagarin = {
   "temple owls": "Temple",
   "tennessee volunteers": "Tennessee",
   "texas a&m aggies": "Texas A&M",
+  "texas a m aggies": "Texas A&M",
   "texas longhorns": "Texas",
   "texas state bobcats": "Texas State",
   "texas tech red raiders": "Texas Tech",
