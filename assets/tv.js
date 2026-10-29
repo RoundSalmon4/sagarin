@@ -300,17 +300,54 @@
     return cwp * 0.7 + owp * 0.3;
   }
 
-  function calculateCCGDelta(na, nb, divA, conference, ctx, sameDiv) {
-    var aTeam = null, bTeam = null;
+  function erf(x) {
+    var s = x < 0 ? -1 : 1;
+    x = Math.abs(x);
+    var t = 1 / (1 + 0.3275911 * x);
+    var y = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+    return s * y;
+  }
+
+  function normCdf(z) {
+    return 0.5 * (1 + erf(z / Math.SQRT2));
+  }
+
+  function getSagarinPredictorRating(teamName, ctx) {
     var allTeams = [];
     for (var confName in ctx.divisionStandings) {
       for (var divName in ctx.divisionStandings[confName]) {
         ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
       }
     }
-    aTeam = allTeams.find(function(t) { return t.team === na; });
-    bTeam = allTeams.find(function(t) { return t.team === nb; });
+    var teamData = allTeams.find(function(t) { return t.team === teamName; });
+    return teamData ? (teamData.predictor || teamData.rating || 0) : 0;
+  }
+
+  function calculateCCGDelta(na, nb, divA, conference, ctx, sameDiv) {
+    var allTeams = [];
+    for (var confName in ctx.divisionStandings) {
+      for (var divName in ctx.divisionStandings[confName]) {
+        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
+      }
+    }
+    var aTeam = allTeams.find(function(t) { return t.team === na; });
+    var bTeam = allTeams.find(function(t) { return t.team === nb; });
     if (!aTeam || !bTeam) return 0.3;
+
+    // Get current CCG probabilities
+    var aCCG = getTeamCCGProb(na, conference, ctx);
+    var bCCG = getTeamCCGProb(nb, conference, ctx);
+
+    // Get Sagarin predictor ratings
+    var ratingA = getSagarinPredictorRating(na, ctx);
+    var ratingB = getSagarinPredictorRating(nb, conference, ctx);
+    if (!ratingA || !ratingB) return 0.3;
+
+    // Determine home/away - for same division, assume first team is home
+    // For cross-division, assume neutral site (no home edge)
+    var isHomeA = sameDiv;
+    var diff = getSagarinPredictorRating(na, ctx) - getSagarinPredictorRating(nb, ctx) + (sameDiv ? 2.8 : 0);
+    var wp = normCdf(diff / 15.5);
 
     // Get current CCG probabilities
     var aCCG = getTeamCCGProb(na, conference, ctx);
@@ -326,12 +363,15 @@
     var bWinCCG = simulateCCGProb(nb, conference, ctx, true, false, sameDiv);
     var deltaBWin = bWinCCG - bCCG;
 
-    // Average delta across both teams
-    var delta = Math.max(deltaAWin, deltaBWin);
+    // Use Sagarin win probability for expected delta
+    var wp = normCdf((getSagarinPredictorRating(na, ctx) - getSagarinPredictorRating(nb, ctx) + (sameDiv ? 2.8 : 0)) / 15.5);
+    var deltaA = wp * (aWinCCG - aCCG) + (1 - wp) * (simulateCCGProb(na, conference, ctx, false, true, sameDiv) - aCCG);
+    var deltaB = (1 - wp) * (simulateCCGProb(nb, conference, ctx, true, false, false) - bCCG) + wp * (simulateCCGProb(nb, conference, ctx, false, true, sameDiv) - bCCG);
+
+    // Use the maximum expected delta
+    var delta = Math.max(Math.abs(deltaA), Math.abs(deltaB));
     
-    // Scale: max delta of ~0.3 = max CCG weight (0.10)
-    // A delta of 0.3 = full 0.10 CCG weight
-    // So: ccgImplications = min(1.0, delta / 0.3)
+    // Scale: max delta of ~0.3 = full CCG weight (0.10)
     return Math.min(1.0, delta / 0.3);
   }
 
@@ -348,6 +388,14 @@
 
     var aCCG = getTeamCCGProb(na, conference, ctx);
     var bCCG = getTeamCCGProb(nb, conference, ctx);
+
+    // Get Sagarin predictor ratings
+    var ratingA = getSagarinPredictorRating(na, ctx);
+    var ratingB = getSagarinPredictorRating(nb, conference, ctx);
+    if (!ratingA || !ratingB) return 0.1;
+
+    var diff = ratingA - ratingB;
+    var wp = normCdf(diff / 15.5);
 
     // Simulate A wins
     var aWinCCG = simulateCCGProb(na, conference, ctx, true, false, false);
