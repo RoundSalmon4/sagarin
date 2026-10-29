@@ -1014,7 +1014,13 @@
         var standings = teams.map(function (t) {
           var r = reg[t.team] || { cw: 0, cl: 0, ow: 0, ol: 0 };
           var cwp = (r.cw + r.cl) ? r.cw / (r.cw + r.cl) : 0;
-          return { team: t.team, cwp: cwp, cw: r.cw, cl: r.cl };
+          return {
+            team: t.team,
+            cwp: cwp,
+            cw: r.cw, cl: r.cl, ow: r.ow, ol: r.ol,
+            rating: t.rating, predictor: t.predictor,
+            goldenMean: t.goldenMean, recent: t.recent, strongRecent: t.strongRecent
+          };
         }).sort(function (a, b) { return b.cwp - a.cwp || b.cw - a.cw; });
         var leader = standings[0] ? standings[0].team : null;
         var contenders = standings.slice(1, 3).map(function (s) { return s.team; });

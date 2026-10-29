@@ -55,25 +55,65 @@
     return !!RIVALRY[[SG.normalizeName(a), SG.normalizeName(b)].sort().join("|")];
   }
 
-  // Teams in the projected 12-team field, plus the next 20 in line for an
-  // at-large bid (bubble), using the same resume ranking the field uses so the
-  // two stay consistent. Recomputed once per render so scoring stays cheap.
+  // Field and bubble come from the predictor simulation. Field membership
+  // follows the playoff format: the highest simulated team in each P4
+  // conference, the top G6 team, then the highest-probability remaining teams
+  // to fill 12 spots. Bubble teams are the remaining teams at 5% or better,
+  // plus the three G6 teams with the most simulated field probability.
+  // Without a simulation file, fall back to the deterministic projection.
   function context() {
-    var ctx = { field: {}, bubble: {}, divisionStandings: {} };
+    var ctx = { field: {}, bubble: {}, divisionStandings: {}, prob: {} };
     if (!SG.state.data) return ctx;
-    var ranked = null;
-    if (SG.playoffField) {
+
+    var byTeam = {};
+    SG.state.data.teams.forEach(function (t) { byTeam[t.team] = t; });
+
+    var sim = SG.state.sim12;
+    if (sim && sim.field && sim.n) {
+      Object.keys(sim.field).forEach(function (name) {
+        if (byTeam[name]) ctx.prob[name] = sim.field[name] / sim.n;
+      });
+
+      function add(name) {
+        if (name && byTeam[name] && !ctx.field[name]) ctx.field[name] = true;
+      }
+      function bestIn(pred) {
+        var best = null, bestCount = -1;
+        Object.keys(ctx.prob).forEach(function (name) {
+          if (!pred(byTeam[name])) return;
+          if (sim.field[name] > bestCount) { best = name; bestCount = sim.field[name]; }
+        });
+        return best;
+      }
+
+      // Auto bids: the top simulated team in each P4 conference and the top G6 team.
+      SG.P4.forEach(function (conf) {
+        add(bestIn(function (t) { return SG.mergeConf(t.conference) === conf; }));
+      });
+      add(bestIn(function (t) { return SG.G6.indexOf(SG.mergeConf(t.conference)) !== -1; }));
+
+      // At-large spots: highest simulated field probability remaining.
+      var rest = Object.keys(ctx.prob).sort(function (x, y) { return ctx.prob[y] - ctx.prob[x]; });
+      for (var i = 0; i < rest.length && Object.keys(ctx.field).length < 12; i++) add(rest[i]);
+
+      // Bubble: outside the field, 5% or better, plus the three best G6 teams.
+      Object.keys(ctx.prob).forEach(function (name) {
+        var p = ctx.prob[name];
+        if (!ctx.field[name] && p >= 0.05 && p <= 0.5) ctx.bubble[name] = true;
+      });
+      var g6Bubble = Object.keys(ctx.prob).filter(function (name) {
+        return !ctx.field[name] && !ctx.bubble[name] &&
+          SG.G6.indexOf(SG.mergeConf(byTeam[name].conference)) !== -1;
+      }).sort(function (x, y) { return ctx.prob[y] - ctx.prob[x]; }).slice(0, 3);
+      g6Bubble.forEach(function (name) { ctx.bubble[name] = true; });
+    } else if (SG.playoffField) {
       var f = SG.playoffField(12, METHOD);
       ((f && f.seeds) || []).forEach(function (t) { if (t) ctx.field[t.team] = true; });
-      if (f && f.atLarge) ranked = f.atLarge;
-    }
-    if (!ranked) {
-      ranked = SG.state.data.teams.filter(function (t) { return t.level === "A"; })
-        .sort(function (x, y) { return y[METHOD] - x[METHOD]; });
-    }
-    var n = 0;
-    for (var i = 0; i < ranked.length && n < 20; i++) {
-      if (!ctx.field[ranked[i].team]) { ctx.bubble[ranked[i].team] = true; n++; }
+      var ranked = (f && f.atLarge) || [];
+      var n = 0;
+      for (var j = 0; j < ranked.length && n < 20; j++) {
+        if (!ctx.field[ranked[j].team]) { ctx.bubble[ranked[j].team] = true; n++; }
+      }
     }
 
     // Add division standings from playoff module
@@ -95,12 +135,12 @@
   //     when a line is posted we use it as-is, and when we only have Sagarin we
   //     shrink the signal toward a coin flip because it is the noisier estimate.
   //   - playoff stakes 0.25, from the projected field and the bubble.
-  //   - conference championship implications 0.10. Games that affect who reaches
-  //     the conference championship (CCG games, division clinchers, elimination games).
+  //   - conference championship implications 0.10. Games whose result changes
+  //     who plays in the conference title game (division winners in the Sun
+  //     Belt, top two everywhere else).
   //   - team quality 0.15, combined Sagarin rating.
   //   - rivalry 0.10. Rivalry nudges outcomes only slightly (favorites win about
   //     3.6 points less often, Cox et al. 2026) and the market mostly prices it.
-  //   - division race 0.05. Games that affect who wins the division (same division).
   // For non-CCG-implication games, weights renormalize to 100% (divide by 0.85).
   function score(g, ctx) {
     try {
@@ -132,14 +172,12 @@
 
     var inA = !!ctx.field[na], inB = !!ctx.field[nb];
     var bubA = !!ctx.bubble[na], bubB = !!ctx.bubble[nb];
+    var inFieldA = inA, inFieldB = inB;
     var stakes = 0;
 
-    // --- Playoff stakes (refined) ---
-    // Use committed simulation file if available; fall back to deterministic projection
-    var storedSim = (SG.state.sim12 && SG.state.sim12.field) ? SG.state.sim12 : null;
-    var inFieldA = storedSim ? !!storedSim.field[na] : inA;
-    var inFieldB = storedSim ? !!storedSim.field[nb] : inB;
-    // Base stakes from field/bubble status (deterministic or stored sim)
+    // --- Playoff stakes ---
+    // Field and bubble status already include the playoff format (auto bids
+    // plus at-large spots) from the predictor simulation.
     if (inFieldA && inFieldB) {
       if (!bubA && !bubB) {
         stakes = 0.3; // Both locks - minimal field impact
@@ -183,37 +221,23 @@
     }
     // Top-4 seed bonus applied above; stakes set accordingly
 
-    // Conference championship implications using "path to CCG" simulation
-    // Instead of threshold rules, calculate the delta in CCG probability if team wins vs loses
+    // Conference championship implications: does the result change who plays
+    // in the conference title game? Uses merged conference names so the two
+    // Sun Belt divisions are treated as one conference.
     var ccgImplications = 0;
     if (a && b) {
-      var sameConf = a.conference === b.conference;
-      var divMap = window.TeamDivisions || {};
-      var divA = divMap[na] || "None";
-      var divB = divMap[nb] || "None";
-      var sameConf = a.conference === b.conference;
-      var sameDiv = divA !== "None" && divA === divB;
-
-      if (sameConf) {
-        var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
-        if (sameDiv) {
-          // Same division - calculate CCG probability delta directly
-          ccgImplications = calculateCCGDelta(na, nb, divA, a.conference, ctx, sameDiv, true);
-        } else {
-          // Different divisions - could meet in CCG
-          ccgImplications = calculateCrossDivCCGDelta(na, nb, divA, divB, a.conference, ctx);
-        }
-      }
+      var confA = SG.mergeConf(a.conference);
+      var confB = SG.mergeConf(b.conference);
+      if (confA === confB) ccgImplications = ccgImpact(g, na, nb, confA, ctx);
     }
 
     var rival = isRivalry(na, nb) ? 1 : 0;
 
-    // Weights: CCG-implication games get CCG component; others renormalize
+    // Weights: CCG-implication games get the CCG component; others renormalize
     var hasCCG = ccgImplications > 0;
     var value;
     if (hasCCG) {
-      // CCG + Closeness + Stakes + Quality + Rivalry = 10+35+25+15+10 = 100 (simplified)
-      // The 5% divRace weight is now subsumed into the CCG delta which handles both div race and CCG path
+      // Closeness + Stakes + Quality + Rivalry + CCG = 35+25+15+10+10 = 100
       value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival + 0.10 * ccgImplications));
     } else {
       // No CCG implications: renormalize 35+25+15+10 = 85 -> divide by 0.85
@@ -259,165 +283,95 @@
     return true;
   }
 
-  // ============ CCG "Path to CCG" Delta Calculation Helpers ============
-  // Replaces threshold-based rules with simulation-based CCG probability delta
+  // ============ CCG implications ============
+  // The watch score only cares whether a result changes who plays in the
+  // conference title game. Build the projected participants from the projected
+  // records once with each team winning, then compare the two sets. Division
+  // winners meet in the Sun Belt; other conferences send their top two.
 
-  function getTeamCCGProb(teamName, conference, ctx) {
-    if (!ctx.divisionStandings || !ctx.divisionStandings[conference]) return 0;
-    var teams = Object.values(ctx.divisionStandings[conference]).flatMap(function(d) { return d.teams; });
-    var team = teams.find(function(t) { return t.team === teamName; });
-    if (!team) return 0;
-    var cwp = (team.cw + team.cl) ? team.cw / (team.cw + team.cl) : 0;
-    var owp = (team.ow + team.ol) ? team.ow / (team.ow + team.ol) : 0;
-    // Base CCG probability from conference win pct and overall win pct
-    // Weighted: 70% conf win pct, 30% overall win pct
-    return cwp * 0.7 + owp * 0.3;
+  function conferenceRecords(conf, ctx) {
+    var out = {};
+    var groups = ctx.divisionStandings && ctx.divisionStandings[conf];
+    if (!groups) return out;
+    Object.keys(groups).forEach(function (div) {
+      groups[div].teams.forEach(function (t) {
+        out[t.team] = {
+          team: t.team, cw: t.cw, cl: t.cl, ow: t.ow, ol: t.ol,
+          rating: t.rating, predictor: t.predictor,
+          goldenMean: t.goldenMean, recent: t.recent, strongRecent: t.strongRecent
+        };
+      });
+    });
+    return out;
   }
 
-  function simulateCCGProb(teamName, conference, ctx, addWin, addLoss, isConfGame) {
-    // Simulate adding a win/loss to the team's record
-    var allTeams = [];
-    for (var confName in ctx.divisionStandings) {
-      for (var divName in ctx.divisionStandings[confName]) {
-        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
-      }
+  function ccgScore(rec) {
+    var cwp = (rec.cw + rec.cl) ? rec.cw / (rec.cw + rec.cl) : 0;
+    var owp = (rec.ow + rec.ol) ? rec.ow / (rec.ow + rec.ol) : 0;
+    var rating = rec[METHOD] || rec.rating || 0;
+    return cwp * 1e6 + owp * 1e3 + rating;
+  }
+
+  function topTeams(list, count) {
+    return list.slice().sort(function (x, y) { return ccgScore(y) - ccgScore(x); }).slice(0, count);
+  }
+
+  function ccgParticipants(conf, recs, ctx) {
+    var groups = ctx.divisionStandings && ctx.divisionStandings[conf];
+    if (!groups) return [];
+    var keys = Object.keys(groups);
+    if (keys.length >= 2) {
+      return keys.map(function (div) {
+        var list = groups[div].teams.map(function (t) { return recs[t.team] || t; });
+        var top = topTeams(list, 1)[0];
+        return top ? top.team : null;
+      }).filter(Boolean);
     }
-    var teamData = allTeams.find(function(t) { return t.team === teamName; });
-    if (!teamData) return 0;
-    
-    var cw = teamData.cw + (addWin ? 1 : 0);
-    var cl = teamData.cl + (addLoss ? 1 : 0);
-    var ow = teamData.ow + (addWin ? 1 : 0);
-    var ol = teamData.ol + (addLoss ? 1 : 0);
-    
-    var cwp = (cw + cl) ? cw / (cw + cl) : 0;
-    var owp = (ow + ol) ? ow / (ow + ol) : 0;
-    // CCG probability: 70% conf win pct, 30% overall win pct
-    // Only conference games affect conference win pct
-    // For non-conference games, only overall record changes
-    var cwp = (cw + cl) ? cw / (cw + cl) : 0;
-    var owp = (ow + ol) ? ow / (ow + ol) : 0;
-    return cwp * 0.7 + owp * 0.3;
+    var all = [];
+    keys.forEach(function (div) {
+      groups[div].teams.forEach(function (t) { all.push(recs[t.team] || t); });
+    });
+    return topTeams(all, 2).map(function (t) { return t.team; });
   }
 
-  function erf(x) {
-    var s = x < 0 ? -1 : 1;
-    x = Math.abs(x);
-    var t = 1 / (1 + 0.3275911 * x);
-    var y = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
-    return s * y;
-  }
+  // Share of the projected title-game field that changes when this game
+  // happens. 0 means the result does not affect the participants.
+  function ccgImpact(g, na, nb, conf, ctx) {
+    var base = conferenceRecords(conf, ctx);
+    if (!base[na] || !base[nb]) return 0;
+    var a = sag(g.awayId), b = sag(g.homeId);
+    if (!a || !b) return 0;
 
-  function normCdf(z) {
-    return 0.5 * (1 + erf(z / Math.SQRT2));
-  }
+    // Projected records already include this game. Remove its projected result
+    // first so both forced outcomes start from the same pre-game baseline.
+    var edge = SG.homeEdge(METHOD);
+    var homeWins = (b[METHOD] - a[METHOD] + (g.neutral ? 0 : edge)) >= 0;
+    var projWinner = homeWins ? nb : na;
+    var projLoser = homeWins ? na : nb;
+    if (base[projWinner]) { base[projWinner].cw -= 1; base[projWinner].ow -= 1; }
+    if (base[projLoser]) { base[projLoser].cl -= 1; base[projLoser].ol -= 1; }
 
-  function getSagarinPredictorRating(teamName, ctx) {
-    var allTeams = [];
-    for (var confName in ctx.divisionStandings) {
-      for (var divName in ctx.divisionStandings[confName]) {
-        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
-      }
+    function variant(winner, loser) {
+      var rec = {};
+      Object.keys(base).forEach(function (name) {
+        var r = base[name];
+        rec[name] = {
+          team: name, cw: r.cw, cl: r.cl, ow: r.ow, ol: r.ol,
+          rating: r.rating, predictor: r.predictor,
+          goldenMean: r.goldenMean, recent: r.recent, strongRecent: r.strongRecent
+        };
+      });
+      if (rec[winner]) { rec[winner].cw += 1; rec[winner].ow += 1; }
+      if (rec[loser]) { rec[loser].cl += 1; rec[loser].ol += 1; }
+      return ccgParticipants(conf, rec, ctx);
     }
-    var teamData = allTeams.find(function(t) { return t.team === teamName; });
-    return teamData ? (teamData.predictor || teamData.rating || 0) : 0;
-  }
 
-  function calculateCCGDelta(na, nb, divA, conference, ctx, sameDiv) {
-    var allTeams = [];
-    for (var confName in ctx.divisionStandings) {
-      for (var divName in ctx.divisionStandings[confName]) {
-        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
-      }
-    }
-    var aTeam = allTeams.find(function(t) { return t.team === na; });
-    var bTeam = allTeams.find(function(t) { return t.team === nb; });
-    if (!aTeam || !bTeam) return 0;
-
-    // Get current CCG probabilities
-    var aCCG = getTeamCCGProb(na, conference, ctx);
-    var bCCG = getTeamCCGProb(nb, conference, ctx);
-
-    // Get Sagarin predictor ratings
-    var ratingA = getSagarinPredictorRating(na, ctx);
-    var ratingB = getSagarinPredictorRating(nb, conference, ctx);
-    if (!ratingA || !ratingB) return 0;
-
-    // Determine home/away - for same division, assume first team is home
-    // For cross-division, assume neutral site (no home edge)
-    var isHomeA = sameDiv;
-    var diff = getSagarinPredictorRating(na, ctx) - getSagarinPredictorRating(nb, ctx) + (sameDiv ? 2.8 : 0);
-    var wp = normCdf(diff / 15.5);
-
-    // Get current CCG probabilities
-    var aCCG = getTeamCCGProb(na, conference, ctx);
-    var bCCG = getTeamCCGProb(nb, conference, ctx);
-
-    // Simulate A wins, B loses
-    var aWinCCG = simulateCCGProb(na, conference, ctx, true, false, sameDiv);
-    var bLossCCG = simulateCCGProb(nb, conference, ctx, false, true, sameDiv);
-    var deltaAWin = aWinCCG - aCCG;
-
-    // Simulate B wins, A loses
-    var aLossCCG = simulateCCGProb(na, conference, ctx, false, true, sameDiv);
-    var bWinCCG = simulateCCGProb(nb, conference, ctx, true, false, sameDiv);
-    var deltaBWin = bWinCCG - bCCG;
-
-    // Use Sagarin win probability for expected delta
-    var wp = normCdf((getSagarinPredictorRating(na, ctx) - getSagarinPredictorRating(nb, ctx) + (sameDiv ? 2.8 : 0)) / 15.5);
-    var deltaA = wp * (aWinCCG - aCCG) + (1 - wp) * (simulateCCGProb(na, conference, ctx, false, true, sameDiv) - aCCG);
-    var deltaB = (1 - wp) * (simulateCCGProb(nb, conference, ctx, true, false, false) - bCCG) + wp * (simulateCCGProb(nb, conference, ctx, false, true, sameDiv) - bCCG);
-
-    // Use the maximum expected delta
-    var delta = Math.max(Math.abs(deltaA), Math.abs(deltaB));
-
-    // Dampen by conference games played: full weight after 4 conf games per team (8 total)
-    var confGamesPlayed = (aTeam.cw + aTeam.cl) + (bTeam.cw + bTeam.cl);
-    var dampener = Math.min(1, confGamesPlayed / 8);
-    delta = delta * dampener;
-
-    // Scale: max delta of ~0.3 = full CCG weight (0.10)
-    return Math.min(1.0, delta / 0.3);
-  }
-
-  function calculateCrossDivCCGDelta(na, nb, divA, divB, conference, ctx) {
-    var allTeams = [];
-    for (var confName in ctx.divisionStandings) {
-      for (var divName in ctx.divisionStandings[confName]) {
-        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
-      }
-    }
-    var aTeam = allTeams.find(function(t) { return t.team === na; });
-    var bTeam = allTeams.find(function(t) { return t.team === nb; });
-    if (!aTeam || !bTeam) return 0;
-
-    var aCCG = getTeamCCGProb(na, conference, ctx);
-    var bCCG = getTeamCCGProb(nb, conference, ctx);
-
-    // Get Sagarin predictor ratings
-    var ratingA = getSagarinPredictorRating(na, ctx);
-    var ratingB = getSagarinPredictorRating(nb, conference, ctx);
-    if (!ratingA || !ratingB) return 0;
-
-    var diff = ratingA - ratingB;
-    var wp = normCdf(diff / 15.5);
-
-    // Simulate A wins
-    var aWinCCG = simulateCCGProb(na, conference, ctx, true, false, false);
-    var deltaA = aWinCCG - aCCG;
-
-    // Simulate B wins
-    var bWinCCG = simulateCCGProb(nb, conference, ctx, true, false, false);
-    var deltaB = bWinCCG - bCCG;
-
-    var delta = Math.max(deltaA, deltaB);
-
-    // Dampen by conference games played: full weight after 4 conf games per team (8 total)
-    var confGamesPlayed = (aTeam.cw + aTeam.cl) + (bTeam.cw + bTeam.cl);
-    var dampener = Math.min(1, confGamesPlayed / 8);
-    delta = delta * dampener;
-
-    return Math.min(1.0, delta / 0.3);
+    var aWin = variant(na, nb);
+    var bWin = variant(nb, na);
+    var total = Math.max(aWin.length, bWin.length, 1);
+    var same = 0;
+    aWin.forEach(function (name) { if (bWin.indexOf(name) !== -1) same++; });
+    return (total - same) / total;
   }
 
   // The earliest week that still has games left to play. The data file carries a
@@ -677,7 +631,7 @@
     });
     SG.fillBody(table, COLUMNS, sorted);
     document.getElementById("tvCount").textContent = list.length + " games";
-    document.getElementById("tvNote").textContent = "Upcoming ESPN games. Sort by watchability or kickoff, filter by group, conference or team, pick a time zone. Games to watch picks the best games per window. Watch score = close game + team rating + playoff impact + rivalry.";
+    document.getElementById("tvNote").textContent = "Upcoming ESPN games. Sort by watchability or kickoff, filter by group, conference or team, pick a time zone. Games to watch picks the best games per window. Watch score = close game + team rating + playoff impact + conference title impact + rivalry.";
     renderWatch(list);
   }
 
