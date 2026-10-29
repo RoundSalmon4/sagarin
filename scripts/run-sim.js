@@ -316,8 +316,16 @@ function simContext(teams, espnGames, espnIdToSag, method, homeEdge) {
   return { base: base, games: games };
 }
 
-function computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdge) {
+function computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdge, fpiData) {
   var teams = ratings.teams.filter(function (t) { return t.level === "A"; });
+  // Enrich teams with FPI scores when running the FPI method so team["fpi"]
+  // works throughout the simulation (champScore, simContext, play).
+  if (method === "fpi" && fpiData && fpiData.byTeam) {
+    teams.forEach(function (t) {
+      var f = fpiData.byTeam[t.team];
+      t.fpi = f ? f.score : 0;
+    });
+  }
   var resumeWeights = loadResumeWeights(resume);
   var ctx = simContext(teams, espnGames, espnIdToSag, method, homeEdge);
   var fieldCount = {}, champCount = {};
@@ -426,7 +434,7 @@ function main() {
           return;
         }
         console.log(`Running simulation: ${format}-team, ${method}...`);
-        const result = computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdges[method]);
+        const result = computeSim(format, method, ratings, espnGames, espnIdToSag, resume, homeEdges[method], fpi);
         // Attach BCS reference for predictor/sim use (strict-Sagarin data excluded from Teams/Conferences)
         if (bcs && bcs.ranks) {
           result.bcs = { source: bcs.source, fetched_at: bcs.fetched_at, signature: bcs.signature, top3: bcs.ranks.slice(0,3).map(function(r){ return { rank: r.rank, team: r.team, score: r.score }; }) };
