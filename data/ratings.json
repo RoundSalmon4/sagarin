@@ -13,7 +13,8 @@
       "predictor": 3.65,
       "goldenMean": 3.64,
       "recent": 3.65,
-      "strongRecent": 3.65
+      "strongRecent": 3.65,
+      "fpi": 3.65
     }
   },
   "conferences": [

@@ -710,6 +710,7 @@
     var methodLabel = SG.methodLabel(view.method);
     var isFpi = view.method === "fpi";
     var sourceLabel = isFpi ? "ESPN FPI" : "Sagarin " + methodLabel;
+    var fpiHomeEdgeNote = isFpi ? " FPI uses a 3.65-point home field advantage." : "";
     var weightLabel = isFpi ? "FPI" : methodLabel;
     var scheduleNote = isFpi 
       ? " (FPI schedule weight scaled for FPI scale)"
@@ -728,7 +729,7 @@
       " points for every point the schedule sits above the FBS average" + scheduleNote + ", plus " +
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something." + fitNote +
       " The projected field table shows the selected " + weightLabel + " rating for each team. " +
-      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (20,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field. " +
+      "Note: the bracket is deterministic (predicted results); the bubble table uses 100,000 simulated seasons from the server for a stable answer per method; the client simulation uses 20,000 runs per click. The field uses the resume score (including schedule weight) to determine who makes the deterministic field. " + fpiHomeEdgeNote +
       "Disclaimer: These models use predictive ratings (team strength) for field selection. Predictive ratings overvalue talent and undervalue on-field performance. The schedule weight is an attempt to mitigate this but can only do so much, as the ratings are the foundation of the model.";
     // Sim results come from a client-computed run (computeSim). With no run yet,
     // renderSim shows nothing; the bubble table separately shows the stable
@@ -771,8 +772,7 @@
     var box = document.getElementById("bubbleTable");
     if (!box) return;
     var fmt = Number(view.format || 12);
-    var fmtMethodSim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
-    var sim = fmtMethodSim || (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
+    var sim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
     if (!sim || !sim.field) {
       box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No bubble data available.</td></tr></tbody>';
       return;
@@ -952,6 +952,21 @@
     }, 40);
   }
 
+  // Load method-specific simulation data (sim-12-METHOD.json / sim-24-METHOD.json)
+  // into SG.state.sim12Method / SG.state.sim24Method for the bubble table.
+  // No fallback to another method's sim — if the file is missing, bubble shows nothing.
+  function loadMethodSimData(method, done) {
+    function loadSim(url, fmt) {
+      return fetch(url).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (data) {
+        if (fmt === 12) SG.state.sim12Method = data; else SG.state.sim24Method = data;
+      });
+    }
+    Promise.all([
+      loadSim("data/sim-12-" + method + ".json", 12),
+      loadSim("data/sim-24-" + method + ".json", 24)
+    ]).then(done);
+  }
+
   function init() {
     SG.$$("#playoffFormat .seg").forEach(function (seg) {
       seg.addEventListener("click", function () {
@@ -984,10 +999,12 @@
       // Keep the deep dive method dropdown in sync.
       var sdSelect = document.getElementById("simdeepMethod");
       if (sdSelect) sdSelect.value = view.method;
-      render();
+      // Load method-specific sim data for the bubble table (no fallback to another method).
+      loadMethodSimData(view.method, function () { render(); });
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
-    render();
+    // Load method-specific sim data for the bubble table, then render.
+    loadMethodSimData(view.method, function () { render(); });
   }
 
   SG.state.modules.playoff = {

@@ -440,14 +440,6 @@ function main() {
       });
     });
 
-    // Also write predictor-only copies for backward compatibility (watchability / core loader)
-    [12, 24].forEach(function (format) {
-      const method = "predictor";
-      const fileName = format === 12 ? 'data/sim-12.json' : 'data/sim-24.json';
-      fs.renameSync(`data/sim-${format}-${method}.json`, fileName);
-      console.log(`Renamed predictor result to ${fileName}`);
-    });
-
   } catch (e) {
     console.error('Error:', e.message, e.stack);
     process.exit(1);
