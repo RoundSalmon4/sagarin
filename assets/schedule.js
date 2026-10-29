@@ -137,7 +137,8 @@
         var f = SG.fpiOf ? SG.fpiOf(teamName) : null;
         return f ? f.score : null;
       }
-      return teamSag ? teamSag[m] : null;
+      var t = SG.teamByName(teamName);
+      return t ? t[m] : null;
     }
 
     var edge = SG.homeEdge(method);
