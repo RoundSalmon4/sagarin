@@ -21,12 +21,16 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   regular block, the experimental home/away block and the eigenvector block. Sortable and
   searchable, with conference and group filters that match either side of a game.
 - **Record Predictor tab** - pick a team to project every remaining game (winner,
-  margin, win chance) with the rating method you choose, plus a projected final record.
+  margin, win chance) with the rating method you choose (Sagarin RATING, PREDICTOR,
+  GOLDEN_MEAN, RECENT, STRONG_RECENT, or ESPN FPI), plus a projected final record.
   Switch to the Conference view to see every team in a conference with current, projected
   conference and projected overall records, including the projected conference title game
   (played at a neutral site where the league does it there, otherwise at the higher seed
   and folded into records), with the projected champion and runner-up marked. Schedules
-  come from a prefetched ESPN file, so the browser never calls ESPN directly.
+  come from a prefetched ESPN file, so the browser never calls ESPN directly. When ESPN
+  FPI is selected, teams are re-ranked by FPI score (highest to lowest) rather than
+  trusting ESPN's published ranks, and FPI-specific resume weights are applied in the
+  conference view. No predictor fallback is used; teams without FPI data show N/A.
 - **TV Schedule tab** - the upcoming week's games with kickoff time, TV listing and site, defaulting
   to games involving a ranked team. Switch the scope to all games, a single conference or
   a team search, narrow by group (Power 4, Group of 6, independents), pick a time zone, and
@@ -80,13 +84,14 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   and bid type distributions across all runs. Clicking a seed/round/bid in the modal applies
   that filter to the main view.
 
-- **Head to Head tab** - choose an away team and a home team and a rating method. The page
-  puts the projection and the comparison in a left column and the polls in a right column,
-  with the last five and the standings under the comparison on the left. The projection gives
-  the pick and the win chances with the home team at home and on a neutral field. The
-  comparison table puts the two teams side by side and shows the record, the conference, the
-  chosen rating with its national rank, the BCS-style score with its rank, SCHEDL with its
-  rank, total offense (yards per game), total defense (yards allowed per game) and points per
+- **Head to Head tab** - choose an away team and a home team and a rating method (Sagarin
+  RATING, PREDICTOR, GOLDEN_MEAN, RECENT, STRONG_RECENT, or ESPN FPI). The page puts the
+  projection and the comparison in a left column and the polls in a right column, with the
+  last five and the standings under the comparison on the left. The projection gives the pick
+  and the win chances with the home team at home and on a neutral field. The comparison
+  table puts the two teams side by side and shows the record, the conference, the chosen
+  rating with its national rank, the BCS-style score with its rank, SCHEDL with its rank,
+  total offense (yards per game), total defense (yards allowed per game) and points per
   game, the last three also with national ranks. The right column shows the AP poll and the
   Coaches Poll in the same table style as the standings, with the AP table switching to the
   CFP rankings once the committee posts them. Then a last five panel for each team, with the
@@ -94,7 +99,8 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   overall and conference records and the selected team with the teams around it; the
   ellipsis opens the full conference, and independents show as a one-team list with a 0-0
   conference record. A short note at the foot of the page explains the method, the home edge
-  and where the numbers come from. Swap flips the two teams.
+  and where the numbers come from. Swap flips the two teams. When ESPN FPI is selected,
+  the comparison table shows each team's FPI rank (derived from re-ranked FPI scores).
 - Every table sorts on any column (click a header to toggle direction).
 - Team and conference logos throughout the tables and the playoff bracket, hosted in the
   repo so the browser never hits a logo CDN.
