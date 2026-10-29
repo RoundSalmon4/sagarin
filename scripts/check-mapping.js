@@ -1,29 +1,9 @@
 const fs = require('fs');
-const fetchScript = fs.readFileSync('scripts/fetch-fpi.js', 'utf8');
-
-// Extract the mapping
-const mapStart = fetchScript.indexOf('const FpiToSagarin = {');
-const mapEnd = fetchScript.indexOf('};', mapStart) + 2;
-const mapStr = fetchScript.substring(mapStart, mapEnd);
-
-// Check Texas A&M mappings
-const lines = mapStr.split('\n');
-lines.forEach(line => {
-  if (line.toLowerCase().includes('texas a')) {
-    console.log(line.trim());
-  }
-});
-
-// Also check the normalize function behavior
-function normalize(s) {
-  return String(s)
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[.'&]/g, "")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-console.log('\nnormalize("Texas A&M Aggies"):', normalize("Texas A&M Aggies"));
-console.log('normalize("Texas A&M Aggies"):', normalize("Texas A&M Aggies"));
+const c = fs.readFileSync('scripts/fetch-fpi.js', 'utf8');
+const idx = c.indexOf('const FpiToSagarin = {');
+const endIdx = c.indexOf('};', idx) + 2;
+const objStr = c.substring(idx + 19, endIdx);
+const FpiToSagarin = JSON.parse('{' + objStr.substring(objStr.indexOf('{') + 1, objStr.lastIndexOf('}')) + '}');
+console.log('texas a m aggies:', FpiToSagarin['texas a m aggies']);
+console.log('texas a&m aggies:', FpiToSagarin['texas a&m aggies']);
+console.log('texas am aggies:', FpiToSagarin['texas am aggies']);

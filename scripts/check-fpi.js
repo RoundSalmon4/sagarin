@@ -1,0 +1,10 @@
+const fs = require('fs');
+const c = fs.readFileSync('scripts/fetch-fpi.js', 'utf8');
+const idx = c.indexOf('const FpiToSagarin = {');
+const endIdx = c.indexOf('};', c.indexOf('const FpiToSagarin = {')) + 2;
+const objStr = c.substring(idx + 19, endIdx - 1);
+const FpiToSagarin = {};
+eval('const FpiToSagarin = ' + objStr.substring(19) + ';');
+console.log('texas a m aggies:', FpiToSagarin['texas a m aggies']);
+console.log('texas a&m aggies:', FpiToSagarin['texas a&m aggies']);
+console.log('texas am aggies:', FpiToSagarin['texas am aggies']);
