@@ -2,10 +2,10 @@
   "source": [
     "https://www.espn.com/college-football/fpi/_/view/fpi"
   ],
-  "fetched_at": "2026-10-28T20:34:24.731Z",
+  "fetched_at": "2026-10-29T14:03:03.253Z",
   "season": 2026,
   "note": "FPI parsed from ESPN FPI page. Used for predictor/sim/head-to-head reference.",
-  "signature": "fpi-mvskospo",
+  "signature": "fpi-mvtm5cyd",
   "method": "ESPN FPI: Football Power Index for predictor/sim/head-to-head; not strict-Sagarin data",
   "inputs": [
     "ESPN FPI"
@@ -335,7 +335,7 @@
       "teamId": "97",
       "conference": "ACC"
     },
-    "Texas A & M Aggies": {
+    "Texas A&M": {
       "score": 13.5,
       "rank": 22,
       "record": "4-4",
