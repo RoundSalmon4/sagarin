@@ -1,0 +1,73 @@
+{
+  "n": 100000,
+  "field": {
+    "Georgia": 100000,
+    "Northwestern": 100000,
+    "Oklahoma State": 100000,
+    "SMU": 100000,
+    "Boise State": 100000,
+    "Notre Dame": 100000,
+    "Ohio State": 100000,
+    "Miami-Florida": 100000,
+    "LSU": 100000,
+    "Alabama": 100000,
+    "Indiana": 100000,
+    "Texas": 100000
+  },
+  "champ": {
+    "Indiana": 100000
+  },
+  "bcs": {
+    "source": [
+      "http://sagarin.com/sports/cfsend.htm",
+      "https://www.colleyrankings.com/",
+      "https://cfrc.com/",
+      "http://www.andersonsports.com/football/ACF_frnk.html",
+      "https://masseyratings.com/cf/ratings",
+      "https://wolferatings.com/ratings.htm"
+    ],
+    "fetched_at": "2026-10-26T18:59:54.177Z",
+    "signature": "358fe15b",
+    "top3": [
+      {
+        "rank": 1,
+        "team": "Miami-Florida",
+        "score": 0.9751608751608751
+      },
+      {
+        "rank": 2,
+        "team": "Ohio State",
+        "score": 0.9585688545688545
+      },
+      {
+        "rank": 3,
+        "team": "Indiana",
+        "score": 0.8422290862290862
+      }
+    ]
+  },
+  "fpi": {
+    "source": [
+      "https://www.espn.com/college-football/fpi/_/view/fpi"
+    ],
+    "fetched_at": "2026-10-29T16:28:37.082Z",
+    "signature": "fpi-mvtrck0q",
+    "top3": [
+      {
+        "rank": 1,
+        "team": "Ohio State Buckeyes",
+        "score": 28.2
+      },
+      {
+        "rank": 2,
+        "team": "Notre Dame Fighting Irish",
+        "score": 27.7
+      },
+      {
+        "rank": 3,
+        "team": "Miami Hurricanes",
+        "score": 27.5
+      }
+    ]
+  }
+}

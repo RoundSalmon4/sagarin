@@ -1,0 +1,156 @@
+{
+  "n": 100000,
+  "field": {
+    "Indiana": 98666,
+    "Notre Dame": 99929,
+    "Alabama": 95269,
+    "Ohio State": 98181,
+    "Miami-Florida": 98533,
+    "Texas": 79775,
+    "Utah": 44779,
+    "Florida": 12851,
+    "Oregon": 20886,
+    "Wake Forest": 18098,
+    "Mississippi": 57042,
+    "Oregon State": 3221,
+    "UCLA": 70102,
+    "Georgia": 78271,
+    "Texas Tech": 27678,
+    "LSU": 75374,
+    "SMU": 9548,
+    "New Mexico": 17004,
+    "Boise State": 64241,
+    "Minnesota": 46,
+    "Kentucky": 23190,
+    "BYU": 28678,
+    "Oklahoma State": 6499,
+    "Tennessee": 20886,
+    "Houston": 10769,
+    "Missouri": 742,
+    "Wisconsin": 6783,
+    "Northwestern": 923,
+    "UTSA": 2497,
+    "James Madison": 11401,
+    "Arizona": 7220,
+    "Iowa": 3236,
+    "Liberty": 1530,
+    "Oklahoma": 1971,
+    "Louisville": 1286,
+    "Duke": 78,
+    "Pittsburgh": 28,
+    "Nebraska": 809,
+    "Auburn": 92,
+    "Central Florida(UCF)": 404,
+    "Southern California": 678,
+    "Clemson": 69,
+    "Virginia Tech": 233,
+    "Baylor": 127,
+    "North Carolina": 45,
+    "Cincinnati": 87,
+    "Louisiana Tech": 5,
+    "North Texas": 69,
+    "South Carolina": 77,
+    "Illinois": 12,
+    "Arizona State": 34,
+    "North Dakota State": 13,
+    "Army West Point": 12,
+    "Memphis": 7,
+    "Mississippi State": 4,
+    "West Virginia": 1,
+    "Boston College": 4,
+    "Purdue": 2,
+    "Virginia": 1,
+    "Michigan": 1,
+    "TCU": 1,
+    "Kansas State": 2
+  },
+  "champ": {
+    "Texas": 6221,
+    "Alabama": 8477,
+    "Miami-Florida": 13719,
+    "Ohio State": 18709,
+    "LSU": 6224,
+    "Indiana": 12112,
+    "Wisconsin": 52,
+    "Notre Dame": 18736,
+    "Mississippi": 2301,
+    "Utah": 723,
+    "Oregon": 1001,
+    "Georgia": 8237,
+    "SMU": 41,
+    "BYU": 272,
+    "Kentucky": 317,
+    "Florida": 213,
+    "UCLA": 1314,
+    "Tennessee": 580,
+    "New Mexico": 5,
+    "Wake Forest": 144,
+    "Houston": 54,
+    "Texas Tech": 373,
+    "Iowa": 28,
+    "Oklahoma": 33,
+    "Arizona": 33,
+    "Northwestern": 2,
+    "Oklahoma State": 20,
+    "Louisville": 12,
+    "Southern California": 4,
+    "Missouri": 6,
+    "James Madison": 2,
+    "Boise State": 29,
+    "Nebraska": 5,
+    "Auburn": 1
+  },
+  "bcs": {
+    "source": [
+      "http://sagarin.com/sports/cfsend.htm",
+      "https://www.colleyrankings.com/",
+      "https://cfrc.com/",
+      "http://www.andersonsports.com/football/ACF_frnk.html",
+      "https://masseyratings.com/cf/ratings",
+      "https://wolferatings.com/ratings.htm"
+    ],
+    "fetched_at": "2026-10-26T18:59:54.177Z",
+    "signature": "358fe15b",
+    "top3": [
+      {
+        "rank": 1,
+        "team": "Miami-Florida",
+        "score": 0.9751608751608751
+      },
+      {
+        "rank": 2,
+        "team": "Ohio State",
+        "score": 0.9585688545688545
+      },
+      {
+        "rank": 3,
+        "team": "Indiana",
+        "score": 0.8422290862290862
+      }
+    ]
+  },
+  "fpi": {
+    "source": [
+      "https://www.espn.com/college-football/fpi/_/view/fpi"
+    ],
+    "fetched_at": "2026-10-29T16:28:37.082Z",
+    "signature": "fpi-mvtrck0q",
+    "top3": [
+      {
+        "rank": 1,
+        "team": "Ohio State Buckeyes",
+        "score": 28.2
+      },
+      {
+        "rank": 2,
+        "team": "Notre Dame Fighting Irish",
+        "score": 27.7
+      },
+      {
+        "rank": 3,
+        "team": "Miami Hurricanes",
+        "score": 27.5
+      }
+    ]
+  }
+}
