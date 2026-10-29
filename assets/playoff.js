@@ -169,6 +169,25 @@
     return order;
   }
 
+  // Conference title-game participants. Conferences with divisions send their
+  // division winners (2026: Sun Belt East vs West). Everyone else sends the top
+  // two overall. `list` is already sorted by champScore.
+  function titleTeams(list) {
+    var map = (typeof window !== "undefined" && window.TeamDivisions) ? window.TeamDivisions : (SG.DIVISIONS || {});
+    var groups = {}, found = 0;
+    list.forEach(function (t) {
+      var d = map[t.team];
+      if (!d) return;
+      found++;
+      (groups[d] = groups[d] || []).push(t);
+    });
+    var keys = Object.keys(groups);
+    if (found && keys.length >= 2) {
+      return keys.map(function (d) { return groups[d][0]; });
+    }
+    return list.slice(0, 2);
+  }
+
   // Projected title game for one conference. Neutral-site games ignore the home
   // edge; campus games give it to the higher seed (top).
   function ccgResult(conf, top, second, method) {
