@@ -86,7 +86,7 @@
     var out = {};
     Object.keys(order).forEach(function (c) {
       if (c === "I-A IND.") return;
-      var list = order[c];
+      var list = titleTeams(order[c]);
       if (!list[0] || !list[1]) return;
       var m = ccgResult(c, list[0], list[1], method);
       var win = (stochastic ? Math.random() : 0.5) < m.p ? m.a : m.b;
@@ -184,7 +184,7 @@
     var out = [];
     Object.keys(order).forEach(function (c) {
       if (c === "I-A IND.") return;
-      var list = order[c];
+      var list = titleTeams(order[c]);
       if (list[0] && list[1]) out.push(ccgResult(c, list[0], list[1], method));
     });
     out.sort(function (x, y) {

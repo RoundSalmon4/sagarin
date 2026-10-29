@@ -4,6 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const TeamDivisions = require('../assets/divisions.js');
 
 const SIGMA = 15.5;
 const P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
@@ -62,6 +63,24 @@ function conferenceOrder(teams, method, std) {
   return order;
 }
 
+// Conference title-game participants. Conferences with divisions send their
+// division winners (2026: Sun Belt East vs West). Everyone else sends the top
+// two overall. `list` is already sorted by champScore.
+function titleTeams(list) {
+  var groups = {}, found = 0;
+  list.forEach(function (t) {
+    var d = TeamDivisions[t.team];
+    if (!d) return;
+    found++;
+    (groups[d] = groups[d] || []).push(t);
+  });
+  var keys = Object.keys(groups);
+  if (found && keys.length >= 2) {
+    return keys.map(function (d) { return groups[d][0]; });
+  }
+  return list.slice(0, 2);
+}
+
 function ccgResult(conf, top, second, method, homeEdge) {
   var neutral = !!NEUTRAL_CCG[conf];
   var edge = neutral ? 0 : homeEdge;
@@ -75,7 +94,7 @@ function ccgOutcomes(teams, method, homeEdge, regRec, stochastic) {
   var out = {};
   Object.keys(order).forEach(function (c) {
     if (c === "I-A IND.") return;
-    var list = order[c];
+    var list = titleTeams(order[c]);
     if (!list[0] || !list[1]) return;
     var m = ccgResult(c, list[0], list[1], method, homeEdge);
     var win = (stochastic ? Math.random() : 0.5) < m.p ? m.a : m.b;

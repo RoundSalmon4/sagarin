@@ -319,15 +319,23 @@
       return;
     }
     var ccg = st.ccgs && st.ccgs[conf];
+    // Only show a Division column when the conference actually uses divisions
+    // (2026: Sun Belt East/West is the only FBS conference with divisions).
+    var hasDivisions = list.some(function (t) { return Boolean(SG.DIVISIONS[t.team]); });
 
     var columns = [
       { key: "pos", label: "#", cls: "seed-col", cell: function (r) { return String(r.pos); }, value: function (r) { return r.pos; } },
-      { key: "team", label: "Team", cls: "left team-col", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } },
+      { key: "team", label: "Team", cls: "left team-col", type: "str", cell: function (r) { return SG.teamLogo(r.team) + SG.esc(r.team) + SG.apBadge(r.team); }, value: function (r) { return r.team; } }
+    ];
+    if (hasDivisions) {
+      columns.push({ key: "division", label: "Division", cls: "left", type: "str", cell: function (r) { return SG.esc(SG.DIVISIONS[r.team] || ""); }, value: function (r) { return SG.DIVISIONS[r.team] || ""; } });
+    }
+    columns.push(
       { key: "rating", label: "Rating", cell: function (r) { return SG.esc(r.rating); }, value: function (r) { return r.ratingVal; } },
       { key: "current", label: "Current", cls: "now-col", cell: function (r) { return r.current; }, value: function (r) { return r.currentVal; } },
       { key: "overall", label: "Overall", cls: "proj-col", cell: function (r) { return r.overall; }, value: function (r) { return r.overallVal; } },
       { key: "title", label: "Title game", cls: "left bid-col", type: "str", cell: function (r) { return r.title; }, value: function (r) { return r.titleText; } }
-    ];
+    );
 
     function getRatingForTeam(team, method) {
       if (method === "fpi") {
