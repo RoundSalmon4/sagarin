@@ -177,7 +177,8 @@
       var originalRender = SG.state.modules.playoff.render;
       SG.state.modules.playoff.render = function () {
         originalRender.call(this);
-        if (adoptPlayoffSim()) applyFilters();
+        adoptPlayoffSim();
+        if (view.sim && view.sim.debugRuns) applyFilters();
       };
     }
 
