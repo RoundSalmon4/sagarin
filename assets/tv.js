@@ -224,7 +224,7 @@
     var apB = b ? SG.apRank(nb) : null;
     var reason;
     if (ccgImplications > 0 && rival) reason = "Rivalry, CCG implications";
-    else if (ccgImplications > 0) reason = "Conference championship implications";
+    else if (ccgImplications > 0) reason = "CCG implications";
     else if (inFieldA && inFieldB && rival) reason = "Rivalry, playoff stakes";
     else if (inFieldA && inFieldB) reason = "Playoff clash";
     else if (rival) reason = "Rivalry";
