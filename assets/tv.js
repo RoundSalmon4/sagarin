@@ -183,93 +183,40 @@
     }
     // Top-4 seed bonus applied above; stakes set accordingly
 
-    // Conference championship implications (CCG games + division race with CCG implications)
+    // Conference championship implications using "path to CCG" simulation
+    // Instead of threshold rules, calculate the delta in CCG probability if team wins vs loses
     var ccgImplications = 0;
     if (a && b) {
       var sameConf = a.conference === b.conference;
       var divMap = window.TeamDivisions || {};
       var divA = divMap[na] || "None";
       var divB = divMap[nb] || "None";
+      var sameConf = a.conference === b.conference;
       var sameDiv = divA !== "None" && divA === divB;
 
       if (sameConf) {
-        // Same conference - check CCG implications
+        var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
         if (sameDiv) {
-          // Same division - division race already handled, but CCG implications too
-          var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
-          if (dStandings) {
-            var teamA = dStandings.teams.find(function(t) { return t.team === na; });
-            var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
-            if (teamA && teamB) {
-              // Division leader vs top contender
-              if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
-                       (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) ccgImplications = 0.8;
-              // Both in top 2
-              else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) ccgImplications = 0.7;
-              // Clinching/elimination
-              else if ((teamA && teamA.cwp > 0.7 && teamA.cwp < 1) || (teamB && teamB.cwp > 0.7 && teamB.cwp < 1)) ccgImplications = 0.85;
-              // Both in race
-              else if (teamA && teamB && teamA.cwp > 0.4 && teamB.cwp > 0.4) ccgImplications = 0.6;
-              else ccgImplications = 0.3;
-            }
-          } else {
-            // Different divisions - could meet in CCG
-            var dStandingsA = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
-            var dStandingsB = ctx.divisionStandings && ctx.divisionStandings[b.conference] ? ctx.divisionStandings[b.conference][divB] : null;
-            if (dStandingsA && dStandingsB && dStandingsA.leader === na && dStandingsB.leader === nb) {
-              ccgImplications = 0.8; // Potential CCG matchup
-            } else if ((dStandingsA && dStandingsA.leader === na && dStandingsB.contenders.some(function(c) { return c.team === nb; })) ||
-                       (dStandingsB && dStandingsB.leader === nb && dStandingsA.contenders.some(function(c) { return c.team === na; }))) {
-              ccgImplications = 0.7; // Leader vs contender from other division
-            } else {
-              ccgImplications = 0.3; // Some CCG implications
-            }
-          }
+          // Same division - calculate CCG probability delta directly
+          ccgImplications = calculateCCGDelta(na, nb, divA, a.conference, ctx, sameDiv, true);
+        } else {
+          // Different divisions - could meet in CCG
+          ccgImplications = calculateCrossDivCCGDelta(na, nb, divA, divB, a.conference, ctx);
         }
       }
     }
 
     var rival = isRivalry(na, nb) ? 1 : 0;
 
-    // Division race implications (only for same-division matchups)
-    var divRace = 0;
-    if (a && b && a.conference === b.conference) {
-      var divMap = window.TeamDivisions || {};
-      var divA = divMap[na] || "None";
-      var divB = divMap[nb] || "None";
-      if (divA !== "None" && divA === divB) {
-        var dStandings = ctx.divisionStandings && ctx.divisionStandings[a.conference] ? ctx.divisionStandings[a.conference][divA] : null;
-        if (dStandings) {
-          var teamA = dStandings.teams.find(function(t) { return t.team === na; });
-          var teamB = dStandings.teams.find(function(t) { return t.team === nb; });
-          if (teamA || teamB) {
-            // Division leader vs top contender (same division, impossible for both to be leader)
-            if ((dStandings.leader === na && dStandings.contenders.some(function(c) { return c.team === nb; })) ||
-                     (dStandings.leader === nb && dStandings.contenders.some(function(c) { return c.team === na; }))) divRace = 0.8;
-            // Both in top 2
-            else if (teamA && teamB && (teamA.cwp > 0.6 || teamB.cwp > 0.6)) divRace = 0.75;
-            // Clinching/elimination scenarios
-            else if ((teamA && teamA.cwp > 0.7 && teamA.cwp < 1) || (teamB && teamB.cwp > 0.7 && teamB.cwp < 1)) divRace = 0.85;
-            // Both in division race
-            else if (teamA && teamB && teamA.cwp > 0.4 && teamB.cwp > 0.4) divRace = 0.6;
-            // Same division, some implications
-            else divRace = 0.3;
-          }
-        }
-      }
-    }
-
     // Weights: CCG-implication games get CCG component; others renormalize
     var hasCCG = ccgImplications > 0;
-    var hasDivRace = divRace > 0;
     var value;
-    if (hasDivRace || ccgImplications > 0) {
-      // CCG + Division race + Closeness + Stakes + Quality + Rivalry = 10+5+38+25+15+10 = 100
-      var divRaceWeight = divRace > 0 ? 0.05 : 0;
-      var ccgWeight = ccgImplications > 0 ? 0.10 : 0;
-      value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival + 0.10 * ccgImplications + 0.05 * divRace));
+    if (hasCCG) {
+      // CCG + Closeness + Stakes + Quality + Rivalry = 10+35+25+15+10 = 100 (simplified)
+      // The 5% divRace weight is now subsumed into the CCG delta which handles both div race and CCG path
+      value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival + 0.10 * ccgImplications));
     } else {
-      // No CCG/division implications: renormalize 35+25+15+10 = 85 -> divide by 0.85
+      // No CCG implications: renormalize 35+25+15+10 = 85 -> divide by 0.85
       value = Math.round(100 * (0.35 * closeness + 0.25 * stakes + 0.15 * quality + 0.10 * rival) / 0.85);
     }
 
@@ -310,6 +257,108 @@
         teamName(g.homeId, g.homeName).toLowerCase().indexOf(q) !== -1;
     }
     return true;
+  }
+
+  // ============ CCG "Path to CCG" Delta Calculation Helpers ============
+  // Replaces threshold-based rules with simulation-based CCG probability delta
+
+  function getTeamCCGProb(teamName, conference, ctx) {
+    if (!ctx.divisionStandings || !ctx.divisionStandings[conference]) return 0;
+    var teams = Object.values(ctx.divisionStandings[conference]).flatMap(function(d) { return d.teams; });
+    var team = teams.find(function(t) { return t.team === teamName; });
+    if (!team) return 0;
+    var cwp = (team.cw + team.cl) ? team.cw / (team.cw + team.cl) : 0;
+    var owp = (team.ow + team.ol) ? team.ow / (team.ow + team.ol) : 0;
+    // Base CCG probability from conference win pct and overall win pct
+    // Weighted: 70% conf win pct, 30% overall win pct
+    return cwp * 0.7 + owp * 0.3;
+  }
+
+  function simulateCCGProb(teamName, conference, ctx, addWin, addLoss, isConfGame) {
+    // Simulate adding a win/loss to the team's record
+    var allTeams = [];
+    for (var confName in ctx.divisionStandings) {
+      for (var divName in ctx.divisionStandings[confName]) {
+        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
+      }
+    }
+    var teamData = allTeams.find(function(t) { return t.team === teamName; });
+    if (!teamData) return 0;
+    
+    var cw = teamData.cw + (addWin ? 1 : 0);
+    var cl = teamData.cl + (addLoss ? 1 : 0);
+    var ow = teamData.ow + (addWin ? 1 : 0);
+    var ol = teamData.ol + (addLoss ? 1 : 0);
+    
+    var cwp = (cw + cl) ? cw / (cw + cl) : 0;
+    var owp = (ow + ol) ? ow / (ow + ol) : 0;
+    // CCG probability: 70% conf win pct, 30% overall win pct
+    // Only conference games affect conference win pct
+    // For non-conference games, only overall record changes
+    var cwp = (cw + cl) ? cw / (cw + cl) : 0;
+    var owp = (ow + ol) ? ow / (ow + ol) : 0;
+    return cwp * 0.7 + owp * 0.3;
+  }
+
+  function calculateCCGDelta(na, nb, divA, conference, ctx, sameDiv) {
+    var aTeam = null, bTeam = null;
+    var allTeams = [];
+    for (var confName in ctx.divisionStandings) {
+      for (var divName in ctx.divisionStandings[confName]) {
+        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
+      }
+    }
+    aTeam = allTeams.find(function(t) { return t.team === na; });
+    bTeam = allTeams.find(function(t) { return t.team === nb; });
+    if (!aTeam || !bTeam) return 0.3;
+
+    // Get current CCG probabilities
+    var aCCG = getTeamCCGProb(na, conference, ctx);
+    var bCCG = getTeamCCGProb(nb, conference, ctx);
+
+    // Simulate A wins, B loses
+    var aWinCCG = simulateCCGProb(na, conference, ctx, true, false, sameDiv);
+    var bLossCCG = simulateCCGProb(nb, conference, ctx, false, true, sameDiv);
+    var deltaAWin = aWinCCG - aCCG;
+
+    // Simulate B wins, A loses
+    var aLossCCG = simulateCCGProb(na, conference, ctx, false, true, sameDiv);
+    var bWinCCG = simulateCCGProb(nb, conference, ctx, true, false, sameDiv);
+    var deltaBWin = bWinCCG - bCCG;
+
+    // Average delta across both teams
+    var delta = Math.max(deltaAWin, deltaBWin);
+    
+    // Scale: max delta of ~0.3 = max CCG weight (0.10)
+    // A delta of 0.3 = full 0.10 CCG weight
+    // So: ccgImplications = min(1.0, delta / 0.3)
+    return Math.min(1.0, delta / 0.3);
+  }
+
+  function calculateCrossDivCCGDelta(na, nb, divA, divB, conference, ctx) {
+    var allTeams = [];
+    for (var confName in ctx.divisionStandings) {
+      for (var divName in ctx.divisionStandings[confName]) {
+        ctx.divisionStandings[confName][divName].teams.forEach(function(t) { allTeams.push(t); });
+      }
+    }
+    var aTeam = allTeams.find(function(t) { return t.team === na; });
+    var bTeam = allTeams.find(function(t) { return t.team === nb; });
+    if (!aTeam || !bTeam) return 0.1;
+
+    var aCCG = getTeamCCGProb(na, conference, ctx);
+    var bCCG = getTeamCCGProb(nb, conference, ctx);
+
+    // Simulate A wins
+    var aWinCCG = simulateCCGProb(na, conference, ctx, true, false, false);
+    var deltaA = aWinCCG - aCCG;
+
+    // Simulate B wins
+    var bWinCCG = simulateCCGProb(nb, conference, ctx, true, false, false);
+    var deltaB = bWinCCG - bCCG;
+
+    var delta = Math.max(deltaA, deltaB);
+    return Math.min(1.0, delta / 0.3);
   }
 
   // The earliest week that still has games left to play. The data file carries a
