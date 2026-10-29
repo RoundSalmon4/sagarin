@@ -67,7 +67,7 @@ Live at https://www.roundsalmon4.com/sagarin/ (the github.io URL redirects there
   seeds only by default with an option to show predicted results, and lists the projected
   conference championship matchups under the field (with the winner and win odds in the
   predicted-results view). A full-season Monte Carlo plays out the remaining games and the
-  projected title games 10,000 times, rebuilds the field from the simulated results, then
+  projected title games 20,000 times, rebuilds the field from the simulated results, then
   runs the bracket, and reports each team's chance to make the field and to win it (top 14
   shown, with the count stated).
 

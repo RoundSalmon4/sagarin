@@ -108,6 +108,17 @@
       // Clearing the simulation forces the user to re-run it for the new
       // method so results always reflect the selected rating.
       view.sim = null;
+      // Also clear the Playoff Predictor tab so both tabs stay in sync.
+      var pv = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
+      if (pv) {
+        pv.sim[pv.format] = null;
+        pv.method = view.method;
+      }
+      // Keep the Playoff Predictor method dropdown in sync.
+      var pSelect = document.getElementById("playoffMethod");
+      if (pSelect) pSelect.value = view.method;
+      SG.state.sim12Method = null;
+      SG.state.sim24Method = null;
       document.getElementById("simdeepResults").innerHTML = "";
       document.getElementById("simdeepNote").textContent = "No " + this.value + " simulation for the " + currentFormat() + "-team format yet. Run one on the Playoff Predictor tab.";
     });
@@ -179,7 +190,7 @@
   }
 
   function onSimDataReady() {
-    var runs = view.sim && view.sim.n ? view.sim.n.toLocaleString() : "10,000";
+    var runs = view.sim && view.sim.n ? view.sim.n.toLocaleString() : "20,000";
     var mth = view.method || currentMethod();
     var label = { rating: "Overall RATING", predictor: "PREDICTOR", goldenMean: "GOLDEN_MEAN", recent: "RECENT", strongRecent: "STRONG_RECENT", fpi: "ESPN FPI" }[mth] || mth;
     document.getElementById("simdeepNote").textContent = "Using " + label + " " + runs + "-run simulation. Add filters and click Run deep dive.";
@@ -696,7 +707,7 @@
     btn.disabled = true;
     btn.textContent = "Simulating...";
     loading.classList.remove("hidden");
-    note.textContent = "Running 10,000 simulations...";
+    note.textContent = "Running 20,000 simulations...";
 
     var playoffModule = SG.state.modules.playoff;
     var playoffView = playoffModule.view;
@@ -711,12 +722,18 @@
     btn.disabled = true;
     btn.textContent = "Simulating...";
     loading.classList.remove("hidden");
-    note.textContent = "Running 10,000 simulations...";
+    note.textContent = "Running 20,000 simulations...";
 
     var formatSelect = document.getElementById("simdeepFormat");
     if (formatSelect && playoffView) {
       playoffView.format = formatSelect.value;
+      // Run with the deep dive tab's selected method so both tabs show the
+      // same rating method for the same simulation.
+      playoffView.method = currentMethod();
     }
+    // Keep the Playoff Predictor method dropdown in sync.
+    var pSelect = document.getElementById("playoffMethod");
+    if (pSelect) pSelect.value = currentMethod();
 
     var prevDebug = (SG.debug && SG.debug.sim) ? SG.debug.sim : false;
     SG.debug = SG.debug || {};
@@ -996,7 +1013,7 @@
     var totalUniqueOutcomes = groupArr.length;
     var avgOccurrences = totalMatchingRuns / totalUniqueOutcomes;
     note.innerHTML = "Showing " + shown.length + " of " + totalUniqueOutcomes + " unique outcomes (" + totalMatchingRuns.toLocaleString() + " of " + totalSims.toLocaleString() + " total runs match filters, " + (totalMatchingRuns / totalSims * 100).toFixed(2) + "%). Each outcome occurred an average of " + avgOccurrences.toFixed(1) + " times." +
-      '<br><span class="simdeep-note">This uses the same 10,000 Monte Carlo simulations from the Playoff Predictor tab. The Predictor shows a single deterministic projection; this Deep Dive reveals the full distribution of outcomes from those simulations.</span>';
+      '<br><span class="simdeep-note">This uses the same 20,000 Monte Carlo simulations from the Playoff Predictor tab. The Predictor shows a single deterministic projection; this Deep Dive reveals the full distribution of outcomes from those simulations.</span>';
 
     var html = shown.map(function (group, idx) {
       var run = group.run;
@@ -1487,7 +1504,7 @@
     '</div>';
   }
 
-  var SIMS = 10000;
+  var SIMS = 20000;
 
   SG.state.modules.simdeep = {
     init: init,
@@ -1495,7 +1512,8 @@
       if (!SG.state.data) return;
       adoptPlayoffSim();
       if (view.sim && view.sim.debugRuns) applyFilters();
-    }
+    },
+    view: view
   };
 
   if (document.readyState === "loading") {

@@ -211,8 +211,8 @@
           if (entryA && entryA.seed <= 4) top4A++;
           if (entryB && entryB.seed <= 4) top4B++;
         });
-        top4A = top4A / 10000;
-        top4B = top4B / 10000;
+        top4A = top4A / sim.n;
+        top4B = top4B / sim.n;
         if ((top4A > 0.1 || top4B > 0.1)) {
           // Non-trivial top-4 chance - game could affect top-4 seeding
           stakes = Math.min(1, stakes + 0.3);

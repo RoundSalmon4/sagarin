@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Full stochastic simulation runner for CI: replicates browser computeSim() exactly.
-// Loads ratings + ESPN data, runs 10,000 simulations, writes sim-12.json and sim-24.json.
+// Loads ratings + ESPN data, runs 100,000 simulations, writes sim-12.json and sim-24.json.
 
 const fs = require('fs');
 const path = require('path');
@@ -10,7 +10,7 @@ const SIGMA = 15.5;
 const P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
 const G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
 const NEUTRAL_CCG = { "ACC": true, "SEC": true, "BIG TEN": true, "BIG 12": true, "MAC": true };
-const SIMS = 10000;
+const SIMS = 100000;
 const AT_LARGE_LOSS_PENALTY = 5;
 const AT_LARGE_SOS_WEIGHT = 0;
 const AT_LARGE_CHAMPION_BONUS = 0;

@@ -8,7 +8,7 @@
 
   var P4 = ["SEC", "BIG TEN", "BIG 12", "ACC"];
   var G6 = ["AMERICAN", "CONF-USA", "MAC", "MOUNTAIN WEST", "SUN BELT", "PAC-12"];
-  var SIMS = 10000;
+  var SIMS = 20000;
   // Selection and seeding are a resume call, not a pure power call: the G6 spot,
   // the at-large pool and the seeds are ranked on the selected rating minus a
   // penalty per projected loss plus a bonus for schedule strength, so a weak
@@ -728,8 +728,11 @@
       " points for every point the schedule sits above the FBS average" + scheduleNote + ", plus " +
       AT_LARGE_CHAMPION_BONUS + " points for a team projected to win its conference, so a weak schedule cannot hide behind a record and a conference title counts for something." + fitNote +
       " The projected field table shows the selected " + weightLabel + " rating for each team. " +
-      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (10,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field. " +
+      "Note: the bracket is deterministic (predicted results); the bubble shows stochastic simulation shares (20,000 random runs). The bubble teams' chances come from the simulation; the field uses the resume score (including schedule weight) to determine who makes the deterministic field. " +
       "Disclaimer: These models use predictive ratings (team strength) for field selection. Predictive ratings overvalue talent and undervalue on-field performance. The schedule weight is an attempt to mitigate this but can only do so much, as the ratings are the foundation of the model.";
+    // Sim results come from a client-computed run (computeSim). With no run yet,
+    // renderSim shows nothing; the bubble table separately shows the stable
+    // run-sim.yml server data for the predictor method.
     renderSim(view.sim[view.format]);
 
     // Attach expand/collapse handlers for sim blocks
@@ -771,7 +774,7 @@
     var fmtMethodSim = (fmt === 12 ? SG.state.sim12Method : SG.state.sim24Method) || null;
     var sim = fmtMethodSim || (fmt === 12 ? SG.state.sim12 : SG.state.sim24) || null;
     if (!sim || !sim.field) {
-      box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No simulation data available. Click "Simulate 10,000 seasons" to see bubble chances.</td></tr></tbody>';
+      box.innerHTML = '<thead><tr><th class="left seed-col" style="vertical-align: middle;">#</th><th class="left team-col" style="vertical-align: middle;">Team</th><th class="left conf-col" style="vertical-align: middle;">Conference</th><th class="left now-col" style="vertical-align: middle;">Now</th><th class="left proj-col" style="vertical-align: middle;">Chance</th><th class="rating-col" style="color: var(--accent); vertical-align: middle;">' + SG.esc(view.method === "rating" ? "RATING" : SG.methodLabel(view.method)) + '</th><th class="left bid-col" style="vertical-align: middle;">Runs</th></tr></thead><tbody><tr><td colspan="7">No bubble data available.</td></tr></tbody>';
       return;
     }
     // Field teams = the CURRENT PROJECTED FIELD (12 or 24 teams from view.field.seeds)
@@ -783,7 +786,7 @@
       }
     }
     // All teams with simulation chances (from server-loaded sim data)
-    var all = Object.keys(sim.field || {}).map(function(name) { return { name: name, c: sim.field[name], pct: sim.field[name] / (sim.n || 10000) }; });
+    var all = Object.keys(sim.field || {}).map(function(name) { return { name: name, c: sim.field[name], pct: sim.field[name] / (sim.n || 100000) }; });
     // Bubble = teams with chances that are NOT in the projected field
     var bubble = all.filter(function(r) { return !projectedFieldTeams[r.name]; })
       .sort(function(a, b) { return b.pct - a.pct || b.c - a.c; })
@@ -904,7 +907,7 @@
       champCount[c] = (champCount[c] || 0) + 1;
 
       // Build field composition for this run. Records are kept only for the
-      // teams in the field, which is all the deep dive reads and keeps 10,000
+      // teams in the field, which is all the deep dive reads and keeps 20,000
       // runs from holding a record for every FBS team.
       var fieldTeams = f.seeds.slice(1).map(function (t, idx) { return { seed: idx + 1, team: t.team, bid: f.bid[t.team] }; });
       var fieldRecords = {};
@@ -931,6 +934,16 @@
       try {
         view.sim[view.format] = computeSim();
         renderSim(view.sim[view.format]);
+        // Sync the new sim and method to the Sim Deep Dive tab so both tabs
+        // show the same simulation for the same rating method.
+        var sd = SG.state.modules && SG.state.modules.simdeep ? SG.state.modules.simdeep : null;
+        if (sd && sd.view) {
+          sd.view.method = view.method;
+          sd.view.sim = view.sim[view.format];
+        }
+        // Keep the deep dive method dropdown in sync.
+        var sdSelect = document.getElementById("simdeepMethod");
+        if (sdSelect) sdSelect.value = view.method;
         render();
       } finally {
         view.simBusy = false;
@@ -962,6 +975,15 @@
       view.sim[view.format] = null;
       SG.state.sim12Method = null;
       SG.state.sim24Method = null;
+      // Also clear the Sim Deep Dive tab so both tabs stay in sync.
+      var sd = SG.state.modules && SG.state.modules.simdeep ? SG.state.modules.simdeep : null;
+      if (sd && sd.view) {
+        sd.view.sim = null;
+        sd.view.method = view.method;
+      }
+      // Keep the deep dive method dropdown in sync.
+      var sdSelect = document.getElementById("simdeepMethod");
+      if (sdSelect) sdSelect.value = view.method;
       render();
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
