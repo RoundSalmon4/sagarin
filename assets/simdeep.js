@@ -183,9 +183,10 @@
     }
 
     // Use a simulation the playoff tab already ran, if there is one.
-    if (adoptPlayoffSim()) {
+    adoptPlayoffSim();
+    if (view.sim && view.sim.debugRuns) {
       applyFilters();
-    } else if (!view.sim) {
+    } else {
       document.getElementById("simdeepNote").textContent = "Run a simulation first, then filter results.";
     }
   }
