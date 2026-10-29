@@ -20,7 +20,7 @@ jobs:
         run: node scripts/run-sim.js
       - name: Commit and push when changed
         run: |
-          git add data/sim-12.json data/sim-24.json data/bcs.json data/fpi.json
+          git add data/sim-12-*.json data/sim-24-*.json data/bcs.json data/fpi.json
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git -c user.name="roundsalmon4" -c user.email="209016228+RoundSalmon4@users.noreply.github.com" commit -m "Update simulation results (weekly)"
           git pull --rebase origin main
