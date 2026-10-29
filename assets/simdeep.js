@@ -105,14 +105,11 @@
     });
     document.getElementById("simdeepMethod").addEventListener("change", function () {
       view.method = this.value;
+      // Clearing the simulation forces the user to re-run it for the new
+      // method so results always reflect the selected rating.
       view.sim = null;
-      adoptPlayoffSim();
-      if (view.sim && view.sim.debugRuns) {
-        applyFilters();
-      } else {
-        document.getElementById("simdeepResults").innerHTML = "";
-        document.getElementById("simdeepNote").textContent = "No " + this.value + " simulation for the " + currentFormat() + "-team format yet. Run one on the Playoff Predictor tab.";
-      }
+      document.getElementById("simdeepResults").innerHTML = "";
+      document.getElementById("simdeepNote").textContent = "No " + this.value + " simulation for the " + currentFormat() + "-team format yet. Run one on the Playoff Predictor tab.";
     });
     document.getElementById("simdeepLimit").addEventListener("change", function () {
       if (view.sim && view.sim.debugRuns) applyFilters();

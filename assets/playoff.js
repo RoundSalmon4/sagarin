@@ -957,17 +957,12 @@
     });
     document.getElementById("playoffMethod").addEventListener("change", function (e) {
       view.method = e.target.value;
+      // Clearing the simulation forces the user to re-run it for the new
+      // method so the bubble and field always reflect the selected rating.
       view.sim[view.format] = null;
-      // Load method-specific simulation files for bubble update
-      function loadSim(url, fmt) {
-        return fetch(url).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (data) {
-          if (fmt === 12) SG.state.sim12Method = data; else SG.state.sim24Method = data;
-        });
-      }
-      Promise.all([
-        loadSim("data/sim-12-" + view.method + ".json", 12),
-        loadSim("data/sim-24-" + view.method + ".json", 24)
-      ]).then(function () { render(); });
+      SG.state.sim12Method = null;
+      SG.state.sim24Method = null;
+      render();
     });
     document.getElementById("simBtn").addEventListener("click", simulate);
     render();
