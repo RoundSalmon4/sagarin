@@ -507,6 +507,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
     console.log('[Head to Head] Away rating:', getRating(away, method), 'Home rating:', getRating(home, method));
     
     var diff = getRating(home, method) - getRating(away, method);
+    var ratingAvailable = getRating(home, method) !== null && getRating(away, method) !== null;
 
     // The two ways the same numbers can be read: with the home team at home,
     // and on a neutral field.
@@ -538,6 +539,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
         { label: SG.methodLabel(method), lead: true, cell: function (t) {
           var val = getRating(t, method);
           var rank = "-";
+          if (val === null) return '<span class="dim">N/A</span>';
           if (method === "fpi") {
             var fpiData = SG.state.fpi && SG.state.fpi.byTeam && SG.state.fpi.byTeam[t.team];
             rank = fpiData ? fpiData.rank : "-";
@@ -574,8 +576,11 @@ SG.DIVISIONS = window.TeamDivisions || {};
     // Projection: the pick and the win chances for both sites.
     var proj = document.getElementById("matchupResult");
     if (proj) {
-      var html = '<div class="h2h-proj-cards">';
-      scenarios.forEach(function (s) {
+      if (!ratingAvailable) {
+        proj.innerHTML = '<div class="h2h-proj-cards"><div class="h2h-proj-card"><div class="h2h-proj-site">No data</div><div class="h2h-proj-fav">—</div><div class="h2h-proj-margin"><span class="dim">N/A</span></div><div class="h2h-proj-bar"></div><div class="h2h-proj-probs"><span class="dim">Rating data unavailable for one or both teams.</span></div></div></div>';
+      } else {
+        var html = '<div class="h2h-proj-cards">';
+        scenarios.forEach(function (s) {
         var homeFav = s.spread >= 0;
         var fav = homeFav ? home : away;
         var probHome = SG.normCdf(s.spread / SG.SIGMA);
@@ -597,6 +602,7 @@ SG.DIVISIONS = window.TeamDivisions || {};
       });
       html += "</div>";
       proj.innerHTML = html;
+      }
     }
 
     var pollsBox = document.getElementById("matchupPolls");
