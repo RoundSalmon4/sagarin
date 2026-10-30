@@ -473,11 +473,16 @@ SG.DIVISIONS = window.TeamDivisions || {};
     var a = document.getElementById("teamA");
     var b = document.getElementById("teamB");
     if (!a || !b) return;
+    // Preserve current selections; only the rating text in each option changes,
+    // not the team names, so changing the rating method must not reset the matchup.
+    var currentA = a.value;
+    var currentB = b.value;
     a.innerHTML = html;
     b.innerHTML = html;
-    var ranked = SG.state.data.teams.slice().sort(function (x, y) { return x.rank - y.rank; });
-    if (ranked[1]) a.value = ranked[1].team;
-    if (ranked[0]) b.value = ranked[0].team;
+    if (a.querySelector('option[value="' + currentA + '"]')) a.value = currentA;
+    else if (a.options.length > 1) a.value = a.options[1].value;
+    if (b.querySelector('option[value="' + currentB + '"]')) b.value = currentB;
+    else if (b.options.length > 0) b.value = b.options[0].value;
   };
 
   SG.renderMatchup = function () {
