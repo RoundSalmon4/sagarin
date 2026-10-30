@@ -11,11 +11,9 @@
   function playoffSimFor(format, method) {
     var pv = SG.state.modules && SG.state.modules.playoff ? SG.state.modules.playoff.view : null;
     if (!pv || !pv.sim) return null;
-    // Prefer method-specific sim, fall back to shared sim
-    if (method === "predictor") return pv.sim[format];
-    if (format === 12) return SG.state.sim12Method;
-    if (format === 24) return SG.state.sim24Method;
-    return pv.sim[format];
+    // Only return playoff's sim if it matches the requested method
+    if (pv.method === method) return pv.sim[format];
+    return null;
   }
 
   function currentFormat() {
@@ -773,10 +771,12 @@
       return;
     }
 
-    // Use playoff's sim if local doesn't have it
+    // Use playoff's sim if local doesn't have it AND the methods match
     if (!view.sim || !view.sim.debugRuns) {
-      view.sim = playoffSim;
-      onSimDataReady();
+      if (playoffView && playoffView.method === currentMethod()) {
+        view.sim = playoffSim;
+        onSimDataReady();
+      }
     }
 
     // Store unfiltered runs for distribution modals (before filtering)
