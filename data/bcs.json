@@ -7,9 +7,9 @@
     "https://masseyratings.com/cf/ratings",
     "https://wolferatings.com/ratings.htm"
   ],
-  "fetched_at": "2026-10-26T18:59:54.177Z",
+  "fetched_at": "2026-11-01T20:12:24.607Z",
   "season": 2026,
-  "through": "OCTOBER 24 SATURDAY",
+  "through": "OCTOBER 31 SATURDAY",
   "method": "BCS: (AP + Coaches + computer) / 3, Harris replaced by AP. Six computers, high and low dropped, middle four over 100.",
   "inputs": [
     "Sagarin 25",
@@ -19,282 +19,258 @@
     "Massey 25",
     "Wolfe 25"
   ],
-  "signature": "358fe15b",
+  "signature": "8bfdd229",
   "ranks": [
     {
       "rank": 1,
       "team": "Miami-Florida",
-      "score": 0.9751608751608751,
+      "score": 0.9768166992824527,
       "apRank": 1,
       "coachesRank": 1,
       "computer": 0.94
     },
     {
       "rank": 2,
-      "team": "Ohio State",
-      "score": 0.9585688545688545,
+      "team": "Georgia",
+      "score": 0.9178773646444879,
       "apRank": 2,
       "coachesRank": 2,
-      "computer": 0.96
+      "computer": 0.87
     },
     {
       "rank": 3,
-      "team": "Indiana",
-      "score": 0.8422290862290862,
-      "apRank": 4,
+      "team": "Utah",
+      "score": 0.8604109589041097,
+      "apRank": 3,
       "coachesRank": 4,
-      "computer": 0.84
+      "computer": 0.83
     },
     {
       "rank": 4,
-      "team": "Georgia",
-      "score": 0.8410527670527671,
-      "apRank": 3,
+      "team": "Indiana",
+      "score": 0.8337847358121331,
+      "apRank": 6,
       "coachesRank": 3,
-      "computer": 0.77
+      "computer": 0.8
     },
     {
       "rank": 5,
-      "team": "Notre Dame",
-      "score": 0.7860025740025739,
+      "team": "UCLA",
+      "score": 0.8013933463796477,
       "apRank": 5,
-      "coachesRank": 6,
+      "coachesRank": 5,
       "computer": 0.74
     },
     {
       "rank": 6,
-      "team": "UCLA",
-      "score": 0.7768262548262549,
-      "apRank": 7,
-      "coachesRank": 7,
-      "computer": 0.75
+      "team": "Notre Dame",
+      "score": 0.7980834964122635,
+      "apRank": 4,
+      "coachesRank": 6,
+      "computer": 0.73
     },
     {
       "rank": 7,
-      "team": "Utah",
-      "score": 0.7653590733590733,
-      "apRank": 6,
-      "coachesRank": 5,
-      "computer": 0.7
+      "team": "Kentucky",
+      "score": 0.7008127853881279,
+      "apRank": 8,
+      "coachesRank": 7,
+      "computer": 0.65
     },
     {
       "rank": 8,
-      "team": "Kentucky",
-      "score": 0.6898584298584299,
-      "apRank": 9,
+      "team": "BYU",
+      "score": 0.6887579908675798,
+      "apRank": 7,
       "coachesRank": 8,
-      "computer": 0.68
+      "computer": 0.59
     },
     {
       "rank": 9,
-      "team": "BYU",
-      "score": 0.6831917631917631,
-      "apRank": 8,
-      "coachesRank": 9,
-      "computer": 0.62
+      "team": "Ohio State",
+      "score": 0.6709054142204828,
+      "apRank": 11,
+      "coachesRank": 10,
+      "computer": 0.81
     },
     {
       "rank": 10,
       "team": "Alabama",
-      "score": 0.6192329472329473,
-      "apRank": 10,
-      "coachesRank": 10,
-      "computer": 0.66
+      "score": 0.634099151989563,
+      "apRank": 9,
+      "coachesRank": 9,
+      "computer": 0.65
     },
     {
       "rank": 11,
       "team": "Texas",
-      "score": 0.5878738738738739,
-      "apRank": 11,
+      "score": 0.624392694063927,
+      "apRank": 10,
       "coachesRank": 11,
-      "computer": 0.67
+      "computer": 0.69
     },
     {
       "rank": 12,
       "team": "Mississippi",
-      "score": 0.5287876447876448,
+      "score": 0.5737155903457274,
       "apRank": 12,
       "coachesRank": 12,
-      "computer": 0.58
+      "computer": 0.61
     },
     {
       "rank": 13,
       "team": "LSU",
-      "score": 0.506118404118404,
+      "score": 0.5068741030658839,
       "apRank": 15,
-      "coachesRank": 13,
+      "coachesRank": 15,
       "computer": 0.57
     },
     {
       "rank": 14,
       "team": "Texas Tech",
-      "score": 0.45634234234234233,
+      "score": 0.5030410958904109,
       "apRank": 13,
-      "coachesRank": 14,
-      "computer": 0.41
+      "coachesRank": 13,
+      "computer": 0.45
     },
     {
       "rank": 15,
       "team": "Wake Forest",
-      "score": 0.3948597168597168,
+      "score": 0.47488323548597516,
       "apRank": 14,
-      "coachesRank": 15,
-      "computer": 0.31
+      "coachesRank": 14,
+      "computer": 0.42
     },
     {
       "rank": 16,
       "team": "Tennessee",
-      "score": 0.3298790218790219,
+      "score": 0.35594781474233533,
       "apRank": 16,
-      "coachesRank": 17,
-      "computer": 0.26
+      "coachesRank": 16,
+      "computer": 0.24
     },
     {
       "rank": 17,
-      "team": "Florida",
-      "score": 0.3043732303732304,
-      "apRank": 17,
-      "coachesRank": 20,
-      "computer": 0.37
+      "team": "Southern California",
+      "score": 0.3067762557077625,
+      "apRank": 18,
+      "coachesRank": 17,
+      "computer": 0.3
     },
     {
       "rank": 18,
       "team": "Houston",
-      "score": 0.22523552123552126,
-      "apRank": 18,
-      "coachesRank": 19,
-      "computer": 0.16
+      "score": 0.2739334637964775,
+      "apRank": 17,
+      "coachesRank": 18,
+      "computer": 0.18
     },
     {
       "rank": 19,
-      "team": "SMU",
-      "score": 0.2214671814671815,
+      "team": "Missouri",
+      "score": 0.24960861056751468,
       "apRank": 19,
-      "coachesRank": 16,
-      "computer": 0.04
+      "coachesRank": 19,
+      "computer": 0.21
     },
     {
       "rank": 20,
-      "team": "Northwestern",
-      "score": 0.20524581724581722,
-      "apRank": 20,
-      "coachesRank": 18,
-      "computer": 0.08
+      "team": "Iowa",
+      "score": 0.23154076973255056,
+      "apRank": 21,
+      "coachesRank": 20,
+      "computer": 0.22
     },
     {
       "rank": 21,
-      "team": "Arizona",
-      "score": 0.20474903474903475,
-      "apRank": 22,
+      "team": "Boise State",
+      "score": 0.1971833007175473,
+      "apRank": 20,
       "coachesRank": 21,
-      "computer": 0.17
+      "computer": 0.09
     },
     {
       "rank": 22,
-      "team": "Boise State",
-      "score": 0.17173230373230375,
-      "apRank": 20,
-      "coachesRank": 22,
-      "computer": 0.06
+      "team": "Florida",
+      "score": 0.10123809523809524,
+      "apRank": 25,
+      "coachesRank": null,
+      "computer": 0.25
     },
     {
       "rank": 23,
-      "team": "Missouri",
-      "score": 0.14374774774774773,
-      "apRank": 23,
-      "coachesRank": 23,
-      "computer": 0.04
+      "team": "Arizona",
+      "score": 0.09778082191780822,
+      "apRank": 24,
+      "coachesRank": 22,
+      "computer": 0.11
     },
     {
       "rank": 24,
-      "team": "Oklahoma",
-      "score": 0.08666666666666667,
+      "team": "Oregon",
+      "score": 0.06999999999999999,
       "apRank": null,
       "coachesRank": null,
-      "computer": 0.26
+      "computer": 0.21
     },
     {
       "rank": 25,
-      "team": "Oregon",
-      "score": 0.08,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0.24
+      "team": "New Mexico",
+      "score": 0.055830397912589695,
+      "apRank": 22,
+      "coachesRank": 25,
+      "computer": 0
     },
     {
       "rank": 26,
-      "team": "Iowa",
-      "score": 0.06387387387387387,
-      "apRank": null,
-      "coachesRank": 24,
+      "team": "South Carolina",
+      "score": 0.054380952380952384,
+      "apRank": 23,
+      "coachesRank": null,
       "computer": 0.07
     },
     {
       "rank": 27,
-      "team": "Southern California",
-      "score": 0.047117117117117115,
+      "team": "Northwestern",
+      "score": 0.044063926940639264,
       "apRank": null,
-      "coachesRank": 25,
-      "computer": 0.07
+      "coachesRank": 23,
+      "computer": 0.05
     },
     {
       "rank": 28,
-      "team": "Wisconsin",
-      "score": 0.043809523809523805,
-      "apRank": 25,
-      "coachesRank": null,
-      "computer": 0.06
-    },
-    {
-      "rank": 29,
-      "team": "Oklahoma State",
-      "score": 0.03428571428571429,
-      "apRank": 24,
-      "coachesRank": null,
+      "team": "SMU",
+      "score": 0.02666666666666667,
+      "apRank": null,
+      "coachesRank": 24,
       "computer": 0
     },
     {
-      "rank": 30,
+      "rank": 29,
       "team": "UTSA",
-      "score": 0.03333333333333333,
+      "score": 0.02666666666666667,
       "apRank": null,
       "coachesRank": null,
-      "computer": 0.1
+      "computer": 0.08
+    },
+    {
+      "rank": 30,
+      "team": "Michigan",
+      "score": 0.0033333333333333335,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0.01
     },
     {
       "rank": 31,
       "team": "James Madison",
-      "score": 0.02,
+      "score": 0.0033333333333333335,
       "apRank": null,
       "coachesRank": null,
-      "computer": 0.06
+      "computer": 0.01
     },
     {
       "rank": 32,
-      "team": "Nebraska",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 33,
-      "team": "South Carolina",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 34,
-      "team": "Texas A&M",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 35,
       "team": "Louisville",
       "score": 0,
       "apRank": null,
@@ -302,8 +278,32 @@
       "computer": 0
     },
     {
+      "rank": 33,
+      "team": "Texas A&M",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 34,
+      "team": "Nebraska",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 35,
+      "team": "Wisconsin",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 36,
-      "team": "Auburn",
+      "team": "Oklahoma",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -311,54 +311,6 @@
     },
     {
       "rank": 37,
-      "team": "Michigan",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 38,
-      "team": "Mississippi State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 39,
-      "team": "Penn State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 40,
-      "team": "Illinois",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 41,
-      "team": "Florida State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 42,
-      "team": "Central Florida(UCF)",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 43,
       "team": "Baylor",
       "score": 0,
       "apRank": null,
@@ -366,7 +318,15 @@
       "computer": 0
     },
     {
-      "rank": 44,
+      "rank": 38,
+      "team": "Oklahoma State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 39,
       "team": "Washington",
       "score": 0,
       "apRank": null,
@@ -374,39 +334,23 @@
       "computer": 0
     },
     {
-      "rank": 45,
-      "team": "Pittsburgh",
+      "rank": 40,
+      "team": "Penn State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 46,
-      "team": "TCU",
+      "rank": 41,
+      "team": "Auburn",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 47,
-      "team": "North Carolina",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 48,
-      "team": "Virginia Tech",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 49,
+      "rank": 42,
       "team": "Duke",
       "score": 0,
       "apRank": null,
@@ -414,15 +358,31 @@
       "computer": 0
     },
     {
-      "rank": 50,
-      "team": "Cincinnati",
+      "rank": 43,
+      "team": "Mississippi State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 51,
+      "rank": 44,
+      "team": "North Carolina",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 45,
+      "team": "Illinois",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 46,
       "team": "Minnesota",
       "score": 0,
       "apRank": null,
@@ -430,7 +390,15 @@
       "computer": 0
     },
     {
-      "rank": 52,
+      "rank": 47,
+      "team": "Pittsburgh",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 48,
       "team": "Clemson",
       "score": 0,
       "apRank": null,
@@ -438,7 +406,31 @@
       "computer": 0
     },
     {
-      "rank": 53,
+      "rank": 49,
+      "team": "TCU",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 50,
+      "team": "Virginia Tech",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 51,
+      "team": "Florida State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 52,
       "team": "Purdue",
       "score": 0,
       "apRank": null,
@@ -446,8 +438,16 @@
       "computer": 0
     },
     {
+      "rank": 53,
+      "team": "Cincinnati",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 54,
-      "team": "Kansas State",
+      "team": "Central Florida(UCF)",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -455,38 +455,6 @@
     },
     {
       "rank": 55,
-      "team": "New Mexico",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 56,
-      "team": "Virginia",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 57,
-      "team": "Oregon State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 58,
-      "team": "West Virginia",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 59,
       "team": "Kansas",
       "score": 0,
       "apRank": null,
@@ -494,23 +462,23 @@
       "computer": 0
     },
     {
-      "rank": 60,
-      "team": "Arkansas",
+      "rank": 56,
+      "team": "Kansas State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 61,
-      "team": "Michigan State",
+      "rank": 57,
+      "team": "West Virginia",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 62,
+      "rank": 58,
       "team": "Arizona State",
       "score": 0,
       "apRank": null,
@@ -518,15 +486,7 @@
       "computer": 0
     },
     {
-      "rank": 63,
-      "team": "Syracuse",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 64,
+      "rank": 59,
       "team": "Iowa State",
       "score": 0,
       "apRank": null,
@@ -534,39 +494,15 @@
       "computer": 0
     },
     {
-      "rank": 65,
-      "team": "Vanderbilt",
+      "rank": 60,
+      "team": "Syracuse",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 66,
-      "team": "NC State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 67,
-      "team": "Boston College",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 68,
-      "team": "North Texas",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 69,
+      "rank": 61,
       "team": "Liberty",
       "score": 0,
       "apRank": null,
@@ -574,7 +510,47 @@
       "computer": 0
     },
     {
-      "rank": 70,
+      "rank": 62,
+      "team": "Oregon State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 63,
+      "team": "NC State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 64,
+      "team": "Michigan State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 65,
+      "team": "Arkansas",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 66,
+      "team": "Virginia",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 67,
       "team": "Texas State",
       "score": 0,
       "apRank": null,
@@ -582,23 +558,15 @@
       "computer": 0
     },
     {
-      "rank": 71,
-      "team": "Army West Point",
+      "rank": 68,
+      "team": "Vanderbilt",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 72,
-      "team": "North Dakota State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 73,
+      "rank": 69,
       "team": "Memphis",
       "score": 0,
       "apRank": null,
@@ -606,55 +574,7 @@
       "computer": 0
     },
     {
-      "rank": 74,
-      "team": "Maryland",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 75,
-      "team": "Colorado",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 76,
-      "team": "Georgia Tech",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 77,
-      "team": "Rutgers",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 78,
-      "team": "Louisiana Tech",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 79,
-      "team": "South Dakota State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 80,
+      "rank": 70,
       "team": "Fresno State",
       "score": 0,
       "apRank": null,
@@ -662,39 +582,39 @@
       "computer": 0
     },
     {
-      "rank": 81,
-      "team": "Youngstown State",
+      "rank": 71,
+      "team": "North Texas",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 82,
-      "team": "South Florida",
+      "rank": 72,
+      "team": "Colorado",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 83,
-      "team": "Western Michigan",
+      "rank": 73,
+      "team": "North Dakota State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 84,
-      "team": "California",
+      "rank": 74,
+      "team": "Louisiana Tech",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 85,
+      "rank": 75,
       "team": "Montana State",
       "score": 0,
       "apRank": null,
@@ -702,39 +622,71 @@
       "computer": 0
     },
     {
-      "rank": 86,
-      "team": "Toledo",
+      "rank": 76,
+      "team": "South Dakota State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 87,
-      "team": "UNLV",
+      "rank": 77,
+      "team": "Maryland",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 88,
-      "team": "Tulsa",
+      "rank": 78,
+      "team": "Rutgers",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 89,
-      "team": "Connecticut",
+      "rank": 79,
+      "team": "Boston College",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 90,
+      "rank": 80,
+      "team": "Army West Point",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 81,
+      "team": "South Florida",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 82,
+      "team": "Georgia Tech",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 83,
+      "team": "Youngstown State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 84,
       "team": "Louisiana-Lafayette",
       "score": 0,
       "apRank": null,
@@ -742,31 +694,31 @@
       "computer": 0
     },
     {
-      "rank": 91,
-      "team": "Tulane",
+      "rank": 85,
+      "team": "Toledo",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 92,
-      "team": "Stanford",
+      "rank": 86,
+      "team": "Western Michigan",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 93,
-      "team": "South Dakota",
+      "rank": 87,
+      "team": "Tulsa",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 94,
+      "rank": 88,
       "team": "Georgia Southern",
       "score": 0,
       "apRank": null,
@@ -774,15 +726,7 @@
       "computer": 0
     },
     {
-      "rank": 95,
-      "team": "Navy",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 96,
+      "rank": 89,
       "team": "Air Force",
       "score": 0,
       "apRank": null,
@@ -790,7 +734,47 @@
       "computer": 0
     },
     {
-      "rank": 97,
+      "rank": 90,
+      "team": "UNLV",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 91,
+      "team": "Navy",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 92,
+      "team": "California",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 93,
+      "team": "Connecticut",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 94,
+      "team": "Tulane",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 95,
       "team": "Stephen F. Austin",
       "score": 0,
       "apRank": null,
@@ -798,47 +782,7 @@
       "computer": 0
     },
     {
-      "rank": 98,
-      "team": "Ohio",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 99,
-      "team": "North Dakota",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 100,
-      "team": "Appalachian State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 101,
-      "team": "Washington State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 102,
-      "team": "Georgia State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 103,
+      "rank": 96,
       "team": "Utah State",
       "score": 0,
       "apRank": null,
@@ -846,31 +790,15 @@
       "computer": 0
     },
     {
-      "rank": 104,
-      "team": "East Carolina",
+      "rank": 97,
+      "team": "Stanford",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 105,
-      "team": "South Alabama",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 106,
-      "team": "Florida Atlantic",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 107,
+      "rank": 98,
       "team": "Jacksonville State",
       "score": 0,
       "apRank": null,
@@ -878,8 +806,80 @@
       "computer": 0
     },
     {
-      "rank": 108,
+      "rank": 99,
+      "team": "South Dakota",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 100,
+      "team": "North Dakota",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 101,
+      "team": "Ohio",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 102,
+      "team": "East Carolina",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 103,
+      "team": "Florida Atlantic",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 104,
       "team": "San Diego State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 105,
+      "team": "Washington State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 106,
+      "team": "Delaware",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 107,
+      "team": "Nevada",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 108,
+      "team": "Appalachian State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -903,7 +903,7 @@
     },
     {
       "rank": 111,
-      "team": "Tarleton State",
+      "team": "South Alabama",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -911,7 +911,7 @@
     },
     {
       "rank": 112,
-      "team": "Colorado State",
+      "team": "Coastal Carolina",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -927,7 +927,7 @@
     },
     {
       "rank": 114,
-      "team": "Nevada",
+      "team": "Georgia State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -935,46 +935,6 @@
     },
     {
       "rank": 115,
-      "team": "Illinois State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 116,
-      "team": "Delaware",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 117,
-      "team": "UAB",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 118,
-      "team": "Harvard",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 119,
-      "team": "Montana",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 120,
       "team": "Wyoming",
       "score": 0,
       "apRank": null,
@@ -982,95 +942,7 @@
       "computer": 0
     },
     {
-      "rank": 121,
-      "team": "Western Kentucky",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 122,
-      "team": "Temple",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 123,
-      "team": "Fla. International",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 124,
-      "team": "Coastal Carolina",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 125,
-      "team": "Central Michigan",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 126,
-      "team": "New Mexico State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 127,
-      "team": "Austin Peay",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 128,
-      "team": "Northern Arizona",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 129,
-      "team": "San Jose State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 130,
-      "team": "Marshall",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 131,
-      "team": "Buffalo",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 132,
+      "rank": 116,
       "team": "Troy",
       "score": 0,
       "apRank": null,
@@ -1078,39 +950,79 @@
       "computer": 0
     },
     {
-      "rank": 133,
-      "team": "Old Dominion",
+      "rank": 117,
+      "team": "Illinois State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 134,
-      "team": "Eastern Michigan",
+      "rank": 118,
+      "team": "Colorado State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 135,
-      "team": "Rice",
+      "rank": 119,
+      "team": "Marshall",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 136,
-      "team": "Mercer",
+      "rank": 120,
+      "team": "Montana",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 137,
+      "rank": 121,
+      "team": "San Jose State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 122,
+      "team": "UAB",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 123,
+      "team": "Tarleton State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 124,
+      "team": "Temple",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 125,
+      "team": "Northern Arizona",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 126,
       "team": "Kennesaw State",
       "score": 0,
       "apRank": null,
@@ -1118,15 +1030,39 @@
       "computer": 0
     },
     {
-      "rank": 138,
-      "team": "Tennessee Tech",
+      "rank": 127,
+      "team": "Central Michigan",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 139,
+      "rank": 128,
+      "team": "Harvard",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 129,
+      "team": "Western Kentucky",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 130,
+      "team": "Buffalo",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 131,
       "team": "Northern Iowa",
       "score": 0,
       "apRank": null,
@@ -1134,71 +1070,15 @@
       "computer": 0
     },
     {
-      "rank": 140,
-      "team": "Middle Tennessee",
+      "rank": 132,
+      "team": "Austin Peay",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 141,
-      "team": "Chattanooga",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 142,
-      "team": "East Tennessee State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 143,
-      "team": "Idaho State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 144,
-      "team": "Southern Miss",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 145,
-      "team": "Incarnate Word",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 146,
-      "team": "Southern Illinois",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 147,
-      "team": "Bowling Green",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 148,
+      "rank": 133,
       "team": "Abilene Christian",
       "score": 0,
       "apRank": null,
@@ -1206,8 +1086,128 @@
       "computer": 0
     },
     {
+      "rank": 134,
+      "team": "Tennessee Tech",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 135,
+      "team": "Fla. International",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 136,
+      "team": "Eastern Michigan",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 137,
+      "team": "Incarnate Word",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 138,
+      "team": "Southern Miss",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 139,
+      "team": "Rice",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 140,
+      "team": "Lamar",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 141,
+      "team": "Mercer",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 142,
+      "team": "Missouri State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 143,
+      "team": "Idaho",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 144,
+      "team": "Weber State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 145,
+      "team": "Old Dominion",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 146,
+      "team": "New Mexico State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 147,
+      "team": "Southern Illinois",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 148,
+      "team": "Idaho State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 149,
-      "team": "Lehigh",
+      "team": "Middle Tennessee",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1215,7 +1215,7 @@
     },
     {
       "rank": 150,
-      "team": "Idaho",
+      "team": "Bowling Green",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1231,7 +1231,7 @@
     },
     {
       "rank": 152,
-      "team": "Missouri State",
+      "team": "East Tennessee State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1239,7 +1239,7 @@
     },
     {
       "rank": 153,
-      "team": "Weber State",
+      "team": "Chattanooga",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1247,7 +1247,7 @@
     },
     {
       "rank": 154,
-      "team": "Lamar",
+      "team": "Ball State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1255,7 +1255,7 @@
     },
     {
       "rank": 155,
-      "team": "Sam Houston State",
+      "team": "Albany-NY",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1271,38 +1271,6 @@
     },
     {
       "rank": 157,
-      "team": "Kent State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 158,
-      "team": "Ball State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 159,
-      "team": "Campbell",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 160,
-      "team": "UC Davis",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 161,
       "team": "Monmouth-NJ",
       "score": 0,
       "apRank": null,
@@ -1310,199 +1278,23 @@
       "computer": 0
     },
     {
-      "rank": 162,
-      "team": "Albany-NY",
+      "rank": 158,
+      "team": "Campbell",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 163,
-      "team": "SE Missouri State",
+      "rank": 159,
+      "team": "Lehigh",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 164,
-      "team": "Alabama A&M",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 165,
-      "team": "Western Illinois",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 166,
-      "team": "Western Carolina",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 167,
-      "team": "LouisianaMonroe(ULM)",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 168,
-      "team": "North Alabama",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 169,
-      "team": "Princeton",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 170,
-      "team": "Akron",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 171,
-      "team": "SE Louisiana",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 172,
-      "team": "Yale",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 173,
-      "team": "Cornell",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 174,
-      "team": "Charlotte",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 175,
-      "team": "Villanova",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 176,
-      "team": "UTEP",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 177,
-      "team": "Wofford",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 178,
-      "team": "Indiana State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 179,
-      "team": "Brown",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 180,
-      "team": "Dartmouth",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 181,
-      "team": "Eastern Washington",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 182,
-      "team": "Northern Illinois",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 183,
-      "team": "Colgate",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 184,
-      "team": "Rhode Island",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 185,
-      "team": "SC State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 186,
+      "rank": 160,
       "team": "Gardner-Webb",
       "score": 0,
       "apRank": null,
@@ -1510,103 +1302,191 @@
       "computer": 0
     },
     {
-      "rank": 187,
-      "team": "UTRGV",
+      "rank": 161,
+      "team": "Sam Houston State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 188,
-      "team": "Charleston Southern",
+      "rank": 162,
+      "team": "North Alabama",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 189,
-      "team": "Stony Brook",
+      "rank": 163,
+      "team": "Western Illinois",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 190,
-      "team": "Central Arkansas",
+      "rank": 164,
+      "team": "Charlotte",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 191,
-      "team": "Tennessee-Martin",
+      "rank": 165,
+      "team": "UC Davis",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 192,
-      "team": "Holy Cross",
+      "rank": 166,
+      "team": "SC State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 193,
-      "team": "Richmond",
+      "rank": 167,
+      "team": "Dartmouth",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 194,
-      "team": "Furman",
+      "rank": 168,
+      "team": "Yale",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 195,
-      "team": "Samford",
+      "rank": 169,
+      "team": "Colgate",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 196,
-      "team": "Jackson State",
+      "rank": 170,
+      "team": "Villanova",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 197,
-      "team": "St. Thomas-Mn.",
+      "rank": 171,
+      "team": "Western Carolina",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 198,
-      "team": "Pennsylvania",
+      "rank": 172,
+      "team": "Kent State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 199,
+      "rank": 173,
+      "team": "Northern Illinois",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 174,
+      "team": "SE Missouri State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 175,
+      "team": "Princeton",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 176,
+      "team": "Brown",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 177,
+      "team": "LouisianaMonroe(ULM)",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 178,
+      "team": "Cornell",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 179,
+      "team": "UTEP",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 180,
+      "team": "Akron",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 181,
+      "team": "Alabama A&M",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 182,
+      "team": "Eastern Washington",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 183,
+      "team": "Wofford",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 184,
       "team": "Central Connecticut",
       "score": 0,
       "apRank": null,
@@ -1614,7 +1494,111 @@
       "computer": 0
     },
     {
-      "rank": 200,
+      "rank": 185,
+      "team": "SE Louisiana",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 186,
+      "team": "Indiana State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 187,
+      "team": "Charleston Southern",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 188,
+      "team": "Holy Cross",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 189,
+      "team": "Lindenwood",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 190,
+      "team": "Rhode Island",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 191,
+      "team": "Ark.-Pine Bluff",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 192,
+      "team": "Eastern Illinois",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 193,
+      "team": "Stony Brook",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 194,
+      "team": "Samford",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 195,
+      "team": "Furman",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 196,
+      "team": "West Florida",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 197,
+      "team": "Central Arkansas",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 198,
       "team": "Northern Colorado",
       "score": 0,
       "apRank": null,
@@ -1622,8 +1606,24 @@
       "computer": 0
     },
     {
+      "rank": 199,
+      "team": "UTRGV",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 200,
+      "team": "Sacramento State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 201,
-      "team": "West Florida",
+      "team": "St. Thomas-Mn.",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1639,14 +1639,6 @@
     },
     {
       "rank": 203,
-      "team": "Lindenwood",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 204,
       "team": "Alabama State",
       "score": 0,
       "apRank": null,
@@ -1654,119 +1646,15 @@
       "computer": 0
     },
     {
+      "rank": 204,
+      "team": "Jackson State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 205,
-      "team": "Cal Poly-SLO",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 206,
-      "team": "Elon",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 207,
-      "team": "Eastern Kentucky",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 208,
-      "team": "Portland State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 209,
-      "team": "Towson",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 210,
-      "team": "Howard",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 211,
-      "team": "Dayton",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 212,
-      "team": "Eastern Illinois",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 213,
-      "team": "The Citadel",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 214,
-      "team": "Bryant",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 215,
-      "team": "Houston Christian",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 216,
-      "team": "McNeese State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 217,
-      "team": "Lafayette",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 218,
-      "team": "Columbia",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 219,
       "team": "Duquesne",
       "score": 0,
       "apRank": null,
@@ -1774,39 +1662,15 @@
       "computer": 0
     },
     {
-      "rank": 220,
-      "team": "Ark.-Pine Bluff",
+      "rank": 206,
+      "team": "Eastern Kentucky",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 221,
-      "team": "Sacramento State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 222,
-      "team": "Morgan State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 223,
-      "team": "Prairie View A&M",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 224,
+      "rank": 207,
       "team": "NC Central",
       "score": 0,
       "apRank": null,
@@ -1814,7 +1678,111 @@
       "computer": 0
     },
     {
-      "rank": 225,
+      "rank": 208,
+      "team": "Richmond",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 209,
+      "team": "The Citadel",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 210,
+      "team": "Towson",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 211,
+      "team": "Pennsylvania",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 212,
+      "team": "Tennessee-Martin",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 213,
+      "team": "Houston Christian",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 214,
+      "team": "Elon",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 215,
+      "team": "Prairie View A&M",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 216,
+      "team": "Bryant",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 217,
+      "team": "McNeese State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 218,
+      "team": "Cal Poly-SLO",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 219,
+      "team": "Portland State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 220,
+      "team": "Dayton",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 221,
       "team": "Utah Tech",
       "score": 0,
       "apRank": null,
@@ -1822,7 +1790,7 @@
       "computer": 0
     },
     {
-      "rank": 226,
+      "rank": 222,
       "team": "Stonehill College",
       "score": 0,
       "apRank": null,
@@ -1830,8 +1798,40 @@
       "computer": 0
     },
     {
+      "rank": 223,
+      "team": "Alcorn State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 224,
+      "team": "Sacred Heart",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 225,
+      "team": "Columbia",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 226,
+      "team": "Lafayette",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 227,
-      "team": "Merrimack",
+      "team": "East Texas A&M",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1839,7 +1839,7 @@
     },
     {
       "rank": 228,
-      "team": "New Hampshire",
+      "team": "LIU Post",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1847,7 +1847,7 @@
     },
     {
       "rank": 229,
-      "team": "Tennessee State",
+      "team": "Southern U.",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1855,7 +1855,7 @@
     },
     {
       "rank": 230,
-      "team": "Norfolk State",
+      "team": "New Hampshire",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1863,7 +1863,7 @@
     },
     {
       "rank": 231,
-      "team": "Robert Morris",
+      "team": "Merrimack",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -1879,78 +1879,6 @@
     },
     {
       "rank": 233,
-      "team": "Bethune-Cookman",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 234,
-      "team": "LIU Post",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 235,
-      "team": "Grambling State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 236,
-      "team": "Sacred Heart",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 237,
-      "team": "William & Mary",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 238,
-      "team": "San Diego",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 239,
-      "team": "West Georgia",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 240,
-      "team": "East Texas A&M",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 241,
-      "team": "Florida A&M",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 242,
       "team": "Murray State",
       "score": 0,
       "apRank": null,
@@ -1958,39 +1886,15 @@
       "computer": 0
     },
     {
-      "rank": 243,
-      "team": "New Haven",
+      "rank": 234,
+      "team": "Howard",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 244,
-      "team": "NC A&T",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 245,
-      "team": "Alcorn State",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 246,
-      "team": "Fordham",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 247,
+      "rank": 235,
       "team": "Delaware State",
       "score": 0,
       "apRank": null,
@@ -1998,7 +1902,55 @@
       "computer": 0
     },
     {
-      "rank": 248,
+      "rank": 236,
+      "team": "NC A&T",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 237,
+      "team": "Norfolk State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 238,
+      "team": "Grambling State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 239,
+      "team": "Morgan State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 240,
+      "team": "San Diego",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 241,
+      "team": "William & Mary",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 242,
       "team": "Maine",
       "score": 0,
       "apRank": null,
@@ -2006,7 +1958,39 @@
       "computer": 0
     },
     {
-      "rank": 249,
+      "rank": 243,
+      "team": "Tennessee State",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 244,
+      "team": "Bethune-Cookman",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 245,
+      "team": "Fordham",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 246,
+      "team": "Robert Morris",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 247,
       "team": "Drake",
       "score": 0,
       "apRank": null,
@@ -2014,15 +1998,7 @@
       "computer": 0
     },
     {
-      "rank": 250,
-      "team": "Southern U.",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 251,
+      "rank": 248,
       "team": "Marist",
       "score": 0,
       "apRank": null,
@@ -2030,8 +2006,32 @@
       "computer": 0
     },
     {
-      "rank": 252,
+      "rank": 249,
+      "team": "New Haven",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 250,
       "team": "Valparaiso",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 251,
+      "team": "West Georgia",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
+      "rank": 252,
+      "team": "Florida A&M",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2047,14 +2047,6 @@
     },
     {
       "rank": 254,
-      "team": "Mercyhurst",
-      "score": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computer": 0
-    },
-    {
-      "rank": 255,
       "team": "Bucknell",
       "score": 0,
       "apRank": null,
@@ -2062,15 +2054,15 @@
       "computer": 0
     },
     {
-      "rank": 256,
-      "team": "Presbyterian College",
+      "rank": 255,
+      "team": "Mercyhurst",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
       "computer": 0
     },
     {
-      "rank": 257,
+      "rank": 256,
       "team": "Texas Southern",
       "score": 0,
       "apRank": null,
@@ -2078,8 +2070,16 @@
       "computer": 0
     },
     {
+      "rank": 257,
+      "team": "Presbyterian College",
+      "score": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computer": 0
+    },
+    {
       "rank": 258,
-      "team": "Chicago State",
+      "team": "Wagner",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2087,7 +2087,7 @@
     },
     {
       "rank": 259,
-      "team": "Hampton",
+      "team": "Chicago State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2103,7 +2103,7 @@
     },
     {
       "rank": 261,
-      "team": "Wagner",
+      "team": "Hampton",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2111,7 +2111,7 @@
     },
     {
       "rank": 262,
-      "team": "Miss. Valley State",
+      "team": "VMI",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2119,7 +2119,7 @@
     },
     {
       "rank": 263,
-      "team": "VMI",
+      "team": "Miss. Valley State",
       "score": 0,
       "apRank": null,
       "coachesRank": null,
@@ -2151,66 +2151,49 @@
     }
   ],
   "teams": {
-    "Ohio State": {
-      "score": 0.9585688545688545,
-      "ap": 0.9605714285714285,
-      "coaches": 0.9551351351351351,
-      "computer": 0.96,
-      "apRank": 2,
-      "coachesRank": 2,
-      "computerRanks": {
-        "sagarin": 1,
-        "colley": 6,
-        "billingsley": 1,
-        "anderson": 3,
-        "massey": 1,
-        "wolfe": 3
-      },
-      "rank": 2
-    },
     "Notre Dame": {
-      "score": 0.7860025740025739,
-      "ap": 0.8331428571428572,
-      "coaches": 0.7848648648648648,
-      "computer": 0.74,
-      "apRank": 5,
+      "score": 0.7980834964122635,
+      "ap": 0.8434285714285714,
+      "coaches": 0.8208219178082192,
+      "computer": 0.73,
+      "apRank": 4,
       "coachesRank": 6,
       "computerRanks": {
-        "sagarin": 2,
+        "sagarin": 1,
         "colley": 10,
-        "billingsley": 8,
+        "billingsley": 9,
         "anderson": 10,
         "massey": 6,
         "wolfe": 6
       },
-      "rank": 5
+      "rank": 6
     },
-    "Miami-Florida": {
-      "score": 0.9751608751608751,
-      "ap": 0.9914285714285714,
-      "coaches": 0.994054054054054,
-      "computer": 0.94,
-      "apRank": 1,
-      "coachesRank": 1,
+    "Georgia": {
+      "score": 0.9178773646444879,
+      "ap": 0.9417142857142857,
+      "coaches": 0.941917808219178,
+      "computer": 0.87,
+      "apRank": 2,
+      "coachesRank": 2,
       "computerRanks": {
-        "sagarin": 3,
-        "colley": 1,
-        "billingsley": 3,
-        "anderson": 8,
-        "massey": 3,
-        "wolfe": 1
+        "sagarin": 2,
+        "colley": 11,
+        "billingsley": 1,
+        "anderson": 7,
+        "massey": 1,
+        "wolfe": 7
       },
-      "rank": 1
+      "rank": 2
     },
     "LSU": {
-      "score": 0.506118404118404,
-      "ap": 0.4645714285714286,
-      "coaches": 0.4837837837837838,
+      "score": 0.5068741030658839,
+      "ap": 0.46514285714285714,
+      "coaches": 0.48547945205479454,
       "computer": 0.57,
       "apRank": 15,
-      "coachesRank": 13,
+      "coachesRank": 15,
       "computerRanks": {
-        "sagarin": 4,
+        "sagarin": 3,
         "colley": 14,
         "billingsley": 7,
         "massey": 12,
@@ -2218,293 +2201,346 @@
       },
       "rank": 13
     },
-    "Georgia": {
-      "score": 0.8410527670527671,
-      "ap": 0.8634285714285714,
-      "coaches": 0.8897297297297297,
-      "computer": 0.77,
-      "apRank": 3,
-      "coachesRank": 3,
+    "Miami-Florida": {
+      "score": 0.9768166992824527,
+      "ap": 0.9942857142857143,
+      "coaches": 0.9961643835616438,
+      "computer": 0.94,
+      "apRank": 1,
+      "coachesRank": 1,
       "computerRanks": {
-        "sagarin": 5,
-        "colley": 11,
+        "sagarin": 4,
+        "colley": 1,
         "billingsley": 2,
-        "anderson": 7,
-        "massey": 4,
-        "wolfe": 15
+        "anderson": 8,
+        "massey": 3,
+        "wolfe": 1
       },
-      "rank": 4
+      "rank": 1
     },
-    "Alabama": {
-      "score": 0.6192329472329473,
-      "ap": 0.6074285714285714,
-      "coaches": 0.5902702702702702,
-      "computer": 0.66,
-      "apRank": 10,
+    "Ohio State": {
+      "score": 0.6709054142204828,
+      "ap": 0.5994285714285714,
+      "coaches": 0.6032876712328767,
+      "computer": 0.81,
+      "apRank": 11,
       "coachesRank": 10,
       "computerRanks": {
-        "sagarin": 6,
-        "colley": 8,
+        "sagarin": 5,
+        "colley": 6,
         "billingsley": 13,
-        "anderson": 13,
-        "massey": 7,
-        "wolfe": 10
+        "anderson": 3,
+        "massey": 4,
+        "wolfe": 8
       },
-      "rank": 10
-    },
-    "Indiana": {
-      "score": 0.8422290862290862,
-      "ap": 0.8337142857142857,
-      "coaches": 0.8529729729729729,
-      "computer": 0.84,
-      "apRank": 4,
-      "coachesRank": 4,
-      "computerRanks": {
-        "sagarin": 7,
-        "colley": 7,
-        "billingsley": 4,
-        "anderson": 1,
-        "massey": 2,
-        "wolfe": 7
-      },
-      "rank": 3
+      "rank": 9
     },
     "Texas": {
-      "score": 0.5878738738738739,
-      "ap": 0.552,
-      "coaches": 0.5416216216216216,
-      "computer": 0.67,
-      "apRank": 11,
+      "score": 0.624392694063927,
+      "ap": 0.604,
+      "coaches": 0.5791780821917808,
+      "computer": 0.69,
+      "apRank": 10,
       "coachesRank": 11,
       "computerRanks": {
-        "sagarin": 8,
+        "sagarin": 6,
         "colley": 5,
-        "billingsley": 10,
+        "billingsley": 8,
         "anderson": 17,
         "massey": 8,
-        "wolfe": 11
+        "wolfe": 13
       },
       "rank": 11
     },
+    "Alabama": {
+      "score": 0.634099151989563,
+      "ap": 0.6325714285714286,
+      "coaches": 0.6197260273972602,
+      "computer": 0.65,
+      "apRank": 9,
+      "coachesRank": 9,
+      "computerRanks": {
+        "sagarin": 7,
+        "colley": 8,
+        "billingsley": 14,
+        "anderson": 13,
+        "massey": 7,
+        "wolfe": 11
+      },
+      "rank": 10
+    },
     "Mississippi": {
-      "score": 0.5287876447876448,
-      "ap": 0.4977142857142857,
-      "coaches": 0.5086486486486487,
-      "computer": 0.58,
+      "score": 0.5737155903457274,
+      "ap": 0.5445714285714286,
+      "coaches": 0.5665753424657535,
+      "computer": 0.61,
       "apRank": 12,
       "coachesRank": 12,
       "computerRanks": {
-        "sagarin": 9,
+        "sagarin": 8,
         "colley": 17,
-        "billingsley": 11,
+        "billingsley": 10,
         "anderson": 4,
         "massey": 9,
-        "wolfe": 18
+        "wolfe": 16
       },
       "rank": 12
     },
-    "Oregon": {
-      "score": 0.08,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0.24,
-      "apRank": null,
-      "coachesRank": null,
+    "Indiana": {
+      "score": 0.8337847358121331,
+      "ap": 0.8262857142857143,
+      "coaches": 0.8750684931506849,
+      "computer": 0.8,
+      "apRank": 6,
+      "coachesRank": 3,
+      "computerRanks": {
+        "sagarin": 9,
+        "colley": 7,
+        "billingsley": 3,
+        "anderson": 1,
+        "massey": 5,
+        "wolfe": 9
+      },
+      "rank": 4
+    },
+    "Utah": {
+      "score": 0.8604109589041097,
+      "ap": 0.88,
+      "coaches": 0.8712328767123287,
+      "computer": 0.83,
+      "apRank": 3,
+      "coachesRank": 4,
       "computerRanks": {
         "sagarin": 10,
-        "anderson": 2,
-        "massey": 18
+        "colley": 4,
+        "billingsley": 5,
+        "anderson": 11,
+        "massey": 2,
+        "wolfe": 2
       },
-      "rank": 25
+      "rank": 3
     },
     "Tennessee": {
-      "score": 0.3298790218790219,
-      "ap": 0.3782857142857143,
-      "coaches": 0.35135135135135137,
-      "computer": 0.26,
+      "score": 0.35594781474233533,
+      "ap": 0.41085714285714287,
+      "coaches": 0.41698630136986303,
+      "computer": 0.24,
       "apRank": 16,
-      "coachesRank": 17,
+      "coachesRank": 16,
       "computerRanks": {
         "sagarin": 11,
         "colley": 24,
-        "billingsley": 15,
-        "massey": 14,
+        "billingsley": 16,
+        "massey": 15,
         "wolfe": 25
       },
       "rank": 16
     },
-    "UCLA": {
-      "score": 0.7768262548262549,
-      "ap": 0.7988571428571428,
-      "coaches": 0.7816216216216216,
-      "computer": 0.75,
-      "apRank": 7,
-      "coachesRank": 7,
+    "Oregon": {
+      "score": 0.06999999999999999,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0.21,
+      "apRank": null,
+      "coachesRank": null,
       "computerRanks": {
         "sagarin": 12,
-        "colley": 2,
-        "billingsley": 5,
-        "massey": 10,
-        "wolfe": 2
+        "anderson": 2,
+        "massey": 19
       },
-      "rank": 6
+      "rank": 24
     },
-    "Florida": {
-      "score": 0.3043732303732304,
-      "ap": 0.3177142857142857,
-      "coaches": 0.2254054054054054,
-      "computer": 0.37,
-      "apRank": 17,
-      "coachesRank": 20,
-      "computerRanks": {
-        "sagarin": 13,
-        "colley": 13,
-        "billingsley": 14,
-        "massey": 21,
-        "wolfe": 19
-      },
-      "rank": 17
-    },
-    "Utah": {
-      "score": 0.7653590733590733,
-      "ap": 0.8074285714285714,
-      "coaches": 0.7886486486486487,
-      "computer": 0.7,
-      "apRank": 6,
+    "UCLA": {
+      "score": 0.8013933463796477,
+      "ap": 0.8417142857142857,
+      "coaches": 0.8224657534246576,
+      "computer": 0.74,
+      "apRank": 5,
       "coachesRank": 5,
       "computerRanks": {
-        "sagarin": 14,
-        "colley": 4,
-        "billingsley": 9,
-        "anderson": 11,
-        "massey": 5,
-        "wolfe": 9
+        "sagarin": 13,
+        "colley": 2,
+        "billingsley": 4,
+        "massey": 10,
+        "wolfe": 3
       },
-      "rank": 7
+      "rank": 5
     },
-    "Kentucky": {
-      "score": 0.6898584298584299,
-      "ap": 0.6771428571428572,
-      "coaches": 0.7124324324324325,
-      "computer": 0.68,
-      "apRank": 9,
-      "coachesRank": 8,
+    "Wake Forest": {
+      "score": 0.47488323548597516,
+      "ap": 0.5131428571428571,
+      "coaches": 0.4915068493150685,
+      "computer": 0.42,
+      "apRank": 14,
+      "coachesRank": 14,
+      "computerRanks": {
+        "sagarin": 14,
+        "colley": 12,
+        "billingsley": 18,
+        "massey": 18,
+        "wolfe": 5
+      },
+      "rank": 15
+    },
+    "Iowa": {
+      "score": 0.23154076973255056,
+      "ap": 0.22914285714285715,
+      "coaches": 0.24547945205479452,
+      "computer": 0.22,
+      "apRank": 21,
+      "coachesRank": 20,
       "computerRanks": {
         "sagarin": 15,
+        "billingsley": 20,
+        "anderson": 23,
+        "massey": 17,
+        "wolfe": 22
+      },
+      "rank": 20
+    },
+    "Missouri": {
+      "score": 0.24960861056751468,
+      "ap": 0.2714285714285714,
+      "coaches": 0.2673972602739726,
+      "computer": 0.21,
+      "apRank": 19,
+      "coachesRank": 19,
+      "computerRanks": {
+        "sagarin": 16,
+        "billingsley": 15,
+        "massey": 20,
+        "wolfe": 21
+      },
+      "rank": 19
+    },
+    "South Carolina": {
+      "score": 0.054380952380952384,
+      "ap": 0.09314285714285714,
+      "coaches": 0,
+      "computer": 0.07,
+      "apRank": 23,
+      "coachesRank": null,
+      "computerRanks": {
+        "sagarin": 17,
+        "billingsley": 21,
+        "wolfe": 24
+      },
+      "rank": 26
+    },
+    "Kentucky": {
+      "score": 0.7008127853881279,
+      "ap": 0.716,
+      "coaches": 0.7364383561643836,
+      "computer": 0.65,
+      "apRank": 8,
+      "coachesRank": 7,
+      "computerRanks": {
+        "sagarin": 18,
         "colley": 3,
         "billingsley": 6,
         "massey": 11,
         "wolfe": 4
       },
-      "rank": 8
-    },
-    "Nebraska": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {
-        "sagarin": 16
-      },
-      "rank": 32
-    },
-    "Oklahoma": {
-      "score": 0.08666666666666667,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0.26,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {
-        "sagarin": 17,
-        "billingsley": 20,
-        "anderson": 12,
-        "massey": 19,
-        "wolfe": 22
-      },
-      "rank": 24
-    },
-    "Wisconsin": {
-      "score": 0.043809523809523805,
-      "ap": 0.07142857142857142,
-      "coaches": 0,
-      "computer": 0.06,
-      "apRank": 25,
-      "coachesRank": null,
-      "computerRanks": {
-        "sagarin": 18,
-        "billingsley": 23,
-        "massey": 25,
-        "wolfe": 24
-      },
-      "rank": 28
+      "rank": 7
     },
     "Texas Tech": {
-      "score": 0.45634234234234233,
-      "ap": 0.492,
-      "coaches": 0.46702702702702703,
-      "computer": 0.41,
+      "score": 0.5030410958904109,
+      "ap": 0.532,
+      "coaches": 0.5271232876712328,
+      "computer": 0.45,
       "apRank": 13,
-      "coachesRank": 14,
+      "coachesRank": 13,
       "computerRanks": {
         "sagarin": 19,
         "colley": 18,
-        "billingsley": 18,
+        "billingsley": 17,
         "anderson": 5,
-        "massey": 15,
-        "wolfe": 12
+        "massey": 14,
+        "wolfe": 10
       },
       "rank": 14
     },
-    "BYU": {
-      "score": 0.6831917631917631,
-      "ap": 0.7571428571428571,
-      "coaches": 0.6724324324324324,
-      "computer": 0.62,
-      "apRank": 8,
-      "coachesRank": 9,
+    "Florida": {
+      "score": 0.10123809523809524,
+      "ap": 0.053714285714285714,
+      "coaches": 0,
+      "computer": 0.25,
+      "apRank": 25,
+      "coachesRank": null,
       "computerRanks": {
         "sagarin": 20,
-        "colley": 9,
-        "billingsley": 12,
-        "anderson": 6,
-        "massey": 13,
-        "wolfe": 8
+        "colley": 13,
+        "billingsley": 19,
+        "massey": 21,
+        "wolfe": 19
       },
-      "rank": 9
+      "rank": 22
     },
-    "Wake Forest": {
-      "score": 0.3948597168597168,
-      "ap": 0.4697142857142857,
-      "coaches": 0.40486486486486484,
-      "computer": 0.31,
-      "apRank": 14,
-      "coachesRank": 15,
+    "Southern California": {
+      "score": 0.3067762557077625,
+      "ap": 0.308,
+      "coaches": 0.31232876712328766,
+      "computer": 0.3,
+      "apRank": 18,
+      "coachesRank": 17,
       "computerRanks": {
         "sagarin": 21,
-        "colley": 12,
-        "billingsley": 17,
-        "massey": 23,
-        "wolfe": 5
+        "colley": 25,
+        "billingsley": 12,
+        "anderson": 14,
+        "massey": 16,
+        "wolfe": 23
       },
-      "rank": 15
+      "rank": 17
     },
-    "Missouri": {
-      "score": 0.14374774774774773,
-      "ap": 0.188,
-      "coaches": 0.20324324324324325,
-      "computer": 0.04,
-      "apRank": 23,
-      "coachesRank": 23,
+    "Houston": {
+      "score": 0.2739334637964775,
+      "ap": 0.33714285714285713,
+      "coaches": 0.3046575342465753,
+      "computer": 0.18,
+      "apRank": 17,
+      "coachesRank": 18,
       "computerRanks": {
         "sagarin": 22,
-        "billingsley": 16
+        "colley": 15,
+        "billingsley": 24,
+        "massey": 23,
+        "wolfe": 17
       },
-      "rank": 23
+      "rank": 18
     },
-    "South Carolina": {
+    "Northwestern": {
+      "score": 0.044063926940639264,
+      "ap": 0,
+      "coaches": 0.0821917808219178,
+      "computer": 0.05,
+      "apRank": null,
+      "coachesRank": 23,
+      "computerRanks": {
+        "sagarin": 23,
+        "colley": 23,
+        "massey": 24
+      },
+      "rank": 27
+    },
+    "BYU": {
+      "score": 0.6887579908675798,
+      "ap": 0.776,
+      "coaches": 0.7002739726027397,
+      "computer": 0.59,
+      "apRank": 7,
+      "coachesRank": 8,
+      "computerRanks": {
+        "sagarin": 24,
+        "colley": 9,
+        "billingsley": 11,
+        "anderson": 6,
+        "massey": 13,
+        "wolfe": 12
+      },
+      "rank": 8
+    },
+    "Louisville": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2512,69 +2548,24 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {
-        "sagarin": 23
+        "sagarin": 25
       },
-      "rank": 33
-    },
-    "Northwestern": {
-      "score": 0.20524581724581722,
-      "ap": 0.24114285714285713,
-      "coaches": 0.2945945945945946,
-      "computer": 0.08,
-      "apRank": 20,
-      "coachesRank": 18,
-      "computerRanks": {
-        "sagarin": 24,
-        "colley": 23,
-        "massey": 22,
-        "wolfe": 23
-      },
-      "rank": 20
-    },
-    "Houston": {
-      "score": 0.22523552123552126,
-      "ap": 0.2805714285714286,
-      "coaches": 0.23513513513513515,
-      "computer": 0.16,
-      "apRank": 18,
-      "coachesRank": 19,
-      "computerRanks": {
-        "sagarin": 25,
-        "colley": 15,
-        "billingsley": 24,
-        "massey": 24,
-        "wolfe": 13
-      },
-      "rank": 18
+      "rank": 32
     },
     "Arizona": {
-      "score": 0.20474903474903475,
-      "ap": 0.22857142857142856,
-      "coaches": 0.21567567567567567,
-      "computer": 0.17,
-      "apRank": 22,
-      "coachesRank": 21,
+      "score": 0.09778082191780822,
+      "ap": 0.088,
+      "coaches": 0.09534246575342466,
+      "computer": 0.11,
+      "apRank": 24,
+      "coachesRank": 22,
       "computerRanks": {
         "colley": 19,
         "billingsley": 25,
-        "massey": 17,
-        "wolfe": 17
+        "massey": 22,
+        "wolfe": 20
       },
-      "rank": 21
-    },
-    "Iowa": {
-      "score": 0.06387387387387387,
-      "ap": 0,
-      "coaches": 0.12162162162162163,
-      "computer": 0.07,
-      "apRank": null,
-      "coachesRank": 24,
-      "computerRanks": {
-        "billingsley": 22,
-        "anderson": 23,
-        "massey": 16
-      },
-      "rank": 26
+      "rank": 23
     },
     "Texas A&M": {
       "score": 0,
@@ -2586,9 +2577,19 @@
       "computerRanks": {
         "anderson": 9
       },
+      "rank": 33
+    },
+    "Nebraska": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
       "rank": 34
     },
-    "Louisville": {
+    "Wisconsin": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2598,66 +2599,29 @@
       "computerRanks": {},
       "rank": 35
     },
-    "Oklahoma State": {
-      "score": 0.03428571428571429,
-      "ap": 0.10285714285714286,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": 24,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 29
-    },
-    "Southern California": {
-      "score": 0.047117117117117115,
-      "ap": 0,
-      "coaches": 0.07135135135135136,
-      "computer": 0.07,
-      "apRank": null,
-      "coachesRank": 25,
-      "computerRanks": {
-        "colley": 25,
-        "anderson": 14,
-        "massey": 20
-      },
-      "rank": 27
-    },
-    "Auburn": {
+    "Oklahoma": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
       "computer": 0,
       "apRank": null,
       "coachesRank": null,
-      "computerRanks": {},
+      "computerRanks": {
+        "anderson": 12
+      },
       "rank": 36
     },
-    "SMU": {
-      "score": 0.2214671814671815,
-      "ap": 0.25142857142857145,
-      "coaches": 0.372972972972973,
-      "computer": 0.04,
-      "apRank": 19,
-      "coachesRank": 16,
-      "computerRanks": {
-        "colley": 22,
-        "billingsley": 21
-      },
-      "rank": 19
-    },
-    "Michigan": {
+    "Baylor": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
       "computer": 0,
       "apRank": null,
       "coachesRank": null,
-      "computerRanks": {
-        "anderson": 19
-      },
+      "computerRanks": {},
       "rank": 37
     },
-    "Mississippi State": {
+    "Oklahoma State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2667,7 +2631,7 @@
       "computerRanks": {},
       "rank": 38
     },
-    "Penn State": {
+    "Washington": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2676,6 +2640,95 @@
       "coachesRank": null,
       "computerRanks": {},
       "rank": 39
+    },
+    "Penn State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 40
+    },
+    "Auburn": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 41
+    },
+    "Michigan": {
+      "score": 0.0033333333333333335,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0.01,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {
+        "anderson": 19,
+        "massey": 25
+      },
+      "rank": 30
+    },
+    "SMU": {
+      "score": 0.02666666666666667,
+      "ap": 0,
+      "coaches": 0.08,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": 24,
+      "computerRanks": {
+        "colley": 22
+      },
+      "rank": 28
+    },
+    "Duke": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 42
+    },
+    "Mississippi State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 43
+    },
+    "Boise State": {
+      "score": 0.1971833007175473,
+      "ap": 0.25771428571428573,
+      "coaches": 0.24383561643835616,
+      "computer": 0.09,
+      "apRank": 20,
+      "coachesRank": 21,
+      "computerRanks": {
+        "colley": 20,
+        "billingsley": 23,
+        "wolfe": 15
+      },
+      "rank": 21
+    },
+    "North Carolina": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 44
     },
     "Illinois": {
       "score": 0,
@@ -2687,60 +2740,19 @@
       "computerRanks": {
         "anderson": 20
       },
-      "rank": 40
+      "rank": 45
     },
-    "Florida State": {
+    "Minnesota": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
       "computer": 0,
       "apRank": null,
       "coachesRank": null,
-      "computerRanks": {},
-      "rank": 41
-    },
-    "Boise State": {
-      "score": 0.17173230373230375,
-      "ap": 0.24114285714285713,
-      "coaches": 0.21405405405405406,
-      "computer": 0.06,
-      "apRank": 20,
-      "coachesRank": 22,
       "computerRanks": {
-        "colley": 20,
-        "wolfe": 20
+        "billingsley": 22
       },
-      "rank": 22
-    },
-    "Central Florida(UCF)": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 42
-    },
-    "Baylor": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 43
-    },
-    "Washington": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 44
+      "rank": 46
     },
     "Pittsburgh": {
       "score": 0,
@@ -2750,7 +2762,17 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 45
+      "rank": 47
+    },
+    "Clemson": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 48
     },
     "TCU": {
       "score": 0,
@@ -2762,17 +2784,7 @@
       "computerRanks": {
         "anderson": 24
       },
-      "rank": 46
-    },
-    "North Carolina": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 47
+      "rank": 49
     },
     "Virginia Tech": {
       "score": 0,
@@ -2782,41 +2794,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 48
-    },
-    "Duke": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 49
-    },
-    "Cincinnati": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
       "rank": 50
     },
-    "Minnesota": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {
-        "billingsley": 19
-      },
-      "rank": 51
-    },
-    "Clemson": {
+    "Florida State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2824,7 +2804,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 52
+      "rank": 51
     },
     "Purdue": {
       "score": 0,
@@ -2834,9 +2814,19 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
+      "rank": 52
+    },
+    "Cincinnati": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
       "rank": 53
     },
-    "Kansas State": {
+    "Central Florida(UCF)": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2846,7 +2836,7 @@
       "computerRanks": {},
       "rank": 54
     },
-    "New Mexico": {
+    "Kansas": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2855,6 +2845,116 @@
       "coachesRank": null,
       "computerRanks": {},
       "rank": 55
+    },
+    "Kansas State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 56
+    },
+    "West Virginia": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 57
+    },
+    "Arizona State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 58
+    },
+    "Iowa State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 59
+    },
+    "New Mexico": {
+      "score": 0.055830397912589695,
+      "ap": 0.10228571428571429,
+      "coaches": 0.0652054794520548,
+      "computer": 0,
+      "apRank": 22,
+      "coachesRank": 25,
+      "computerRanks": {},
+      "rank": 25
+    },
+    "Syracuse": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 60
+    },
+    "Liberty": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 61
+    },
+    "Oregon State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 62
+    },
+    "NC State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 63
+    },
+    "Michigan State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 64
+    },
+    "Arkansas": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 65
     },
     "Virginia": {
       "score": 0,
@@ -2866,73 +2966,22 @@
       "computerRanks": {
         "anderson": 21
       },
-      "rank": 56
+      "rank": 66
     },
-    "Oregon State": {
-      "score": 0,
+    "UTSA": {
+      "score": 0.02666666666666667,
       "ap": 0,
       "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 57
-    },
-    "West Virginia": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 58
-    },
-    "Kansas": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 59
-    },
-    "Arkansas": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 60
-    },
-    "Michigan State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 61
-    },
-    "James Madison": {
-      "score": 0.02,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0.06,
+      "computer": 0.08,
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {
-        "colley": 21,
-        "anderson": 25,
-        "wolfe": 21
+        "colley": 16,
+        "wolfe": 18
       },
-      "rank": 31
+      "rank": 29
     },
-    "Arizona State": {
+    "Texas State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2940,27 +2989,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 62
-    },
-    "Syracuse": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 63
-    },
-    "Iowa State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 64
+      "rank": 67
     },
     "Vanderbilt": {
       "score": 0,
@@ -2972,9 +3001,9 @@
       "computerRanks": {
         "anderson": 22
       },
-      "rank": 65
+      "rank": 68
     },
-    "NC State": {
+    "Memphis": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -2982,22 +3011,22 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 66
+      "rank": 69
     },
-    "UTSA": {
-      "score": 0.03333333333333333,
+    "James Madison": {
+      "score": 0.0033333333333333335,
       "ap": 0,
       "coaches": 0,
-      "computer": 0.1,
+      "computer": 0.01,
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {
-        "colley": 16,
-        "wolfe": 16
+        "colley": 21,
+        "anderson": 25
       },
-      "rank": 30
+      "rank": 31
     },
-    "Boston College": {
+    "Fresno State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3005,7 +3034,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 67
+      "rank": 70
     },
     "North Texas": {
       "score": 0,
@@ -3017,67 +3046,7 @@
       "computerRanks": {
         "anderson": 15
       },
-      "rank": 68
-    },
-    "Liberty": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 69
-    },
-    "Texas State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 70
-    },
-    "Army West Point": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
       "rank": 71
-    },
-    "North Dakota State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 72
-    },
-    "Memphis": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 73
-    },
-    "Maryland": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 74
     },
     "Colorado": {
       "score": 0,
@@ -3087,9 +3056,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 75
+      "rank": 72
     },
-    "Georgia Tech": {
+    "North Dakota State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3097,17 +3066,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 76
-    },
-    "Rutgers": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 77
+      "rank": 73
     },
     "Louisiana Tech": {
       "score": 0,
@@ -3117,67 +3076,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 78
-    },
-    "South Dakota State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 79
-    },
-    "Fresno State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 80
-    },
-    "Youngstown State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 81
-    },
-    "South Florida": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 82
-    },
-    "Western Michigan": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 83
-    },
-    "California": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 84
+      "rank": 74
     },
     "Montana State": {
       "score": 0,
@@ -3187,9 +3086,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 85
+      "rank": 75
     },
-    "Toledo": {
+    "South Dakota State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3197,9 +3096,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 86
+      "rank": 76
     },
-    "UNLV": {
+    "Maryland": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3207,9 +3106,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 87
+      "rank": 77
     },
-    "Tulsa": {
+    "Rutgers": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3217,9 +3116,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 88
+      "rank": 78
     },
-    "Connecticut": {
+    "Boston College": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3227,7 +3126,47 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 89
+      "rank": 79
+    },
+    "Army West Point": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 80
+    },
+    "South Florida": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 81
+    },
+    "Georgia Tech": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 82
+    },
+    "Youngstown State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 83
     },
     "Louisiana-Lafayette": {
       "score": 0,
@@ -3237,21 +3176,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 90
+      "rank": 84
     },
-    "Tulane": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {
-        "anderson": 16
-      },
-      "rank": 91
-    },
-    "Stanford": {
+    "Toledo": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3259,9 +3186,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 92
+      "rank": 85
     },
-    "South Dakota": {
+    "Western Michigan": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3269,7 +3196,17 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 93
+      "rank": 86
+    },
+    "Tulsa": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 87
     },
     "Georgia Southern": {
       "score": 0,
@@ -3279,7 +3216,27 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 94
+      "rank": 88
+    },
+    "Air Force": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 89
+    },
+    "UNLV": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 90
     },
     "Navy": {
       "score": 0,
@@ -3291,9 +3248,9 @@
       "computerRanks": {
         "anderson": 18
       },
-      "rank": 95
+      "rank": 91
     },
-    "Air Force": {
+    "California": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3301,7 +3258,29 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 96
+      "rank": 92
+    },
+    "Connecticut": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 93
+    },
+    "Tulane": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {
+        "anderson": 16
+      },
+      "rank": 94
     },
     "Stephen F. Austin": {
       "score": 0,
@@ -3311,57 +3290,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 97
-    },
-    "Ohio": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 98
-    },
-    "North Dakota": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 99
-    },
-    "Appalachian State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 100
-    },
-    "Washington State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 101
-    },
-    "Georgia State": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 102
+      "rank": 95
     },
     "Utah State": {
       "score": 0,
@@ -3371,9 +3300,9 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 103
+      "rank": 96
     },
-    "East Carolina": {
+    "Stanford": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3381,27 +3310,7 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 104
-    },
-    "South Alabama": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 105
-    },
-    "Florida Atlantic": {
-      "score": 0,
-      "ap": 0,
-      "coaches": 0,
-      "computer": 0,
-      "apRank": null,
-      "coachesRank": null,
-      "computerRanks": {},
-      "rank": 106
+      "rank": 97
     },
     "Jacksonville State": {
       "score": 0,
@@ -3411,9 +3320,99 @@
       "apRank": null,
       "coachesRank": null,
       "computerRanks": {},
-      "rank": 107
+      "rank": 98
+    },
+    "South Dakota": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 99
+    },
+    "North Dakota": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 100
+    },
+    "Ohio": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 101
+    },
+    "East Carolina": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 102
+    },
+    "Florida Atlantic": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 103
     },
     "San Diego State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 104
+    },
+    "Washington State": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 105
+    },
+    "Delaware": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 106
+    },
+    "Nevada": {
+      "score": 0,
+      "ap": 0,
+      "coaches": 0,
+      "computer": 0,
+      "apRank": null,
+      "coachesRank": null,
+      "computerRanks": {},
+      "rank": 107
+    },
+    "Appalachian State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3443,7 +3442,7 @@
       "computerRanks": {},
       "rank": 110
     },
-    "Tarleton State": {
+    "South Alabama": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3453,7 +3452,7 @@
       "computerRanks": {},
       "rank": 111
     },
-    "Colorado State": {
+    "Coastal Carolina": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3473,7 +3472,7 @@
       "computerRanks": {},
       "rank": 113
     },
-    "Nevada": {
+    "Georgia State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3483,7 +3482,7 @@
       "computerRanks": {},
       "rank": 114
     },
-    "Illinois State": {
+    "Wyoming": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3493,7 +3492,7 @@
       "computerRanks": {},
       "rank": 115
     },
-    "Delaware": {
+    "Troy": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3503,7 +3502,7 @@
       "computerRanks": {},
       "rank": 116
     },
-    "UAB": {
+    "Illinois State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3513,7 +3512,7 @@
       "computerRanks": {},
       "rank": 117
     },
-    "Harvard": {
+    "Colorado State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3523,7 +3522,7 @@
       "computerRanks": {},
       "rank": 118
     },
-    "Montana": {
+    "Marshall": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3533,7 +3532,7 @@
       "computerRanks": {},
       "rank": 119
     },
-    "Wyoming": {
+    "Montana": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3543,7 +3542,7 @@
       "computerRanks": {},
       "rank": 120
     },
-    "Western Kentucky": {
+    "San Jose State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3553,7 +3552,7 @@
       "computerRanks": {},
       "rank": 121
     },
-    "Temple": {
+    "UAB": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3563,7 +3562,7 @@
       "computerRanks": {},
       "rank": 122
     },
-    "Fla. International": {
+    "Tarleton State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3573,7 +3572,7 @@
       "computerRanks": {},
       "rank": 123
     },
-    "Coastal Carolina": {
+    "Temple": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3583,7 +3582,7 @@
       "computerRanks": {},
       "rank": 124
     },
-    "Central Michigan": {
+    "Northern Arizona": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3593,7 +3592,7 @@
       "computerRanks": {},
       "rank": 125
     },
-    "New Mexico State": {
+    "Kennesaw State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3603,7 +3602,7 @@
       "computerRanks": {},
       "rank": 126
     },
-    "Austin Peay": {
+    "Central Michigan": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3613,7 +3612,7 @@
       "computerRanks": {},
       "rank": 127
     },
-    "Northern Arizona": {
+    "Harvard": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3623,7 +3622,7 @@
       "computerRanks": {},
       "rank": 128
     },
-    "San Jose State": {
+    "Western Kentucky": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3633,7 +3632,7 @@
       "computerRanks": {},
       "rank": 129
     },
-    "Marshall": {
+    "Buffalo": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3643,7 +3642,7 @@
       "computerRanks": {},
       "rank": 130
     },
-    "Buffalo": {
+    "Northern Iowa": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3653,7 +3652,7 @@
       "computerRanks": {},
       "rank": 131
     },
-    "Troy": {
+    "Austin Peay": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3663,7 +3662,7 @@
       "computerRanks": {},
       "rank": 132
     },
-    "Old Dominion": {
+    "Abilene Christian": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3673,7 +3672,7 @@
       "computerRanks": {},
       "rank": 133
     },
-    "Eastern Michigan": {
+    "Tennessee Tech": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3683,7 +3682,7 @@
       "computerRanks": {},
       "rank": 134
     },
-    "Rice": {
+    "Fla. International": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3693,7 +3692,7 @@
       "computerRanks": {},
       "rank": 135
     },
-    "Mercer": {
+    "Eastern Michigan": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3703,7 +3702,7 @@
       "computerRanks": {},
       "rank": 136
     },
-    "Kennesaw State": {
+    "Incarnate Word": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3713,7 +3712,7 @@
       "computerRanks": {},
       "rank": 137
     },
-    "Tennessee Tech": {
+    "Southern Miss": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3723,7 +3722,7 @@
       "computerRanks": {},
       "rank": 138
     },
-    "Northern Iowa": {
+    "Rice": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3733,7 +3732,7 @@
       "computerRanks": {},
       "rank": 139
     },
-    "Middle Tennessee": {
+    "Lamar": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3743,7 +3742,7 @@
       "computerRanks": {},
       "rank": 140
     },
-    "Chattanooga": {
+    "Mercer": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3753,7 +3752,7 @@
       "computerRanks": {},
       "rank": 141
     },
-    "East Tennessee State": {
+    "Missouri State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3763,7 +3762,7 @@
       "computerRanks": {},
       "rank": 142
     },
-    "Idaho State": {
+    "Idaho": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3773,7 +3772,7 @@
       "computerRanks": {},
       "rank": 143
     },
-    "Southern Miss": {
+    "Weber State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3783,7 +3782,7 @@
       "computerRanks": {},
       "rank": 144
     },
-    "Incarnate Word": {
+    "Old Dominion": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3793,7 +3792,7 @@
       "computerRanks": {},
       "rank": 145
     },
-    "Southern Illinois": {
+    "New Mexico State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3803,7 +3802,7 @@
       "computerRanks": {},
       "rank": 146
     },
-    "Bowling Green": {
+    "Southern Illinois": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3813,7 +3812,7 @@
       "computerRanks": {},
       "rank": 147
     },
-    "Abilene Christian": {
+    "Idaho State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3823,7 +3822,7 @@
       "computerRanks": {},
       "rank": 148
     },
-    "Lehigh": {
+    "Middle Tennessee": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3833,7 +3832,7 @@
       "computerRanks": {},
       "rank": 149
     },
-    "Idaho": {
+    "Bowling Green": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3853,7 +3852,7 @@
       "computerRanks": {},
       "rank": 151
     },
-    "Missouri State": {
+    "East Tennessee State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3863,7 +3862,7 @@
       "computerRanks": {},
       "rank": 152
     },
-    "Weber State": {
+    "Chattanooga": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3873,7 +3872,7 @@
       "computerRanks": {},
       "rank": 153
     },
-    "Lamar": {
+    "Ball State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3883,7 +3882,7 @@
       "computerRanks": {},
       "rank": 154
     },
-    "Sam Houston State": {
+    "Albany-NY": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3903,7 +3902,7 @@
       "computerRanks": {},
       "rank": 156
     },
-    "Kent State": {
+    "Monmouth-NJ": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3913,7 +3912,7 @@
       "computerRanks": {},
       "rank": 157
     },
-    "Ball State": {
+    "Campbell": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3923,7 +3922,7 @@
       "computerRanks": {},
       "rank": 158
     },
-    "Campbell": {
+    "Lehigh": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3933,7 +3932,7 @@
       "computerRanks": {},
       "rank": 159
     },
-    "UC Davis": {
+    "Gardner-Webb": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3943,7 +3942,7 @@
       "computerRanks": {},
       "rank": 160
     },
-    "Monmouth-NJ": {
+    "Sam Houston State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3953,7 +3952,7 @@
       "computerRanks": {},
       "rank": 161
     },
-    "Albany-NY": {
+    "North Alabama": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3963,7 +3962,7 @@
       "computerRanks": {},
       "rank": 162
     },
-    "SE Missouri State": {
+    "Western Illinois": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3973,7 +3972,7 @@
       "computerRanks": {},
       "rank": 163
     },
-    "Alabama A&M": {
+    "Charlotte": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3983,7 +3982,7 @@
       "computerRanks": {},
       "rank": 164
     },
-    "Western Illinois": {
+    "UC Davis": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -3993,7 +3992,7 @@
       "computerRanks": {},
       "rank": 165
     },
-    "Western Carolina": {
+    "SC State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4003,7 +4002,7 @@
       "computerRanks": {},
       "rank": 166
     },
-    "LouisianaMonroe(ULM)": {
+    "Dartmouth": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4013,7 +4012,7 @@
       "computerRanks": {},
       "rank": 167
     },
-    "North Alabama": {
+    "Yale": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4023,7 +4022,7 @@
       "computerRanks": {},
       "rank": 168
     },
-    "Princeton": {
+    "Colgate": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4033,7 +4032,7 @@
       "computerRanks": {},
       "rank": 169
     },
-    "Akron": {
+    "Villanova": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4043,7 +4042,7 @@
       "computerRanks": {},
       "rank": 170
     },
-    "SE Louisiana": {
+    "Western Carolina": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4053,7 +4052,7 @@
       "computerRanks": {},
       "rank": 171
     },
-    "Yale": {
+    "Kent State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4063,7 +4062,7 @@
       "computerRanks": {},
       "rank": 172
     },
-    "Cornell": {
+    "Northern Illinois": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4073,7 +4072,7 @@
       "computerRanks": {},
       "rank": 173
     },
-    "Charlotte": {
+    "SE Missouri State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4083,7 +4082,7 @@
       "computerRanks": {},
       "rank": 174
     },
-    "Villanova": {
+    "Princeton": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4093,7 +4092,7 @@
       "computerRanks": {},
       "rank": 175
     },
-    "UTEP": {
+    "Brown": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4103,7 +4102,7 @@
       "computerRanks": {},
       "rank": 176
     },
-    "Wofford": {
+    "LouisianaMonroe(ULM)": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4113,7 +4112,7 @@
       "computerRanks": {},
       "rank": 177
     },
-    "Indiana State": {
+    "Cornell": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4123,7 +4122,7 @@
       "computerRanks": {},
       "rank": 178
     },
-    "Brown": {
+    "UTEP": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4133,7 +4132,7 @@
       "computerRanks": {},
       "rank": 179
     },
-    "Dartmouth": {
+    "Akron": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4143,7 +4142,7 @@
       "computerRanks": {},
       "rank": 180
     },
-    "Eastern Washington": {
+    "Alabama A&M": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4153,7 +4152,7 @@
       "computerRanks": {},
       "rank": 181
     },
-    "Northern Illinois": {
+    "Eastern Washington": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4163,7 +4162,7 @@
       "computerRanks": {},
       "rank": 182
     },
-    "Colgate": {
+    "Wofford": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4173,7 +4172,7 @@
       "computerRanks": {},
       "rank": 183
     },
-    "Rhode Island": {
+    "Central Connecticut": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4183,7 +4182,7 @@
       "computerRanks": {},
       "rank": 184
     },
-    "SC State": {
+    "SE Louisiana": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4193,7 +4192,7 @@
       "computerRanks": {},
       "rank": 185
     },
-    "Gardner-Webb": {
+    "Indiana State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4203,7 +4202,7 @@
       "computerRanks": {},
       "rank": 186
     },
-    "UTRGV": {
+    "Charleston Southern": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4213,7 +4212,7 @@
       "computerRanks": {},
       "rank": 187
     },
-    "Charleston Southern": {
+    "Holy Cross": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4223,7 +4222,7 @@
       "computerRanks": {},
       "rank": 188
     },
-    "Stony Brook": {
+    "Lindenwood": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4233,7 +4232,7 @@
       "computerRanks": {},
       "rank": 189
     },
-    "Central Arkansas": {
+    "Rhode Island": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4243,7 +4242,7 @@
       "computerRanks": {},
       "rank": 190
     },
-    "Tennessee-Martin": {
+    "Ark.-Pine Bluff": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4253,7 +4252,7 @@
       "computerRanks": {},
       "rank": 191
     },
-    "Holy Cross": {
+    "Eastern Illinois": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4263,7 +4262,7 @@
       "computerRanks": {},
       "rank": 192
     },
-    "Richmond": {
+    "Stony Brook": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4273,7 +4272,7 @@
       "computerRanks": {},
       "rank": 193
     },
-    "Furman": {
+    "Samford": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4283,7 +4282,7 @@
       "computerRanks": {},
       "rank": 194
     },
-    "Samford": {
+    "Furman": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4293,7 +4292,7 @@
       "computerRanks": {},
       "rank": 195
     },
-    "Jackson State": {
+    "West Florida": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4303,7 +4302,7 @@
       "computerRanks": {},
       "rank": 196
     },
-    "St. Thomas-Mn.": {
+    "Central Arkansas": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4313,7 +4312,7 @@
       "computerRanks": {},
       "rank": 197
     },
-    "Pennsylvania": {
+    "Northern Colorado": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4323,7 +4322,7 @@
       "computerRanks": {},
       "rank": 198
     },
-    "Central Connecticut": {
+    "UTRGV": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4333,7 +4332,7 @@
       "computerRanks": {},
       "rank": 199
     },
-    "Northern Colorado": {
+    "Sacramento State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4343,7 +4342,7 @@
       "computerRanks": {},
       "rank": 200
     },
-    "West Florida": {
+    "St. Thomas-Mn.": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4363,7 +4362,7 @@
       "computerRanks": {},
       "rank": 202
     },
-    "Lindenwood": {
+    "Alabama State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4373,7 +4372,7 @@
       "computerRanks": {},
       "rank": 203
     },
-    "Alabama State": {
+    "Jackson State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4383,7 +4382,7 @@
       "computerRanks": {},
       "rank": 204
     },
-    "Cal Poly-SLO": {
+    "Duquesne": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4393,7 +4392,7 @@
       "computerRanks": {},
       "rank": 205
     },
-    "Elon": {
+    "Eastern Kentucky": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4403,7 +4402,7 @@
       "computerRanks": {},
       "rank": 206
     },
-    "Eastern Kentucky": {
+    "NC Central": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4413,7 +4412,7 @@
       "computerRanks": {},
       "rank": 207
     },
-    "Portland State": {
+    "Richmond": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4423,7 +4422,7 @@
       "computerRanks": {},
       "rank": 208
     },
-    "Towson": {
+    "The Citadel": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4433,7 +4432,7 @@
       "computerRanks": {},
       "rank": 209
     },
-    "Howard": {
+    "Towson": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4443,7 +4442,7 @@
       "computerRanks": {},
       "rank": 210
     },
-    "Dayton": {
+    "Pennsylvania": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4453,7 +4452,7 @@
       "computerRanks": {},
       "rank": 211
     },
-    "Eastern Illinois": {
+    "Tennessee-Martin": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4463,7 +4462,7 @@
       "computerRanks": {},
       "rank": 212
     },
-    "The Citadel": {
+    "Houston Christian": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4473,7 +4472,7 @@
       "computerRanks": {},
       "rank": 213
     },
-    "Bryant": {
+    "Elon": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4483,7 +4482,7 @@
       "computerRanks": {},
       "rank": 214
     },
-    "Houston Christian": {
+    "Prairie View A&M": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4493,7 +4492,7 @@
       "computerRanks": {},
       "rank": 215
     },
-    "McNeese State": {
+    "Bryant": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4503,7 +4502,7 @@
       "computerRanks": {},
       "rank": 216
     },
-    "Lafayette": {
+    "McNeese State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4513,7 +4512,7 @@
       "computerRanks": {},
       "rank": 217
     },
-    "Columbia": {
+    "Cal Poly-SLO": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4523,7 +4522,7 @@
       "computerRanks": {},
       "rank": 218
     },
-    "Duquesne": {
+    "Portland State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4533,7 +4532,7 @@
       "computerRanks": {},
       "rank": 219
     },
-    "Ark.-Pine Bluff": {
+    "Dayton": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4543,7 +4542,7 @@
       "computerRanks": {},
       "rank": 220
     },
-    "Sacramento State": {
+    "Utah Tech": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4553,7 +4552,7 @@
       "computerRanks": {},
       "rank": 221
     },
-    "Morgan State": {
+    "Stonehill College": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4563,7 +4562,7 @@
       "computerRanks": {},
       "rank": 222
     },
-    "Prairie View A&M": {
+    "Alcorn State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4573,7 +4572,7 @@
       "computerRanks": {},
       "rank": 223
     },
-    "NC Central": {
+    "Sacred Heart": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4583,7 +4582,7 @@
       "computerRanks": {},
       "rank": 224
     },
-    "Utah Tech": {
+    "Columbia": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4593,7 +4592,7 @@
       "computerRanks": {},
       "rank": 225
     },
-    "Stonehill College": {
+    "Lafayette": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4603,7 +4602,7 @@
       "computerRanks": {},
       "rank": 226
     },
-    "Merrimack": {
+    "East Texas A&M": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4613,7 +4612,7 @@
       "computerRanks": {},
       "rank": 227
     },
-    "New Hampshire": {
+    "LIU Post": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4623,7 +4622,7 @@
       "computerRanks": {},
       "rank": 228
     },
-    "Tennessee State": {
+    "Southern U.": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4633,7 +4632,7 @@
       "computerRanks": {},
       "rank": 229
     },
-    "Norfolk State": {
+    "New Hampshire": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4643,7 +4642,7 @@
       "computerRanks": {},
       "rank": 230
     },
-    "Robert Morris": {
+    "Merrimack": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4663,7 +4662,7 @@
       "computerRanks": {},
       "rank": 232
     },
-    "Bethune-Cookman": {
+    "Murray State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4673,7 +4672,7 @@
       "computerRanks": {},
       "rank": 233
     },
-    "LIU Post": {
+    "Howard": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4683,7 +4682,7 @@
       "computerRanks": {},
       "rank": 234
     },
-    "Grambling State": {
+    "Delaware State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4693,7 +4692,7 @@
       "computerRanks": {},
       "rank": 235
     },
-    "Sacred Heart": {
+    "NC A&T": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4703,7 +4702,7 @@
       "computerRanks": {},
       "rank": 236
     },
-    "William & Mary": {
+    "Norfolk State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4713,7 +4712,7 @@
       "computerRanks": {},
       "rank": 237
     },
-    "San Diego": {
+    "Grambling State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4723,7 +4722,7 @@
       "computerRanks": {},
       "rank": 238
     },
-    "West Georgia": {
+    "Morgan State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4733,7 +4732,7 @@
       "computerRanks": {},
       "rank": 239
     },
-    "East Texas A&M": {
+    "San Diego": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4743,7 +4742,7 @@
       "computerRanks": {},
       "rank": 240
     },
-    "Florida A&M": {
+    "William & Mary": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4753,7 +4752,7 @@
       "computerRanks": {},
       "rank": 241
     },
-    "Murray State": {
+    "Maine": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4763,7 +4762,7 @@
       "computerRanks": {},
       "rank": 242
     },
-    "New Haven": {
+    "Tennessee State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4773,7 +4772,7 @@
       "computerRanks": {},
       "rank": 243
     },
-    "NC A&T": {
+    "Bethune-Cookman": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4783,7 +4782,7 @@
       "computerRanks": {},
       "rank": 244
     },
-    "Alcorn State": {
+    "Fordham": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4793,7 +4792,7 @@
       "computerRanks": {},
       "rank": 245
     },
-    "Fordham": {
+    "Robert Morris": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4803,7 +4802,7 @@
       "computerRanks": {},
       "rank": 246
     },
-    "Delaware State": {
+    "Drake": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4813,7 +4812,7 @@
       "computerRanks": {},
       "rank": 247
     },
-    "Maine": {
+    "Marist": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4823,7 +4822,7 @@
       "computerRanks": {},
       "rank": 248
     },
-    "Drake": {
+    "New Haven": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4833,7 +4832,7 @@
       "computerRanks": {},
       "rank": 249
     },
-    "Southern U.": {
+    "Valparaiso": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4843,7 +4842,7 @@
       "computerRanks": {},
       "rank": 250
     },
-    "Marist": {
+    "West Georgia": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4853,7 +4852,7 @@
       "computerRanks": {},
       "rank": 251
     },
-    "Valparaiso": {
+    "Florida A&M": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4873,7 +4872,7 @@
       "computerRanks": {},
       "rank": 253
     },
-    "Mercyhurst": {
+    "Bucknell": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4883,7 +4882,7 @@
       "computerRanks": {},
       "rank": 254
     },
-    "Bucknell": {
+    "Mercyhurst": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4893,7 +4892,7 @@
       "computerRanks": {},
       "rank": 255
     },
-    "Presbyterian College": {
+    "Texas Southern": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4903,7 +4902,7 @@
       "computerRanks": {},
       "rank": 256
     },
-    "Texas Southern": {
+    "Presbyterian College": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4913,7 +4912,7 @@
       "computerRanks": {},
       "rank": 257
     },
-    "Chicago State": {
+    "Wagner": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4923,7 +4922,7 @@
       "computerRanks": {},
       "rank": 258
     },
-    "Hampton": {
+    "Chicago State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4943,7 +4942,7 @@
       "computerRanks": {},
       "rank": 260
     },
-    "Wagner": {
+    "Hampton": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4953,7 +4952,7 @@
       "computerRanks": {},
       "rank": 261
     },
-    "Miss. Valley State": {
+    "VMI": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
@@ -4963,7 +4962,7 @@
       "computerRanks": {},
       "rank": 262
     },
-    "VMI": {
+    "Miss. Valley State": {
       "score": 0,
       "ap": 0,
       "coaches": 0,
