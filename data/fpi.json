@@ -2,10 +2,10 @@
   "source": [
     "https://www.espn.com/college-football/fpi/_/view/fpi"
   ],
-  "fetched_at": "2026-11-01T16:29:11.524Z",
+  "fetched_at": "2026-11-02T19:51:04.943Z",
   "season": 2026,
   "note": "FPI parsed from ESPN FPI page. Used for predictor/sim/head-to-head reference.",
-  "signature": "fpi-mvy1oulg",
+  "signature": "fpi-mvzocc1c",
   "method": "ESPN FPI: Football Power Index for predictor/sim/head-to-head; not strict-Sagarin data",
   "inputs": [
     "ESPN FPI"
