@@ -68,7 +68,10 @@
     var byTeam = {};
     SG.state.data.teams.forEach(function (t) { byTeam[t.team] = t; });
 
-    var sim = SG.state.sim12;
+    // The 12-team field for watch scoring comes from the predictor simulation.
+    // Method-specific sim data is loaded into sim12Method (data/sim-12-predictor.json),
+    // since the old monolithic data/sim-12.json no longer exists.
+    var sim = SG.state.sim12Method || SG.state.sim12;
     if (sim && sim.field && sim.n) {
       Object.keys(sim.field).forEach(function (name) {
         if (byTeam[name]) ctx.prob[name] = sim.field[name] / sim.n;

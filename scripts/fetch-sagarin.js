@@ -75,6 +75,15 @@ async function main() {
     predictions: parsed.predictions
   };
 
+  // Sagarin's page does not carry an FPI column, so there is no parsed home
+  // edge for the FPI method. Keep the FPI home edge from the previous file so
+  // the FPI simulation is not silently skipped on every refresh.
+  if (existing && existing.meta && existing.meta.homeAdvantage &&
+      typeof existing.meta.homeAdvantage.fpi === "number") {
+    if (!out.meta.homeAdvantage) out.meta.homeAdvantage = {};
+    out.meta.homeAdvantage.fpi = existing.meta.homeAdvantage.fpi;
+  }
+
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2) + "\n", "utf8");
 
