@@ -10,3 +10,6 @@ Desktop.ini
 # node
 node_modules/
 npm-debug.log*
+
+# project rules (never commit to remote)
+AGENTS.md
