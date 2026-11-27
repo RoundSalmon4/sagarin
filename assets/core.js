@@ -370,10 +370,11 @@ SG.DIVISIONS = window.TeamDivisions || {};
     { key: "goldenMean", label: "GOLDEN_MEAN" },
     { key: "recent", label: "RECENT" },
     { key: "strongRecent", label: "STRONG_RECENT" },
-    { key: "bcs", label: "BCS", cls: "bcs-col", value: function (t) { var b = SG.bcsOf(t.team); return b ? b.score : -1; },
+    { key: "bcs", label: "BCS", cls: "bcs-col", value: function (t) { var b = SG.bcsOf(t.team); return b && b.rank <= 25 ? b.score : -1; },
       cell: function (t) {
+        // Only the top 25 carry a meaningful BCS score; below #25 it rounds to ~0.
         var b = SG.bcsOf(t.team);
-        return b ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
+        return b && b.rank <= 25 ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
       } },
     { key: "sched", label: "Schedule" },
     { key: "schedRank", label: "Sched Rk" },
@@ -568,10 +569,11 @@ SG.DIVISIONS = window.TeamDivisions || {};
         { label: "PPG", cell: function (t) { return statCell(t, "ppg"); } }
       ];
       // The BCS row joins the table once the CFP rankings are the poll in use.
+      // Only the top 25 carry a meaningful BCS score; below #25 it rounds to ~0.
       if (SG.rankLabel() === "CFP") {
         rows.splice(3, 0, { label: "BCS", cell: function (t) {
           var b = SG.bcsOf(t.team);
-          return b ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
+          return b && b.rank <= 25 ? SG.fmt(b.score, 3) + ' <span class="dim">(' + b.rank + ")</span>" : '<span class="dim">-</span>';
         } });
       }
       var html = '<table class="h2h-cmp"><thead><tr><th></th>' +
